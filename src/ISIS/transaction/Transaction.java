@@ -1,0 +1,184 @@
+package ISIS.transaction;
+
+import ISIS.misc.Dates;
+import ISIS.User.User;
+import ISIS.Item.Item;
+import ISIS.Customer.Customer;
+import ISIS.database.Record;
+import ISIS.misc.Address;
+import ISIS.misc.Billing;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
+/**
+ * A Transaction is the exchange of goods, legal tender, or rendering of
+ * services between the client and a customer. A Transaction consists of a
+ * customer, an intiating user, a set of items and information pertaining to the
+ * items, billing information, various date/time information, and shipping
+ * information.
+ *
+ * Invariants:
+ *
+ * The Transaction references exactly one customer record.
+ *
+ * @customer != null
+ *
+ * The Transaction references exactly one user record.
+ * @user != null
+ *
+ * The Transaction references exactly one set of associated dates.
+ * @dates != null
+ *
+ * The transaction has a primary key field that is always set.
+ * @pkey > 0
+ */
+public class Transaction extends Record {
+    /* Fields omitted */
+
+    /**
+     * TransactionStatus is a enumeration describing the status of a
+     * transaction.
+     */
+    public static enum TransactionStatus {
+
+        ACTIVE, CLOSED, BILLED, UNDER_REVIEW, ABORTED
+    }
+
+    /**
+     * Public constructor. A Transaction starts with a user and a customer.
+     * These attributes cannot be changed.
+     */
+    public Transaction(User user, Customer customer) {
+    }
+
+    /**
+     * Public constructor. A return Transaction starts with a modifying user and
+     * a transaction. This attributes cannot be changed.
+     *
+     * @post getModified() == true
+     * @post getType() == type.Sale
+     * @post getStatus() == status.Finalized
+     * @post getAddress() != null
+     * @post getBilling() != null
+     * @post getItems().size() > 0
+     */
+    public Transaction(User user, Transaction originalSale) {
+    }
+
+    /**
+     * Public constructor. Takes a transaction database key, and has the option
+     * to populate the fields from the database.
+     */
+    public Transaction(int pkey, boolean populate) {
+    }
+
+    /**
+     * Gets a list of returns that have been made on the transaction, or the
+     * transaction that this return is being made on as well as returns
+     * associated with it. If the transaction is not associated with a return,
+     * an empty list is returned.
+     */
+    public ArrayList<Transaction> getRelatedTransactions() {
+    }
+
+    /**
+     * Adds an item to this transaction.
+     *
+     * @pre getItems().contains(item) == false
+     * @post getItems().contains(item) == true
+     */
+    public void addItem(Item item, BigDecimal adjustment, BigDecimal quantity, String note) {
+    }
+
+    /**
+     * Removes an item from this transaction.
+     *
+     * @pre getItems().contains(item) == true
+     * @post getItems().contains(item) == false
+     */
+    public void removeItem(Item item) {
+    }
+
+    /**
+     * Modifies attributes of an item associated with this transaction.
+     *
+     * @pre getItems().contains(item) == true
+     */
+    public void modItem(Item item, BigDecimal adjustment, BigDecimal quantity, String note) {
+    }
+
+    /**
+     * Gets information associated with all involved items in this transaction.
+     */
+    public ArrayList<TransactionLineItem> getItems() {
+    }
+
+    /**
+     * Sets the billing information for this transaction.
+     */
+    public void setBilling(Billing billing) {
+    }
+
+    /**
+     * Gets the billing information associated with this transaction.
+     */
+    public Billing getBilling() {
+    }
+
+    /**
+     * Sets the address for this transaction.
+     */
+    public void setAddress(Address address) {
+    }
+
+    /**
+     * Gets the address associated with this transaction.
+     */
+    public Address getAddress() {
+    }
+
+    /**
+     * Gets status associated with this transaction.
+     */
+    public TransactionStatus getStatus() {
+    }
+
+    /**
+     * Checks whether any returns have been made that reference this
+     * transaction.
+     *
+     * @pre getStatus() == status.Finalized
+     */
+    public boolean isModified() {
+    }
+
+    /**
+     * Gets user (employee) associated with this transaction.
+     */
+    public User getUser() {
+    }
+
+    /**
+     * Gets customer associated with this transaction.
+     */
+    public Customer getCustomer() {
+    }
+
+    /**
+     * Gets the dates associated with this transaction.
+     */
+    public Dates getDates() {
+    }
+
+    /**
+     * Completes this transaction. No finalized transaction can be modified.
+     *
+     * @pre getStatus() != status.Finalized
+     * @pre getAddress() != null
+     * @pre getBilling() != null
+     * @pre getItems().size() > 0
+     * @post getStatus() == status.Finalized
+     */
+    public void finalize() {
+    }
+}
