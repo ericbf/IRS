@@ -1,14 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ISIS.gui.customer;
 
 import ISIS.gui.ListView;
 
 /**
- *
- * @author michaelm
+ * List of transactions. Allows you to query and act on transactions.
  */
 public class ListTransactions extends ListView {
+    /* Fields omitted */
+
+    /**
+     * Constructs new Transaction list view.
+     */
+    public ListTransactions() {
+    }
 }

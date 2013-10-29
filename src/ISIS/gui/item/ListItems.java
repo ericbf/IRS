@@ -1,13 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ISIS.gui.item;
 
+import ISIS.gui.ListView;
+
 /**
- *
- * @author michaelm
+ * List of items. Allows you to query and act on items.
  */
-public class ListItems {
-    
+public class ListItems extends ListView {
+    /* Fields omitted */
+
+    /**
+     * Constructs new Customer list view.
+     */
+    public ListItems() {
+    }
 }

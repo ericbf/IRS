@@ -24,4 +24,11 @@ public abstract class View extends JPanel {
      * implemented.
      */
     public abstract void cancel();
+
+    /**
+     * Overridden for windows where cleanup is necessary, but save and cancel do
+     * not apply.
+     */
+    public void close() {
+    }
 }
