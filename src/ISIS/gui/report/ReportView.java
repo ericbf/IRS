@@ -5,12 +5,12 @@ import ISIS.gui.View;
     /**
      * 
      */
-public class Report extends View {
+public class ReportView extends View {
     
     /**
      * 
      */
-    public Report() {}
+    public ReportView() {}
     
     /**
      * 
