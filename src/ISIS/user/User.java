@@ -12,18 +12,13 @@ import ISIS.misc.Picture;
 import java.math.BigDecimal;
 
 /**
- * Something
+ * A class representing a person or company that intends to purchase products from the client. It consists of
+ * information about the cusomter.
  *
  * Invariants:
  *
- * The Transaction references exactly one customer record.
+ * The Customer references exactly one set of associated dates.
  *
- * @customer != null
- *
- * The Transaction references exactly one user record.
- * @user != null
- *
- * The Transaction references exactly one set of associated dates.
  * @dates != null
  *
  * The transaction has a primary key field that is always set.
@@ -41,10 +36,9 @@ public class User extends Record {
     }
 
     /**
-     * Public constructor. Takes a User database key, and has the option to
-     * populate the fields from the database.
+     * Public constructor. Takes a User database key, and has the option to populate the fields from the database.
      */
-    public Transaction(int pkey, boolean populate) {
+    public User(int pkey, boolean populate) {
     }
 
     /**
@@ -119,8 +113,7 @@ public class User extends Record {
     }
 
     /**
-     * Removes a picture associated with the User record.
-     * picture.
+     * Removes a picture associated with the User record. picture.
      *
      * @pre getPictures().contains(picture) == true
      * @pre getPictures().contains(picture) == false
