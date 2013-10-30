@@ -7,28 +7,28 @@ import javax.swing.JPanel;
  */
 public abstract class View extends JPanel {
 
-    /**
-     * Returns whether this view needs to be saved. This method must be
-     * implemented.
-     */
-    public abstract boolean needsSave();
+	/**
+	 * Returns whether this view needs to be saved. This method must be
+	 * implemented.
+	 */
+	public abstract boolean needsSave();
 
-    /**
-     * A method for saving the contents of the implemented view. This method
-     * must be implemented.
-     */
-    public abstract void save();
+	/**
+	 * A method for saving the contents of the implemented view. This method
+	 * must be implemented.
+	 */
+	public abstract void save();
 
-    /**
-     * A method for canceling the implemented view. This method must be
-     * implemented.
-     */
-    public abstract void cancel();
+	/**
+	 * A method for canceling the implemented view. This method must be
+	 * implemented.
+	 */
+	public abstract void cancel();
 
-    /**
-     * Overridden for windows where cleanup is necessary, but save and cancel do
-     * not apply.
-     */
-    public void close() {
-    }
+	/**
+	 * Overridden for windows where cleanup is necessary, but save and cancel do
+	 * not apply.
+	 */
+	public void close() {
+	}
 }

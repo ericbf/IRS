@@ -5,6 +5,6 @@ package ISIS.gui;
  */
 public class MainView extends View {
 
-    public MainView() {
-    }
+	public MainView() {
+	}
 }

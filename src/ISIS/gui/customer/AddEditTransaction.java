@@ -7,31 +7,31 @@ import ISIS.gui.View;
  */
 public class AddEditTransaction extends View {
 
-    /**
-     * Public constructor: returns an instance of the add/edit transaction view.
-     */
-    public AddEditTransaction() {
-    }
+	/**
+	 * Public constructor: returns an instance of the add/edit transaction view.
+	 */
+	public AddEditTransaction() {
+	}
 
-    /**
-     * The transaction needs to be saved.
-     */
-    @Override
-    public boolean needsSave() {
-        return true;
-    }
+	/**
+	 * The transaction needs to be saved.
+	 */
+	@Override
+	public boolean needsSave() {
+		return true;
+	}
 
-    /**
-     * This saves the transaction.
-     */
-    @Override
-    public void save() {
-    }
+	/**
+	 * This saves the transaction.
+	 */
+	@Override
+	public void save() {
+	}
 
-    /**
-     * Discards any modifications.
-     */
-    @Override
-    public void cancel() {
-    }
+	/**
+	 * Discards any modifications.
+	 */
+	@Override
+	public void cancel() {
+	}
 }

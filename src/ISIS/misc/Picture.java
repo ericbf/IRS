@@ -8,43 +8,43 @@ import ISIS.database.Record;
  * instance is always referenced from another record.
  */
 public class Picture extends Record {
-    /* Fields omitted */
+	/* Fields omitted */
 
-    /**
-     * Public constructor. A picture starts with a name, binary representation,
-     * a note, and dates associated with its creation.
-     */
-    public Picture(String name, byte[] picture, String note, Dates dates) {
-    }
+	/**
+	 * Public constructor. A picture starts with a name, binary representation,
+	 * a note, and dates associated with its creation.
+	 */
+	public Picture(String name, byte[] picture, String note, Dates dates) {
+	}
 
-    /**
-     * Public constructor. Takes a picture database key, and has the option to
-     * populate fields from the database.
-     */
-    public Picture(int pkey, boolean populate) {
-    }
+	/**
+	 * Public constructor. Takes a picture database key, and has the option to
+	 * populate fields from the database.
+	 */
+	public Picture(int pkey, boolean populate) {
+	}
 
-    /**
-     * Gets the name associated with the picture.
-     */
-    public String getName() {
-    }
+	/**
+	 * Gets the name associated with the picture.
+	 */
+	public String getName() {
+	}
 
-    /**
-     * Gets the note associated with the picture.
-     */
-    public String getNote() {
-    }
+	/**
+	 * Gets the note associated with the picture.
+	 */
+	public String getNote() {
+	}
 
-    /**
-     * Gets the dates associated with the picture.
-     */
-    public Dates getDates() {
-    }
+	/**
+	 * Gets the dates associated with the picture.
+	 */
+	public Dates getDates() {
+	}
 
-    /**
-     * Gets the picture associated with the picture record.
-     */
-    public byte[] getPicture() {
-    }
+	/**
+	 * Gets the picture associated with the picture record.
+	 */
+	public byte[] getPicture() {
+	}
 }

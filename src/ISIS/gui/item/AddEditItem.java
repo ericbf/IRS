@@ -7,31 +7,31 @@ import ISIS.gui.View;
  */
 public class AddEditItem extends View {
 
-    /**
-     * Public constructor: returns new instance of add/edit item view.
-     */
-    public AddEditItem() {
-    }
+	/**
+	 * Public constructor: returns new instance of add/edit item view.
+	 */
+	public AddEditItem() {
+	}
 
-    /**
-     * This view needs to be saved.
-     */
-    @Override
-    public boolean needsSave() {
-        return true;
-    }
+	/**
+	 * This view needs to be saved.
+	 */
+	@Override
+	public boolean needsSave() {
+		return true;
+	}
 
-    /**
-     * Saves the item.
-     */
-    @Override
-    public void save() {
-    }
+	/**
+	 * Saves the item.
+	 */
+	@Override
+	public void save() {
+	}
 
-    /**
-     * Discards any modifications.
-     */
-    @Override
-    public void cancel() {
-    }
+	/**
+	 * Discards any modifications.
+	 */
+	@Override
+	public void cancel() {
+	}
 }

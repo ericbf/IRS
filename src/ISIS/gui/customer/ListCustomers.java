@@ -6,11 +6,11 @@ import ISIS.gui.ListView;
  * List of customers. Allows you to query and act on customers.
  */
 public class ListCustomers extends ListView {
-    /* Fields omitted */
+	/* Fields omitted */
 
-    /**
-     * Constructs new Customer list view.
-     */
-    public ListCustomers() {
-    }
+	/**
+	 * Constructs new Customer list view.
+	 */
+	public ListCustomers() {
+	}
 }
