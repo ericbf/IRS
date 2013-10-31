@@ -15,5 +15,6 @@ nbproject/private/private.properties
 
 
 *.jar
+!sqlite-jdbc-3.7.15-M1.jar
 *.war
 *.ear

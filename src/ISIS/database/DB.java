@@ -4,10 +4,12 @@ import ISIS.gui.ErrorLogger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Manages third party relational database software used to manage and organize data used to implement functionalities
@@ -26,46 +28,49 @@ public final class DB {
      * @post isOpen == true
      */
     public DB(String DBLocation) {
-	try {
-	    Class.forName("org.sqlite.JDBC");
-	} catch (ClassNotFoundException ex) {
-	    ErrorLogger.error("Driver not found.", true, true);
-	    System.exit(1);
-	}
-	try {
-	    connection = DriverManager.getConnection("jdbc:sqlite:test.db");
-	    initializeDB();
-	} catch (SQLException ex) {
-	    ErrorLogger.error(ex.getLocalizedMessage(), true, true);
-	    System.exit(1);
-	}
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException ex) {
+            ErrorLogger.error("Driver not found.", true, true);
+            System.exit(1);
+        }
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:test.db");
+            initializeDB();
+        } catch (SQLException ex) {
+            ErrorLogger.error(ex.getLocalizedMessage(), true, true);
+            System.exit(1);
+        }
     }
 
     /**
      * Initialize tables
      */
     public void initializeDB() throws SQLException {
-	executeUpdate("CREATE TABLE IF NOT EXISTS user (pkey INTEGER PRIMARY KEY, username VARCHAR(45), password text, fname VARCHAR(255), lname VARCHAR(255), note TEXT)");
+        //40 characters for hash, 5 for salt
+        executeUpdate("CREATE TABLE IF NOT EXISTS user (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, "
+                + "username VARCHAR(255) UNIQUE NOT NULL, password VARCHAR(44) NOT NULL, fname VARCHAR(255) NOT NULL, "
+                + "lname VARCHAR(255) NOT NULL, note TEXT NOT NULL)");
     }
 
     /**
      * For creating tables and stuff.
      */
     private void executeUpdate(String sql) throws SQLException {
-	Statement statement = connection.createStatement();
-	statement.executeUpdate(sql);
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(sql);
     }
 
     /**
      * Checks if the database is open.
      */
     public boolean isOpen() {
-	try {
-	    return connection.isValid(timeout);
-	} catch (SQLException ex) {
-	    ErrorLogger.error(ex.getLocalizedMessage(), false, false);
-	    return false;
-	}
+        try {
+            return connection.isValid(timeout);
+        } catch (SQLException ex) {
+            ErrorLogger.error(ex.getLocalizedMessage(), false, false);
+            return false;
+        }
     }
 
     /**
@@ -75,11 +80,11 @@ public final class DB {
      * @post isOpen == false
      */
     public void close() {
-	try {
-	    connection.close();
-	} catch (SQLException ex) {
-	    ErrorLogger.error(ex.getLocalizedMessage(), false, false);
-	}
+        try {
+            connection.close();
+        } catch (SQLException ex) {
+            ErrorLogger.error(ex.getLocalizedMessage(), false, false);
+        }
     }
 
     /**
@@ -88,7 +93,20 @@ public final class DB {
      * @pre isOpen == true
      */
     public PreparedStatement prepareStatement(String sql) throws SQLException {
-	return connection.prepareStatement(sql);
+        return connection.prepareStatement(sql);
+    }
+
+    public static ArrayList<HashMap<String, Object>> mapResultSet(ResultSet rs) throws SQLException {
+        ResultSetMetaData md = rs.getMetaData();
+        ArrayList<HashMap<String, Object>> rows = new ArrayList<>();
+        while (rs.next()) {
+            HashMap<String, Object> row = new HashMap<>(md.getColumnCount());
+            for (int i = 1; i <= md.getColumnCount(); ++i) {
+                row.put(md.getColumnName(i), rs.getObject(i));
+            }
+            rows.add(row);
+        }
+        return rows;
     }
 
     /**
@@ -117,6 +135,6 @@ public final class DB {
      * @pre isOpen == true
      */
     public boolean transactionActive() {
-	return false;
+        return false;
     }
 }

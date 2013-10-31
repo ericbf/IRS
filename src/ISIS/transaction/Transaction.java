@@ -31,6 +31,16 @@ import java.util.ArrayList;
  * @pkey > 0
  */
 public class Transaction extends Record {
+
+    @Override
+    public void fetch() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void save() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     /* Fields omitted */
 
     /**

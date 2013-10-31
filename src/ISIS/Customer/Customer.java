@@ -5,6 +5,7 @@ import ISIS.misc.Address;
 import ISIS.misc.Dates;
 import ISIS.misc.Phone;
 import ISIS.misc.Picture;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -189,4 +190,14 @@ public class Customer extends Record {
 	public Dates getDates() {
 	    return null;
 	}
+
+    @Override
+    public void fetch() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void save() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
