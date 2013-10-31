@@ -7,9 +7,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
- * A good available and currently managed by the client. An item record consists
- * of a name, a SKU, a price, an on hand quantity, a unit of measure, a quantity
- * at which it should be reordered, a manufacturer cost, and pictures.
+ * A good available and currently managed by the client. An item record consists of a name, a SKU, a price, an on hand
+ * quantity, a unit of measure, a quantity at which it should be reordered, a manufacturer cost, and pictures.
  *
  * Invariants:
  *
@@ -27,133 +26,143 @@ import java.util.ArrayList;
  * @pkey > 0
  */
 public class Item extends Record {
-	/* Fields omitted */
+    /* Fields omitted */
 
-	/**
-	 * Public constructor. An item starts with all fields populated.
-	 */
-	public Item(String name, String SKU, String description, BigDecimal price, BigDecimal onHandQty, BigDecimal ReorderQty, String UOM, BigDecimal cost) {
-	}
+    /**
+     * Public constructor. An item starts with all fields populated.
+     */
+    public Item(String name, String SKU, String description, BigDecimal price, BigDecimal onHandQty, BigDecimal ReorderQty, String UOM, BigDecimal cost) {
+    }
 
-	/**
-	 * Public constructor. Takes an Item database key, and has the option to
-	 * populate the fields from the database.
-	 */
-	public Item(int pkey, boolean populate) {
-	}
+    /**
+     * Public constructor. Takes an Item database key, and has the option to populate the fields from the database.
+     */
+    public Item(int pkey, boolean populate) {
+    }
 
-	/**
-	 * Returns a list of previous versions of the item, or an empty list if
-	 * there are none.
-	 */
-	public ArrayList<Item> getPreviousVersions() {
-	}
+    /**
+     * Returns a list of previous versions of the item, or an empty list if there are none.
+     */
+    public ArrayList<Item> getPreviousVersions() {
+	return null;
+    }
 
-	/**
-	 * Changes the item's name.
-	 */
-	public void setName(String name) {
-	}
+    /**
+     * Changes the item's name.
+     */
+    public void setName(String name) {
+    }
 
-	/**
-	 * Gets the item's name.
-	 */
-	public String getName() {
-	}
+    /**
+     * Gets the item's name.
+     */
+    public String getName() {
+	return null;
+    }
 
-	/**
-	 * Gets the item's SKU.
-	 */
-	public int getSKU() {
-	}
+    /**
+     * Gets the item's SKU.
+     */
+    public int getSKU() {
+	return 0;
+    }
 
-	/**
-	 * Changes the item's description.
-	 */
-	public void setDescription(String description) {
-	}
+    /**
+     * Changes the item's description.
+     */
+    public void setDescription(String description) {
+    }
 
-	/**
-	 * Gets the item's description.
-	 */
-	public String getDescription() {
-	}
+    /**
+     * Gets the item's description.
+     */
+    public String getDescription() {
+	return null;
+    }
 
-	/**
-	 * Sets the item's price.
-	 */
-	public void setPrice(BigDecimal price) {
-	}
+    /**
+     * Sets the item's price.
+     */
+    public void setPrice(BigDecimal price) {
+    }
 
-	/**
-	 * Gets the item's price.
-	 */
-	public BigDecimal getPrice() {
-	}
+    /**
+     * Gets the item's price.
+     */
+    public BigDecimal getPrice() {
+	return null;
+    }
 
-	/**
-	 * Sets the on hand quantity of the item.
-	 */
-	public void setOnHandQty(BigDecimal quantity) {
-	}
+    /**
+     * Sets the on hand quantity of the item.
+     */
+    public void setOnHandQty(BigDecimal quantity) {
+    }
 
-	/**
-	 * Gets the on hand quantity of the item.
-	 */
-	public BigDecimal getOnHandQty() {
-	}
+    /**
+     * Gets the on hand quantity of the item.
+     */
+    public BigDecimal getOnHandQty() {
+	return null;
+    }
 
-	/**
-	 * Sets the on hand quantity at which the item should be reordered.
-	 */
-	public void setReorderQty(BigDecimal quantity) {
-	}
+    /**
+     * Sets the on hand quantity at which the item should be reordered.
+     */
+    public void setReorderQty(BigDecimal quantity) {
+    }
 
-	/**
-	 * Gets the reorder quantity of the item.
-	 */
-	public BigDecimal getReorderQuantity() {
-	}
+    /**
+     * Gets the reorder quantity of the item.
+     */
+    public BigDecimal getReorderQuantity() {
+	return null;
+    }
 
-	/**
-	 * Sets the unit of measure of the item (e.g. pounds).
-	 */
-	public String getUOM() {
-	}
+    /**
+     * Sets the unit of measure of the item (e.g. pounds).
+     */
+    public String getUOM() {
+	return null;
+    }
 
-	/**
-	 * Sets the cost of the item.
-	 */
-	public void setCost(BigDecimal cost) {
-	}
+    /**
+     * Sets the cost of the item.
+     */
+    public void setCost(BigDecimal cost) {
+    }
 
-	/**
-	 * Gets the cost of the item.
-	 */
-	public BigDecimal getCost() {
-	}
+    /**
+     * Gets the cost of the item.
+     */
+    public BigDecimal getCost() {
+	return null;
+    }
 
-	/**
-	 * Checks if this record is the latest version of the associated item.
-	 */
-	public boolean isLatestVersion() {
-	}
+    /**
+     * Checks if this record is the latest version of the associated item.
+     */
+    public boolean isLatestVersion() {
+	return false;
+    }
 
-	/**
-	 * Adds a picture to the item.
-	 */
-	public void addPicture(Picture picture) {
-	}
+    /**
+     * Adds a picture to the item.
+     */
+    public void addPicture(Picture picture) {
+    }
 
-	/**
-	 * Gets the pictures associated with the item.
-	 */
-	public ArrayList<Picture> getPictures() {
-	}
+    /**
+     * Gets the pictures associated with the item.
+     */
+    public ArrayList<Picture> getPictures() {
+	return null;
+    }
 
-	/**
-	 * Gets the dates associated with the item.
-	 */
-	public Dates getDates() {
-	}
+    /**
+     * Gets the dates associated with the item.
+     */
+    public Dates getDates() {
+	return null;
+    }
 }

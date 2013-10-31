@@ -5,6 +5,21 @@ package ISIS.gui;
  */
 public class MainView extends View {
 
-	public MainView() {
-	}
+    public MainView() {
+    }
+
+    @Override
+    public boolean needsSave() {
+	return false;
+    }
+
+    @Override
+    public void save() {
+	throw new UnsupportedOperationException("Not supported.");
+    }
+
+    @Override
+    public void cancel() {
+	throw new UnsupportedOperationException("Not supported.");
+    }
 }

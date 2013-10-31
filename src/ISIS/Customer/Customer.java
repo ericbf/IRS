@@ -5,6 +5,7 @@ import ISIS.misc.Address;
 import ISIS.misc.Dates;
 import ISIS.misc.Phone;
 import ISIS.misc.Picture;
+import java.util.ArrayList;
 
 /**
  * A Customer is the entity that intends to purchase products from the client. A
@@ -53,18 +54,21 @@ public class Customer extends Record {
 	 * Gets the active status of the Customer.
 	 */
 	public boolean isActive() {
+	    return false;
 	}
 
 	/**
 	 * Gets the Customer's first name.
 	 */
 	public String getFirstName() {
+	    return null;
 	}
 
 	/**
 	 * Gets the Customer's last name.
 	 */
 	public String getLastName() {
+	    return null;
 	}
 
 	/**
@@ -77,6 +81,7 @@ public class Customer extends Record {
 	 * Gets the Customer's note field.
 	 */
 	public String getNote() {
+	    return null;
 	}
 
 	/**
@@ -89,6 +94,7 @@ public class Customer extends Record {
 	 * Gets the Customer's password.
 	 */
 	public String getPassword() {
+	    return null;
 	}
 
 	/**
@@ -101,6 +107,7 @@ public class Customer extends Record {
 	 * Gets the Customer's email address.
 	 */
 	public String getEmail() {
+	    return null;
 	}
 
 	/**
@@ -122,6 +129,7 @@ public class Customer extends Record {
 	 * Gets all addresses associated with the customer record.
 	 */
 	public ArrayList<Address> getAddresses() {
+	    return null;
 	}
 
 	/**
@@ -147,6 +155,7 @@ public class Customer extends Record {
 	 * the customer record.
 	 */
 	public ArrayList<Phone> getPhoneNums() {
+	    return null;
 	}
 
 	/**
@@ -171,11 +180,13 @@ public class Customer extends Record {
 	 * Gets the pictures associated with the customer record.
 	 */
 	public ArrayList<Picture> getPictures(Picture picture) {
+	    return null;
 	}
 
 	/**
 	 * Gets the dates associated with the Customer record.
 	 */
 	public Dates getDates() {
+	    return null;
 	}
 }

@@ -1,63 +1,85 @@
 package ISIS.session;
 
 import ISIS.database.DB;
+import ISIS.gui.ErrorLogger;
 import ISIS.user.User;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * Various information and methods that is associated with a session. This
- * includes a logged in user, settings, and a connection to the database.
+ * Various information and methods that is associated with a session. This includes a logged in user, settings, and a
+ * connection to the database.
  */
 public class Session {
-	/* Field omitted. */
 
-	private Session(User user) {
-	}
+    private static Session session = null;
+    private static DB db = null;
+    private User user;
 
-	public User getUser() {
-	}
+    private Session(User user) {
+	this.user = user;
+    }
 
-	/**
-	 * Sets a setting for the Session's user, under the given key.
-	 */
-	public void setSetting(String key, Object value) {
-	}
+    public User getUser() {
+	return user;
+    }
 
-	/**
-	 * Sets a default setting that is used for Users that have not set the
-	 * setting.
-	 */
-	public static void setDefaultSetting(String key, Object value) {
-	}
+    /**
+     * Sets a setting for the Session's user, under the given key.
+     */
+    public void setSetting(String key, Object value) {
+    }
 
-	/**
-	 * Retrieves a setting for this user. If there is no instance of the given
-	 * setting for this Session's user, it checks if there is a default setting.
-	 * If there is no default setting, it returns null.
-	 */
-	public Object getSetting(String key) {
-	}
+    /**
+     * Sets a default setting that is used for Users that have not set the setting.
+     */
+    public static void setDefaultSetting(String key, Object value) {
+    }
 
-	/**
-	 * Starts a new session, using the given user.
-	 */
-	public static Session startNewSession(User user) {
-	}
+    /**
+     * Retrieves a setting for this user. If there is no instance of the given setting for this Session's user, it
+     * checks if there is a default setting. If there is no default setting, it returns null.
+     */
+    public Object getSetting(String key) {
+	return null;
+    }
 
-	/**
-	 * Ends the current session.
-	 */
-	public static void endCurrentSession() {
+    /**
+     * Starts a new session, using the given user.
+     */
+    public static void startNewSession(String username, String password) {
+	if (session != null) {
+	    endCurrentSession();
 	}
+	session = null;
+    }
 
-	/**
-	 * Gets the current session.
-	 */
-	public static Session getCurrentSession() {
-	}
+    /**
+     * Ends the current session.
+     */
+    public static void endCurrentSession() {
+	session = null;
+    }
 
-	/**
-	 * Gets a reference to the database.
-	 */
-	public static DB getDB() {
+    /**
+     * Gets the current session.
+     */
+    public static Session getCurrentSession() {
+	return session;
+    }
+
+    /**
+     * Gets a reference to the database.
+     */
+    public static DB getDB() {
+	if (db == null) {
+	    return new DB("test.db");
+	} else {
+	    return db;
 	}
+    }
 }

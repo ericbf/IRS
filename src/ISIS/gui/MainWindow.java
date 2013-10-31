@@ -1,5 +1,6 @@
 package ISIS.gui;
 
+import ISIS.session.Session;
 import javax.swing.JFrame;
 
 /**
@@ -7,6 +8,11 @@ import javax.swing.JFrame;
  */
 public class MainWindow extends JFrame {
 
-	public MainWindow() {
-	}
+    public static void main(String args[]) {
+	System.out.println("Hello world");
+	Session.getDB();
+    }
+
+    public MainWindow() {
+    }
 }
