@@ -87,8 +87,8 @@ public final class DB {
      *
      * @pre isOpen == true
      */
-    public PreparedStatement prepareStatement(String sql) {
-	return null;
+    public PreparedStatement prepareStatement(String sql) throws SQLException {
+	return connection.prepareStatement(sql);
     }
 
     /**
