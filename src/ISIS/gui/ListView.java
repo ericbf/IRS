@@ -5,27 +5,31 @@ package ISIS.gui;
  */
 public abstract class ListView extends View {
 
-	/**
-	 * This type of view needs not be saved.
-	 */
-	@Override
-	public boolean needsSave() {
-		return false;
-	}
+    public ListView(SplitPane splitPane) {
+	super(splitPane);
+    }
 
-	/**
-	 * Save is not supported.
-	 */
-	@Override
-	public void save() {
-		throw new UnsupportedOperationException("Not supported.");
-	}
+    /**
+     * This type of view needs not be saved.
+     */
+    @Override
+    public boolean needsSave() {
+	return false;
+    }
 
-	/**
-	 * Cancel is not supported.
-	 */
-	@Override
-	public void cancel() {
-		throw new UnsupportedOperationException("Not supported.");
-	}
+    /**
+     * Save is not supported.
+     */
+    @Override
+    public void save() {
+	throw new UnsupportedOperationException("Not supported.");
+    }
+
+    /**
+     * Cancel is not supported.
+     */
+    @Override
+    public void cancel() {
+	throw new UnsupportedOperationException("Not supported.");
+    }
 }

@@ -29,9 +29,9 @@ public class MainWindow extends JFrame {
     public MainWindow() {
 	super("IRS");
 	inventoryPane = new SplitPane();
-	inventoryPane.push(new ListItems(), SplitPane.LayoutType.HORIZONTAL);
+	inventoryPane.push(new ListItems(inventoryPane), SplitPane.LayoutType.HORIZONTAL);
 	customerPane = new SplitPane();
-	customerPane.push(new ListCustomers(), SplitPane.LayoutType.HORIZONTAL);
+	customerPane.push(new ListCustomers(inventoryPane), SplitPane.LayoutType.HORIZONTAL);
 //	reportPane = new SplitPane();
 //	reportPane.push(new ListItems(), SplitPane.LayoutType.HORIZONTAL);
 	JTabbedPane tabs = new JTabbedPane(JTabbedPane.LEFT);
