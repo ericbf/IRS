@@ -54,7 +54,7 @@ public final class User extends Record {
         super("user");
         this.initializeFields(getFields());
 
-        this.setFieldValue("pkey", pkey);
+        this.setPkey(pkey);
         if (populate) {
             this.fetch();
         }

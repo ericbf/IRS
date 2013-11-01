@@ -38,6 +38,13 @@ public abstract class Record {
     }
 
     /**
+     * Sets pkey for a record being fetched. (without setting the field as modified)
+     */
+    protected final void setPkey(int pkey) {
+        this.getField("pkey").initField(pkey);
+    }
+
+    /**
      * Sets a field's value.
      */
     protected final void setFieldValue(String key, Object value) {
@@ -78,9 +85,11 @@ public abstract class Record {
         PreparedStatement stmt = Session.getDB().prepareStatement("SELECT * FROM " + this.tableName + " WHERE pkey=?");
         stmt.setInt(1, this.getPkey());
         HashMap<String, Field> fields = Record.mapResultSet(stmt.executeQuery());
+
+        //check which fields were set to be unmodifiable, and set then in the new fields map.
         for (Map.Entry<String, Field> entry : fields.entrySet()) {
             if (this.fields.get(entry.getKey()).isUnmodifiable()) {
-                entry.getValue().setUnmodifiable();
+                entry.getValue().setUnmodifiable(); //was unmodifiable
             }
         }
         this.fields = fields;
@@ -91,7 +100,7 @@ public abstract class Record {
      */
     public final void save() throws SQLException {
         /**
-         * Get a list of columns that have been changed.
+         * Get a list of columns that have been changed. Should be all columns if it's a new record.
          */
         ArrayList<String> columns = new ArrayList<>(this.fields.size());
         for (Map.Entry<String, Field> entry : this.fields.entrySet()) {
@@ -99,7 +108,9 @@ public abstract class Record {
                 columns.add(entry.getKey());
             }
         }
-        if (this.getField("pkey").getWasInitialized() == false) {
+
+        if (this.getField("pkey").getWasInitialized() == false) {  // New record
+            //generate sql--something like INSERT INTO tab (col1, col2) VALUES (?, ?)
             String sql = "INSERT INTO " + this.tableName + "(" + columns.get(0);
             String params = "?";
             for (int i = 1; i < columns.size(); ++i) {
@@ -109,15 +120,19 @@ public abstract class Record {
             sql += ") VALUES (" + params + ")";
 
             PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+
+            //bind columns
             for (int i = 0; i < columns.size(); ++i) {
-                stmt.setObject(i+1, this.getFieldValue(columns.get(i)));
+                stmt.setObject(i + 1, this.getFieldValue(columns.get(i)));
             }
-            stmt.executeUpdate();
-        } else {
+
+            stmt.executeUpdate(); // do it
+        } else {  // Existing record
             //Nothing was changed, so no need to save.
             if (columns.isEmpty()) {
                 return;
             }
+            //generate sql--something like UPDATE tab SET col1=?, col2=? WHERE pkey=?
             String sql = "UPDATE " + this.tableName + " SET " + columns.get(0) + "=?";
             for (int i = 1; i < columns.size(); ++i) {
                 sql += ", " + columns.get(i) + "=?";
@@ -125,12 +140,15 @@ public abstract class Record {
             sql += " WHERE pkey=?";
 
             PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+
+            //bind columns
             for (int i = 0; i < columns.size(); ++i) {
-                stmt.setObject(i+1, this.getFieldValue(columns.get(i)));
+                stmt.setObject(i + 1, this.getFieldValue(columns.get(i)));
             }
             stmt.setInt(columns.size() + 1, this.getPkey());
+
             stmt.executeUpdate();
-            if(stmt.getUpdateCount() != 1) {
+            if (stmt.getUpdateCount() != 1) {
                 throw new RecordNotFoundException(); //no rows were changed, that must mean that the record wasn't found
             }
 

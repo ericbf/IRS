@@ -4,34 +4,15 @@
  */
 package ISIS.database;
 
-/**
- *
- * @author michaelm
- */
 public final class Field {
 
-    private Object field = null;
-    private Boolean fetched = false;
-    private Boolean changed = false;
-    private Boolean modifiable;
-    private Boolean initialized = false;
+    private Object field = null; // the value
+    private Boolean changed = false; // whether it has been modified or not
+    private Boolean modifiable; // whether it can be modified
+    private Boolean initialized = false; // whether anything has been put in it (to tell null apart from uninitialzied)
 
     public Field(boolean modifiable) {
         this.modifiable = modifiable;
-    }
-
-    /**
-     * To make a field unmodifiable.
-     */
-    public void setUnmodifiable() {
-        this.modifiable = false;
-    }
-
-    /**
-     * Check if a field can be modified.
-     */
-    public Boolean isUnmodifiable() {
-        return !modifiable;
     }
 
     /**
@@ -39,7 +20,6 @@ public final class Field {
      */
     public void initField(Object value) {
         initialized = true;
-        fetched = true;
         this.field = value;
     }
 
@@ -50,6 +30,7 @@ public final class Field {
         if (this.initialized && !this.modifiable) {
             throw new UnmodifiableFieldException();
         }
+        this.initialized = true;
         this.field = value;
         this.changed = true;
     }
@@ -58,8 +39,7 @@ public final class Field {
      * Gets the field.
      */
     public Object getValue() {
-        this.initialized = true;
-        if (!this.changed && !this.fetched) {
+        if (!this.initialized) {
             throw new UninitializedFieldException();
         }
         return field;
@@ -73,10 +53,17 @@ public final class Field {
     }
 
     /**
-     * Checks if this field was populated from the database (at some point).
+     * Makes a field unmodifiable.
      */
-    public Boolean getWasFetched() {
-        return this.fetched;
+    public void setUnmodifiable() {
+        this.modifiable = false;
+    }
+
+    /**
+     * Check if a field can be modified.
+     */
+    public Boolean isUnmodifiable() {
+        return !modifiable;
     }
 
     /**
