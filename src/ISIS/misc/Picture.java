@@ -14,49 +14,41 @@ public class Picture extends Record {
      * creation.
      */
     public Picture(String name, byte[] picture, String note, Dates dates) {
+        super("Penis");
     }
 
     /**
      * Public constructor. Takes a picture database key, and has the option to populate fields from the database.
      */
     public Picture(int pkey, boolean populate) {
+        super("Penis");
     }
 
     /**
      * Gets the name associated with the picture.
      */
     public String getName() {
-	return null;
+        return null;
     }
 
     /**
      * Gets the note associated with the picture.
      */
     public String getNote() {
-	return null;
+        return null;
     }
 
     /**
      * Gets the dates associated with the picture.
      */
     public Dates getDates() {
-	return null;
+        return null;
     }
 
     /**
      * Gets the picture associated with the picture record.
      */
     public byte[] getPicture() {
-	return null;
-    }
-
-    @Override
-    public void fetch() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void save() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 }

@@ -31,16 +31,6 @@ import java.util.ArrayList;
  * @pkey > 0
  */
 public class Transaction extends Record {
-
-    @Override
-    public void fetch() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void save() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     /* Fields omitted */
 
     /**
@@ -48,13 +38,14 @@ public class Transaction extends Record {
      */
     public static enum TransactionStatus {
 
-	ACTIVE, CLOSED, BILLED, UNDER_REVIEW, ABORTED
+        ACTIVE, CLOSED, BILLED, UNDER_REVIEW, ABORTED
     }
 
     /**
      * Public constructor. A Transaction starts with a user and a customer. These attributes cannot be changed.
      */
     public Transaction(User user, Customer customer) {
+        super("Penis");
     }
 
     /**
@@ -69,6 +60,7 @@ public class Transaction extends Record {
      * @post getItems().size() > 0
      */
     public Transaction(User user, Transaction originalSale) {
+        super("Penis");
     }
 
     /**
@@ -76,6 +68,7 @@ public class Transaction extends Record {
      * database.
      */
     public Transaction(int pkey, boolean populate) {
+        super("Penis");
     }
 
     /**
@@ -84,7 +77,7 @@ public class Transaction extends Record {
      * returned.
      */
     public ArrayList<Transaction> getRelatedTransactions() {
-	return null;
+        return null;
     }
 
     /**
@@ -117,7 +110,7 @@ public class Transaction extends Record {
      * Gets information associated with all involved items in this transaction.
      */
     public ArrayList<TransactionLineItem> getItems() {
-	return null;
+        return null;
     }
 
     /**
@@ -130,7 +123,7 @@ public class Transaction extends Record {
      * Gets the billing information associated with this transaction.
      */
     public Billing getBilling() {
-	return null;
+        return null;
     }
 
     /**
@@ -143,14 +136,14 @@ public class Transaction extends Record {
      * Gets the address associated with this transaction.
      */
     public Address getAddress() {
-	return null;
+        return null;
     }
 
     /**
      * Gets status associated with this transaction.
      */
     public TransactionStatus getStatus() {
-	return null;
+        return null;
     }
 
     /**
@@ -159,28 +152,28 @@ public class Transaction extends Record {
      * @pre getStatus() == status.Finalized
      */
     public boolean isModified() {
-	return false;
+        return false;
     }
 
     /**
      * Gets user (employee) associated with this transaction.
      */
     public User getUser() {
-	return null;
+        return null;
     }
 
     /**
      * Gets customer associated with this transaction.
      */
     public Customer getCustomer() {
-	return null;
+        return null;
     }
 
     /**
      * Gets the dates associated with this transaction.
      */
     public Dates getDates() {
-	return null;
+        return null;
     }
 
     /**

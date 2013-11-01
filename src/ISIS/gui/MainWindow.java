@@ -51,7 +51,7 @@ public class MainWindow extends JFrame {
             System.out.println("Got janet.");
             System.out.println("Active: " + janet.getActive());
             System.out.println("Password correct: " + janet.checkPassword("penismonger"));
-            System.out.println("Password incorrect: " + janet.checkPassword("penismonger"));
+            System.out.println("Password incorrect: " + !janet.checkPassword("penismongerz"));
             System.out.println("ID: " + janet.getEmployeeID());
             System.out.println("Fname: " + janet.getFirstName() + "Lname: " + janet.getLastName());
             System.out.println("Note: " + janet.getNote());
@@ -59,7 +59,11 @@ public class MainWindow extends JFrame {
             janet.setNote("This is a new note.");
             System.out.println("Set note to: " + janet.getNote());
             janet.save();
-            testUser = new User(1, true);
+            try {
+                testUser = new User(1, true); // if you change the pkey, it won't be able to find janet
+            } catch (RecordNotFoundException e) {
+                ErrorLogger.error("Could not find janet.", true, true);
+            }
             System.out.println("Note: " + testUser.getNote());
            
         } catch (SQLException | RecordNotFoundException ex) {

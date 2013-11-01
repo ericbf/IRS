@@ -96,13 +96,15 @@ public final class DB {
         return connection.prepareStatement(sql);
     }
 
-    public static ArrayList<HashMap<String, Object>> mapResultSet(ResultSet rs) throws SQLException {
+    public static ArrayList<HashMap<String, Field>> mapResultSet(ResultSet rs) throws SQLException {
         ResultSetMetaData md = rs.getMetaData();
-        ArrayList<HashMap<String, Object>> rows = new ArrayList<>();
+        ArrayList<HashMap<String, Field>> rows = new ArrayList<>();
         while (rs.next()) {
-            HashMap<String, Object> row = new HashMap<>(md.getColumnCount());
+            HashMap<String, Field> row = new HashMap<>(md.getColumnCount());
             for (int i = 1; i <= md.getColumnCount(); ++i) {
-                row.put(md.getColumnName(i), rs.getObject(i));
+                Field field = new Field(true);
+                field.initField(rs.getObject(i));
+                row.put(md.getColumnName(i), field);
             }
             rows.add(row);
         }

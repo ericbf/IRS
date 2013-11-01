@@ -8,8 +8,8 @@ package ISIS.database;
  *
  * @author michaelm
  */
-public class RecordEmptyFieldException extends RuntimeException {
-    public RecordEmptyFieldException() {
+public class UninitializedFieldException extends RuntimeException {
+    public UninitializedFieldException() {
         super();
     }
 }

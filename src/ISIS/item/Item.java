@@ -32,19 +32,21 @@ public class Item extends Record {
      * Public constructor. An item starts with all fields populated.
      */
     public Item(String name, String SKU, String description, BigDecimal price, BigDecimal onHandQty, BigDecimal ReorderQty, String UOM, BigDecimal cost) {
+        super("Penis");
     }
 
     /**
      * Public constructor. Takes an Item database key, and has the option to populate the fields from the database.
      */
     public Item(int pkey, boolean populate) {
+        super("Penis");
     }
 
     /**
      * Returns a list of previous versions of the item, or an empty list if there are none.
      */
     public ArrayList<Item> getPreviousVersions() {
-	return null;
+        return null;
     }
 
     /**
@@ -57,14 +59,14 @@ public class Item extends Record {
      * Gets the item's name.
      */
     public String getName() {
-	return null;
+        return null;
     }
 
     /**
      * Gets the item's SKU.
      */
     public int getSKU() {
-	return 0;
+        return 0;
     }
 
     /**
@@ -77,7 +79,7 @@ public class Item extends Record {
      * Gets the item's description.
      */
     public String getDescription() {
-	return null;
+        return null;
     }
 
     /**
@@ -90,7 +92,7 @@ public class Item extends Record {
      * Gets the item's price.
      */
     public BigDecimal getPrice() {
-	return null;
+        return null;
     }
 
     /**
@@ -103,7 +105,7 @@ public class Item extends Record {
      * Gets the on hand quantity of the item.
      */
     public BigDecimal getOnHandQty() {
-	return null;
+        return null;
     }
 
     /**
@@ -116,14 +118,14 @@ public class Item extends Record {
      * Gets the reorder quantity of the item.
      */
     public BigDecimal getReorderQuantity() {
-	return null;
+        return null;
     }
 
     /**
      * Sets the unit of measure of the item (e.g. pounds).
      */
     public String getUOM() {
-	return null;
+        return null;
     }
 
     /**
@@ -136,14 +138,14 @@ public class Item extends Record {
      * Gets the cost of the item.
      */
     public BigDecimal getCost() {
-	return null;
+        return null;
     }
 
     /**
      * Checks if this record is the latest version of the associated item.
      */
     public boolean isLatestVersion() {
-	return false;
+        return false;
     }
 
     /**
@@ -156,23 +158,13 @@ public class Item extends Record {
      * Gets the pictures associated with the item.
      */
     public ArrayList<Picture> getPictures() {
-	return null;
+        return null;
     }
 
     /**
      * Gets the dates associated with the item.
      */
     public Dates getDates() {
-	return null;
-    }
-
-    @Override
-    public void fetch() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void save() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 }

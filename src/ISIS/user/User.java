@@ -1,21 +1,18 @@
 package ISIS.user;
 
+import ISIS.database.Field;
 import ISIS.database.Record;
-import ISIS.database.RecordEmptyFieldException;
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.ErrorLogger;
 import ISIS.misc.Dates;
 import ISIS.misc.Picture;
-import ISIS.session.Session;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The class representing the person who is employed by the client and is using IRS. It consists of information about
@@ -32,75 +29,75 @@ import java.util.logging.Logger;
  */
 public final class User extends Record {
 
-    private Integer pkey;
-    private String username = null;
-    private Boolean active = null;
-    private String password = null;
-    private String fname = null;
-    private String lname = null;
-    private String note = null;
-
     /**
      * Public constructor. A User starts with all fields populated.
      *
      * @post this.password == hash_function(password)
      */
     public User(String username, boolean active, String password, String fname, String lname, String note) {
-        this.username = username;
-        this.active = active;
+        super("user");
+
+        HashMap<String, Field> fields = getFields();
+        this.initializeFields(fields);
+        this.setFieldValue("username", username);
+        this.setFieldValue("active", active);
+        this.setFieldValue("fname", fname);
+        this.setFieldValue("lname", lname);
+        this.setFieldValue("note", note);
         this.setPassword(password);
-        this.fname = fname;
-        this.lname = lname;
-        this.note = note;
     }
 
     /**
      * Public constructor. Takes a User database key, and has the option to populate the fields from the database.
      */
     public User(int pkey, boolean populate) throws SQLException, RecordNotFoundException {
-        this.pkey = pkey;
+        super("user");
+        this.initializeFields(getFields());
+
+        this.setFieldValue("pkey", pkey);
         if (populate) {
             this.fetch();
         }
+    }
+
+    private HashMap<String, Field> getFields() {
+        HashMap<String, Field> fields = new HashMap<>(7);
+        fields.put("pkey", new Field(false));
+        fields.put("active", new Field(true));
+        fields.put("username", new Field(false));
+        fields.put("password", new Field(true));
+        fields.put("fname", new Field(false));
+        fields.put("lname", new Field(false));
+        fields.put("note", new Field(true));
+        return fields;
     }
 
     /**
      * Get the employee's ID.
      */
     public int getEmployeeID() {
-        if (this.pkey == null) {
-            this.pkey = (Integer) this.getField("pkey");
-        }
-        return this.pkey;
+        return (Integer) this.getFieldValue("pkey");
     }
 
     /**
      * Sets the User's active status.
      */
     public void setActive(boolean active) {
-        this.active = true;
+        this.setFieldValue("active", active);
     }
 
     /**
      * Gets the User's active status.
      */
     public boolean getActive() {
-        if (this.active == null) {
-            if (this.getField("active") != null) { // if it's null, leave it alone (shouldn't be, though).
-                this.active = ((int) this.getField("active") == 1) ? true : false;
-            }
-        }
-        return this.active;
+        return ((int) this.getFieldValue("active") == 1) ? true : false;
     }
 
     /**
      * Gets the User's username.
      */
     public String getUsername() {
-        if (this.username == null) {
-            this.username = (String) this.getField("username");
-        }
-        return this.username;
+        return (String) this.getFieldValue("username");
     }
 
     /**
@@ -158,65 +155,50 @@ public final class User extends Record {
         byte[] pass = password.getBytes();
 
         //hash salt + password
-        this.password = hashPassword(pass, salt);
+        this.setFieldValue("password", hashPassword(pass, salt));
     }
 
     /**
      * Gets the password for the purposes of updating the record.
      */
     public String getPassword() {
-        if (this.password == null) {
-            this.password = (String) this.getField("password");
-        }
-        return this.password;
+        return (String) this.getFieldValue("password");
     }
 
     /**
      * Checks the provided password against the stored hash.
      */
     public boolean checkPassword(String password) {
-        if (this.password == null) {
-            this.password = (String) this.getField("password");
-        }
         //get salt from DB, hash it with the password given
-        return hashPassword(password.getBytes(), hexToBytes(this.password.substring(0, 4))).equals(this.password);
+        return hashPassword(password.getBytes(), hexToBytes(((String) this.getFieldValue("password")).substring(0, 4))).equals(((String) this.getFieldValue("password")));
     }
 
     /**
      * Gets the User's first name.
      */
     public String getFirstName() {
-        if (this.fname == null) {
-            this.fname = (String) this.getField("fname");
-        }
-        return this.fname;
+        return (String) this.getFieldValue("fname");
     }
 
     /**
      * Gets the User's last name.
      */
     public String getLastName() {
-        if (this.lname == null) {
-            this.lname = (String) this.getField("lname");
-        }
-        return this.lname;
+        return (String) this.getFieldValue("lname");
     }
 
     /**
      * Set the User's note.
      */
     public void setNote(String note) {
-        this.note = note;
+        this.setFieldValue("note", note);
     }
 
     /**
      * Get the User's note.
      */
     public String getNote() {
-        if (this.note == null) {
-            this.note = (String) this.getField("note");
-        }
-        return this.note;
+        return (String) this.getFieldValue("note");
     }
 
     /**
@@ -249,35 +231,5 @@ public final class User extends Record {
      */
     public Dates getDates() {
         return null;
-    }
-
-    @Override
-    public void fetch() throws SQLException, RecordNotFoundException {
-        PreparedStatement stmt = Session.getDB().prepareStatement("SELECT * FROM USER WHERE pkey=?");
-        stmt.setInt(1, this.pkey);
-        fields = Record.mapResultSet(stmt.executeQuery());
-    }
-
-    @Override
-    public void save() throws SQLException {
-        if (this.pkey == null) { // This record doesn't yet exist; create it.
-            PreparedStatement stmt = Session.getDB().prepareStatement("INSERT INTO USER (username, active, password, fname, lname, note) VALUES (?, ?, ?, ?, ?, ?)");
-            int idx = 0;
-            stmt.setString(++idx, username);
-            stmt.setBoolean(++idx, active);
-            stmt.setString(++idx, password);
-            stmt.setString(++idx, fname);
-            stmt.setString(++idx, lname);
-            stmt.setString(++idx, note);
-            stmt.executeUpdate();
-        } else { // Record needs update.
-            PreparedStatement stmt = Session.getDB().prepareStatement("UPDATE user SET active=?, password=?, note=? WHERE pkey=?");
-            int idx = 0;
-            stmt.setBoolean(++idx, getActive());
-            stmt.setString(++idx, getPassword());
-            stmt.setString(++idx, getNote());
-            stmt.setInt(++idx, getPkey());
-            stmt.executeUpdate();
-        }
     }
 }

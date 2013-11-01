@@ -8,9 +8,9 @@ package ISIS.database;
  *
  * @author michaelm
  */
-public class RecordNotFoundException extends RuntimeException {
+public class UnmodifiableFieldException extends RuntimeException {
 
-    public RecordNotFoundException() {
+    public UnmodifiableFieldException() {
         super();
     }
 }
