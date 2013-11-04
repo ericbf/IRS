@@ -1,14 +1,14 @@
 [Tt]humbs.db
 *.DS_Store
 
-nbproject/private/
+build.xml
+nbproject
 build/
 nbbuild/
 dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
-nbproject/private/private.properties
 
 .project
 

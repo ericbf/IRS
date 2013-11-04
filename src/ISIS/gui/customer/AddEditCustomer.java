@@ -6,13 +6,12 @@ import ISIS.gui.View;
  * View for adding and editing customers.
  */
 public class AddEditCustomer extends View {
-
+	
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
 	 */
-	public AddEditCustomer() {
-	}
-
+	public AddEditCustomer() {}
+	
 	/**
 	 * This view needs to be saved.
 	 */
@@ -20,18 +19,16 @@ public class AddEditCustomer extends View {
 	public boolean needsSave() {
 		return true;
 	}
-
+	
 	/**
 	 * Saves the customer.
 	 */
 	@Override
-	public void save() {
-	}
-
+	public void save() {}
+	
 	/**
 	 * Discards any modifications.
 	 */
 	@Override
-	public void cancel() {
-	}
+	public void cancel() {}
 }

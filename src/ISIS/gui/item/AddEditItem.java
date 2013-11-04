@@ -6,13 +6,12 @@ import ISIS.gui.View;
  * View for adding and editing items.
  */
 public class AddEditItem extends View {
-
+	
 	/**
 	 * Public constructor: returns new instance of add/edit item view.
 	 */
-	public AddEditItem() {
-	}
-
+	public AddEditItem() {}
+	
 	/**
 	 * This view needs to be saved.
 	 */
@@ -20,18 +19,16 @@ public class AddEditItem extends View {
 	public boolean needsSave() {
 		return true;
 	}
-
+	
 	/**
 	 * Saves the item.
 	 */
 	@Override
-	public void save() {
-	}
-
+	public void save() {}
+	
 	/**
 	 * Discards any modifications.
 	 */
 	@Override
-	public void cancel() {
-	}
+	public void cancel() {}
 }

@@ -3,17 +3,15 @@ package ISIS.gui.report;
 import ISIS.gui.View;
 
 /**
- *
  * Abstract class for the report GUIs.
  */
 public abstract class ReportView extends View {
-
+	
 	/**
 	 * Public constructor.
 	 */
-	public ReportView() {
-	}
-
+	public ReportView() {}
+	
 	/**
 	 * Reports are not saved, but regenerated as necessary.
 	 */
@@ -21,7 +19,7 @@ public abstract class ReportView extends View {
 	public boolean needsSave() {
 		return false;
 	}
-
+	
 	/**
 	 * Not supported.
 	 */
@@ -29,13 +27,13 @@ public abstract class ReportView extends View {
 	public void save() {
 		throw new UnsupportedOperationException("Not supported.");
 	}
-
+	
 	/**
 	 * Not supported.
 	 */
 	@Override
 	public void cancel() {
 		throw new UnsupportedOperationException("Not supported.");
-
+		
 	}
 }
