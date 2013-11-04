@@ -1,8 +1,7 @@
 [Tt]humbs.db
 *.DS_Store
 
-build.xml
-nbproject
+nbproject/
 build/
 nbbuild/
 dist/
@@ -19,3 +18,8 @@ nb-configuration.xml
 !sqlite-jdbc-3.7.15-M1.jar
 *.war
 *.ear
+
+build.xml
+nbproject/build-impl.xml
+nbproject/private/private.xml
+nbproject/project.xml
