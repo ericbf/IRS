@@ -39,131 +39,145 @@ public final class User extends Record {
      * @post this.password == hash_function(password)
      */
     public User(String username, boolean active, String password, String fname, String lname, String note) {
-        super("user", true);
-        this.initializeFields(getFields());
+	super("user", true);
+	this.initializeFields(getFields());
 
-        this.setFieldValue("username", username);
-        this.setFieldValue("active", active);
-        this.setFieldValue("fname", fname);
-        this.setFieldValue("lname", lname);
-        this.setFieldValue("note", note);
-        this.setPassword(password);
+	this.setFieldValue("username", username);
+	this.setFieldValue("active", active);
+	this.setFieldValue("fname", fname);
+	this.setFieldValue("lname", lname);
+	this.setFieldValue("note", note);
+	this.setPassword(password);
     }
 
     /**
      * Public constructor. Takes a User database key, and has the option to populate the fields from the database.
      */
     public User(Integer pkey, boolean populate) throws SQLException, RecordNotFoundException {
-        super("user", true);
-        this.initializeFields(getFields());
+	super("user", true);
+	this.initializeFields(getFields());
 
-        this.setPkey(pkey);
-        if (populate) {
-            this.fetch();
-        }
+	this.setPkey(pkey);
+	if (populate) {
+	    this.fetch();
+	}
     }
 
     /**
      * Tries to log a user in.
      */
     public User(String username, String password) throws SQLException, AuthenticationException {
-        super("user", true);
-        this.initializeFields(getFields());
+	super("user", true);
+	this.initializeFields(getFields());
 
-        PreparedStatement stmt = Session.getDB().prepareStatement("SELECT * FROM USER WHERE username=?");
-        stmt.setString(1, username);
+	PreparedStatement stmt = Session.getDB().prepareStatement("SELECT * FROM USER WHERE username=?");
+	stmt.setString(1, username);
 
-        ArrayList<HashMap<String, Field>> users = DB.mapResultSet(stmt.executeQuery());
-        if (users.size() != 1) {
-            throw new AuthenticationException("Username or password is incorrect."); //username wrong
-        }
-        this.initializeFields(users.get(0));
+	ArrayList<HashMap<String, Field>> users = DB.mapResultSet(stmt.executeQuery());
+	if (users.size() != 1) {
+	    throw new AuthenticationException("Username or password is incorrect.", AuthenticationException.exceptionType.USERNAME);
+	}
+	this.initializeFields(users.get(0));
 
-        if (!this.checkPassword(password)) {
-            throw new AuthenticationException("Username or password is incorrect."); //password wrong
-        }
+	if (!this.checkPassword(password)) {
+	    throw new AuthenticationException("Username or password is incorrect.", AuthenticationException.exceptionType.PASSWORD);
+	}
     }
 
     private HashMap<String, Field> getFields() {
-        HashMap<String, Field> fields = new HashMap<>(7);
-        fields.put("pkey", new Field(false));
-        fields.put("active", new Field(true));
-        fields.put("username", new Field(false));
-        fields.put("password", new Field(true));
-        fields.put("fname", new Field(false));
-        fields.put("lname", new Field(false));
-        fields.put("note", new Field(true));
-        return fields;
+	HashMap<String, Field> fields = new HashMap<>(7);
+	fields.put("pkey", new Field(false));
+	fields.put("active", new Field(true));
+	fields.put("username", new Field(false));
+	fields.put("password", new Field(true));
+	fields.put("fname", new Field(false));
+	fields.put("lname", new Field(false));
+	fields.put("note", new Field(true));
+	return fields;
+    }
+
+    /**
+     * Checks if a user exists.
+     */
+    public static boolean userExists(String username) throws SQLException {
+	try {
+	    new User(username, "asdf");
+	} catch (AuthenticationException e) {
+	    if (e.type == AuthenticationException.exceptionType.USERNAME) {
+		return false;
+	    }
+	}
+	return true;
     }
 
     /**
      * Get the employee's ID.
      */
     public int getEmployeeID() {
-        return (Integer) this.getFieldValue("pkey");
+	return (Integer) this.getFieldValue("pkey");
     }
 
     /**
      * Sets the User's active status.
      */
     public void setActive(boolean active) {
-        this.setFieldValue("active", active);
+	this.setFieldValue("active", active);
     }
 
     /**
      * Gets the User's active status.
      */
     public boolean getActive() {
-        return ((int) this.getFieldValue("active") == 1) ? true : false;
+	return ((int) this.getFieldValue("active") == 1) ? true : false;
     }
 
     /**
      * Gets the User's username.
      */
     public String getUsername() {
-        return (String) this.getFieldValue("username");
+	return (String) this.getFieldValue("username");
     }
 
     /**
      * Converts byte array to hex.
      */
     private static String bytesToHex(byte[] bytes) {
-        String result = "";
-        for (int i = 0; i < bytes.length; i++) {
-            result += Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1);
-        }
+	String result = "";
+	for (int i = 0; i < bytes.length; i++) {
+	    result += Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1);
+	}
 
-        return result;
+	return result;
     }
 
     private static byte[] hexToBytes(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i + 1), 16));
-        }
-        return data;
+	int len = s.length();
+	byte[] data = new byte[len / 2];
+	for (int i = 0; i < len; i += 2) {
+	    data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+		    + Character.digit(s.charAt(i + 1), 16));
+	}
+	return data;
     }
 
     /**
      * Gets sha1 of salt + password, returns salt + hash (for reversibility)
      */
     private String hashPassword(byte[] password, byte[] salt) {
-        //append password to salt
-        byte[] saltedpass = new byte[salt.length + password.length];
-        System.arraycopy(salt, 0, saltedpass, 0, salt.length);
-        System.arraycopy(password, 0, saltedpass, salt.length, password.length);
+	//append password to salt
+	byte[] saltedpass = new byte[salt.length + password.length];
+	System.arraycopy(salt, 0, saltedpass, 0, salt.length);
+	System.arraycopy(password, 0, saltedpass, salt.length, password.length);
 
-        // hash
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA-1");
-        } catch (NoSuchAlgorithmException ex) {
-            ErrorLogger.error("SHA-1 not implemented..", true, true);
-        }
-        byte[] hash = md.digest(saltedpass);
-        return bytesToHex(salt) + bytesToHex(hash);
+	// hash
+	MessageDigest md = null;
+	try {
+	    md = MessageDigest.getInstance("SHA-1");
+	} catch (NoSuchAlgorithmException ex) {
+	    ErrorLogger.error("SHA-1 not implemented..", true, true);
+	}
+	byte[] hash = md.digest(saltedpass);
+	return bytesToHex(salt) + bytesToHex(hash);
     }
 
     /**
@@ -172,60 +186,60 @@ public final class User extends Record {
      * @post this.password == hash_function(password)
      */
     public void setPassword(String password) {
-        //generate a salt
-        Random r = new SecureRandom();
-        byte[] salt = new byte[2];
-        r.nextBytes(salt);
-        byte[] pass = password.getBytes();
+	//generate a salt
+	Random r = new SecureRandom();
+	byte[] salt = new byte[2];
+	r.nextBytes(salt);
+	byte[] pass = password.getBytes();
 
-        //hash salt + password
-        this.setFieldValue("password", hashPassword(pass, salt));
+	//hash salt + password
+	this.setFieldValue("password", hashPassword(pass, salt));
     }
 
     /**
      * Gets the password for the purposes of updating the record.
      */
     public String getPassword() {
-        return (String) this.getFieldValue("password");
+	return (String) this.getFieldValue("password");
     }
 
     /**
      * Checks the provided password against the stored hash.
      */
     public boolean checkPassword(String password) {
-        //get salt from DB, hash it with the password given
-        if (((String) this.getFieldValue("password")).length() < 4) {
-            return false;
-        }
-        return hashPassword(password.getBytes(), hexToBytes(((String) this.getFieldValue("password")).substring(0, 4))).equals(((String) this.getFieldValue("password")));
+	//get salt from DB, hash it with the password given
+	if (((String) this.getFieldValue("password")).length() < 4) {
+	    return false;
+	}
+	return hashPassword(password.getBytes(), hexToBytes(((String) this.getFieldValue("password")).substring(0, 4))).equals(((String) this.getFieldValue("password")));
     }
 
     /**
      * Gets the User's first name.
      */
     public String getFirstName() {
-        return (String) this.getFieldValue("fname");
+	return (String) this.getFieldValue("fname");
     }
 
     /**
      * Gets the User's last name.
      */
     public String getLastName() {
-        return (String) this.getFieldValue("lname");
+	return (String) this.getFieldValue("lname");
     }
 
     /**
      * Set the User's note.
      */
     public void setNote(String note) {
-        this.setFieldValue("note", note);
+	this.setFieldValue("note", note);
     }
 
     /**
      * Get the User's note.
      */
     public String getNote() {
-        return (String) this.getFieldValue("note");
+	return (String) this.getFieldValue("note");
     }
 
     /**
@@ -250,6 +264,6 @@ public final class User extends Record {
      * Gets the pictures associated with the User record.
      */
     public ArrayList<Picture> getPictures(Picture picture) {
-        return null;
+	return null;
     }
 }

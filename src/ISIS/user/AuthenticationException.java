@@ -10,7 +10,14 @@ package ISIS.user;
  */
 public class AuthenticationException extends Exception {
 
-    public AuthenticationException(String message) {
-        super(message);
+    public enum exceptionType {
+
+	USERNAME, PASSWORD, ACTIVE, OTHER
+    }
+    public exceptionType type;
+
+    public AuthenticationException(String message, exceptionType type) {
+	super(message);
+	this.type = type;
     }
 }
