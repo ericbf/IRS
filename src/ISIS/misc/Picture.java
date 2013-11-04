@@ -14,14 +14,14 @@ public class Picture extends Record {
      * creation.
      */
     public Picture(String name, byte[] picture, String note, Dates dates) {
-        super("Penis");
+        super("Penis", true);
     }
 
     /**
      * Public constructor. Takes a picture database key, and has the option to populate fields from the database.
      */
     public Picture(int pkey, boolean populate) {
-        super("Penis");
+        super("Penis", true);
     }
 
     /**
@@ -35,13 +35,6 @@ public class Picture extends Record {
      * Gets the note associated with the picture.
      */
     public String getNote() {
-        return null;
-    }
-
-    /**
-     * Gets the dates associated with the picture.
-     */
-    public Dates getDates() {
         return null;
     }
 

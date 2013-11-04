@@ -1,11 +1,12 @@
 package ISIS.misc;
 
+import ISIS.database.Record;
 import java.util.Date;
 
 /**
  * General purpose class for representing billing information.
  */
-public class Billing {
+public class Billing extends Record{
     /* Fields omitted */
 
     public static enum BillingType {
@@ -17,18 +18,21 @@ public class Billing {
      * Public constructor for CREDIT billing.
      */
     public Billing(Address address, String cardNumber, Date expDate, String CSC) {
+        super("Penis", false);
     }
 
     /**
      * Public constructor for CASH billing.
      */
     public Billing(Address address) {
+        super("Penis", false);
     }
 
     /**
      * Public constructor for OTHER billing.
      */
     public Billing(Address address, String note) {
+        super("Penis", false);
     }
 
     /**

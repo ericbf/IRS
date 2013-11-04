@@ -2,6 +2,7 @@ package ISIS.session;
 
 import ISIS.database.DB;
 import ISIS.gui.ErrorLogger;
+import ISIS.user.AuthenticationException;
 import ISIS.user.User;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,11 +22,11 @@ public class Session {
     private User user;
 
     private Session(User user) {
-	this.user = user;
+        this.user = user;
     }
 
     public User getUser() {
-	return user;
+        return user;
     }
 
     /**
@@ -45,41 +46,55 @@ public class Session {
      * checks if there is a default setting. If there is no default setting, it returns null.
      */
     public Object getSetting(String key) {
-	return null;
+        return null;
     }
 
     /**
      * Starts a new session, using the given user.
      */
-    public static void startNewSession(String username, String password) {
-	if (session != null) {
-	    endCurrentSession();
-	}
-	session = null;
+    public static void startNewSession(String username, String password) throws SQLException, AuthenticationException {
+        if (session != null) {
+            endCurrentSession();
+        }
+
+        User user = new User(username, password);
+        if (!user.getActive()) {
+            throw new AuthenticationException("User is not active.");
+        }
+        session = new Session(user);
+    }
+
+    /**
+     * Only for initialization of program.
+     */
+    public static void baseSession() throws SQLException {
+        //login as base user
+        session = new Session(new User(1, false));
     }
 
     /**
      * Ends the current session.
      */
     public static void endCurrentSession() {
-	session = null;
+        session = null;
     }
 
     /**
      * Gets the current session.
      */
     public static Session getCurrentSession() {
-	return session;
+        return session;
     }
 
     /**
      * Gets a reference to the database.
      */
     public static DB getDB() {
-	if (db == null) {
-	    return new DB("test.db");
-	} else {
-	    return db;
-	}
+        if (db == null) {
+            Session.db = new DB("test.db");
+            return db;
+        } else {
+            return db;
+        }
     }
 }

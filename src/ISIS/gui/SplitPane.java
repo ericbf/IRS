@@ -20,7 +20,7 @@ public class SplitPane extends JSplitPane {
      *
      * @post views.size() > 0 == true
      */
-    protected void push(View view, LayoutType layout) {
+    protected final void push(View view, LayoutType layout) {
     }
 
     /**
@@ -28,7 +28,7 @@ public class SplitPane extends JSplitPane {
      *
      * @pre views.size() > 0 == true
      */
-    protected void pop() {
+    protected final void pop() {
     }
 
     /**
@@ -37,7 +37,7 @@ public class SplitPane extends JSplitPane {
      * @pre previousViews() == true
      * @post hiddenViews() == true
      */
-    protected void backward() {
+    protected final void backward() {
     }
 
     /**
@@ -46,6 +46,6 @@ public class SplitPane extends JSplitPane {
      * @pre hiddenViews() == true
      * @post previousViews() == true
      */
-    protected void forward() {
+    protected final void forward() {
     }
 }

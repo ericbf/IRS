@@ -32,14 +32,14 @@ public class Item extends Record {
      * Public constructor. An item starts with all fields populated.
      */
     public Item(String name, String SKU, String description, BigDecimal price, BigDecimal onHandQty, BigDecimal ReorderQty, String UOM, BigDecimal cost) {
-        super("Penis");
+        super("Penis", true);
     }
 
     /**
      * Public constructor. Takes an Item database key, and has the option to populate the fields from the database.
      */
     public Item(int pkey, boolean populate) {
-        super("Penis");
+        super("Penis", true);
     }
 
     /**
@@ -158,13 +158,6 @@ public class Item extends Record {
      * Gets the pictures associated with the item.
      */
     public ArrayList<Picture> getPictures() {
-        return null;
-    }
-
-    /**
-     * Gets the dates associated with the item.
-     */
-    public Dates getDates() {
         return null;
     }
 }

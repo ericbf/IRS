@@ -1,10 +1,14 @@
 package ISIS.database;
 
+import ISIS.gui.ErrorLogger;
+import ISIS.misc.Dates;
 import ISIS.session.Session;
+import ISIS.user.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,12 +19,15 @@ public abstract class Record {
 
     private HashMap<String, Field> fields;
     private final String tableName;
+    private Dates dates = null;
+    private boolean hasDates;
 
     /**
      * Base initializer for a Record.
      */
-    protected Record(String tableName) {
+    protected Record(String tableName, boolean hasDates) {
         this.tableName = tableName;
+        this.hasDates = hasDates;
     }
 
     /**
@@ -40,8 +47,26 @@ public abstract class Record {
     /**
      * Sets pkey for a record being fetched. (without setting the field as modified)
      */
-    protected final void setPkey(int pkey) {
+    protected final void setPkey(Integer pkey) {
         this.getField("pkey").initField(pkey);
+    }
+
+    /**
+     * Sets the dates associated with the record.
+     */
+    public final void setDates(Dates dates) {
+        this.dates = dates;
+    }
+
+    /**
+     * Gets the dates object associated with the record.
+     */
+    public final Dates getDates() {
+        if (this.hasDates) {
+            return this.dates;
+        } else {
+            throw new UnsupportedOperationException();
+        }
     }
 
     /**
@@ -52,10 +77,25 @@ public abstract class Record {
     }
 
     /**
-     * Gets a field value from the field hashmap.
+     * Gets a field value from the field hashmap. If the field exists but was not yet fetched,
      */
     protected final Object getFieldValue(String key) {
-        return this.fields.get(key).getValue();
+        Object value;
+        try {
+            value = this.fields.get(key).getValue();
+        } catch (UninitializedFieldException e) {
+            try {
+                // check that there is a pkey (will throw uninitializedfieldexception otherwise)
+                this.getFieldValue("pkey");
+
+                this.fetch();
+                value = this.fields.get(key).getValue();
+            } catch (SQLException | RecordNotFoundException ex) {
+                ErrorLogger.error("Failed to fetch record.", true, true);
+                throw new UninitializedFieldException();
+            }
+        }
+        return value;
     }
 
     /**
@@ -79,26 +119,69 @@ public abstract class Record {
     }
 
     /**
-     * Fetches the record in the database associated with getPkey(), using the fetchMode specified.
+     * Fetches the record in the database associated with getPkey(), using the fetchMode specified. TODO: optimize the
+     * fetch method so it doesn't fetch columns we have initialized already.
      */
     protected final void fetch() throws SQLException, RecordNotFoundException {
         PreparedStatement stmt = Session.getDB().prepareStatement("SELECT * FROM " + this.tableName + " WHERE pkey=?");
         stmt.setInt(1, this.getPkey());
         HashMap<String, Field> fields = Record.mapResultSet(stmt.executeQuery());
 
-        //check which fields were set to be unmodifiable, and set then in the new fields map.
+        //check which fields were set to be unmodifiable or changed, and set them in the new fields map.
         for (Map.Entry<String, Field> entry : fields.entrySet()) {
-            if (this.fields.get(entry.getKey()).isUnmodifiable()) {
-                entry.getValue().setUnmodifiable(); //was unmodifiable
+            Field value = this.fields.get(entry.getKey());
+            if (value == null || !value.getWasInitialized()) {
+                this.fields.put(entry.getKey(), entry.getValue());
+                if (value != null && this.fields.get(entry.getKey()).isUnmodifiable()) {
+                    entry.getValue().setUnmodifiable(); //was unmodifiable
+                }
             }
         }
-        this.fields = fields;
+
+        this.readDates();
+    }
+
+    /**
+     * Reads the dates columns into a date class.
+     */
+    private void readDates() throws SQLException {
+        if (this.hasDates) {
+            this.dates = new Dates(new Date(((Number) this.getFieldValue("createDate")).longValue()), new User((Integer) this.getFieldValue("createUser"), false),
+                    new Date(((Number) this.getFieldValue("modDate")).longValue()), new User((Integer) this.getFieldValue("modUser"), false));
+        }
+    }
+
+    /**
+     * Updates the dates field for saving.
+     */
+    private void updateDates() {
+        // if no date information is set, set it now.
+        if (this.hasDates && this.dates == null) {
+            this.dates = new Dates();
+        }
+
+        // Update date information--if no date information is set, set it now.
+        if (this.hasDates) {
+            if (this.dates.modified()) {  //modified, so tell the map that we're updating
+                this.fields.put("createDate", new Field(true));
+                this.fields.put("createUser", new Field(true));
+                this.fields.put("modDate", new Field(true));
+                this.fields.put("modUser", new Field(true));
+                this.setFieldValue("createDate", this.dates.getCreatedDate().getTime());
+                this.setFieldValue("createUser", this.dates.getCreatedBy().getPkey());
+                this.setFieldValue("modDate", this.dates.getModDate().getTime());
+                this.setFieldValue("modUser", this.dates.getModBy().getPkey());
+            }
+        }
     }
 
     /**
      * Saves the record in the database. If the record is not in the database it is inserted, otherwise it is updated.
      */
     public final void save() throws SQLException {
+        //update dates
+        this.updateDates();
+
         /**
          * Get a list of columns that have been changed. Should be all columns if it's a new record.
          */
@@ -108,6 +191,8 @@ public abstract class Record {
                 columns.add(entry.getKey());
             }
         }
+
+
 
         if (this.getField("pkey").getWasInitialized() == false) {  // New record
             //generate sql--something like INSERT INTO tab (col1, col2) VALUES (?, ?)

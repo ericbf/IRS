@@ -4,6 +4,7 @@ import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.ListCustomers;
 import ISIS.gui.item.ListItems;
 import ISIS.session.Session;
+import ISIS.user.AuthenticationException;
 import ISIS.user.User;
 import java.awt.Dimension;
 import java.sql.SQLException;
@@ -43,10 +44,23 @@ public class MainWindow extends JFrame {
                 Session.getDB().close();
             }
         }, "Shutdown-thread"));
+        try {
+            Session.baseSession();
+        } catch (SQLException ex) {
+            System.out.println("well shit");
+        }
 
         try {
             User testUser = new User("jdickhead", true, "penismonger", "Janet", "Dickhead", "This is a note.");
             testUser.save();
+            Session.endCurrentSession();
+            System.out.println("Starting session with janet..");
+            try {
+                Session.startNewSession("jdickhead", "penismonger");
+            } catch (AuthenticationException e) {
+                System.out.println("failed");
+            }
+            System.out.println("OK!");
             User janet = new User(1, true);
             System.out.println("Got janet.");
             System.out.println("Active: " + janet.getActive());
@@ -55,7 +69,7 @@ public class MainWindow extends JFrame {
             System.out.println("ID: " + janet.getEmployeeID());
             System.out.println("Fname: " + janet.getFirstName() + "Lname: " + janet.getLastName());
             System.out.println("Note: " + janet.getNote());
-            
+
             janet.setNote("This is a new note.");
             System.out.println("Set note to: " + janet.getNote());
             janet.save();
@@ -65,9 +79,9 @@ public class MainWindow extends JFrame {
                 ErrorLogger.error("Could not find janet.", true, true);
             }
             System.out.println("Note: " + testUser.getNote());
-           
+
         } catch (SQLException | RecordNotFoundException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            ErrorLogger.error(ex, "something went wrong lel", true, true);
         }
     }
 

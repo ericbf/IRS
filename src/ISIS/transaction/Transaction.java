@@ -45,7 +45,7 @@ public class Transaction extends Record {
      * Public constructor. A Transaction starts with a user and a customer. These attributes cannot be changed.
      */
     public Transaction(User user, Customer customer) {
-        super("Penis");
+        super("Penis", true);
     }
 
     /**
@@ -60,7 +60,7 @@ public class Transaction extends Record {
      * @post getItems().size() > 0
      */
     public Transaction(User user, Transaction originalSale) {
-        super("Penis");
+        super("Penis", true);
     }
 
     /**
@@ -68,7 +68,7 @@ public class Transaction extends Record {
      * database.
      */
     public Transaction(int pkey, boolean populate) {
-        super("Penis");
+        super("Penis", true);
     }
 
     /**
@@ -166,13 +166,6 @@ public class Transaction extends Record {
      * Gets customer associated with this transaction.
      */
     public Customer getCustomer() {
-        return null;
-    }
-
-    /**
-     * Gets the dates associated with this transaction.
-     */
-    public Dates getDates() {
         return null;
     }
 

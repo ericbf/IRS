@@ -35,14 +35,14 @@ public class Customer extends Record {
      * Public constructor. A Customer starts with a name and a status.
      */
     public Customer(String fname, String lname, String mname, boolean active) {
-        super("Penis");
+        super("Penis", true);
     }
 
     /**
      * Public constructor. Take a Customer database key, and has the option to populate the fields from the database.
      */
     public Customer(int pkey, boolean populate) {
-        super("Penis");
+        super("Penis", true);
     }
 
     /**
@@ -180,13 +180,6 @@ public class Customer extends Record {
      * Gets the pictures associated with the customer record.
      */
     public ArrayList<Picture> getPictures(Picture picture) {
-        return null;
-    }
-
-    /**
-     * Gets the dates associated with the Customer record.
-     */
-    public Dates getDates() {
         return null;
     }
 }

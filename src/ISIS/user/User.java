@@ -1,14 +1,18 @@
 package ISIS.user;
 
+import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.ErrorLogger;
 import ISIS.misc.Dates;
 import ISIS.misc.Picture;
+import ISIS.session.Session;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,10 +39,9 @@ public final class User extends Record {
      * @post this.password == hash_function(password)
      */
     public User(String username, boolean active, String password, String fname, String lname, String note) {
-        super("user");
+        super("user", true);
+        this.initializeFields(getFields());
 
-        HashMap<String, Field> fields = getFields();
-        this.initializeFields(fields);
         this.setFieldValue("username", username);
         this.setFieldValue("active", active);
         this.setFieldValue("fname", fname);
@@ -50,13 +53,34 @@ public final class User extends Record {
     /**
      * Public constructor. Takes a User database key, and has the option to populate the fields from the database.
      */
-    public User(int pkey, boolean populate) throws SQLException, RecordNotFoundException {
-        super("user");
+    public User(Integer pkey, boolean populate) throws SQLException, RecordNotFoundException {
+        super("user", true);
         this.initializeFields(getFields());
 
         this.setPkey(pkey);
         if (populate) {
             this.fetch();
+        }
+    }
+
+    /**
+     * Tries to log a user in.
+     */
+    public User(String username, String password) throws SQLException, AuthenticationException {
+        super("user", true);
+        this.initializeFields(getFields());
+
+        PreparedStatement stmt = Session.getDB().prepareStatement("SELECT * FROM USER WHERE username=?");
+        stmt.setString(1, username);
+
+        ArrayList<HashMap<String, Field>> users = DB.mapResultSet(stmt.executeQuery());
+        if (users.size() != 1) {
+            throw new AuthenticationException("Username or password is incorrect."); //username wrong
+        }
+        this.initializeFields(users.get(0));
+
+        if (!this.checkPassword(password)) {
+            throw new AuthenticationException("Username or password is incorrect."); //password wrong
         }
     }
 
@@ -170,6 +194,9 @@ public final class User extends Record {
      */
     public boolean checkPassword(String password) {
         //get salt from DB, hash it with the password given
+        if (((String) this.getFieldValue("password")).length() < 4) {
+            return false;
+        }
         return hashPassword(password.getBytes(), hexToBytes(((String) this.getFieldValue("password")).substring(0, 4))).equals(((String) this.getFieldValue("password")));
     }
 
@@ -223,13 +250,6 @@ public final class User extends Record {
      * Gets the pictures associated with the User record.
      */
     public ArrayList<Picture> getPictures(Picture picture) {
-        return null;
-    }
-
-    /**
-     * Gets the dates associated with this transaction.
-     */
-    public Dates getDates() {
         return null;
     }
 }

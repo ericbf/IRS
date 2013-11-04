@@ -1,15 +1,18 @@
 package ISIS.misc;
 
+import ISIS.database.Record;
+
 /**
  * General purpose class for representing postal addresses.
  */
-public class Address {
+public class Address extends Record {
     /* Fields omitted */
 
     /**
      * Public constructor.
      */
     public Address(String countryCode, String ZIP, String state, String city, String county, String streetAddress) {
+        super("penis", true);
     }
 
     /**

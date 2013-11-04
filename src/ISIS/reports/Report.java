@@ -16,13 +16,13 @@ public abstract class Report {
     /**
      * Sets the report's main CSS stylesheet.
      */
-    protected void setStyles(String stylesheet) {
+    protected final void setStyles(String stylesheet) {
     }
 
     /**
      * Sets the report's secondary stylesheet (user styles).
      */
-    protected void setSecondaryStyles(String id, String class_, String stylesheet) {
+    protected final void setSecondaryStyles(String id, String class_, String stylesheet) {
     }
 
     /**
@@ -46,7 +46,7 @@ public abstract class Report {
     /**
      * Escapes text for insertion in HTML, to prevent XSS.
      */
-    protected String escapeText(String input) {
+    protected final String escapeText(String input) {
 	return null;
     }
 
@@ -55,13 +55,13 @@ public abstract class Report {
      *
      * Caveat: XSS attacks are possible if input is not sanitized.
      */
-    protected void appendHTML(String html) {
+    protected final void appendHTML(String html) {
     }
 
     /**
      * Exports the report as a HTML string.
      */
-    protected String export() {
+    protected final String export() {
 	return null;
     }
 }

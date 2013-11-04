@@ -1,5 +1,7 @@
 package ISIS.misc;
 
+import ISIS.database.Record;
+import ISIS.session.Session;
 import ISIS.user.User;
 import java.util.Date;
 
@@ -14,46 +16,75 @@ import java.util.Date;
  * @modDate != null && modBy != null && createdDate != null && createdBy != null
  */
 public class Dates {
-    /* Fields omitted */
+
+    private Date createDate;
+    private User createUser;
+    private Date modDate;
+    private User modUser;
+    private boolean dateChanged = false;  // means the date needs to be saved
 
     /**
-     * Public constructor. Meant for initial instantiation of a Dates object. Modification date and user are set to the
-     * same value as the creation date and user.
+     * Public constructor. Meant to populate a date from the database.
      */
-    public Dates(Date createdDate, User createdBy) {
+    public Dates(Date createdDate, User createdBy, Date modDate, User modUser) {
+        this.createDate = createdDate;
+        this.createUser = createdBy;
+        this.modDate = modDate;
+        this.modUser = modUser;
     }
 
     /**
-     * Public constructor. Meant for modifying an existing instance of a Dates object.
+     * Public constructor. Convenience method that uses the current time and logged in user.
      */
-    public Dates(Dates modifiedDate, Date modDate, User modBy) {
+    public Dates() {
+        this.createDate = new Date();
+        this.createUser = Session.getCurrentSession().getUser();
+        this.modDate = new Date();
+        this.modUser = Session.getCurrentSession().getUser();
+        this.dateChanged = true;
+    }
+
+    /**
+     * Sets the modification date to now, and the modification user to the user currently logged in.
+     */
+    public void modify() {
+        this.modDate = new Date();
+        this.modUser = Session.getCurrentSession().getUser();
+        this.dateChanged = true;
+    }
+    
+    /**
+     * Checks whether the date needs to be saved.
+     */
+    public boolean modified() {
+        return this.dateChanged;
     }
 
     /**
      * Gets the creation date of the object referencing this instance.
      */
     public Date getCreatedDate() {
-	return null;
+        return this.createDate;
     }
 
     /**
      * Gets the user that created the object referencing this instance.
      */
     public User getCreatedBy() {
-	return null;
+        return this.createUser;
     }
 
     /**
      * Gets the modification date of the object referencing this instance.
      */
     public Date getModDate() {
-	return null;
+        return this.modDate;
     }
 
     /**
      * Gets the user that modified the object referencing this instance.
      */
     public User getModBy() {
-	return null;
+        return this.modUser;
     }
 }

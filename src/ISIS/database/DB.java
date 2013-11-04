@@ -47,18 +47,23 @@ public final class DB {
      * Initialize tables
      */
     public void initializeDB() throws SQLException {
+        String datesSql = "createDate BIGINT NOT NULL, createUser INT REFERENCES user(pkey), modDate BIGINT NOT NULL, "
+                + "modUser INT REFERENCES user(pkey)";
         //40 characters for hash, 5 for salt
         executeUpdate("CREATE TABLE IF NOT EXISTS user (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, "
                 + "username VARCHAR(255) UNIQUE NOT NULL, password VARCHAR(44) NOT NULL, fname VARCHAR(255) NOT NULL, "
-                + "lname VARCHAR(255) NOT NULL, note TEXT NOT NULL)");
+                + "lname VARCHAR(255) NOT NULL, note TEXT NOT NULL, " + datesSql + ")");
+        //add base user (pkey = 1)
+        executeUpdate("INSERT OR IGNORE INTO user (pkey, active, username, password, fname, lname, note, createDate, modDate) "
+                + "VALUES (1, 0, 'base', '0', 'fname', 'lname', 'note', 0, 0)");
     }
 
     /**
-     * For creating tables and stuff.
+     * For creating tables and stuff. Returns number of affected rows.
      */
-    private void executeUpdate(String sql) throws SQLException {
+    private int executeUpdate(String sql) throws SQLException {
         Statement statement = connection.createStatement();
-        statement.executeUpdate(sql);
+        return statement.executeUpdate(sql);
     }
 
     /**

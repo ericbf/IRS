@@ -25,7 +25,7 @@ public abstract class View extends JPanel {
      *
      * @return
      */
-    protected boolean inSplitPane() {
+    protected final boolean inSplitPane() {
 	if (this.splitPane != null) {
 	    return true;
 	}
@@ -37,7 +37,7 @@ public abstract class View extends JPanel {
      *
      * @return
      */
-    protected SplitPane getSplitPane() {
+    protected final SplitPane getSplitPane() {
 	if (!inSplitPane()) {
 	    throw new UnsupportedOperationException("Not supported.");
 	}
