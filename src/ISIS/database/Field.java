@@ -2,14 +2,16 @@ package ISIS.database;
 
 public final class Field {
 	
-	private Object	field		= null;	// the value
+	private Object	field		= null;         // the value
 	private Boolean	changed		= false;	// whether it has been modified or
 											// not
 	private Boolean	modifiable;			// whether it can be modified
 	private Boolean	initialized	= false;	// whether anything has been put in
 											// it (to tell null apart from
 											// uninitialzied)
-											
+	/*
+         * 
+         */										
 	public Field(boolean modifiable) {
 		this.modifiable = modifiable;
 	}
