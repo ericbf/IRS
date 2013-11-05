@@ -1,14 +1,14 @@
 package ISIS.transaction;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
 import ISIS.customer.Customer;
 import ISIS.database.Record;
 import ISIS.item.Item;
 import ISIS.misc.Address;
 import ISIS.misc.Billing;
-import ISIS.misc.Dates;
 import ISIS.user.User;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 
 /**
  * A Transaction is the exchange of goods, legal tender, or rendering of
@@ -172,5 +172,6 @@ public class Transaction extends Record {
 	 * @pre getItems().size() > 0
 	 * @post getStatus() == status.Finalized
 	 */
+	@Override
 	public void finalize() {}
 }

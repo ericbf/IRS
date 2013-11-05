@@ -1,6 +1,5 @@
 package ISIS.database;
 
-import ISIS.gui.ErrorLogger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import ISIS.gui.ErrorLogger;
 
 /**
  * Manages third party relational database software used to manage and organize

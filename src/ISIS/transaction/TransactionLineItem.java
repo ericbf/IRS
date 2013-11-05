@@ -1,7 +1,8 @@
 package ISIS.transaction;
 
-import ISIS.item.Item;
 import java.math.BigDecimal;
+
+import ISIS.item.Item;
 
 /**
  * Attributes of an item as it relates to a transaction -- e.g. amount being

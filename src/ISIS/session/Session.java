@@ -1,15 +1,10 @@
 package ISIS.session;
 
+import java.sql.SQLException;
+
 import ISIS.database.DB;
-import ISIS.gui.ErrorLogger;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Various information and methods that is associated with a session. This

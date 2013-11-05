@@ -1,10 +1,10 @@
 package ISIS.item;
 
-import ISIS.database.Record;
-import ISIS.misc.Dates;
-import ISIS.misc.Picture;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+
+import ISIS.database.Record;
+import ISIS.misc.Picture;
 
 /**
  * A good available and currently managed by the client. An item record consists
@@ -21,6 +21,14 @@ public class Item extends Record {
 	/* Fields omitted */
 	
 	/**
+	 * Public constructor. Takes an Item database key, and has the option to
+	 * populate the fields from the database.
+	 */
+	public Item(int pkey, boolean populate) {
+		super("Penis", true);
+	}
+	
+	/**
 	 * Public constructor. An item starts with all fields populated.
 	 */
 	public Item(String name, String SKU, String description, BigDecimal price,
@@ -30,11 +38,43 @@ public class Item extends Record {
 	}
 	
 	/**
-	 * Public constructor. Takes an Item database key, and has the option to
-	 * populate the fields from the database.
+	 * Adds a picture to the item.
 	 */
-	public Item(int pkey, boolean populate) {
-		super("Penis", true);
+	public void addPicture(Picture picture) {}
+	
+	/**
+	 * Gets the cost of the item.
+	 */
+	public BigDecimal getCost() {
+		return null;
+	}
+	
+	/**
+	 * Gets the item's description.
+	 */
+	public String getDescription() {
+		return null;
+	}
+	
+	/**
+	 * Gets the item's name.
+	 */
+	public String getName() {
+		return null;
+	}
+	
+	/**
+	 * Gets the on hand quantity of the item.
+	 */
+	public BigDecimal getOnHandQty() {
+		return null;
+	}
+	
+	/**
+	 * Gets the pictures associated with the item.
+	 */
+	public ArrayList<Picture> getPictures() {
+		return null;
 	}
 	
 	/**
@@ -46,14 +86,16 @@ public class Item extends Record {
 	}
 	
 	/**
-	 * Changes the item's name.
+	 * Gets the item's price.
 	 */
-	public void setName(String name) {}
+	public BigDecimal getPrice() {
+		return null;
+	}
 	
 	/**
-	 * Gets the item's name.
+	 * Gets the reorder quantity of the item.
 	 */
-	public String getName() {
+	public BigDecimal getReorderQuantity() {
 		return null;
 	}
 	
@@ -65,69 +107,9 @@ public class Item extends Record {
 	}
 	
 	/**
-	 * Changes the item's description.
-	 */
-	public void setDescription(String description) {}
-	
-	/**
-	 * Gets the item's description.
-	 */
-	public String getDescription() {
-		return null;
-	}
-	
-	/**
-	 * Sets the item's price.
-	 */
-	public void setPrice(BigDecimal price) {}
-	
-	/**
-	 * Gets the item's price.
-	 */
-	public BigDecimal getPrice() {
-		return null;
-	}
-	
-	/**
-	 * Sets the on hand quantity of the item.
-	 */
-	public void setOnHandQty(BigDecimal quantity) {}
-	
-	/**
-	 * Gets the on hand quantity of the item.
-	 */
-	public BigDecimal getOnHandQty() {
-		return null;
-	}
-	
-	/**
-	 * Sets the on hand quantity at which the item should be reordered.
-	 */
-	public void setReorderQty(BigDecimal quantity) {}
-	
-	/**
-	 * Gets the reorder quantity of the item.
-	 */
-	public BigDecimal getReorderQuantity() {
-		return null;
-	}
-	
-	/**
 	 * Sets the unit of measure of the item (e.g. pounds).
 	 */
 	public String getUOM() {
-		return null;
-	}
-	
-	/**
-	 * Sets the cost of the item.
-	 */
-	public void setCost(BigDecimal cost) {}
-	
-	/**
-	 * Gets the cost of the item.
-	 */
-	public BigDecimal getCost() {
 		return null;
 	}
 	
@@ -139,14 +121,32 @@ public class Item extends Record {
 	}
 	
 	/**
-	 * Adds a picture to the item.
+	 * Sets the cost of the item.
 	 */
-	public void addPicture(Picture picture) {}
+	public void setCost(BigDecimal cost) {}
 	
 	/**
-	 * Gets the pictures associated with the item.
+	 * Changes the item's description.
 	 */
-	public ArrayList<Picture> getPictures() {
-		return null;
-	}
+	public void setDescription(String description) {}
+	
+	/**
+	 * Changes the item's name.
+	 */
+	public void setName(String name) {}
+	
+	/**
+	 * Sets the on hand quantity of the item.
+	 */
+	public void setOnHandQty(BigDecimal quantity) {}
+	
+	/**
+	 * Sets the item's price.
+	 */
+	public void setPrice(BigDecimal price) {}
+	
+	/**
+	 * Sets the on hand quantity at which the item should be reordered.
+	 */
+	public void setReorderQty(BigDecimal quantity) {}
 }

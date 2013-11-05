@@ -1,9 +1,9 @@
 package ISIS.misc;
 
-import ISIS.database.Record;
+import java.util.Date;
+
 import ISIS.session.Session;
 import ISIS.user.User;
-import java.util.Date;
 
 /**
  * Generic class for various date information that is not typically set or

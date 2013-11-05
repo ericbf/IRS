@@ -1,7 +1,8 @@
 package ISIS.misc;
 
-import ISIS.database.Record;
 import java.util.Date;
+
+import ISIS.database.Record;
 
 /**
  * General purpose class for representing billing information.

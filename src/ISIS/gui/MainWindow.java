@@ -1,18 +1,18 @@
 package ISIS.gui;
 
+import java.awt.Dimension;
+import java.sql.SQLException;
+
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.ListCustomers;
 import ISIS.gui.item.ListItems;
 import ISIS.session.Session;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
-import java.awt.Dimension;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 
 /**
  * Class for main window. No public methods available.
