@@ -1,0 +1,1356 @@
+<HTML>
+	<HEAD>
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<TITLE>Exported database: test.db</TITLE>
+		<STYLE type="text/css">
+
+	TABLE
+	{
+		border-style: solid;
+		border-width: 1;
+		border-color: black;
+		border-collapse: collapse;
+	}
+	TABLE TR
+	{
+		background-color: white;
+	}
+	TABLE TR.header
+	{
+		background-color: #DDDDDD;
+	}
+	TABLE TR.title
+	{
+		background-color: #EEEEEE;
+	}
+	TABLE TR TD
+	{
+		padding: 0px 3px 0px 3px;
+		border-style: solid;
+		border-width: 1;
+		border-color: #666666;
+	}
+	TABLE TR TD.null
+	{
+		color: #999999;
+		text-align: center;
+		padding: 0px 3px 0px 3px;
+		border-style: solid;
+		border-width: 1;
+		border-color: #666666;
+	}
+	TABLE TR TD.separator
+	{
+		padding: 0px 3px 0px 3px;
+		border-style: solid;
+		border-width: 1;
+		border-color: #666666;
+		background-color: #DDDDDD;
+	}
+	TABLE TR TD.rownum
+	{
+		padding: 0px 3px 0px 3px;
+		border-style: solid;
+		border-width: 1;
+		border-color: #666666;
+		background-color: #DDDDDD;
+		text-align: right;
+	}
+		</STYLE>
+	</HEAD>
+	<BODY>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="11" align="center">
+					Table: <B>user</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">user.</font>pkey</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">user.</font>active</B>
+<BR>(BOOLEAN)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">user.</font>username</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">user.</font>password</B>
+<BR>(VARCHAR(44))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">user.</font>fname</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">user.</font>lname</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">user.</font>note</B>
+<BR>(TEXT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">user.</font>createDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">user.</font>createUser</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">user.</font>modDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">user.</font>modUser</B>
+<BR>(INT)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="14" align="center">
+					Table: <B>address</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">address.</font>pkey</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>active</B>
+<BR>(BOOLEAN)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>title</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>city</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>state</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>zip</B>
+<BR>(VARCHAR(10))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>county</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>country</B>
+<BR>(VARCHAR(3))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>st_address</B>
+<BR>(TEXT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>type</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>createDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>createUser</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>modDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address.</font>modUser</B>
+<BR>(INT)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="7" align="center">
+					Table: <B>address_search</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">address_search.</font>st_address</B>
+<BR>(no type)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search.</font>zip</B>
+<BR>(no type)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search.</font>city</B>
+<BR>(no type)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search.</font>county</B>
+<BR>(no type)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search.</font>state</B>
+<BR>(no type)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search.</font>country</B>
+<BR>(no type)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search.</font>type</B>
+<BR>(no type)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="2" align="center">
+					Table: <B>address_search_segments</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">address_search_segments.</font>blockid</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search_segments.</font>block</B>
+<BR>(BLOB)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="6" align="center">
+					Table: <B>address_search_segdir</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">address_search_segdir.</font>level</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search_segdir.</font>idx</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search_segdir.</font>start_block</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search_segdir.</font>leaves_end_block</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search_segdir.</font>end_block</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search_segdir.</font>root</B>
+<BR>(BLOB)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="2" align="center">
+					Table: <B>address_search_docsize</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">address_search_docsize.</font>docid</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search_docsize.</font>size</B>
+<BR>(BLOB)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="2" align="center">
+					Table: <B>address_search_stat</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">address_search_stat.</font>id</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">address_search_stat.</font>value</B>
+<BR>(BLOB)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="10" align="center">
+					Table: <B>billing</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">billing.</font>pkey</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">billing.</font>active</B>
+<BR>(BOOLEAN)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">billing.</font>number</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">billing.</font>expiration</B>
+<BR>(VARCHAR(5))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">billing.</font>CCV</B>
+<BR>(VARCHAR(5))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">billing.</font>address</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">billing.</font>createDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">billing.</font>createUser</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">billing.</font>modDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">billing.</font>modUser</B>
+<BR>(INT)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="11" align="center">
+					Table: <B>customer</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">customer.</font>pkey</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer.</font>active</B>
+<BR>(BOOLEAN)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer.</font>password</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer.</font>fname</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer.</font>lname</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer.</font>email</B>
+<BR>(TEXT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer.</font>note</B>
+<BR>(TEXT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer.</font>createDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer.</font>createUser</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer.</font>modDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer.</font>modUser</B>
+<BR>(INT)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="7" align="center">
+					Table: <B>customer_address</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">customer_address.</font>pkey</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_address.</font>customer</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_address.</font>address</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_address.</font>createDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_address.</font>createUser</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_address.</font>modDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_address.</font>modUser</B>
+<BR>(INT)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="7" align="center">
+					Table: <B>customer_billing</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">customer_billing.</font>pkey</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_billing.</font>customer</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_billing.</font>billing</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_billing.</font>createDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_billing.</font>createUser</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_billing.</font>modDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_billing.</font>modUser</B>
+<BR>(INT)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="4" align="center">
+					Table: <B>customer_search</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">customer_search.</font>fname</B>
+<BR>(no type)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_search.</font>lname</B>
+<BR>(no type)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_search.</font>email</B>
+<BR>(no type)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_search.</font>note</B>
+<BR>(no type)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="2" align="center">
+					Table: <B>customer_search_segments</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">customer_search_segments.</font>blockid</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_search_segments.</font>block</B>
+<BR>(BLOB)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="6" align="center">
+					Table: <B>customer_search_segdir</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">customer_search_segdir.</font>level</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_search_segdir.</font>idx</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_search_segdir.</font>start_block</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_search_segdir.</font>leaves_end_block</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_search_segdir.</font>end_block</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_search_segdir.</font>root</B>
+<BR>(BLOB)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="2" align="center">
+					Table: <B>customer_search_docsize</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">customer_search_docsize.</font>docid</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_search_docsize.</font>size</B>
+<BR>(BLOB)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="2" align="center">
+					Table: <B>customer_search_stat</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">customer_search_stat.</font>id</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">customer_search_stat.</font>value</B>
+<BR>(BLOB)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="15" align="center">
+					Table: <B>item</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">item.</font>pkey</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>active</B>
+<BR>(BOOLEAN)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>name</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>SKU</B>
+<BR>(VARCHAR(255))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>price</B>
+<BR>(VARCHAR(30))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>onhand_qty</B>
+<BR>(VARCHAR(30))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>cost</B>
+<BR>(VARCHAR(30))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>description</B>
+<BR>(TEXT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>uom</B>
+<BR>(VARCHAR(10))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>reorder_qty</B>
+<BR>(VARCHAR(30))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>lastest</B>
+<BR>(BOOLEAN)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>createDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>createUser</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>modDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">item.</font>modUser</B>
+<BR>(INT)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="9" align="center">
+					Table: <B>transaction_</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">transaction_.</font>pkey</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_.</font>status</B>
+<BR>(VARCHAR(20))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_.</font>type</B>
+<BR>(VARCHAR(20))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_.</font>modified</B>
+<BR>(BOOLEAN)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_.</font>parent_transaction</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_.</font>createDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_.</font>createUser</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_.</font>modDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_.</font>modUser</B>
+<BR>(INT)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="10" align="center">
+					Table: <B>transaction_item</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">transaction_item.</font>pkey</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_item.</font>transaction_</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_item.</font>item</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_item.</font>price</B>
+<BR>(VARCHAR(30))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_item.</font>adjustment</B>
+<BR>(VARCHAR(30))
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_item.</font>description</B>
+<BR>(TEXT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_item.</font>createDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_item.</font>createUser</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_item.</font>modDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_item.</font>modUser</B>
+<BR>(INT)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="7" align="center">
+					Table: <B>transaction_address</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">transaction_address.</font>pkey</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_address.</font>transaction_</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_address.</font>address</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_address.</font>createDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_address.</font>createUser</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_address.</font>modDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_address.</font>modUser</B>
+<BR>(INT)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD colspan="7" align="center">
+					Table: <B>transaction_billing</B>
+				</TD>
+			</TR>
+			<TR class="header">
+				<TD>
+					<B><font color="#777777">transaction_billing.</font>pkey</B>
+<BR>(INTEGER)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_billing.</font>transaction_</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_billing.</font>billing</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_billing.</font>createDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_billing.</font>createUser</B>
+<BR>(INT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_billing.</font>modDate</B>
+<BR>(BIGINT)
+
+				</TD>
+				<TD>
+					<B><font color="#777777">transaction_billing.</font>modUser</B>
+<BR>(INT)
+
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+
+
+		<TABLE>
+			<TR class="title">
+				<TD align="center" colspan="2">
+					Trigger: <B>address_search_insert</B>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activated:
+				</TD>
+				<TD>
+					<CODE>AFTER</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Action:
+				</TD>
+				<TD>
+					<CODE>INSERT</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activate condition:
+				</TD>
+				<TD>
+					<CODE></CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2" class="separator">
+					Code executed:
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2">
+					<PRE>INSERT INTO address_search ( <BR>    docid,<BR>    st_address,<BR>    zip,<BR>    city,<BR>    county,<BR>    state,<BR>    country,<BR>    type <BR>) <BR>VALUES ( <BR>    new.rowid,<BR>    new.st_address,<BR>    new.zip,<BR>    new.city,<BR>    new.county,<BR>    new.state,<BR>    new.country,<BR>    new.type <BR>);<BR></PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD align="center" colspan="2">
+					Trigger: <B>address_search_update</B>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activated:
+				</TD>
+				<TD>
+					<CODE>BEFORE</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Action:
+				</TD>
+				<TD>
+					<CODE>UPDATE</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activate condition:
+				</TD>
+				<TD>
+					<CODE></CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2" class="separator">
+					Code executed:
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2">
+					<PRE>DELETE<BR>  FROM address_search<BR> WHERE docid = old.pkey;<BR></PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD align="center" colspan="2">
+					Trigger: <B>address_search_update_after</B>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activated:
+				</TD>
+				<TD>
+					<CODE>AFTER</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Action:
+				</TD>
+				<TD>
+					<CODE>UPDATE</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activate condition:
+				</TD>
+				<TD>
+					<CODE></CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2" class="separator">
+					Code executed:
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2">
+					<PRE>INSERT INTO address_search ( <BR>    docid,<BR>    st_address,<BR>    zip,<BR>    city,<BR>    county,<BR>    state,<BR>    country,<BR>    type <BR>) <BR>VALUES ( <BR>    new.rowid,<BR>    new.st_address,<BR>    new.zip,<BR>    new.city,<BR>    new.county,<BR>    new.state,<BR>    new.country,<BR>    new.type <BR>);<BR></PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD align="center" colspan="2">
+					Trigger: <B>address_search_delete</B>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activated:
+				</TD>
+				<TD>
+					<CODE>BEFORE</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Action:
+				</TD>
+				<TD>
+					<CODE>DELETE</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activate condition:
+				</TD>
+				<TD>
+					<CODE></CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2" class="separator">
+					Code executed:
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2">
+					<PRE>DELETE<BR>  FROM address_search<BR> WHERE docid = old.pkey;<BR></PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD align="center" colspan="2">
+					Trigger: <B>customer_search_insert</B>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activated:
+				</TD>
+				<TD>
+					<CODE>AFTER</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Action:
+				</TD>
+				<TD>
+					<CODE>INSERT</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activate condition:
+				</TD>
+				<TD>
+					<CODE></CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2" class="separator">
+					Code executed:
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2">
+					<PRE>INSERT INTO customer_search ( <BR>    docid,<BR>    fname,<BR>    lname,<BR>    email,<BR>    note <BR>) <BR>VALUES ( <BR>    new.fname,<BR>    new.lname,<BR>    new.email,<BR>    new.note <BR>);<BR></PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD align="center" colspan="2">
+					Trigger: <B>customer_search_update</B>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activated:
+				</TD>
+				<TD>
+					<CODE>BEFORE</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Action:
+				</TD>
+				<TD>
+					<CODE>UPDATE</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activate condition:
+				</TD>
+				<TD>
+					<CODE></CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2" class="separator">
+					Code executed:
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2">
+					<PRE>DELETE<BR>  FROM customer_search<BR> WHERE docid = old.pkey;<BR></PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD align="center" colspan="2">
+					Trigger: <B>customer_search_update_after</B>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activated:
+				</TD>
+				<TD>
+					<CODE>AFTER</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Action:
+				</TD>
+				<TD>
+					<CODE>UPDATE</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activate condition:
+				</TD>
+				<TD>
+					<CODE></CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2" class="separator">
+					Code executed:
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2">
+					<PRE>INSERT INTO customer_search ( <BR>    docid,<BR>    fname,<BR>    lname,<BR>    email,<BR>    note <BR>) <BR>VALUES ( <BR>    new.fname,<BR>    new.lname,<BR>    new.email,<BR>    new.note <BR>);<BR></PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD align="center" colspan="2">
+					Trigger: <B>customer_search_delete</B>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activated:
+				</TD>
+				<TD>
+					<CODE>BEFORE</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Action:
+				</TD>
+				<TD>
+					<CODE>DELETE</CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD align="right" class="rownum">
+					Activate condition:
+				</TD>
+				<TD>
+					<CODE></CODE>
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2" class="separator">
+					Code executed:
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="2">
+					<PRE>DELETE<BR>  FROM customer_search<BR> WHERE docid = old.pkey;<BR></PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+
+		<TABLE>
+			<TR class="title">
+				<TD align="center">
+					View: <B>address_search_view</B>
+				</TD>
+			</TR>
+			<TR>
+				<TD>
+					<PRE>SELECT pkey AS docid,<BR>       st_address,<BR>       zip,<BR>       city,<BR>       county,<BR>       state,<BR>       country,<BR>       type<BR>  FROM address;<BR></PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+		<TABLE>
+			<TR class="title">
+				<TD align="center">
+					View: <B>customer_search_view</B>
+				</TD>
+			</TR>
+			<TR>
+				<TD>
+					<PRE>SELECT pkey AS docid,<BR>       fname,<BR>       lname,<BR>       email,<BR>       note<BR>  FROM customer;<BR></PRE>
+				</TD>
+			</TR>
+		</TABLE>
+		<BR><BR>
+
+	<I>Generated on 2013-11-05 17:16:38 with <A href="http://sqlitestudio.pl">SQLiteStudio v2.1.4</A>
+</I>
+	</BODY>
+</HTML>
