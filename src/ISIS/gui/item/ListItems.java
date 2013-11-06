@@ -7,6 +7,8 @@ import ISIS.gui.SplitPane;
  * List of items. Allows you to query and act on items.
  */
 public class ListItems extends ListView {
+	private static final long	serialVersionUID	= 1L;
+	
 	/* Fields omitted */
 	
 	/**

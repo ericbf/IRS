@@ -6,6 +6,7 @@ import ISIS.gui.View;
  * Abstract class for the report GUIs.
  */
 public abstract class ReportView extends View {
+	private static final long	serialVersionUID	= 1L;
 	
 	/**
 	 * Public constructor.

@@ -6,8 +6,8 @@ import javax.swing.JPanel;
  * Abstract class for all views.
  */
 public abstract class View extends JPanel {
-	
-	private SplitPane	splitPane;
+	private static final long	serialVersionUID	= 1L;
+	private SplitPane			splitPane;
 	
 	public View() {
 		splitPane = null;
@@ -26,7 +26,7 @@ public abstract class View extends JPanel {
 	 * @return
 	 */
 	protected final boolean inSplitPane() {
-		if (this.splitPane != null) {
+		if (splitPane != null) {
 			return true;
 		}
 		return false;
@@ -41,7 +41,7 @@ public abstract class View extends JPanel {
 		if (!inSplitPane()) {
 			throw new UnsupportedOperationException("Not supported.");
 		}
-		return this.splitPane;
+		return splitPane;
 	}
 	
 	/**

@@ -6,6 +6,7 @@ import javax.swing.JSplitPane;
  *
  */
 public class SplitPane extends JSplitPane {
+	private static final long	serialVersionUID	= 1L;
 	
 	/**
 	 * The ways of laying out the views.

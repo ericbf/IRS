@@ -18,10 +18,11 @@ import ISIS.user.User;
  * Class for main window. No public methods available.
  */
 public class MainWindow extends JFrame {
-	
-	private SplitPane	inventoryPane;
-	private SplitPane	customerPane;
-	private SplitPane	reportPane;
+	private static final long	serialVersionUID	= 1L;
+	private SplitPane			inventoryPane;
+	private SplitPane			customerPane;
+	@SuppressWarnings("unused")
+	private SplitPane			reportPane;
 	
 	public static void main(String args[]) {
 		
@@ -109,6 +110,6 @@ public class MainWindow extends JFrame {
 		JTabbedPane tabs = new JTabbedPane(JTabbedPane.LEFT);
 		tabs.add("Inventory", inventoryPane);
 		tabs.add("Customers", customerPane);
-		this.setContentPane(tabs);
+		setContentPane(tabs);
 	}
 }

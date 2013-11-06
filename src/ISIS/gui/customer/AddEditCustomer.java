@@ -6,6 +6,7 @@ import ISIS.gui.View;
  * View for adding and editing customers.
  */
 public class AddEditCustomer extends View {
+	private static final long	serialVersionUID	= 1L;
 	
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.

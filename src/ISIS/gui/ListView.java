@@ -4,6 +4,7 @@ package ISIS.gui;
  * Abstract class for views that consist of a list that can be searched.
  */
 public abstract class ListView extends View {
+	private static final long	serialVersionUID	= 1L;
 	
 	public ListView(SplitPane splitPane) {
 		super(splitPane);

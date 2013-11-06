@@ -7,6 +7,8 @@ import ISIS.gui.SplitPane;
  * List of transactions. Allows you to query and act on transactions.
  */
 public class ListTransactions extends ListView {
+	private static final long	serialVersionUID	= 1L;
+	
 	/* Fields omitted */
 	
 	/**

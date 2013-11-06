@@ -1,6 +1,8 @@
+#Mac OS X Files
 [Tt]humbs.db
 *.DS_Store
 
+#Netbeans Generated Files
 nbproject/
 build/
 nbbuild/
@@ -8,20 +10,24 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
-
-.project
-.classpath
-
-*.class
-
-
-*.jar
-!sqlite-jdbc-3.7.15-M1.jar
-*.war
-*.ear
-
-build.xml
 nbproject/build-impl.xml
 nbproject/private/private.xml
 nbproject/project.xml
 /bin
+build.xml
+
+#Eclipse Files
+.project
+.classpath
+.externalToolBuilders/IRS Builder.launch
+
+#Compiled Java files
+*.class
+
+#Packaged project files
+*.jar
+*.war
+*.ear
+
+#Include SQLite driver
+!sqlite-jdbc-3.7.15-M1.jar

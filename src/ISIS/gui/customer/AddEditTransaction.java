@@ -6,6 +6,7 @@ import ISIS.gui.View;
  * View for adding a transaction.
  */
 public class AddEditTransaction extends View {
+	private static final long	serialVersionUID	= 1L;
 	
 	/**
 	 * Public constructor: returns an instance of the add/edit transaction view.
