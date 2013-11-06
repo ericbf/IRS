@@ -1,12 +1,21 @@
 package ISIS.gui;
 
+import java.util.ArrayList;
+
 import javax.swing.JSplitPane;
 
 /**
  *
  */
-public class SplitPane extends JSplitPane {
+public final class SplitPane extends JSplitPane {
 	private static final long	serialVersionUID	= 1L;
+	private int					stackPointer;
+	ArrayList<View>				stack;
+	
+	SplitPane() {
+		stack = new ArrayList<>();
+		stackPointer = -1;
+	}
 	
 	/**
 	 * The ways of laying out the views.
@@ -20,14 +29,30 @@ public class SplitPane extends JSplitPane {
 	 * 
 	 * @post views.size() > 0 == true
 	 */
-	protected final void push(View view, LayoutType layout) {}
+	protected final void push(View view, LayoutType layout) {
+		if (stack.size() == 0) {
+			setLeftComponent(view);
+			setRightComponent(null);
+			setDividerSize(0);
+		} else {
+			setLeftComponent(stack.get(stack.size() - 1));
+			setRightComponent(view);
+		}
+		stackPointer++;
+		stack.add(view);
+	}
 	
 	/**
 	 * Completely removes a view from the stack.
 	 * 
 	 * @pre views.size() > 0 == true
 	 */
-	protected final void pop() {}
+	protected final void pop() {
+		if (stack.size() == 0) System.out.println("You stupid");
+		else {
+			
+		}
+	}
 	
 	/**
 	 * Hides the current view by shifting the two views backwards in the stack.
