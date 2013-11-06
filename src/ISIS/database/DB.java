@@ -13,8 +13,9 @@ import java.util.HashMap;
 import ISIS.gui.ErrorLogger;
 
 /**
- * Manages third party relational database software used to manage and organize data used to implement functionalities
- * in IRS. Makes available functionality to execute statements, queries, and updates.
+ * Manages third party relational database software used to manage and organize
+ * data used to implement functionalities in IRS. Makes available functionality
+ * to execute statements, queries, and updates.
  */
 public final class DB {
     /* Fields omitted */
@@ -23,8 +24,9 @@ public final class DB {
     private static int timeout = 100;
 
     /**
-     * Public constructor. Opens the database from the specified location. The specified file must be a valid database.
-     *
+     * Public constructor. Opens the database from the specified location. The
+     * specified file must be a valid database.
+     * 
      * @pre new File(DBLocation).exists() == true
      * @post isOpen == true
      */
@@ -55,39 +57,42 @@ public final class DB {
         // 40 characters for hash, 4 for salt
         executeUpdate("CREATE TABLE IF NOT EXISTS user (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, "
                 + "username VARCHAR(255) UNIQUE NOT NULL, password VARCHAR(44) NOT NULL, fname VARCHAR(255) NOT NULL, "
-                + "lname VARCHAR(255) NOT NULL, note TEXT NOT NULL, "
-                + datesSql + ")");
+                + "lname VARCHAR(255) NOT NULL, note TEXT NOT NULL, " + datesSql + ")");
         // add base user (pkey = 1)
         executeUpdate("INSERT OR IGNORE INTO user (pkey, active, username, password, fname, lname, note, createDate, modDate) "
                 + "VALUES (1, 0, 'base', '0', 'fname', 'lname', 'note', 0, 0)");
 
+        // settings
+        // null user for global setting
+        executeUpdate("CREATE TABLE IF NOT EXISTS setting (pkey INTEGER PRIMARY KEY, key VARCHAR(255) NOT NULL, value TEXT NOT NULL, "
+                + "user INT REFERENCES user(pkey))");
+
         // address
         executeUpdate("CREATE TABLE IF NOT EXISTS address (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, title VARCHAR(255) NOT NULL, "
                 + "city VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, zip VARCHAR(10) NOT NULL, county VARCHAR(255) NOT NULL, "
-                + "country VARCHAR(3) NOT NULL, st_address TEXT NOT NULL, type VARCHAR(255) NOT NULL, " + datesSql + ")");
-        //address-search
+                + "country VARCHAR(3) NOT NULL, st_address TEXT NOT NULL, type VARCHAR(255) NOT NULL, "
+                + datesSql
+                + ")");
+        // address-search
         String address_search_columns = "st_address, zip, city, county, state, country, type";
         String address_search_columns_temp = "new." + address_search_columns.replaceAll("\\s", " new.");
-        //view representing data inside address_search
-        executeUpdate("CREATE VIEW IF NOT EXISTS address_search_view AS SELECT pkey AS docid, " + address_search_columns + " FROM address");
-        //virtual table for searching addresses
-        executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS address_search USING fts4(content=\"address_search_view\", " + address_search_columns + ")");
-        //triggers to populate virtual table
+        // view representing data inside address_search
+        executeUpdate("CREATE VIEW IF NOT EXISTS address_search_view AS SELECT pkey AS docid, "
+                + address_search_columns + " FROM address");
+        // virtual table for searching addresses
+        executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS address_search USING fts4(content=\"address_search_view\", "
+                + address_search_columns + ")");
+        // triggers to populate virtual table
         executeUpdate("CREATE TRIGGER IF NOT EXISTS address_search_insert AFTER INSERT ON address BEGIN\n"
-                + "  INSERT INTO address_search(docid, " + address_search_columns + ") VALUES "
-                + "(new.rowid, " + address_search_columns_temp + ");\n"
-                + "END;");
+                + "  INSERT INTO address_search(docid, " + address_search_columns + ") VALUES " + "(new.rowid, "
+                + address_search_columns_temp + ");\n" + "END;");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS address_search_update BEFORE UPDATE ON address BEGIN\n"
-                + "  DELETE FROM address_search WHERE docid=old.pkey;\n"
-                + "END;\n");
+                + "  DELETE FROM address_search WHERE docid=old.pkey;\n" + "END;\n");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS address_search_update_after AFTER UPDATE ON address BEGIN\n"
-                + "  INSERT INTO address_search(docid, " + address_search_columns + ") VALUES "
-                + "(new.rowid, " + address_search_columns_temp + ");\n"
-                + "END;\n");
+                + "  INSERT INTO address_search(docid, " + address_search_columns + ") VALUES " + "(new.rowid, "
+                + address_search_columns_temp + ");\n" + "END;\n");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS address_search_delete BEFORE DELETE ON address BEGIN\n"
-                + "  DELETE FROM address_search WHERE docid=old.pkey;\n"
-                + "END;\n");
-
+                + "  DELETE FROM address_search WHERE docid=old.pkey;\n" + "END;\n");
 
         // billing
         executeUpdate("CREATE TABLE IF NOT EXISTS billing (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, "
@@ -107,48 +112,47 @@ public final class DB {
         // customer-search
         String customer_search_columns = "fname, lname, email, note";
         String customer_search_columns_temp = "new." + customer_search_columns.replaceAll("\\s", " new.");
-        //view representing data inside address_search
-        executeUpdate("CREATE VIEW IF NOT EXISTS customer_search_view AS SELECT pkey AS docid, " + customer_search_columns + " FROM customer");
-        //virtual table for searching addresses
-        executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS customer_search USING fts4(content=\"customer_search_view\", " + customer_search_columns + ")");
-        //triggers to populate virtual table
+        // view representing data inside address_search
+        executeUpdate("CREATE VIEW IF NOT EXISTS customer_search_view AS SELECT pkey AS docid, "
+                + customer_search_columns + " FROM customer");
+        // virtual table for searching addresses
+        executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS customer_search USING fts4(content=\"customer_search_view\", "
+                + customer_search_columns + ")");
+        // triggers to populate virtual table
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_insert AFTER INSERT ON customer BEGIN\n"
-                + "  INSERT INTO customer_search(docid, " + customer_search_columns + ") VALUES "
-                + "(" + customer_search_columns_temp + ");\n"
-                + "END;");
+                + "  INSERT INTO customer_search(docid, " + customer_search_columns + ") VALUES " + "("
+                + customer_search_columns_temp + ");\n" + "END;");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_update BEFORE UPDATE ON customer BEGIN\n"
-                + "  DELETE FROM customer_search WHERE docid=old.pkey;\n"
-                + "END;\n");
+                + "  DELETE FROM customer_search WHERE docid=old.pkey;\n" + "END;\n");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_update_after AFTER UPDATE ON customer BEGIN\n"
-                + "  INSERT INTO customer_search(docid, " + customer_search_columns + ") VALUES "
-                + "(" + customer_search_columns_temp + ");\n"
-                + "END;\n");
+                + "  INSERT INTO customer_search(docid, " + customer_search_columns + ") VALUES " + "("
+                + customer_search_columns_temp + ");\n" + "END;\n");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_delete BEFORE DELETE ON customer BEGIN\n"
-                + "  DELETE FROM customer_search WHERE docid=old.pkey;\n"
-                + "END;\n");
+                + "  DELETE FROM customer_search WHERE docid=old.pkey;\n" + "END;\n");
 
         // item
         executeUpdate("CREATE TABLE IF NOT EXISTS item (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, "
                 + "name VARCHAR(255) NOT NULL, SKU VARCHAR(255) NOT NULL, price VARCHAR(30) NOT NULL, onhand_qty VARCHAR(30) NOT NULL, "
-                + "cost VARCHAR(30) NOT NULL, description TEXT NOT NULL, uom VARCHAR(10), reorder_qty VARCHAR(30) NOT NULL, lastest BOOLEAN NOT NULL, " + datesSql + ")");
+                + "cost VARCHAR(30) NOT NULL, description TEXT NOT NULL, uom VARCHAR(10), reorder_qty VARCHAR(30) NOT NULL, lastest BOOLEAN NOT NULL, "
+                + datesSql + ")");
 
-        //transaction
+        // transaction
         executeUpdate("CREATE TABLE IF NOT EXISTS transaction_ (pkey INTEGER PRIMARY KEY, status VARCHAR(20) NOT NULL, "
                 + "type VARCHAR(20) NOT NULL, modified BOOLEAN NOT NULL, parent_transaction INT REFERENCES transaction_(pkey), "
                 + datesSql + ")");
-        //transaction-item
+        // transaction-item
         executeUpdate("CREATE TABLE IF NOT EXISTS transaction_item (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, "
                 + "item INT REFERENCES item(pkey) NOT NULL, price VARCHAR(30) NOT NULL, adjustment VARCHAR(30) NOT NULL, description TEXT, "
                 + datesSql + ")");
-        //transaction-address
+        // transaction-address
         executeUpdate("CREATE TABLE IF NOT EXISTS transaction_address (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, "
                 + "address INT REFERENCES address(pkey) NOT NULL, " + datesSql + ")");
-        //transaction-billing
+        // transaction-billing
         executeUpdate("CREATE TABLE IF NOT EXISTS transaction_billing (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, "
                 + "billing INT REFERENCES billing(pkey) NOT NULL, " + datesSql + ")");
 
-        //TODO: add indices
-        //TODO: keywords
+        // TODO: add indices
+        // TODO: keywords
 
     }
 
@@ -174,7 +178,7 @@ public final class DB {
 
     /**
      * Closes the database.
-     *
+     * 
      * @pre isOpen == true
      * @post isOpen == false
      */
@@ -188,15 +192,14 @@ public final class DB {
 
     /**
      * Creates and returns a prepared statement given the given sql.
-     *
+     * 
      * @pre isOpen == true
      */
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         return connection.prepareStatement(sql);
     }
 
-    public static ArrayList<HashMap<String, Field>> mapResultSet(ResultSet rs)
-            throws SQLException {
+    public static ArrayList<HashMap<String, Field>> mapResultSet(ResultSet rs) throws SQLException {
         ResultSetMetaData md = rs.getMetaData();
         ArrayList<HashMap<String, Field>> rows = new ArrayList<>();
         while (rs.next()) {
@@ -213,7 +216,7 @@ public final class DB {
 
     /**
      * Starts a transaction in the database.
-     *
+     * 
      * @pre isOpen == true
      * @pre transactionActive() == false
      * @post transactionActive() == true
@@ -223,7 +226,7 @@ public final class DB {
 
     /**
      * Closes a transaction in the database.
-     *
+     * 
      * @pre isOpen == true
      * @pre transactionActive() == true
      * @post transactionActive() == false
@@ -233,7 +236,7 @@ public final class DB {
 
     /**
      * Checks if a transaction is active.
-     *
+     * 
      * @pre isOpen == true
      */
     public boolean transactionActive() {
