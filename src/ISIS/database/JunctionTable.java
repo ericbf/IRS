@@ -37,7 +37,11 @@ public class JunctionTable {
     public void addRecord(int record1, int record2) {
 	HashMap<String, Field> record = new HashMap<>(3);
 	record.put("pkey", new Field(false));
-	record.put(this.type1, new Field(false));
+	Field field1 = new Field(false);
+	field1.setValue(record1);
+	record.put(this.type1, field1);
+	Field field2 = new Field(false);
+	field1.setValue(record2);
 	record.put(this.type2, new Field(false));
 	this.elements.add(record);
     }
