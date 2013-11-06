@@ -8,7 +8,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.Document;
 
 import ISIS.database.Record;
 
@@ -62,24 +61,19 @@ public abstract class ListView<E extends Record> extends View {
 		private String				hint;
 		
 		public HintField() {
-			super();
-			this.addFocusListener(this.new Listener());
-			this.hintShown = true;
+			this("");
 		}
 		
 		public HintField(String hint) {
 			super(hint);
 			this.hint = hint;
+			this.hintShown = true;
+			this.showHint = true;
 			this.addFocusListener(this.new Listener());
 		}
 		
 		public void setShowHint(boolean b) {
 			this.showHint = b;
-		}
-		
-		public HintField(Document dcmnt, String notifyAction, int TOP) {
-			super(dcmnt, notifyAction, TOP);
-			this.addFocusListener(this.new Listener());
 		}
 		
 		@Override
@@ -101,14 +95,16 @@ public abstract class ListView<E extends Record> extends View {
 				HintField.this.setCaretPosition(0);
 				if (HintField.this.getText().length() == 0) {
 					HintField.this.hintShown = true;
-					HintField.this.setText(HintField.this.hint);
+					if (HintField.this.showHint)
+						HintField.this.setText(HintField.this.hint);
 				}
 			}
 		}
 	}
 	
 	public class IRSTableModel extends DefaultTableModel {
-		private String[]	columnTitles;
+		private static final long	serialVersionUID	= 1L;
+		private String[]			columnTitles;
 		
 		public void setColumnTitles(String... titles) {
 			this.columnTitles = titles;
