@@ -368,8 +368,12 @@ INSERT INTO address (active, title, st_address, city, county, state, zip, type, 
 (1,'Warehouse Office & Paper Prod','61556 W 20th Ave','Seattle','King','WA','98104','work','US', 0, 0),
 (1,'Affiliated With Travelodge','63 E Aurora Dr','Orlando','Orange','FL','32804','work','US', 0, 0);
 
+DELETE FROM CUSTOMER;
+INSERT INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) VALUES (1, 1, "hello pass", "hello name", "lname", "email", "note", 0,0);
+
 -- Sample select
-select address.* from (SELECT docid FROM address_search where address_search match "packer ave marin") LEFT JOIN address ON docid=pkey;
+select address.* from (SELECT docid FROM address_search where address_search match "packer") LEFT JOIN address ON docid=pkey;
+SELECT pkey, c.fname AS name, c.fname AS phone FROM (SELECT docid FROM customer_search WHERE customer_search MATCH "hello") LEFT JOIN customer AS c ON docid=c.pkey;
 
 
 DELETE FROM address;
