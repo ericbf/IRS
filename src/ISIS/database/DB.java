@@ -113,7 +113,17 @@ public final class DB {
 		+ "email TEXT NOT NULL, note TEXT NOT NULL, " + datesSql + ")");
 	// sample
 	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
-		+ "VALUES (1, 1, \"hello world\", \"hello world\", \"hello world\", \"a\", \"a\", 0, 0)");
+		+ "VALUES (1, 1, \"hello world\", \"hello world name1\", \"hello world\", \"a\", \"a\", 0, 0)");
+	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
+		+ "VALUES (2, 1, \"person 1 world\", \"Joe\", \"Dickhead\", \"a\", \"a\", 0, 0)");
+	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
+		+ "VALUES (3, 1, \"person 2 world\", \"hello world name111\", \"hello world\", \"a\", \"a\", 0, 0)");
+	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
+		+ "VALUES (4, 1, \"person 3 world\", \"hello world name333\", \"hello world\", \"a\", \"a\", 0, 0)");
+	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
+		+ "VALUES (5, 1, \"person 4 world\", \"hello world name444\", \"hello world\", \"a\", \"a\", 0, 0)");
+	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
+		+ "VALUES (6, 1, \"person 5 world\", \"hello world name555\", \"hello world\", \"a\", \"a\", 0, 0)");
 	// customer-address
 	executeUpdate("CREATE TABLE IF NOT EXISTS customer_address (pkey INTEGER PRIMARY KEY, customer INT REFERENCES customer(pkey) NOT NULL, "
 		+ "address INT REFERENCES address(pkey) NOT NULL, "

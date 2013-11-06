@@ -64,15 +64,7 @@ public class ListCustomers extends ListView<Customer> {
 	c.weightx = 1;
 	this.add(this.searchField, c);
 
-	TableColumn column = new TableColumn();
-	column.setHeaderValue("ID");
-	this.table.addColumn(column);
-	column = new TableColumn();
-	column.setHeaderValue("Name");
-	this.table.addColumn(column);
-	column = new TableColumn();
-	column.setHeaderValue("Phone");
-	this.table.addColumn(column);
+	this.tableModel.setColumnIdentifiers(new String[]{"id", "name", "phone"});
 	this.tableModel.setColumnTitles("id", "name", "phone");
 
 	c = new GridBagConstraints();
@@ -81,6 +73,7 @@ public class ListCustomers extends ListView<Customer> {
 	c.gridwidth = x;
 	c.gridx = x = 0;
 	c.weighty = 1;
+	tableModel.setColumnCount(3);
 	this.add(new JScrollPane(this.table), c);
 
 	try {
@@ -96,12 +89,12 @@ public class ListCustomers extends ListView<Customer> {
 	String searchFieldText = this.searchField.getText();
 	PreparedStatement stmt = null;
 	if (searchFieldText.length() >= 1) {
-	    String sqlQuery = "SELECT pkey,c.fname||c.lname AS name,'' AS phone FROM (SELECT docid FROM customer_search WHERE customer_search MATCH ?) "
+	    String sqlQuery = "SELECT pkey AS id,c.fname||c.lname AS name,'phone' AS phone FROM (SELECT docid FROM customer_search WHERE customer_search MATCH ?) "
 		    + "LEFT JOIN customer AS c ON docid=c.pkey";
 	    stmt = Session.getDB().prepareStatement(sqlQuery);
 	    stmt.setString(1, searchFieldText);
 	} else {
-	    String sqlQuery = "SELECT pkey,c.fname||c.lname AS name,'' AS phone FROM customer";
+	    String sqlQuery = "SELECT pkey AS id,c.fname || ' ' || c.lname AS name,'phone' AS phone FROM customer AS c";
 	    stmt = Session.getDB().prepareStatement(sqlQuery);
 	}
 	// TODO add phone
@@ -118,5 +111,6 @@ public class ListCustomers extends ListView<Customer> {
 	for (Customer c : this.records) {
 	    this.tableModel.addRow(c);
 	}
+	this.tableModel.getDataVector();
     }
 }
