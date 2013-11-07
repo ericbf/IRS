@@ -3,12 +3,9 @@ package ISIS.gui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.DefaultFocusTraversalPolicy;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -81,56 +78,4 @@ public abstract class ListView<E extends Record> extends View {
 	 * Fills the table.
 	 */
 	protected abstract void fillTable();
-	
-	protected class HintField extends JTextField {
-		private static final long	serialVersionUID	= 1L;
-		private boolean				hintShown;
-		private boolean				showHint;
-		private String				hint;
-		
-		public HintField() {
-			this("");
-		}
-		
-		public HintField(String hint) {
-			super(hint);
-			this.hint = hint;
-			this.hintShown = true;
-			this.showHint = true;
-			this.addFocusListener(this.new Listener());
-		}
-		
-		public void setShowHint(boolean b) {
-			this.showHint = b;
-		}
-		
-		@Override
-		public String getText() {
-			if (!this.hintShown) return super.getText();
-			else return "";
-		}
-		
-		class Listener implements FocusListener {
-			
-			@Override
-			public void focusGained(FocusEvent fe) {
-				HintField.this.selectAll();
-				if (HintField.this.hintShown) {
-					HintField.this.setText("");
-				}
-				HintField.this.hintShown = false;
-			}
-			
-			@Override
-			public void focusLost(FocusEvent fe) {
-				HintField.this.setCaretPosition(0);
-				if (HintField.this.getText().length() == 0) {
-					HintField.this.hintShown = true;
-					if (HintField.this.showHint) {
-						HintField.this.setText(HintField.this.hint);
-					}
-				}
-			}
-		}
-	}
 }
