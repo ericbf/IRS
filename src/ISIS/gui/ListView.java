@@ -10,6 +10,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import ISIS.database.Record;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.DefaultFocusTraversalPolicy;
+import java.awt.FocusTraversalPolicy;
+import java.awt.Window;
+import java.sql.SQLException;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 /**
  * Abstract class for views that consist of a list that can be searched.
@@ -25,10 +33,27 @@ public abstract class ListView<E extends Record> extends View {
     public ListView(SplitPane splitPane) {
 	super(splitPane);
 	this.table = new JTable();
-	this.table.setModel(this.tableModel = new IRSTableModel());
 	this.searchField = new HintField("Enter query to search...");
+	this.searchField.addCaretListener(new CaretListener() {
+	    @Override
+	    public void caretUpdate(CaretEvent e) {
+		ListView.this.fillTable();
+	    }
+	});
+	this.setFocusCycleRoot(true);
 	this.setBorder(new EmptyBorder(10, 10, 10, 10));
-	this.setOpaque(false);
+	this.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
+	    @Override
+	    public Component getFirstComponent(Container aContainer) {
+		return ListView.this.searchField;
+	    }
+	});
+
+    }
+
+    protected void setTableModel(IRSTableModel model) {
+	this.tableModel = model;
+	this.table.setModel(model);
     }
 
     /**
@@ -54,6 +79,11 @@ public abstract class ListView<E extends Record> extends View {
     public void cancel() {
 	throw new UnsupportedOperationException("Not supported.");
     }
+
+    /**
+     * Fills the table.
+     */
+    protected abstract void fillTable();
 
     protected class HintField extends JTextField {
 
@@ -111,7 +141,7 @@ public abstract class ListView<E extends Record> extends View {
 	}
     }
 
-    public class IRSTableModel extends DefaultTableModel {
+    public abstract class IRSTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = 1L;
 	private String[] columnTitles;
@@ -120,15 +150,7 @@ public abstract class ListView<E extends Record> extends View {
 	    this.columnTitles = titles;
 	}
 
-	public void addRow(Record record) {
-	    Object[] array = new Object[this.columnTitles.length];
-
-	    for (int i = 0; i < this.columnTitles.length; i++) {
-		array[i] = record.getFieldValue(this.columnTitles[i]);
-	    }
-
-	    super.addRow(array);
-	}
+	public abstract void addRow(Record record);
 
 	@Override
 	public boolean isCellEditable(int row, int column) {

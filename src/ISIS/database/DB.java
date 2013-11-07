@@ -80,7 +80,7 @@ public final class DB {
 	executeUpdate("CREATE VIEW IF NOT EXISTS address_search_view AS SELECT pkey AS docid, "
 		+ address_search_columns + " FROM address");
 	// virtual table for searching addresses
-	executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS address_search USING fts4(content=\"address_search_view\", "
+	executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS address_search USING fts3(content=\"address_search_view\", "
 		+ address_search_columns + ")");
 	// triggers to populate virtual table
 	executeUpdate("CREATE TRIGGER IF NOT EXISTS address_search_insert AFTER INSERT ON address BEGIN\n"
@@ -111,19 +111,6 @@ public final class DB {
 	executeUpdate("CREATE TABLE IF NOT EXISTS customer (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, "
 		+ "password VARCHAR(255) NOT NULL, fname VARCHAR(255) NOT NULL, lname VARCHAR(255) NOT NULL, "
 		+ "email TEXT NOT NULL, note TEXT NOT NULL, " + datesSql + ")");
-	// sample
-	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
-		+ "VALUES (1, 1, \"hello world\", \"hello world name1\", \"hello world\", \"a\", \"a\", 0, 0)");
-	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
-		+ "VALUES (2, 1, \"person 1 world\", \"Joe\", \"Dickhead\", \"a\", \"a\", 0, 0)");
-	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
-		+ "VALUES (3, 1, \"person 2 world\", \"hello world name111\", \"hello world\", \"a\", \"a\", 0, 0)");
-	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
-		+ "VALUES (4, 1, \"person 3 world\", \"hello world name333\", \"hello world\", \"a\", \"a\", 0, 0)");
-	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
-		+ "VALUES (5, 1, \"person 4 world\", \"hello world name444\", \"hello world\", \"a\", \"a\", 0, 0)");
-	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
-		+ "VALUES (6, 1, \"person 5 world\", \"hello world name555\", \"hello world\", \"a\", \"a\", 0, 0)");
 	// customer-address
 	executeUpdate("CREATE TABLE IF NOT EXISTS customer_address (pkey INTEGER PRIMARY KEY, customer INT REFERENCES customer(pkey) NOT NULL, "
 		+ "address INT REFERENCES address(pkey) NOT NULL, "
@@ -138,18 +125,18 @@ public final class DB {
 	String customer_search_columns = "fname, lname, email, note";
 	String customer_search_columns_temp = "new."
 		+ customer_search_columns.replaceAll("\\s", " new.");
-	// view representing data inside address_search
+	// view representing data inside customer_search
 	executeUpdate("CREATE VIEW IF NOT EXISTS customer_search_view AS SELECT pkey AS docid, "
 		+ customer_search_columns + " FROM customer");
-	// virtual table for searching addresses
-	executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS customer_search USING fts4(content=\"customer_search_view\", "
+	// virtual table for searching customers
+	executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS customer_search USING fts3(content=\"customer_search_view\", "
 		+ customer_search_columns + ")");
 	// triggers to populate virtual table
 	executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_insert AFTER INSERT ON customer BEGIN\n"
 		+ "  INSERT INTO customer_search(docid, "
 		+ customer_search_columns
 		+ ") VALUES "
-		+ "(new.pkey, "
+		+ "(new.rowid, "
 		+ customer_search_columns_temp + ");\n" + "END;");
 	executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_update BEFORE UPDATE ON customer BEGIN\n"
 		+ "  DELETE FROM customer_search WHERE docid=old.pkey;\n"
@@ -158,11 +145,24 @@ public final class DB {
 		+ "  INSERT INTO customer_search(docid, "
 		+ customer_search_columns
 		+ ") VALUES "
-		+ "("
+		+ "(new.rowid, "
 		+ customer_search_columns_temp + ");\n" + "END;\n");
 	executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_delete BEFORE DELETE ON customer BEGIN\n"
 		+ "  DELETE FROM customer_search WHERE docid=old.pkey;\n"
 		+ "END;\n");
+	// sample data
+	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
+		+ "VALUES (1, 1, \"hello pass\", \"hello name\", \"lname\", \"email\", \"note\", 0,0)");
+	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
+		+ "VALUES (2, 1, \"person 1 world\", \"Joe\", \"Dickhead\", \"a\", \"a\", 0, 0)");
+	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
+		+ "VALUES (3, 1, \"person 2 world\", \"hello world name111\", \"hello world\", \"a\", \"a\", 0, 0)");
+	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
+		+ "VALUES (4, 1, \"person 3 world\", \"hello world name333\", \"hello world\", \"a\", \"a\", 0, 0)");
+	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
+		+ "VALUES (5, 1, \"person 4 world\", \"hello world name444\", \"hello world\", \"a\", \"a\", 0, 0)");
+	executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) "
+		+ "VALUES (6, 1, \"person 5 world\", \"hello world name555\", \"hello world\", \"a\", \"a\", 0, 0)");
 
 	// item
 	executeUpdate("CREATE TABLE IF NOT EXISTS item (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, "
