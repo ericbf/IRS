@@ -21,6 +21,8 @@ public abstract class ListView<E extends Record> extends View {
 	protected HintField			searchField;
 	protected ArrayList<E>		records;
 	protected IRSTableModel		tableModel;
+	protected String[]			buttonNames			= { "Add", "Edit",
+			"Toggle Active"						};
 	
 	public ListView(SplitPane splitPane) {
 		super(splitPane);
@@ -42,7 +44,6 @@ public abstract class ListView<E extends Record> extends View {
 				return ListView.this.searchField;
 			}
 		});
-		
 	}
 	
 	protected void setTableModel(IRSTableModel model) {

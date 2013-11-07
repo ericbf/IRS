@@ -37,8 +37,10 @@ public class ListCustomers extends ListView<Customer> {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
 		
-		JButton addButton = new JButton("Add"), editButton = new JButton("Edit"), activeButton = new JButton(
-				"Toggle Active");
+		int buttonNameSel = 0;
+		JButton addButton = new JButton(this.buttonNames[buttonNameSel++]);
+		JButton editButton = new JButton(this.buttonNames[buttonNameSel++]);
+		JButton activeButton = new JButton(this.buttonNames[buttonNameSel++]);
 		
 		int x = 0, y = 0;
 		
@@ -81,8 +83,6 @@ public class ListCustomers extends ListView<Customer> {
 			}
 		});
 		
-		this.tableModel.setColumnIdentifiers(new String[] { "id", "name",
-				"phone" });
 		this.tableModel.setColumnTitles("id", "name", "phone");
 		
 		c = new GridBagConstraints();
@@ -91,7 +91,6 @@ public class ListCustomers extends ListView<Customer> {
 		c.gridwidth = x;
 		c.gridx = x = 0;
 		c.weighty = 1;
-		this.tableModel.setColumnCount(3);
 		this.add(new JScrollPane(this.table), c);
 		
 		this.fillTable();
