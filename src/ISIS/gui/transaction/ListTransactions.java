@@ -1,4 +1,4 @@
-package ISIS.gui.customer;
+package ISIS.gui.transaction;
 
 import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
