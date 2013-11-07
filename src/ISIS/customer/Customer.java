@@ -25,7 +25,7 @@ import ISIS.misc.Picture;
  */
 public class Customer extends Record {
 	
-	private ArrayList<Address>	addresses;
+	// private ArrayList<Address> addresses;
 	
 	/**
 	 * Public constructor. Take a Customer database key, and has the option to

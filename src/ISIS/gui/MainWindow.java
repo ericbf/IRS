@@ -23,6 +23,7 @@ public class MainWindow extends JFrame {
 	private SplitPane			inventoryPane;
 	private SplitPane			customerPane;
 	private SplitPane			reportPane;
+	private SplitPane			transactionPane;
 	
 	public static void main(String args[]) {
 		
@@ -99,20 +100,22 @@ public class MainWindow extends JFrame {
 	
 	public MainWindow() {
 		super("IRS");
-		inventoryPane = new SplitPane();
-		inventoryPane.push(new ListItems(inventoryPane),
+		this.inventoryPane = new SplitPane();
+		this.inventoryPane.push(new ListItems(this.inventoryPane),
 				SplitPane.LayoutType.HORIZONTAL);
-		customerPane = new SplitPane();
-		customerPane.push(new ListCustomers(inventoryPane),
+		this.customerPane = new SplitPane();
+		this.customerPane.push(new ListCustomers(this.inventoryPane),
 				SplitPane.LayoutType.HORIZONTAL);
-		// reportPane = new SplitPane();
+		this.reportPane = new SplitPane();
 		// reportPane.push(new ListItems(), SplitPane.LayoutType.HORIZONTAL);
-		// transactionPane = new SplitPane();
-		// transactionPane.push(new ListItems(),
-		// SplitPane.LayoutType.HORIZONTAL);
+		this.reportPane.push(null, SplitPane.LayoutType.HORIZONTAL);
+		this.transactionPane = new SplitPane();
+		this.transactionPane.push(null, SplitPane.LayoutType.HORIZONTAL);
+		// transactionPane.push(new
+		// ListTransaction(),SplitPane.LayoutType.HORIZONTAL);
 		JTabbedPane tabs = new JTabbedPane(JTabbedPane.LEFT);
-		tabs.add("Customers", customerPane);
-		tabs.add("Inventory", inventoryPane);
-		setContentPane(tabs);
+		tabs.add("Customers", this.customerPane);
+		tabs.add("Inventory", this.inventoryPane);
+		this.setContentPane(tabs);
 	}
 }

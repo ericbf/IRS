@@ -172,6 +172,5 @@ public class Transaction extends Record {
 	 * @pre getItems().size() > 0
 	 * @post getStatus() == status.Finalized
 	 */
-	@Override
-	public void finalize() {}
+	public void finalizeTransaction() {}
 }
