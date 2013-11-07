@@ -192,6 +192,23 @@ public class Customer extends Record {
     }
 
     /**
+     * Returns the primary address, or null if there are no addresses. If no address is marked primary, then one is picked arbitrarily.
+     * @return
+     */
+    public Address getPrimaryAddress() throws SQLException{
+        ArrayList<Address> addresses = this.getAddresses();
+        if (addresses.size() == 0) {
+            return null;
+        }
+        for (Address address : addresses) {
+            if (address.getPrimary()) {
+                return address;
+            }
+        }
+        return addresses.get(0);
+    }
+
+    /**
      * Gets all addresses associated with the customer record.
      */
     public ArrayList<Address> getAddresses() throws SQLException {
@@ -203,7 +220,7 @@ public class Customer extends Record {
         } catch (UninitializedFieldException e) {
             return this.addresses; // it hasn't been; nothing to find.
         }
-        String sql = "SELECT a.* FROM customer_address AS ca LEFT JOIN address AS a ON ca.address=a.pkey WHERE cp.customer=?";
+        String sql = "SELECT a.* FROM customer_address AS ca LEFT JOIN address AS a ON ca.address=a.pkey WHERE ca.customer=?";
         try {
             PreparedStatement stmt = Session.getDB().prepareStatement(sql);
             stmt.setInt(1, this.getPkey());

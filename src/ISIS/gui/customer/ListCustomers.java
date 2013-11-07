@@ -79,10 +79,11 @@ public class ListCustomers extends ListView<Customer> {
                     Phone num = customer.getPrimaryNum();
                     if (num != null) {
                         array[col++] = num.getNumber();
-                    } else {
-                        array[col++] = "";
                     }
                     array[col++] = customer.getEmail();
+                    if (customer.getPrimaryAddress() != null) {
+                        array[col++] = customer.getPrimaryAddress().getZIP();
+                    }
                     super.addRow(array);
                 } catch (SQLException e) {
                     ErrorLogger.error(e, "Failed to display a row.", true, true);

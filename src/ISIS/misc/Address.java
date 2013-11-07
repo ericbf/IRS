@@ -52,7 +52,7 @@ public class Address extends Record {
      * gets the record's primary status
      */
     public boolean getPrimary() {
-        return ((Integer) this.getFieldValue("primary")) == 1;
+        return ((Integer) this.getFieldValue("primary_status")) == 1;
 
     }
 
