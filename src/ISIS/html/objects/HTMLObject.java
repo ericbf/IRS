@@ -37,7 +37,7 @@ public class HTMLObject {
 	
 	protected HTMLObject(String text) {
 		type = "plain text";
-		if (text.isEmpty() || text == null)
+		if (text == null || text.isEmpty())
 			throw new NullPointerException(
 					"This HTML object cannot be empty of text: " + type);
 		this.text = text;

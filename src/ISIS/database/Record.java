@@ -111,7 +111,7 @@ public abstract class Record {
      * Maps our pkey-based select to a hashmap, leveraging the method in the DB class. WARNING: All fields are set to
      * modifiable; you have to fix it yourself.
      */
-    protected final static HashMap<String, Field> mapResultSet(ResultSet rs)
+    protected static HashMap<String, Field> mapResultSet(ResultSet rs)
 	    throws SQLException, RecordNotFoundException {
 
 	ArrayList<HashMap<String, Field>> result = DB.mapResultSet(rs);
@@ -210,15 +210,15 @@ public abstract class Record {
 	if (this.getField("pkey").getWasInitialized() == false) { // New record
 	    // generate sql--something like INSERT INTO tab (col1, col2) VALUES
 	    // (?, ?)
-	    String sql = "INSERT INTO " + this.tableName + "(" + columns.get(0);
-	    String params = "?";
+            StringBuilder sql = new StringBuilder("INSERT INTO " + this.tableName + "(" + columns.get(0));
+	    StringBuilder params = new StringBuilder("?");
 	    for (int i = 1; i < columns.size(); ++i) {
-		sql += ", " + columns.get(i);
-		params += ", ?";
+		sql.append(", ").append(columns.get(i));
+		params.append(", ?");
 	    }
-	    sql += ") VALUES (" + params + ")";
+	    sql.append(") VALUES (").append(params.toString()).append(")");
 
-	    PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+	    PreparedStatement stmt = Session.getDB().prepareStatement(sql.toString());
 
 	    // bind columns
 	    for (int i = 0; i < columns.size(); ++i) {

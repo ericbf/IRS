@@ -30,7 +30,7 @@ public final class SplitPane extends JSplitPane {
 	 * @post views.size() > 0 == true
 	 */
 	protected final void push(View view, LayoutType layout) {
-		if (stack.size() == 0) {
+		if (stack.isEmpty()) {
 			setLeftComponent(view);
 			setRightComponent(null);
 			setDividerSize(0);
@@ -48,7 +48,7 @@ public final class SplitPane extends JSplitPane {
 	 * @pre views.size() > 0 == true
 	 */
 	protected final void pop() {
-		if (stack.size() == 0) System.out.println("You stupid");
+		if (stack.isEmpty()) System.out.println("You stupid");
 		else {
 			
 		}

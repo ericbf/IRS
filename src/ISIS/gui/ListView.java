@@ -13,9 +13,6 @@ import ISIS.database.Record;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.DefaultFocusTraversalPolicy;
-import java.awt.FocusTraversalPolicy;
-import java.awt.Window;
-import java.sql.SQLException;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
