@@ -50,6 +50,7 @@ public abstract class ListView<E extends Record> extends View {
 	protected void setTableModel(IRSTableModel model) {
 		this.tableModel = model;
 		this.table.setModel(model);
+		this.table.setFocusable(false);
 	}
 	
 	/**
