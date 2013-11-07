@@ -106,15 +106,37 @@ public final class DB {
         // customer-search
         String customer_search_columns = "pkey, fname, lname, email, note";
         String customer_search_columns_temp = "new." + customer_search_columns.replaceAll("\\s", " new.");
+        String phoneNoSql = "SELECT group_concat(number, ' ') FROM customer_phone AS cp LEFT JOIN phone AS p ON cp.phone=p.pkey WHERE cp" + ".customer=";
+        String customer_search_insert = "INSERT INTO customer_search(docid, " + customer_search_columns + ", phone) VALUES " + "(new.rowid, " +
+                "" + customer_search_columns_temp + ", (" + phoneNoSql + "new.rowid));";
+        String customer_search_phone_insert = "INSERT INTO customer_search(docid, " + customer_search_columns + ", " +
+                "phone)  " + "SELECT csv.* FROM customer_search_view AS csv WHERE csv.pkey=new.customer;";
         // view representing data inside customer_search
-        executeUpdate("CREATE VIEW IF NOT EXISTS customer_search_view AS SELECT pkey AS docid, " + customer_search_columns + " FROM customer");
+        executeUpdate("CREATE VIEW IF NOT EXISTS customer_search_view AS SELECT pkey AS docid, " + customer_search_columns + ", " +
+                              "(" + phoneNoSql + "=customer.pkey)" +
+                              " FROM customer");
         // virtual table for searching customers
-        executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS customer_search USING fts3(content=\"customer_search_view\", " + customer_search_columns + ")");
+        executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS customer_search USING fts3(content=\"customer_search_view\", " +
+                              "" + customer_search_columns + ", phone)");
         // triggers to populate virtual table
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_insert AFTER INSERT ON customer BEGIN\n" + "  INSERT INTO customer_search(docid, " + customer_search_columns + ") VALUES " + "(new.rowid, " + customer_search_columns_temp + ");\n" + "END;");
+        System.out.println(customer_search_insert);
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_insert AFTER INSERT ON customer BEGIN\n" + customer_search_insert + "END;");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_update BEFORE UPDATE ON customer BEGIN\n" + "  DELETE FROM customer_search WHERE docid=old.pkey;\n" + "END;\n");
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_update_after AFTER UPDATE ON customer BEGIN\n" + "  INSERT INTO customer_search(docid, " + customer_search_columns + ") VALUES " + "(new.rowid, " + customer_search_columns_temp + ");\n" + "END;\n");
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_update_after AFTER UPDATE ON customer BEGIN\n" +
+                              customer_search_insert + "END;\n");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_delete BEFORE DELETE ON customer BEGIN\n" + "  DELETE FROM customer_search WHERE docid=old.pkey;\n" + "END;\n");
+
+//        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_phone_update BEFORE INSERT555 ON customer_phone BEGIN\n" + " DELETE " +
+//                              "FROM " + "customer_search WHERE docid=old.customer;\n" + "END;\n");
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_phone_insert AFTER INSERT ON customer_phone BEGIN\n" + "DELETE FROM " +
+                              "customer_search WHERE docid=new.customer;\n" +
+                              customer_search_phone_insert + "END;");
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_phone_update BEFORE UPDATE ON customer_phone BEGIN\n" + " DELETE " +
+                              "FROM " + "customer_search WHERE docid=old.customer;\n" + "END;\n");
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_phone_update_after AFTER UPDATE ON customer_phone BEGIN\n" +
+                              customer_search_phone_insert + "END;\n");
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_phone_delete BEFORE DELETE ON customer_phone BEGIN\n" + "  DELETE FROM " +
+                              "customer_search WHERE docid=old.customer;\n" + "END;\n");
         // sample data
         //        executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) " + "VALUES (1, 1, \"hello pass\", \"hello name\", \"lname\", \"email\", \"note\", 0,0)");
         //        executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) " + "VALUES (2, 1, \"person 1 world\", \"Joe\", \"Dickhead\", \"a\", \"a\", 0, 0)");
