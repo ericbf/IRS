@@ -72,8 +72,8 @@ public class ListItems extends ListView<Item> {
 				super.addRow(array);
 			}
 		});
-		
 		this.tableModel.setColumnTitles("id", "other", "header", "here");
+		this.fillTable();
 		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -82,8 +82,6 @@ public class ListItems extends ListView<Item> {
 		c.gridx = x = 0;
 		c.weighty = 1;
 		this.add(new JScrollPane(this.table), c);
-		
-		this.fillTable();
 	}
 	
 	@Override

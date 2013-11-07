@@ -10,6 +10,7 @@ import javax.swing.SwingUtilities;
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.ListCustomers;
 import ISIS.gui.item.ListItems;
+import ISIS.gui.transaction.ListTransactions;
 import ISIS.session.Session;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
@@ -22,8 +23,9 @@ public class MainWindow extends JFrame {
 	private static final long	serialVersionUID	= 1L;
 	private SplitPane			inventoryPane;
 	private SplitPane			customerPane;
-	private SplitPane			reportPane;
 	private SplitPane			transactionPane;
+	
+	// private SplitPane reportPane;
 	
 	public static void main(String args[]) {
 		
@@ -49,7 +51,7 @@ public class MainWindow extends JFrame {
 		try {
 			Session.baseSession();
 		} catch (SQLException ex) {
-			System.out.println("well shit");
+			System.out.println("well darn");
 		}
 		
 		try {
@@ -103,19 +105,23 @@ public class MainWindow extends JFrame {
 		this.inventoryPane = new SplitPane();
 		this.inventoryPane.push(new ListItems(this.inventoryPane),
 				SplitPane.LayoutType.HORIZONTAL);
+		
 		this.customerPane = new SplitPane();
 		this.customerPane.push(new ListCustomers(this.inventoryPane),
 				SplitPane.LayoutType.HORIZONTAL);
-		this.reportPane = new SplitPane();
-		// reportPane.push(new ListItems(), SplitPane.LayoutType.HORIZONTAL);
-		this.reportPane.push(null, SplitPane.LayoutType.HORIZONTAL);
+		
 		this.transactionPane = new SplitPane();
-		this.transactionPane.push(null, SplitPane.LayoutType.HORIZONTAL);
-		// transactionPane.push(new
-		// ListTransaction(),SplitPane.LayoutType.HORIZONTAL);
+		this.transactionPane.push(new ListTransactions(this.transactionPane),
+				SplitPane.LayoutType.HORIZONTAL);
+		
+		// this.reportPane = new SplitPane();
+		// this.reportPane.push(new ReportSelectorView(this.reportPane),
+		// SplitPane.LayoutType.HORIZONTAL);
+		
 		JTabbedPane tabs = new JTabbedPane(JTabbedPane.LEFT);
 		tabs.add("Customers", this.customerPane);
 		tabs.add("Inventory", this.inventoryPane);
+		tabs.add("Transactions", this.transactionPane);
 		this.setContentPane(tabs);
 	}
 }

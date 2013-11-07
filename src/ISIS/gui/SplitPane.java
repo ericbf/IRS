@@ -10,6 +10,7 @@ import javax.swing.JSplitPane;
  */
 public final class SplitPane extends JSplitPane {
 	private static final long	serialVersionUID	= 1L;
+	private final int			defaultDividerSize;
 	private int					stackPointer;
 	ArrayList<View>				stack;
 	
@@ -17,6 +18,7 @@ public final class SplitPane extends JSplitPane {
 		this.stack = new ArrayList<>();
 		this.stackPointer = -1;
 		this.setOpaque(false);
+		this.defaultDividerSize = this.getDividerSize();
 	}
 	
 	/**
@@ -83,8 +85,7 @@ public final class SplitPane extends JSplitPane {
 	 */
 	@Override
 	public void setRightComponent(Component comp) {
-		if (comp != null) this
-				.setDividerSize(new JSplitPane().getDividerSize());
+		if (comp != null) this.setDividerSize(this.defaultDividerSize);
 		else this.setDividerSize(0);
 		super.setRightComponent(comp);
 	}
