@@ -117,6 +117,57 @@ public abstract class ListView<E extends Record> extends View {
 				}
 			}
 		});
+		this.table.addKeyListener(new KeyListener() {
+			private final int	META	= 157, DOWN = 40, UP = 38;
+			private boolean		meta;
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				switch (e.getKeyCode()) {
+					case META:
+						this.meta = false;
+						break;
+				}
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				switch (e.getKeyCode()) {
+					case META:
+						this.meta = true;
+						break;
+					case DOWN:
+						if (ListView.this.table.getRowCount() > 0) {
+							if (this.meta) {
+								int rowCount = ListView.this.table
+										.getRowCount() - 1;
+								ListView.this.table.setRowSelectionInterval(
+										rowCount, rowCount);
+							} else if (ListView.this.table.getSelectedRow() == -1) {
+								ListView.this.table.setRowSelectionInterval(0,
+										0);
+							}
+						}
+						break;
+					case UP:
+						if (ListView.this.table.getRowCount() > 0) {
+							if (this.meta) {
+								ListView.this.table.setRowSelectionInterval(0,
+										0);
+							} else if (ListView.this.table.getSelectedRow() == -1) {
+								int rowCount = ListView.this.table
+										.getRowCount() - 1;
+								ListView.this.table.setRowSelectionInterval(
+										rowCount, rowCount);
+							}
+						}
+						break;
+				}
+			}
+		});
 		this.setFocusCycleRoot(true);
 		this.setBorder(new EmptyBorder(4, 0, 10, 5));
 		this.setOpaque(false);
