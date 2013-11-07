@@ -2,6 +2,7 @@ package ISIS.database;
 
 import ISIS.customer.Customer;
 import ISIS.gui.ErrorLogger;
+import ISIS.misc.Address;
 import ISIS.misc.Phone;
 
 import java.sql.*;
@@ -56,6 +57,21 @@ public final class DB {
     }
 
     /**
+     * For building a preparedstatement's sql.
+     */
+    public static String preparedArgsBuilder(int argCount, String argFormat) {
+        if (argCount == 0) {
+            return "";
+        }
+        StringBuilder args = new StringBuilder();
+        args.append(argFormat);
+        for(int i = 1; i < argCount; ++i) {
+            args.append(", ").append(argFormat);
+        }
+        return args.toString();
+    }
+
+    /**
      * Initialize tables
      */
     public void initializeDB() throws SQLException {
@@ -76,8 +92,10 @@ public final class DB {
                               "type VARCHAR(255) NOT NULL, " + "number VARCHAR(255) NOT NULL, " + datesSql + ")");
 
         // address
-        executeUpdate("CREATE TABLE IF NOT EXISTS address (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, title VARCHAR(255) NOT NULL, " + "city VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, zip VARCHAR(10) NOT NULL, county VARCHAR(255) NOT NULL, " +
-                              "country VARCHAR(3) NOT NULL, st_address TEXT NOT NULL, type VARCHAR(255) NOT NULL, " + datesSql + ")");
+        executeUpdate("CREATE TABLE IF NOT EXISTS address (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " +
+                              "primary_status BOOLEAN NOT NULL, title VARCHAR(255) NOT NULL, " + "city VARCHAR(255) NOT NULL, " +
+                              "state VARCHAR(255) NOT NULL, county VARCHAR(255) NOT NULL, country VARCHAR(3) NOT NULL, " +
+                              "st_address TEXT NOT NULL, zip VARCHAR(255) NOT NULL, " + datesSql + ")");
 
         // billing
         executeUpdate("CREATE TABLE IF NOT EXISTS billing (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " + "number VARCHAR(255), expiration VARCHAR(5), CCV VARCHAR(5) NOT NULL, " + "address INT REFERENCES address(pkey), " + datesSql + ")");
@@ -101,7 +119,7 @@ public final class DB {
         String customer_search_insert = "INSERT INTO customer_search SELECT csv.* FROM customer_search_view AS csv WHERE csv.pkey=";
         // view representing data inside customer_search
         executeUpdate("CREATE VIEW IF NOT EXISTS customer_search_view AS SELECT pkey AS docid, " + customer_search_columns + ", " +
-                              "(" + phoneNoSql + "customer.pkey), ("+addressSql+"customer.pkey) FROM customer");
+                              "(" + phoneNoSql + "customer.pkey), (" + addressSql + "customer.pkey) FROM customer");
         // virtual table for searching customers
         executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS customer_search USING fts3(content=\"customer_search_view\", " +
                               "" + customer_search_columns + ", phone, address)");
@@ -146,15 +164,19 @@ public final class DB {
 
     public void sampleData() throws SQLException {
         Customer customer = new Customer("Joe", "Doe", "sammich@penis.info", "This is a note.", "this is a password?", true);
-        customer.addPhoneNum(new Phone("404040404", true, Phone.PhoneType.HOME));
-        customer.addPhoneNum(new Phone("987654321", true, Phone.PhoneType.HOME));
+        customer.addPhoneNum(new Phone("404040404", false, Phone.PhoneType.HOME));
+        customer.addPhoneNum(new Phone("987654321", false, Phone.PhoneType.HOME));
         customer.addPhoneNum(new Phone("123456789", true, Phone.PhoneType.HOME));
         customer.save();
         customer = new Customer("Sammich", "Bob", "whuh@what.com", "This is a note.", "this is a password?", true);
-        customer.addPhoneNum(new Phone("301231213", true, Phone.PhoneType.HOME));
+        Phone asdf = new Phone("301231213", true, Phone.PhoneType.HOME);
+        customer.addPhoneNum(asdf);
+        customer.save();
+        customer.removePhoneNum(asdf);
         customer.save();
         customer = new Customer("Jizzle", "Dizzle", "cookies@gmail.com", "This is a note.", "this is a password?", true);
         customer.addPhoneNum(new Phone("56565656", true, Phone.PhoneType.HOME));
+        customer.addAddress(new Address(true, true, "mars", "aliens", "9001", "state", "city", "county", "this is pretty unique huh"));
         customer.save();
     }
 

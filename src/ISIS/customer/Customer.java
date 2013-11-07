@@ -27,8 +27,10 @@ import java.util.HashMap;
  */
 public class Customer extends Record {
 
-    // private ArrayList<Address> addresses;
-    private ArrayList<Phone> numbers = null;
+    boolean addressesInitialized = false, numbersInitialized = false;
+    private ArrayList<Address> addresses = new ArrayList<>();
+    private ArrayList<Address> addressesToRemove = new ArrayList<>();
+    private ArrayList<Phone> numbers = new ArrayList<>();
     private ArrayList<Phone> numbersToRemove = new ArrayList<>();
 
     /**
@@ -82,40 +84,84 @@ public class Customer extends Record {
 
     @Override
     protected void postSave() throws SQLException {
-        //save any new phone numbers
-        if (this.numbers == null) {
-            return;
-        }
-        ArrayList<Integer> keys = new ArrayList<>(this.numbers.size());
-        StringBuilder args = new StringBuilder();
-        for (Phone number : this.numbers) {
+        //delete removed numbers
+        if (numbersToRemove.size() > 0) {
+            String sql = "DELETE FROM customer_phone WHERE phone IN (" + DB.preparedArgsBuilder(this.numbersToRemove.size(), "?") + ") AND customer=?";
             try {
-                number.save();
-                if (args.length() == 0) {
-                    args.append("(?, ?)");
-                } else {
-                    args.append(", (?, ?)");
+                PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+                int i = 1;
+                for (; i < (this.numbersToRemove.size() + 1); ++i) {
+                    stmt.setInt(i, this.numbersToRemove.get(i - 1).getPkey());
                 }
-                keys.add(number.getPkey());
+                stmt.setInt(i, this.getPkey());
+                stmt.executeUpdate();
             } catch (SQLException e) {
-                ErrorLogger.error(e, "Saving a phone number failed.", true, true);
+                ErrorLogger.error(e, "Could not remove phone numbers.", true, true);
                 throw e;
             }
-        } if (keys.size() < 1) {
-            return;
         }
-        String sql = "INSERT INTO customer_phone (customer, phone) VALUES " + args.toString();
-        try {
-            PreparedStatement stmt = Session.getDB().prepareStatement(sql);
-            int i = 1;
-            for (Integer key : keys) {
-                stmt.setInt(i++, this.getPkey());
-                stmt.setInt(i++, key);
+
+        //save any new phone numbers
+        if (this.numbers.size() > 0) {
+            try {
+                String sql = "INSERT INTO customer_phone (customer, phone) VALUES " + DB.preparedArgsBuilder(this.numbers.size(), "(?, ?)");
+                PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+                int i = 1;
+                while (i < ((this.numbers.size()) * 2 + 1)) {
+                    stmt.setInt(i++, this.getPkey());
+                    try {
+                        this.numbers.get(i / 2 - 1).save();
+                    } catch (SQLException e) {
+                        ErrorLogger.error(e, "Saving a phone number failed.", true, true);
+                        throw e;
+                    }
+                    stmt.setInt(i++, this.numbers.get(i / 2 - 1).getPkey());
+                }
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                ErrorLogger.error(e, "Could not save phone numbers.", true, true);
+                throw e;
             }
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            ErrorLogger.error(e, "Could not save phone numbers.", true, true);
-            throw e;
+        }
+
+        //delete removed numbers
+        if (addressesToRemove.size() > 0) {
+            String sql = "DELETE FROM customer_address WHERE address IN (" + DB.preparedArgsBuilder(this.addressesToRemove.size(), "?") + ") AND customer=?";
+            try {
+                PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+                int i = 1;
+                for (; i < (this.addressesToRemove.size() + 1); ++i) {
+                    stmt.setInt(i, this.addressesToRemove.get(i - 1).getPkey());
+                }
+                stmt.setInt(i, this.getPkey());
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                ErrorLogger.error(e, "Could not remove addresses.", true, true);
+                throw e;
+            }
+        }
+
+        //save any new addresses
+        if (this.addresses.size() > 0) {
+            try {
+                String sql = "INSERT INTO customer_address (customer, address) VALUES " + DB.preparedArgsBuilder(this.addresses.size(), "(?, ?)");
+                PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+                int i = 1;
+                while (i < ((this.addresses.size()) * 2 + 1)) {
+                    stmt.setInt(i++, this.getPkey());
+                    try {
+                        this.addresses.get(i / 2 - 1).save();
+                    } catch (SQLException e) {
+                        ErrorLogger.error(e, "Saving an address failed.", true, true);
+                        throw e;
+                    }
+                    stmt.setInt(i++, this.addresses.get(i / 2 - 1).getPkey());
+                }
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                ErrorLogger.error(e, "Could not save addresses.", true, true);
+                throw e;
+            }
         }
     }
 
@@ -123,6 +169,7 @@ public class Customer extends Record {
      * Adds an address to the customer record.
      */
     public void addAddress(Address address) {
+        this.addresses.add(address);
     }
 
     /**
@@ -132,11 +179,6 @@ public class Customer extends Record {
      * @post getPhoneNums().contains(phone) == true
      */
     public void addPhoneNum(Phone phone) {
-//        if(this.getPkey())
-        this.getPhoneNums();
-        if (this.numbers == null) {
-            throw new RecordSaveException("Couldn't add new phone number: couldn't fetch phone numbers.");
-        }
         this.numbers.add(phone);
     }
 
@@ -152,8 +194,28 @@ public class Customer extends Record {
     /**
      * Gets all addresses associated with the customer record.
      */
-    public ArrayList<Address> getAddresses() {
-        return null;
+    public ArrayList<Address> getAddresses() throws SQLException {
+        if (this.addressesInitialized) {
+            return this.addresses;
+        }
+        try {
+            this.getPkey(); //check if the record has ever been saved.
+        } catch (UninitializedFieldException e) {
+            return this.addresses; // it hasn't been; nothing to find.
+        }
+        String sql = "SELECT a.* FROM customer_address AS ca LEFT JOIN address AS a ON ca.address=a.pkey WHERE cp.customer=?";
+        try {
+            PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+            stmt.setInt(1, this.getPkey());
+            ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt.executeQuery());
+            for (HashMap<String, Field> result : results) {
+                this.addresses.add(new Address(result));
+            }
+            return this.addresses;
+        } catch (SQLException e) {
+            ErrorLogger.error(e, "Failed to retrieve addresses.", true, true);
+            throw e;
+        }
     }
 
     /**
@@ -216,37 +278,34 @@ public class Customer extends Record {
      * Gets all phone numbers and information associated with the numbers from
      * the customer record. Returns empty list on failure.
      */
-    public ArrayList<Phone> getPhoneNums() {
-        if (this.numbers != null) {
+    public ArrayList<Phone> getPhoneNums() throws SQLException {
+        if (this.numbersInitialized) {
             return this.numbers;
         }
         try {
             this.getPkey(); //check if the record has ever been saved.
         } catch (UninitializedFieldException e) {
-            this.numbers = new ArrayList<>();
-            return this.numbers;
+            return this.numbers; // it hasn't been; nothing to find.
         }
         String sql = "SELECT p.* FROM customer_phone AS cp LEFT JOIN phone AS p ON cp.phone=p.pkey " + "WHERE cp.customer=?";
         try {
             PreparedStatement stmt = Session.getDB().prepareStatement(sql);
             stmt.setInt(1, this.getPkey());
             ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt.executeQuery());
-            ArrayList<Phone> numbers = new ArrayList<>(results.size());
             for (HashMap<String, Field> result : results) {
-                numbers.add(new Phone(result));
+                this.numbers.add(new Phone(result));
             }
-            this.numbers = numbers;
             return this.numbers;
         } catch (SQLException e) {
             ErrorLogger.error(e, "Failed to retrieve phone numbers.", true, true);
-            return new ArrayList<>();
+            throw e;
         }
     }
 
     /**
      * Gets the primary phone number. Returns null if there are no numbers, or an arbitrary number if there is no primary.
      */
-    public Phone getPrimaryNum() {
+    public Phone getPrimaryNum() throws SQLException {
         for (Phone number : this.getPhoneNums()) {
             if (number.getPrimary()) {
                 return number;
@@ -270,7 +329,7 @@ public class Customer extends Record {
      * Gets the active status of the Customer.
      */
     public boolean isActive() {
-        return (((Integer) this.getFieldValue("active")) == 1 ? true : false);
+        return ((Integer) this.getFieldValue("active")) == 1;
     }
 
     /**
@@ -287,6 +346,16 @@ public class Customer extends Record {
      * @post getAddresses().contains(address) == false
      */
     public void removeAddress(Address address) {
+        if (this.addresses.contains(address)) {
+            this.addresses.remove(address);
+            try {  // check if address is stored, if not don't add it to the list to be removed from db
+                address.getPkey(); //throws uninit'd field
+                this.addresses.add(address);
+            } catch (UninitializedFieldException e) {
+            }
+        } else {
+            throw new RecordSaveException("Could not remove phone number: couldn't find phone number to remove.");
+        }
     }
 
     /**
@@ -296,13 +365,14 @@ public class Customer extends Record {
      * @post getPhoneNums().contains(phone) == false
      */
     public void removePhoneNum(Phone phone) {
-        getPhoneNums();
-        if (this.numbers == null) {
-            throw new RecordSaveException("Could not remove phone number: couldn't fetch phone numbers.");
-        } else {
-            if (this.numbers.contains(phone)) {
+        if (this.numbers.contains(phone)) {
+            this.numbers.remove(phone);
+            try {  // check if number is stored, if not don't add it to the list to be removed from db
+                phone.getPkey(); //throws uninit'd field
                 this.numbersToRemove.add(phone);
+            } catch (UninitializedFieldException e) {
             }
+        } else {
             throw new RecordSaveException("Could not remove phone number: couldn't find phone number to remove.");
         }
     }
