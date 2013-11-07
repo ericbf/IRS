@@ -5,8 +5,10 @@ package ISIS.gui;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 /**
  * @author eric
@@ -26,6 +28,14 @@ public class HintField extends JTextField {
 		this.hint = hint;
 		this.hintShown = true;
 		this.showHint = true;
+		this.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "none");
+		this.getInputMap().put(KeyStroke.getKeyStroke("UP"), "none");
+		this.getInputMap().put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,
+						java.awt.event.InputEvent.META_DOWN_MASK), "none");
+		this.getInputMap().put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_UP,
+						java.awt.event.InputEvent.META_DOWN_MASK), "none");
 		this.addFocusListener(this.new Listener());
 	}
 	

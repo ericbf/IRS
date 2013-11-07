@@ -101,7 +101,7 @@ public class ListCustomers extends ListView<Customer> {
 		String searchFieldText = this.searchField.getText();
 		PreparedStatement stmt = null;
 		try {
-			if (searchFieldText.length() >= 1) {
+			if (searchFieldText.length() > 0) {
 				String search = searchFieldText + " ";
 				search = search.replaceFirst("^\\s+", "");
 				search = search.replaceAll("\\s+", "* ");

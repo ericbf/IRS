@@ -3,6 +3,8 @@ package ISIS.gui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.DefaultFocusTraversalPolicy;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
@@ -32,6 +34,82 @@ public abstract class ListView<E extends Record> extends View {
 			@Override
 			public void caretUpdate(CaretEvent e) {
 				ListView.this.fillTable();
+			}
+		});
+		this.searchField.addKeyListener(new KeyListener() {
+			private final int	META		= 157, BACKSPACE = 8, DOWN = 40,
+					UP = 38;
+			private boolean		meta;
+			private HintField	searchField	= ListView.this.searchField;
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				switch (e.getKeyCode()) {
+					case META:
+						this.meta = false;
+						break;
+				}
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// System.out.println(e.getKeyText(e.getKeyCode()) + " "
+				// + e.getKeyCode() + " " + e.getExtendedKeyCode());
+				switch (e.getKeyCode()) {
+					case META:
+						this.meta = true;
+						break;
+					case BACKSPACE:
+						if (this.meta) {
+							int caretPosition = this.searchField
+									.getCaretPosition();
+							if (caretPosition < this.searchField.getText()
+									.length()) {
+								this.searchField.setText(this.searchField
+										.getText().substring(caretPosition));
+								this.searchField.setCaretPosition(0);
+							} else this.searchField.setText("");
+						}
+						break;
+					case DOWN:
+						if (ListView.this.table.getRowCount() > 0) {
+							int downSel = ListView.this.table.getSelectedRow();
+							if (this.meta) {
+								downSel = ListView.this.table.getRowCount() - 1;
+								ListView.this.table.setRowSelectionInterval(
+										downSel, downSel);
+							} else if (downSel != -1) {
+								downSel += downSel + 1 < ListView.this.table
+										.getRowCount() ? 1 : 0;
+								ListView.this.table.setRowSelectionInterval(
+										downSel, downSel);
+							} else {
+								ListView.this.table.setRowSelectionInterval(0,
+										0);
+							}
+						}
+						break;
+					case UP:
+						if (ListView.this.table.getRowCount() > 0) {
+							int upSel = ListView.this.table.getSelectedRow();
+							if (this.meta) {
+								ListView.this.table.setRowSelectionInterval(0,
+										0);
+							} else if (upSel != -1) {
+								upSel -= upSel > 0 ? 1 : 0;
+								ListView.this.table.setRowSelectionInterval(
+										upSel, upSel);
+							} else {
+								upSel = ListView.this.table.getRowCount() - 1;
+								ListView.this.table.setRowSelectionInterval(
+										upSel, upSel);
+							}
+						}
+						break;
+				}
 			}
 		});
 		this.setFocusCycleRoot(true);
