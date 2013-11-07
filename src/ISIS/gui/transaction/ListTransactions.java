@@ -28,10 +28,9 @@ public class ListTransactions extends ListView<Transaction> {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
 		
-		int buttonNameSel = 0;
-		JButton addButton = new JButton(this.buttonNames[buttonNameSel++]);
-		JButton editButton = new JButton(this.buttonNames[buttonNameSel++]);
-		JButton activeButton = new JButton(this.buttonNames[buttonNameSel++]);
+		int buttonNameSel = 3;
+		JButton viewButton = new JButton(this.buttonNames[buttonNameSel++]);
+		JButton generateButton = new JButton(this.buttonNames[buttonNameSel++]);
 		
 		int x = 0, y = 0;
 		
@@ -39,17 +38,12 @@ public class ListTransactions extends ListView<Transaction> {
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = x++;
 		c.gridy = y;
-		this.add(addButton, c);
+		this.add(viewButton, c);
 		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = x++;
-		this.add(editButton, c);
-		
-		c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
-		c.gridx = x++;
-		this.add(activeButton, c);
+		this.add(generateButton, c);
 		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;

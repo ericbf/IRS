@@ -3,6 +3,7 @@ package ISIS.gui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.DefaultFocusTraversalPolicy;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -28,7 +29,8 @@ public abstract class ListView<E extends Record> extends View {
 	protected ArrayList<E>		records;
 	protected IRSTableModel		tableModel;
 	protected String[]			buttonNames			= { "Add", "Edit",
-			"Toggle Active"						};
+			"Toggle Active", "View", "Generate Nonfinal Invoice(s)",
+			"Close and Generate Invoice"			};
 	
 	public ListView(SplitPane splitPane) {
 		super(splitPane);
@@ -42,33 +44,24 @@ public abstract class ListView<E extends Record> extends View {
 		});
 		
 		this.searchField.addKeyListener(new KeyListener() {
-			private final int	META		= 157, BACKSPACE = 8, DOWN = 40,
-					UP = 38;
-			private boolean		meta;
+			private final int	BACKSPACE	= 8, DOWN = 40, UP = 38;
 			private HintField	searchField	= ListView.this.searchField;
 			
 			@Override
 			public void keyTyped(KeyEvent e) {}
 			
 			@Override
-			public void keyReleased(KeyEvent e) {
-				switch (e.getKeyCode()) {
-					case META:
-						this.meta = false;
-						break;
-				}
-			}
+			public void keyReleased(KeyEvent e) {}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
+				boolean meta = (e.getModifiers() & ActionEvent.META_MASK) == ActionEvent.META_MASK
+						|| (e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK;
 				// System.out.println(e.getKeyText(e.getKeyCode()) + " "
 				// + e.getKeyCode() + " " + e.getExtendedKeyCode());
 				switch (e.getKeyCode()) {
-					case META:
-						this.meta = true;
-						break;
 					case BACKSPACE:
-						if (this.meta) {
+						if (meta) {
 							int caretPosition = this.searchField
 									.getCaretPosition();
 							if (caretPosition < this.searchField.getText()
@@ -82,7 +75,7 @@ public abstract class ListView<E extends Record> extends View {
 					case DOWN:
 						if (ListView.this.table.getRowCount() > 0) {
 							int downSel = ListView.this.table.getSelectedRow();
-							if (this.meta) {
+							if (meta) {
 								downSel = ListView.this.table.getRowCount() - 1;
 								ListView.this.table.setRowSelectionInterval(
 										downSel, downSel);
@@ -100,7 +93,7 @@ public abstract class ListView<E extends Record> extends View {
 					case UP:
 						if (ListView.this.table.getRowCount() > 0) {
 							int upSel = ListView.this.table.getSelectedRow();
-							if (this.meta) {
+							if (meta) {
 								ListView.this.table.setRowSelectionInterval(0,
 										0);
 							} else if (upSel != -1) {
@@ -118,30 +111,22 @@ public abstract class ListView<E extends Record> extends View {
 			}
 		});
 		this.table.addKeyListener(new KeyListener() {
-			private final int	META	= 157, DOWN = 40, UP = 38;
-			private boolean		meta;
+			private final int	DOWN	= 40, UP = 38;
 			
 			@Override
 			public void keyTyped(KeyEvent e) {}
 			
 			@Override
-			public void keyReleased(KeyEvent e) {
-				switch (e.getKeyCode()) {
-					case META:
-						this.meta = false;
-						break;
-				}
-			}
+			public void keyReleased(KeyEvent e) {}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
+				boolean meta = (e.getModifiers() & ActionEvent.META_MASK) == ActionEvent.META_MASK
+						|| (e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK;
 				switch (e.getKeyCode()) {
-					case META:
-						this.meta = true;
-						break;
 					case DOWN:
 						if (ListView.this.table.getRowCount() > 0) {
-							if (this.meta) {
+							if (meta) {
 								int rowCount = ListView.this.table
 										.getRowCount() - 1;
 								ListView.this.table.setRowSelectionInterval(
@@ -154,7 +139,7 @@ public abstract class ListView<E extends Record> extends View {
 						break;
 					case UP:
 						if (ListView.this.table.getRowCount() > 0) {
-							if (this.meta) {
+							if (meta) {
 								ListView.this.table.setRowSelectionInterval(0,
 										0);
 							} else if (ListView.this.table.getSelectedRow() == -1) {
