@@ -56,7 +56,7 @@ public abstract class ListView<E extends Record> extends View {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				boolean meta = (e.getModifiers() & ActionEvent.META_MASK) == ActionEvent.META_MASK
-						|| (e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK;
+						|| (e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK;
 				// System.out.println(e.getKeyText(e.getKeyCode()) + " "
 				// + e.getKeyCode() + " " + e.getExtendedKeyCode());
 				switch (e.getKeyCode()) {
@@ -122,7 +122,7 @@ public abstract class ListView<E extends Record> extends View {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				boolean meta = (e.getModifiers() & ActionEvent.META_MASK) == ActionEvent.META_MASK
-						|| (e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK;
+						|| (e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK;
 				switch (e.getKeyCode()) {
 					case DOWN:
 						if (ListView.this.table.getRowCount() > 0) {
