@@ -78,18 +78,6 @@ public final class DB {
         // address
         executeUpdate("CREATE TABLE IF NOT EXISTS address (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, title VARCHAR(255) NOT NULL, " + "city VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, zip VARCHAR(10) NOT NULL, county VARCHAR(255) NOT NULL, " +
                               "country VARCHAR(3) NOT NULL, st_address TEXT NOT NULL, type VARCHAR(255) NOT NULL, " + datesSql + ")");
-        // address-search
-        String address_search_columns = "st_address, zip, city, county, state, country, type";
-        String address_search_columns_temp = "new." + address_search_columns.replaceAll("\\s", " new.");
-        // view representing data inside address_search
-        executeUpdate("CREATE VIEW IF NOT EXISTS address_search_view AS SELECT pkey AS docid, " + address_search_columns + " FROM address");
-        // virtual table for searching addresses
-        executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS address_search USING fts3(content=\"address_search_view\", " + address_search_columns + ")");
-        // triggers to populate virtual table
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS address_search_insert AFTER INSERT ON address BEGIN\n" + "  INSERT INTO address_search(docid, " + address_search_columns + ") VALUES " + "(new.rowid, " + address_search_columns_temp + ");\n" + "END;");
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS address_search_update BEFORE UPDATE ON address BEGIN\n" + "  DELETE FROM address_search WHERE docid=old.pkey;\n" + "END;\n");
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS address_search_update_after AFTER UPDATE ON address BEGIN\n" + "  INSERT INTO address_search(docid, " + address_search_columns + ") VALUES " + "(new.rowid, " + address_search_columns_temp + ");\n" + "END;\n");
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS address_search_delete BEFORE DELETE ON address BEGIN\n" + "  DELETE FROM address_search WHERE docid=old.pkey;\n" + "END;\n");
 
         // billing
         executeUpdate("CREATE TABLE IF NOT EXISTS billing (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " + "number VARCHAR(255), expiration VARCHAR(5), CCV VARCHAR(5) NOT NULL, " + "address INT REFERENCES address(pkey), " + datesSql + ")");
@@ -103,48 +91,40 @@ public final class DB {
         executeUpdate("CREATE TABLE IF NOT EXISTS customer_address (pkey INTEGER PRIMARY KEY, customer INT REFERENCES customer(pkey) NOT NULL, " + "address INT REFERENCES address(pkey) NOT NULL)");
         // customer-billing
         executeUpdate("CREATE TABLE IF NOT EXISTS customer_billing (pkey INTEGER PRIMARY KEY, customer INT REFERENCES customer(pkey) NOT NULL, " + "billing INT REFERENCES billing(pkey) NOT NULL)");
+
         // customer-search
         String customer_search_columns = "pkey, fname, lname, email, note";
-        String customer_search_columns_temp = "new." + customer_search_columns.replaceAll("\\s", " new.");
-        String phoneNoSql = "SELECT group_concat(number, ' ') FROM customer_phone AS cp LEFT JOIN phone AS p ON cp.phone=p.pkey WHERE cp" + ".customer=";
-        String customer_search_insert = "INSERT INTO customer_search(docid, " + customer_search_columns + ", phone) VALUES " + "(new.rowid, " +
-                "" + customer_search_columns_temp + ", (" + phoneNoSql + "new.rowid));";
-        String customer_search_phone_insert = "INSERT INTO customer_search(docid, " + customer_search_columns + ", " +
-                "phone)  " + "SELECT csv.* FROM customer_search_view AS csv WHERE csv.pkey=new.customer;";
+        String phoneNoSql = "SELECT group_concat(number, ' ') FROM customer_phone AS cp LEFT JOIN phone AS p ON cp.phone=p.pkey WHERE cp.customer=";
+        String addressSqlColumns = "title || ' ' || city || ' ' || state || ' ' || zip || ' ' || county || ' ' || st_address";
+        String addressSql = "SELECT group_concat(" + addressSqlColumns + ", ' ') FROM customer_address AS ca LEFT JOIN address AS a ON " +
+                "ca.address=a.pkey WHERE ca.customer=";
+        String customer_search_insert = "INSERT INTO customer_search SELECT csv.* FROM customer_search_view AS csv WHERE csv.pkey=";
         // view representing data inside customer_search
         executeUpdate("CREATE VIEW IF NOT EXISTS customer_search_view AS SELECT pkey AS docid, " + customer_search_columns + ", " +
-                              "(" + phoneNoSql + "=customer.pkey)" +
-                              " FROM customer");
+                              "(" + phoneNoSql + "customer.pkey), ("+addressSql+"customer.pkey) FROM customer");
         // virtual table for searching customers
         executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS customer_search USING fts3(content=\"customer_search_view\", " +
-                              "" + customer_search_columns + ", phone)");
+                              "" + customer_search_columns + ", phone, address)");
+
         // triggers to populate virtual table
-        System.out.println(customer_search_insert);
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_insert AFTER INSERT ON customer BEGIN\n" + customer_search_insert + "END;");
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_insert AFTER INSERT ON customer BEGIN\n" + customer_search_insert +
+                              "new.rowid; END;");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_update BEFORE UPDATE ON customer BEGIN\n" + "  DELETE FROM customer_search WHERE docid=old.pkey;\n" + "END;\n");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_update_after AFTER UPDATE ON customer BEGIN\n" +
-                              customer_search_insert + "END;\n");
+                              customer_search_insert + "new.rowid; END;\n");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_delete BEFORE DELETE ON customer BEGIN\n" + "  DELETE FROM customer_search WHERE docid=old.pkey;\n" + "END;\n");
 
-//        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_phone_update BEFORE INSERT555 ON customer_phone BEGIN\n" + " DELETE " +
-//                              "FROM " + "customer_search WHERE docid=old.customer;\n" + "END;\n");
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_phone_insert AFTER INSERT ON customer_phone BEGIN\n" + "DELETE FROM " +
-                              "customer_search WHERE docid=new.customer;\n" +
-                              customer_search_phone_insert + "END;");
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_phone_update BEFORE UPDATE ON customer_phone BEGIN\n" + " DELETE " +
-                              "FROM " + "customer_search WHERE docid=old.customer;\n" + "END;\n");
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_phone_update_after AFTER UPDATE ON customer_phone BEGIN\n" +
-                              customer_search_phone_insert + "END;\n");
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_phone_delete BEFORE DELETE ON customer_phone BEGIN\n" + "  DELETE FROM " +
-                              "customer_search WHERE docid=old.customer;\n" + "END;\n");
-        // sample data
-        //        executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) " + "VALUES (1, 1, \"hello pass\", \"hello name\", \"lname\", \"email\", \"note\", 0,0)");
-        //        executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) " + "VALUES (2, 1, \"person 1 world\", \"Joe\", \"Dickhead\", \"a\", \"a\", 0, 0)");
-        //        executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) " + "VALUES (3, 1, \"person 2 world\", \"hello world name111\", \"hello world\", \"a\", \"a\", 0, 0)");
-        //        executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) " + "VALUES (4, 1, \"person 3 world\", \"hello world name333\", \"hello world\", \"a\", \"a\", 0, 0)");
-        //        executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) " + "VALUES (5, 1, \"person 4 world\", \"hello world name444\", \"hello world\", \"a\", \"a\", 0, 0)");
-        //        executeUpdate("INSERT OR IGNORE INTO customer (pkey, active, password, fname, lname, email, note, createDate, modDate) " + "VALUES (6, 1, \"person 5 world\", \"hello world name555\", \"hello world\", \"a\", \"a\", 0, 0)");
-
+        // update virtual table when grouped columns are updated
+        for (String junction : new String[]{"customer_phone", "customer_address"}) {
+            executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_" + junction + "_insert AFTER INSERT ON " + junction + " BEGIN\n" +
+                                  "DELETE FROM customer_search WHERE docid=new.customer;\n" + customer_search_insert + "new.customer; END;");
+            executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_" + junction + "_update BEFORE UPDATE ON " + junction + " BEGIN\n" +
+                                  "DELETE FROM " + "customer_search WHERE docid=old.customer;\n" + "END;\n");
+            executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_" + junction + "_update_after AFTER UPDATE ON " + junction + " BEGIN\n" +
+                                  customer_search_insert + "new.customer; END;\n");
+            executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_" + junction + "_delete BEFORE DELETE ON " + junction + " BEGIN\n" + " DELETE" +
+                                  " FROM customer_search WHERE docid=old.customer;\n" + "END;\n");
+        }
 
         // item
         executeUpdate("CREATE TABLE IF NOT EXISTS item (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " + "name VARCHAR(255) NOT NULL, SKU VARCHAR(255) NOT NULL, price VARCHAR(30) NOT NULL, onhand_qty VARCHAR(30) NOT NULL, " +
@@ -167,6 +147,8 @@ public final class DB {
     public void sampleData() throws SQLException {
         Customer customer = new Customer("Joe", "Doe", "sammich@penis.info", "This is a note.", "this is a password?", true);
         customer.addPhoneNum(new Phone("404040404", true, Phone.PhoneType.HOME));
+        customer.addPhoneNum(new Phone("987654321", true, Phone.PhoneType.HOME));
+        customer.addPhoneNum(new Phone("123456789", true, Phone.PhoneType.HOME));
         customer.save();
         customer = new Customer("Sammich", "Bob", "whuh@what.com", "This is a note.", "this is a password?", true);
         customer.addPhoneNum(new Phone("301231213", true, Phone.PhoneType.HOME));
