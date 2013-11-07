@@ -32,16 +32,9 @@ public final class SplitPane extends JSplitPane {
 	 * @post views.size() > 0 == true
 	 */
 	protected final void push(View view, LayoutType layout) {
-<<<<<<< HEAD
-		if (this.stack.size() == 0) {
+		if (this.stack.isEmpty()) {
 			this.setLeftComponent(view);
 			this.setRightComponent(null);
-=======
-		if (stack.isEmpty()) {
-			setLeftComponent(view);
-			setRightComponent(null);
-			setDividerSize(0);
->>>>>>> e47a2962ff19f452b557d22f013fa2587089daa4
 		} else {
 			this.setLeftComponent(this.stack.get(this.stack.size() - 1));
 			this.setRightComponent(view);
@@ -55,16 +48,7 @@ public final class SplitPane extends JSplitPane {
 	 * 
 	 * @pre views.size() > 0 == true
 	 */
-<<<<<<< HEAD
 	protected final void pop() {}
-=======
-	protected final void pop() {
-		if (stack.isEmpty()) System.out.println("You stupid");
-		else {
-			
-		}
-	}
->>>>>>> e47a2962ff19f452b557d22f013fa2587089daa4
 	
 	/**
 	 * Hides the current view by shifting the one view backwards in the stack.
