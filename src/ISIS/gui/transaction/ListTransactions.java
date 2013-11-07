@@ -63,7 +63,7 @@ public class ListTransactions extends ListView<Transaction> {
 			@Override
 			public void addRow(Record record) {
 				Transaction transaction = (Transaction) record;
-				Object[] array = new Object[3];
+				Object[] array = new Object[this.getColumnCount()];
 				
 				array[0] = transaction.getPkey();
 				array[1] = "";

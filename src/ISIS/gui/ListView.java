@@ -35,7 +35,8 @@ public abstract class ListView<E extends Record> extends View {
 			}
 		});
 		this.setFocusCycleRoot(true);
-		this.setBorder(new EmptyBorder(10, 10, 10, 10));
+		this.setBorder(new EmptyBorder(4, 0, 10, 5));
+		this.setOpaque(false);
 		this.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
 			private static final long	serialVersionUID	= 1L;
 			

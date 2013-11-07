@@ -72,7 +72,7 @@ public class ListCustomers extends ListView<Customer> {
 			@Override
 			public void addRow(Record record) {
 				Customer customer = (Customer) record;
-				Object[] array = new Object[3];
+				Object[] array = new Object[this.getColumnCount()];
 				
 				array[0] = customer.getPkey();
 				array[1] = customer.getFirstName() + " "

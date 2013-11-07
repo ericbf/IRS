@@ -63,7 +63,7 @@ public class ListItems extends ListView<Item> {
 			@Override
 			public void addRow(Record record) {
 				Item item = (Item) record;
-				Object[] array = new Object[3];
+				Object[] array = new Object[this.getColumnCount()];
 				
 				array[0] = item.getPkey();
 				array[1] = "";
