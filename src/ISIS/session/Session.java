@@ -1,10 +1,10 @@
 package ISIS.session;
 
-import java.sql.SQLException;
-
 import ISIS.database.DB;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
+
+import java.sql.SQLException;
 
 /**
  * Various information and methods that is associated with a session. This
@@ -87,11 +87,11 @@ public class Session {
 	 * Gets a reference to the database.
 	 */
 	public static DB getDB() {
-		if (db == null) {
+		if (Session.db == null) {
 			Session.db = new DB("test.db");
-			return db;
+			return Session.db;
 		} else {
-			return db;
+			return Session.db;
 		}
 	}
 }

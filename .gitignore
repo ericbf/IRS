@@ -2,6 +2,9 @@
 [Tt]humbs.db
 *.DS_Store
 
+.idea
+IRS.iml
+
 #Netbeans Generated Files
 nbproject/
 build/
@@ -10,9 +13,7 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
-nbproject/build-impl.xml
-nbproject/private/private.xml
-nbproject/project.xml
+
 /bin
 build.xml
 

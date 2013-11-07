@@ -18,6 +18,7 @@ public final class SplitPane extends JSplitPane {
 		this.stack = new ArrayList<>();
 		this.stackPointer = -1;
 		this.setOpaque(false);
+		this.setBorder(null);
 		this.defaultDividerSize = this.getDividerSize();
 	}
 	
