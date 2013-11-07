@@ -34,8 +34,14 @@ public class HintField extends JTextField {
 				KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,
 						java.awt.event.InputEvent.META_DOWN_MASK), "none");
 		this.getInputMap().put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,
+						java.awt.event.InputEvent.CTRL_DOWN_MASK), "none");
+		this.getInputMap().put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_UP,
 						java.awt.event.InputEvent.META_DOWN_MASK), "none");
+		this.getInputMap().put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_UP,
+						java.awt.event.InputEvent.CTRL_DOWN_MASK), "none");
 		this.addFocusListener(this.new Listener());
 	}
 	
