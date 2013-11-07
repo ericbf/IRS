@@ -122,7 +122,7 @@ public final class DB {
 		+ datesSql
 		+ ")");
 	// customer-search
-	String customer_search_columns = "fname, lname, email, note";
+	String customer_search_columns = "pkey, fname, lname, email, note";
 	String customer_search_columns_temp = "new."
 		+ customer_search_columns.replaceAll("\\s", " new.");
 	// view representing data inside customer_search
