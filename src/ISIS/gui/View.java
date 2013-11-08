@@ -1,7 +1,9 @@
 package ISIS.gui;
 
-import javax.swing.JPanel;
 import java.sql.SQLException;
+
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Abstract class for all views.
@@ -9,19 +11,21 @@ import java.sql.SQLException;
 public abstract class View extends JPanel {
 	private static final long	serialVersionUID	= 1L;
 	protected SplitPane			splitPane;
-
-    /**
-     * Base constructor for views not in a split pane.
-     */
-    public View() {
-        this.splitPane = null;
-    }
-
+	
+	/**
+	 * Base constructor for views not in a split pane.
+	 */
+	public View() {
+		this(null);
+	}
+	
 	/**
 	 * Base constructor.
 	 */
 	public View(SplitPane splitPane) {
 		this.splitPane = splitPane;
+		this.setOpaque(false);
+		this.setBorder(new EmptyBorder(4, 0, 10, 5));
 	}
 	
 	/**
@@ -30,7 +34,7 @@ public abstract class View extends JPanel {
 	 * @return
 	 */
 	protected final boolean inSplitPane() {
-		if (splitPane != null) {
+		if (this.splitPane != null) {
 			return true;
 		}
 		return false;
@@ -42,10 +46,10 @@ public abstract class View extends JPanel {
 	 * @return
 	 */
 	protected final SplitPane getSplitPane() {
-		if (!inSplitPane()) {
+		if (!this.inSplitPane()) {
 			throw new UnsupportedOperationException("Not supported.");
 		}
-		return splitPane;
+		return this.splitPane;
 	}
 	
 	/**

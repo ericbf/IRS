@@ -1,8 +1,9 @@
 package ISIS.gui;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
 import java.util.ArrayList;
+
+import javax.swing.JSplitPane;
 
 /**
  *
@@ -17,7 +18,8 @@ public final class SplitPane extends JSplitPane {
 		this.stack = new ArrayList<>();
 		this.stackPointer = 0;
 		this.setBorder(null);
-		this.defaultDividerSize = this.getDividerSize();
+		this.setOpaque(false);
+		this.defaultDividerSize = 9;
 	}
 	
 	/**
@@ -39,8 +41,8 @@ public final class SplitPane extends JSplitPane {
 		} else {
 			this.setLeftComponent(this.stack.get(this.stack.size() - 1));
 			this.setRightComponent(view);
+			this.stackPointer++;
 		}
-		this.stackPointer++;
 		this.stack.add(view);
 	}
 	
@@ -49,7 +51,7 @@ public final class SplitPane extends JSplitPane {
 	 * 
 	 * @pre views.size() > 0 == true
 	 */
-    public final void pop() {}
+	public final void pop() {}
 	
 	/**
 	 * Hides the current view by shifting the one view backwards in the stack.
@@ -84,8 +86,9 @@ public final class SplitPane extends JSplitPane {
 	 */
 	@Override
 	public void setRightComponent(Component comp) {
-		if (comp != null){ this.setDividerSize(this.defaultDividerSize);}
-		else this.setDividerSize(0);
+		if (comp != null) {
+			this.setDividerSize(this.defaultDividerSize);
+		} else this.setDividerSize(0);
 		super.setRightComponent(comp);
 	}
 }
