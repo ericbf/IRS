@@ -15,15 +15,17 @@ public final class SplitPane extends JPanel {
     ArrayList<View> stack;
     private int stackPointer;
     private JSplitPane splitPane;
+    private int columns;
 
     SplitPane() {
+        this.columns = 20;
         this.stack = new ArrayList<>();
         this.stackPointer = 0;
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
-        c.gridx = 0;
         c.gridy = 1;
+        c.gridwidth = columns;
         c.weightx = 1;
         c.weighty = 1;
         this.splitPane = new JSplitPane();
@@ -40,9 +42,9 @@ public final class SplitPane extends JPanel {
         if (this.stackPointer > 2) {
             c = new GridBagConstraints();
             c.gridy = 0;
+            c.gridx = 0;
             c.anchor = GridBagConstraints.WEST;
-            JButton backButton = new JButton();
-            backButton.setText("Back");
+            JButton backButton = new JButton("Back");
             backButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -50,17 +52,37 @@ public final class SplitPane extends JPanel {
                 }
             });
             this.add(backButton, c);
-            if (this.stackPointer < this.stack.size()) {
-                JButton forwardsButton = new JButton();
-                forwardsButton.setText("Forwards");
-                forwardsButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        SplitPane.this.forward();
-                    }
-                });
-                this.add(forwardsButton, c);
-            }
+        }
+        if (this.stackPointer < this.stack.size()) {
+            c = new GridBagConstraints();
+            c.gridy = 0;
+            c.anchor = GridBagConstraints.WEST;
+            c.gridx = 1;
+            JButton forwardsButton = new JButton("Forwards");
+            forwardsButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    SplitPane.this.forward();
+                }
+            });
+            this.add(forwardsButton, c);
+        }
+        if (this.stack.get(stackPointer - 1).needsSave()) {
+            c = new GridBagConstraints();
+            c.gridy = 2;
+            JButton save = new JButton("Save");
+            JButton cancel = new JButton("Cancel");
+            // push buttons to right
+            c.gridx = this.columns - 3;
+            c.weightx = 1;
+            this.add(Box.createHorizontalGlue(), c);
+
+            //add buttons
+            c.weightx = 0;
+            c.gridx = this.columns - 2;
+            this.add(cancel, c);
+            c.gridx = this.columns - 1;
+            this.add(save, c);
         }
         this.validate();
     }
