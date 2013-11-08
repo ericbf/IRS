@@ -13,6 +13,8 @@ import ISIS.session.Session;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,6 +42,26 @@ public class ListCustomers extends ListView<Customer> {
         JButton addButton = new JButton(this.buttonNames[buttonNameSel++]);
         JButton editButton = new JButton(this.buttonNames[buttonNameSel++]);
         JButton activeButton = new JButton(this.buttonNames[buttonNameSel++]);
+
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListCustomers.this.splitPane.push(new AddEditCustomer(ListCustomers.this.splitPane), SplitPane.LayoutType.HORIZONTAL);
+            }
+        });
+
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int pkey = ListCustomers.this.keys.get(ListCustomers.this.table.getSelectedRow());
+
+                try {
+                    ListCustomers.this.splitPane.push(new AddEditCustomer(ListCustomers.this.splitPane, pkey), SplitPane.LayoutType.HORIZONTAL);
+                } catch (SQLException ex) {
+                    ErrorLogger.error(ex, "Failed to open the customer record.", true, true);
+                }
+            }
+        });
 
         int x = 0, y = 0;
 
@@ -84,7 +106,8 @@ public class ListCustomers extends ListView<Customer> {
                     if (customer.getPrimaryAddress() != null) {
                         array[col++] = customer.getPrimaryAddress().getZIP();
                     }
-                    super.addRow(array);
+                    super.addRow(array);  // don't add row until we successfully retrieve data.
+                    ListCustomers.this.keys.add(customer.getPkey());  // don't add customer key to list until we know adding is a success.
                 } catch (SQLException e) {
                     ErrorLogger.error(e, "Failed to display a row.", true, true);
                 }
@@ -134,6 +157,7 @@ public class ListCustomers extends ListView<Customer> {
 
     private void populateTable() {
         this.table.removeAll();
+        this.keys.clear();
         this.tableModel.setRowCount(0);
         for (Customer c : this.records) {
             this.tableModel.addRow(c);

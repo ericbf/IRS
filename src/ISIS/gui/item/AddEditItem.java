@@ -1,5 +1,6 @@
 package ISIS.gui.item;
 
+import ISIS.gui.SplitPane;
 import ISIS.gui.View;
 
 /**
@@ -11,7 +12,9 @@ public class AddEditItem extends View {
 	/**
 	 * Public constructor: returns new instance of add/edit item view.
 	 */
-	public AddEditItem() {}
+	public AddEditItem(SplitPane splitPane) {
+        super(splitPane);
+    }
 	
 	/**
 	 * This view needs to be saved.

@@ -1,5 +1,6 @@
 package ISIS.gui.customer;
 
+import ISIS.gui.SplitPane;
 import ISIS.gui.View;
 
 /**
@@ -11,7 +12,9 @@ public class AddEditTransaction extends View {
 	/**
 	 * Public constructor: returns an instance of the add/edit transaction view.
 	 */
-	public AddEditTransaction() {}
+	public AddEditTransaction(SplitPane splitPane) {
+        super(splitPane);
+    }
 	
 	/**
 	 * The transaction needs to be saved.

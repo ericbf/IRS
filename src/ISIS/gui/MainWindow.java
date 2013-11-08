@@ -30,7 +30,7 @@ public class MainWindow extends JFrame {
         this.inventoryPane.push(new ListItems(this.inventoryPane), SplitPane.LayoutType.HORIZONTAL);
 
         this.customerPane = new SplitPane();
-        this.customerPane.push(new ListCustomers(this.inventoryPane), SplitPane.LayoutType.HORIZONTAL);
+        this.customerPane.push(new ListCustomers(this.customerPane), SplitPane.LayoutType.HORIZONTAL);
 
         this.transactionPane = new SplitPane();
         this.transactionPane.push(new ListTransactions(this.transactionPane), SplitPane.LayoutType.HORIZONTAL);

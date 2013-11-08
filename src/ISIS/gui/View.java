@@ -1,18 +1,22 @@
 package ISIS.gui;
 
 import javax.swing.JPanel;
+import java.sql.SQLException;
 
 /**
  * Abstract class for all views.
  */
 public abstract class View extends JPanel {
 	private static final long	serialVersionUID	= 1L;
-	private SplitPane			splitPane;
-	
-	public View() {
-		splitPane = null;
-	}
-	
+	protected SplitPane			splitPane;
+
+    /**
+     * Base constructor for views not in a split pane.
+     */
+    public View() {
+        this.splitPane = null;
+    }
+
 	/**
 	 * Base constructor.
 	 */
@@ -54,7 +58,7 @@ public abstract class View extends JPanel {
 	 * A method for saving the contents of the implemented view. This method
 	 * must be implemented.
 	 */
-	public abstract void save();
+	public abstract void save() throws SQLException;
 	
 	/**
 	 * A method for canceling the implemented view. This method must be
