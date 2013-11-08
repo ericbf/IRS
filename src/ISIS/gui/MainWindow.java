@@ -39,6 +39,7 @@ public class MainWindow extends JFrame {
         // this.reportPane.push(new ReportSelectorView(this.reportPane),
         // SplitPane.LayoutType.HORIZONTAL);
 
+//        new BorderLayout()
         JTabbedPane tabs = new JTabbedPane(JTabbedPane.LEFT);
         tabs.add("Customers", this.customerPane);
         tabs.add("Inventory", this.inventoryPane);
