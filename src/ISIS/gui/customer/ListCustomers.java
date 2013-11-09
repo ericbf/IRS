@@ -178,8 +178,8 @@ public class ListCustomers extends ListView<Customer> {
 				search = search.replaceAll("\\s+", "* "); //replaces whitespace with wildcards then wildspace
                 search = search.replaceAll("([\\(\\)])", ""); //these aren't indexed anyway, so...
                 search = search.replaceAll("\\\"", ""); //TODO: actually fix this
-				String sqlQuery = "SELECT c.* FROM (SELECT docid FROM customer_search WHERE customer_search MATCH ?) "
-						+ "LEFT JOIN customer AS c ON docid=c.pkey";
+				String sqlQuery = "SELECT c.* FROM (SELECT pkey AS row FROM customer_search WHERE customer_search MATCH ?) "
+						+ "LEFT JOIN customer AS c ON row=c.pkey";
 				stmt = Session.getDB().prepareStatement(sqlQuery);
 				stmt.setString(1, search);
 			} else {
