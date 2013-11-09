@@ -1,8 +1,7 @@
 package ISIS.gui.customer;
 
 import ISIS.customer.Customer;
-import ISIS.gui.SplitPane;
-import ISIS.gui.View;
+import ISIS.gui.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -140,7 +139,6 @@ public class AddEditCustomer extends View {
         this.lname.setEditable(false);
     }
 
-
     /**
      * This view needs to be saved.
      */
@@ -171,5 +169,20 @@ public class AddEditCustomer extends View {
      */
     @Override
     public void cancel() {
+
+    }
+
+    @Override
+    public void close() throws CloseCanceledException {
+        if ((new ConfirmCloseDialog().show())) {
+            try {
+                this.save();
+            } catch (SQLException e) {
+                ErrorLogger.error(e, "Failed to save. Canceling close.", true, true);
+                throw new CloseCanceledException();
+            }
+        } else {
+            //do nothing
+        }
     }
 }

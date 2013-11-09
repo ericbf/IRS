@@ -46,7 +46,8 @@ public class ListCustomers extends ListView<Customer> {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ListCustomers.this.splitPane.push(new AddEditCustomer(ListCustomers.this.splitPane), SplitPane.LayoutType.HORIZONTAL);
+                ListCustomers.this.splitPane.push(new AddEditCustomer(ListCustomers.this.splitPane), SplitPane.LayoutType.HORIZONTAL,
+                                                  ListCustomers.this);
             }
         });
 
@@ -56,7 +57,8 @@ public class ListCustomers extends ListView<Customer> {
                 int pkey = ListCustomers.this.keys.get(ListCustomers.this.table.getSelectedRow());
 
                 try {
-                    ListCustomers.this.splitPane.push(new AddEditCustomer(ListCustomers.this.splitPane, pkey), SplitPane.LayoutType.HORIZONTAL);
+                    ListCustomers.this.splitPane.push(new AddEditCustomer(ListCustomers.this.splitPane, pkey),
+                                                      SplitPane.LayoutType.HORIZONTAL, ListCustomers.this);
                 } catch (SQLException ex) {
                     ErrorLogger.error(ex, "Failed to open the customer record.", true, true);
                 }

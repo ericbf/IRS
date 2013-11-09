@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +17,7 @@ public final class SplitPane extends JPanel {
     private int stackPointer;
     private JSplitPane splitPane;
     private int columns;
+    private JButton back, forwards, cancel, save, closeButton;
 
     SplitPane() {
         this.columns = 20;
@@ -44,45 +46,89 @@ public final class SplitPane extends JPanel {
             c.gridy = 0;
             c.gridx = 0;
             c.anchor = GridBagConstraints.WEST;
-            JButton backButton = new JButton("Back");
-            backButton.addActionListener(new ActionListener() {
+            this.back = new JButton("Back");
+            back.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     SplitPane.this.backward();
                 }
             });
-            this.add(backButton, c);
+            this.add(back, c);
+            this.add(back, c);
+        } else {
+            if (this.back != null) {
+                this.remove(back);
+            }
         }
         if (this.stackPointer < this.stack.size()) {
             c = new GridBagConstraints();
             c.gridy = 0;
             c.anchor = GridBagConstraints.WEST;
             c.gridx = 1;
-            JButton forwardsButton = new JButton("Forwards");
-            forwardsButton.addActionListener(new ActionListener() {
+            this.forwards = new JButton("Forwards");
+            forwards.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     SplitPane.this.forward();
                 }
             });
-            this.add(forwardsButton, c);
+            this.add(forwards, c);
+        } else {
+            if (this.forwards != null) {
+                this.remove(this.forwards);
+            }
         }
         if (this.stack.get(stackPointer - 1).needsSave()) {
             c = new GridBagConstraints();
             c.gridy = 2;
-            JButton save = new JButton("Save");
-            JButton cancel = new JButton("Cancel");
+            this.closeButton = new JButton("Close");
+            this.save = new JButton("Save");
+            //            this.cancel = new JButton("Cancel");
+            closeButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //                        SplitPane.this.stack.get(stackPointer - 1).save();
+                    SplitPane.this.pop(SplitPane.this.stack.get(stackPointer - 2));
+                }
+            });
+            save.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        SplitPane.this.stack.get(stackPointer - 1).save();
+                    } catch (SQLException e1) {
+                        ErrorLogger.error(e1, "Could not save the current view.", true, true);
+                    }
+                }
+            });
+            //            cancel.addActionListener(new ActionListener() {
+            //                @Override
+            //                public void actionPerformed(ActionEvent e) {
+            //                    SplitPane.this.stack.get(stackPointer - 1).cancel();
+            //                    SplitPane.this.pop(true);
+            //                }
+            //            });
+            int i = 0;
             // push buttons to right
-            c.gridx = this.columns - 3;
+            c.gridx = i++;
             c.weightx = 1;
             this.add(Box.createHorizontalGlue(), c);
 
             //add buttons
             c.weightx = 0;
-            c.gridx = this.columns - 2;
-            this.add(cancel, c);
-            c.gridx = this.columns - 1;
+            c.gridx = i++;
+            //            this.add(saveClose, c);
+            c.gridx = i++;
             this.add(save, c);
+            c.gridx = i++;
+            this.add(closeButton, c);
+        } else {
+            //check if we no longer need save buttons
+            if (this.cancel != null) {
+                //                this.remove(this.cancel);
+                this.remove(this.save);
+                this.remove(this.closeButton);
+            }
         }
         this.validate();
     }
@@ -92,18 +138,14 @@ public final class SplitPane extends JPanel {
      *
      * @post views.size() > 0 == true
      */
-    public final void push(View view, LayoutType layout) {
-        if (this.stackPointer < this.stack.size()) { // we're trying to pop with views higher than us on the stack.
-            int lastToPop = this.stackPointer;
-            this.stackPointer = this.stack.size();  //move to the last view in the stack
-            for (int i = this.stack.size() - 1; i >= lastToPop; --i) {
-                try {
-                    this.pop();
-                } catch (CloseCanceledException e) {
-                    return;  // close canceled; stop here.
-                }
+    public final void push(View view, LayoutType layout, View pusher) {
+        if (pusher != null) {
+            int origin = this.stack.indexOf(pusher);
+            if (origin < this.stack.size() - 1) {
+                this.pop(pusher);
+                this.push(view, layout, null);
+                return;
             }
-            return;
         }
         if (this.stack.isEmpty()) {
             this.setLeftComponent(view);
@@ -118,12 +160,45 @@ public final class SplitPane extends JPanel {
     }
 
     /**
-     * Completely removes a view from the stack.
+     * Completely removes a closed view from the stack. DO NOT call it with false.
      *
      * @pre views.size() > 0 == true
      */
-    public final void pop() throws CloseCanceledException {
-        this.stack.get(this.stack.size() - 1).close();
+    public final void pop(View popper) {
+        int origin = this.stack.indexOf(popper);
+        if (origin < this.stack.size() - 1) {
+            this.stackPointer = this.stack.size();  //move to the last view in the stack
+            for (int i = this.stack.size() - 1; i > origin; --i) {
+                try {
+                    //move to the view we're closing
+                    this.setRightComponent(this.stack.get(this.stack.size() - 1));
+                    this.setLeftComponent(this.stack.get(this.stack.size() - 2));
+                    this.stack.get(i).close();
+                    this.stack.remove(i);
+                    this.stackPointer--;
+                } catch (CloseCanceledException e) {
+                    return;  // close canceled; stop here.
+                }
+            }
+            if (this.stack.size() > 1) {
+                this.setRightComponent(this.stack.get(this.stack.size() - 1));
+                this.setLeftComponent(this.stack.get(this.stack.size() - 2));
+            } else if (this.stack.size() == 1) {
+                this.setLeftComponent(this.stack.get(0));
+                this.setRightComponent(null);
+            } else {
+                throw new RuntimeException("Popped the entire stack!");
+            }
+            return;
+        }
+        if (origin == this.stack.size() - 1) {
+            try {
+                this.stack.get(origin).close();
+            } catch (CloseCanceledException e) {
+                //the pop was cancelled
+                return;
+            }
+        }
         this.stack.remove(this.stack.size() - 1);
         this.stackPointer--;
         if (this.stack.size() > 1) {
