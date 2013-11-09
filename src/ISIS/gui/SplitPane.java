@@ -1,12 +1,19 @@
 package ISIS.gui;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -18,7 +25,7 @@ public final class SplitPane extends JPanel {
 	private int					stackPointer;
 	private JSplitPane			splitPane;
 	JPanel						buttons;
-
+	
 	SplitPane() {
 		super(new BorderLayout());
 		this.stack = new ArrayList<>();
@@ -34,7 +41,7 @@ public final class SplitPane extends JPanel {
 		this.buttons.setOpaque(false);
 		this.add(this.buttons, BorderLayout.NORTH);
 	}
-
+	
 	/**
 	 * Adds back, forwards, save, etc.
 	 */
@@ -42,7 +49,7 @@ public final class SplitPane extends JPanel {
 		GridBagConstraints c;
 		this.buttons.removeAll();
 		boolean hasButtons = false;
-
+		
 		if (this.stackPointer > 0) {
 			hasButtons = true;
 			c = new GridBagConstraints();
@@ -77,13 +84,13 @@ public final class SplitPane extends JPanel {
 			hasButtons = true;
 			JButton save = new JButton("Save");
 			JButton cancel = new JButton("Cancel");
-
+			
 			c = new GridBagConstraints();
 			c.gridy = 1;
 			c.gridx = 1;
 			c.fill = GridBagConstraints.BOTH;
 			this.buttons.add(cancel, c);
-
+			
 			c = new GridBagConstraints();
 			c.gridy = 1;
 			c.gridx = 2;
@@ -115,7 +122,7 @@ public final class SplitPane extends JPanel {
 				}
 			});
 		}
-
+		
 		if (hasButtons) {
 			c = new GridBagConstraints();
 			c.gridheight = 2;
@@ -127,10 +134,10 @@ public final class SplitPane extends JPanel {
 			spacer.setOpaque(false);
 		}
 	}
-
+	
 	/**
 	 * Pushes a view onto the stack with a given layout and makes it visible.
-	 *
+	 * 
 	 * @post views.size() > 0 == true
 	 */
 	public final void push(View view, LayoutType layout, View pusher) {
@@ -167,11 +174,11 @@ public final class SplitPane extends JPanel {
 			this.forward();
 		}
 	}
-
+	
 	/**
-	 * Completely removes the top view from the stack.
-	 * If you call this method from the left pane, the left pane will not be removed.
-     *
+	 * Completely removes the top view from the stack. If you call this method
+	 * from the left pane, the left pane will not be removed.
+	 * 
 	 * @throws CloseCanceledException
 	 * @pre views.size() > 0 == true
 	 */
@@ -239,6 +246,7 @@ public final class SplitPane extends JPanel {
 			this.splitPane.setDividerSize(this.defaultDividerSize);
 			this.splitPane.setRightComponent(this.getWrappedComponent(comp));
 		}
+		
 	}
 	
 	/**
@@ -260,8 +268,8 @@ public final class SplitPane extends JPanel {
 		JScrollPane sp = new JScrollPane(comp);
 		sp.setOpaque(false);
 		sp.getViewport().setOpaque(false);
-		sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		// sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		// sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		sp.setBorder(new EmptyBorder(4, 0, 10, 5));
 		return sp;
 	}

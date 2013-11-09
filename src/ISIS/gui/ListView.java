@@ -5,6 +5,8 @@ import java.awt.Container;
 import java.awt.DefaultFocusTraversalPolicy;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -107,6 +109,18 @@ public abstract class ListView<E extends Record> extends View {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ListView.this.actionHandlerActionForSearchField();
+			}
+		});
+		this.searchField.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				ListView.this.table.setFocusable(true);
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				ListView.this.table.setFocusable(false);
 			}
 		});
 		this.table.addKeyListener(new KeyListener() {
