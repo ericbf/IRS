@@ -27,13 +27,13 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         super("IRS");
         this.inventoryPane = new SplitPane();
-        this.inventoryPane.push(new ListItems(this.inventoryPane), SplitPane.LayoutType.HORIZONTAL);
+        this.inventoryPane.push(new ListItems(this.inventoryPane), SplitPane.LayoutType.HORIZONTAL, null);
 
         this.customerPane = new SplitPane();
-        this.customerPane.push(new ListCustomers(this.customerPane), SplitPane.LayoutType.HORIZONTAL);
+        this.customerPane.push(new ListCustomers(this.customerPane), SplitPane.LayoutType.HORIZONTAL, null);
 
         this.transactionPane = new SplitPane();
-        this.transactionPane.push(new ListTransactions(this.transactionPane), SplitPane.LayoutType.HORIZONTAL);
+        this.transactionPane.push(new ListTransactions(this.transactionPane), SplitPane.LayoutType.HORIZONTAL, null);
 
         // this.reportPane = new SplitPane();
         // this.reportPane.push(new ReportSelectorView(this.reportPane),
