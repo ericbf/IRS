@@ -11,7 +11,9 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -33,7 +35,9 @@ public final class SplitPane extends JPanel {
 		this.splitPane.setOpaque(false);
 		this.splitPane.setBorder(null);
 		this.defaultDividerSize = 9;
-		this.buttons = new JPanel(new GridBagLayout());
+		GridBagLayout buttonLayout;
+		this.buttons = new JPanel(buttonLayout = new GridBagLayout());
+		buttonLayout.columnWidths = new int[] { 0, 94, 94 };
 		this.buttons.setOpaque(false);
 		this.add(this.buttons, BorderLayout.NORTH);
 	}
@@ -51,6 +55,7 @@ public final class SplitPane extends JPanel {
 			c = new GridBagConstraints();
 			c.gridy = 0;
 			c.gridx = 1;
+			c.fill = GridBagConstraints.BOTH;
 			JButton backButton = new JButton("Back");
 			backButton.addActionListener(new ActionListener() {
 				@Override
@@ -65,6 +70,7 @@ public final class SplitPane extends JPanel {
 			c = new GridBagConstraints();
 			c.gridy = 0;
 			c.gridx = 2;
+			c.fill = GridBagConstraints.BOTH;
 			JButton forwardsButton = new JButton("Forward");
 			forwardsButton.addActionListener(new ActionListener() {
 				@Override
@@ -82,18 +88,20 @@ public final class SplitPane extends JPanel {
 			c = new GridBagConstraints();
 			c.gridy = 1;
 			c.gridx = 1;
+			c.fill = GridBagConstraints.BOTH;
 			this.buttons.add(cancel, c);
 			
 			c = new GridBagConstraints();
 			c.gridy = 1;
 			c.gridx = 2;
+			c.fill = GridBagConstraints.BOTH;
 			this.buttons.add(save, c);
 			save.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						SplitPane.this.stack.get(
-								SplitPane.this.stackPointer - 1).save();
+						SplitPane.this.stack.get(SplitPane.this.stackPointer)
+								.save();
 					} catch (SQLException e1) {
 						ErrorLogger.error(e1,
 								"Could not save the current view.", true, true);
@@ -103,9 +111,10 @@ public final class SplitPane extends JPanel {
 			cancel.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					SplitPane.this.stack.get(SplitPane.this.stackPointer - 1)
-							.cancel();
 					try {
+						SplitPane.this.popAllAbovePointer();
+						// SplitPane.this.stack.get(
+						// SplitPane.this.stackPointer - 1).cancel();
 						SplitPane.this.pop();
 					} catch (CloseCanceledException e1) {
 						return;
@@ -134,19 +143,20 @@ public final class SplitPane extends JPanel {
 	public final void push(View view, LayoutType layout) {
 		// we're trying to push with views higher than us on the stack.
 		if (this.stackPointer < this.stack.size() - 1) {
-			for (int i = this.stackPointer; i < this.stack.size() - 1; i++) {
-				try {
-					this.pop();
-				} catch (CloseCanceledException e) {
-					return; // close canceled; stop here.
-				}
+			try {
+				this.popAllAbovePointer();
+			} catch (CloseCanceledException e) {
+				return; // Close cancelled
 			}
-			// return;
 		}
+		if (layout.equals(LayoutType.VERTICAL)) {
+			this.splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		} else this.splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		if (this.stack.isEmpty()) {
 			this.setLeftComponent(view);
 			this.setRightComponent(null);
 		} else {
+			if (this.stack.size() == 1) this.splitPane.setDividerLocation(200);
 			this.setLeftComponent(this.stack.get(this.stack.size() - 1));
 			this.setRightComponent(view);
 			this.stackPointer++;
@@ -167,6 +177,7 @@ public final class SplitPane extends JPanel {
 		if (this.stackPointer == this.stack.size()) {
 			this.stackPointer--;
 			if (this.stack.size() > 1) {
+				this.splitPane.setDividerLocation(200);
 				this.setRightComponent(this.stack.get(this.stack.size() - 1));
 				this.setLeftComponent(this.stack.get(this.stack.size() - 2));
 			} else if (this.stack.size() == 1) {
@@ -177,6 +188,11 @@ public final class SplitPane extends JPanel {
 			}
 			this.addButtons();
 		}
+	}
+	
+	public final void popAllAbovePointer() throws CloseCanceledException {
+		for (int i = this.stack.size(); i > this.stackPointer + 1; i--)
+			this.pop();
 	}
 	
 	/**
@@ -192,8 +208,10 @@ public final class SplitPane extends JPanel {
 		} else {
 			this.setLeftComponent(this.stack.get(--this.stackPointer - 1));
 			this.setRightComponent(this.stack.get(this.stackPointer));
+			this.splitPane.setDividerLocation(200);
 		}
 		this.addButtons();
+		this.validate();
 	}
 	
 	/**
@@ -203,8 +221,9 @@ public final class SplitPane extends JPanel {
 	 * @post previousViews() == true
 	 */
 	protected final void forward() {
-		this.setLeftComponent(this.stack.get(this.stackPointer));
 		this.setRightComponent(this.stack.get(++this.stackPointer));
+		this.setLeftComponent(this.stack.get(this.stackPointer - 1));
+		this.splitPane.setDividerLocation(200);
 		this.addButtons();
 	}
 	
@@ -213,17 +232,38 @@ public final class SplitPane extends JPanel {
 	 * else set it to the default size
 	 */
 	public void setRightComponent(Component comp) {
-		if (comp != null) {
+		if (comp == null) {
+			this.splitPane.setDividerSize(0);
+			this.splitPane.setRightComponent(null);
+		} else {
 			this.splitPane.setDividerSize(this.defaultDividerSize);
-		} else this.splitPane.setDividerSize(0);
-		this.splitPane.setRightComponent(comp);
+			this.splitPane.setRightComponent(this.getWrappedComponent(comp));
+		}
 	}
 	
 	/**
 	 * Alias to JSplitPane.setLeftComponent
 	 */
 	public void setLeftComponent(Component comp) {
-		this.splitPane.setLeftComponent(comp);
+		if (comp != null) {
+			this.splitPane.setLeftComponent(this.getWrappedComponent(comp));
+		} else this.splitPane.setLeftComponent(null);
+	}
+	
+	/**
+	 * Wraps the component in a JScrollPane and sets its settings
+	 * 
+	 * @param comp
+	 * @return
+	 */
+	private JScrollPane getWrappedComponent(Component comp) {
+		JScrollPane sp = new JScrollPane(comp);
+		sp.setOpaque(false);
+		sp.getViewport().setOpaque(false);
+		sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		// sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		sp.setBorder(new EmptyBorder(4, 0, 10, 5));
+		return sp;
 	}
 	
 	/**

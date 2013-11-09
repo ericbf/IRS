@@ -72,7 +72,6 @@ public class AddEditCustomer extends View {
 		GridBagConstraints c;
 		int x = 0, y = 0;
 		
-		// active
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
@@ -99,7 +98,7 @@ public class AddEditCustomer extends View {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.password = new HintField("Passwordo"), c);
+		this.add(this.password = new HintField("Password"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -148,7 +147,8 @@ public class AddEditCustomer extends View {
 		c.weighty = 1;
 		c.gridx = x++;
 		c.gridy = y;
-		c.fill = GridBagConstraints.BOTH;
+		c.anchor = GridBagConstraints.NORTH;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		this.add(new JLabel("Note"), c);
 		
 		c = new GridBagConstraints();
@@ -222,7 +222,7 @@ public class AddEditCustomer extends View {
 	
 	@Override
 	public void close() throws CloseCanceledException {
-		if ((new ConfirmCloseDialog().show())) {
+		if ((new ConfirmCloseDialog().show(this.splitPane))) {
 			try {
 				this.save();
 			} catch (SQLException e) {

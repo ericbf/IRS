@@ -27,7 +27,8 @@ public class HintField extends JTextField {
 	}
 	
 	public HintField(String hint, String initialText) {
-		super(initialText.isEmpty() ? hint : initialText);
+		super();
+		super.setText(initialText.isEmpty() ? hint : initialText);
 		this.hint = hint;
 		this.showingHint = initialText.isEmpty();
 		this.hintEnabled = true;
@@ -113,8 +114,9 @@ public class HintField extends JTextField {
 	@Override
 	public void setText(String text) {
 		super.setText(text);
-		if ((this.showingHint = text.isEmpty()) && HintField.this.hintEnabled) {
-			HintField.this.setText(HintField.this.hint);
+		if (this.showingHint = text.isEmpty() && HintField.this.hintEnabled
+				&& !this.isFocusOwner()) {
+			HintField.super.setText(HintField.this.hint);
 		}
 	}
 	

@@ -3,7 +3,6 @@ package ISIS.gui;
 import java.sql.SQLException;
 
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 /**
  * Abstract class for all views.
@@ -25,7 +24,6 @@ public abstract class View extends JPanel {
 	public View(SplitPane splitPane) {
 		this.splitPane = splitPane;
 		this.setOpaque(false);
-		this.setBorder(new EmptyBorder(4, 0, 10, 5));
 	}
 	
 	/**
