@@ -267,7 +267,7 @@ public final class SplitPane extends JPanel {
 		sp.setOpaque(false);
 		sp.getViewport().setOpaque(false);
 		sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		// sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		sp.setBorder(new EmptyBorder(4, 0, 10, 5));
 		return sp;
 	}
@@ -279,59 +279,59 @@ public final class SplitPane extends JPanel {
 		VERTICAL, HORIZONTAL
 	}
 	
-	/**
-	 * Completely removes a closed view from the stack. DO NOT call it with
-	 * false.
-	 * 
-	 * @pre views.size() > 0 == true
-	 */
-	public final void pop(View popper) {
-		int origin = this.stack.indexOf(popper);
-		if (origin < this.stack.size() - 1) {
-			this.stackPointer = this.stack.size(); // move to the last view in
-			// the stack
-			for (int i = this.stack.size() - 1; i > origin; --i) {
-				try {
-					// move to the view we're closing
-					this.setRightComponent(this.stack.get(this.stack.size() - 1));
-					this.setLeftComponent(this.stack.get(this.stack.size() - 2));
-					this.stack.get(i).close();
-					this.stack.remove(i);
-					this.stackPointer--;
-				} catch (CloseCanceledException e) {
-					return; // close canceled; stop here.
-				}
-			}
-			if (this.stack.size() > 1) {
-				this.setRightComponent(this.stack.get(this.stack.size() - 1));
-				this.setLeftComponent(this.stack.get(this.stack.size() - 2));
-			} else if (this.stack.size() == 1) {
-				this.setLeftComponent(this.stack.get(0));
-				this.setRightComponent(null);
-			} else {
-				throw new RuntimeException("Popped the entire stack!");
-			}
-			return;
-		}
-		if (origin == this.stack.size() - 1) {
-			try {
-				this.stack.get(origin).close();
-			} catch (CloseCanceledException e) {
-				// the pop was cancelled
-				return;
-			}
-		}
-		this.stack.remove(this.stack.size() - 1);
-		this.stackPointer--;
-		if (this.stack.size() > 1) {
-			this.setRightComponent(this.stack.get(this.stack.size() - 1));
-			this.setLeftComponent(this.stack.get(this.stack.size() - 2));
-		} else if (this.stack.size() == 1) {
-			this.setLeftComponent(this.stack.get(0));
-			this.setRightComponent(null);
-		} else {
-			throw new RuntimeException("Popped the entire stack!");
-		}
-		this.addButtons();
-	}
+	// /**
+	// * Completely removes a closed view from the stack. DO NOT call it with
+	// * false.
+	// *
+	// * @pre views.size() > 0 == true
+	// */
+	// public final void pop(View popper) {
+	// int origin = this.stack.indexOf(popper);
+	// if (origin < this.stack.size() - 1) {
+	// this.stackPointer = this.stack.size(); // move to the last view in
+	// // the stack
+	// for (int i = this.stack.size() - 1; i > origin; --i) {
+	// try {
+	// // move to the view we're closing
+	// this.setRightComponent(this.stack.get(this.stack.size() - 1));
+	// this.setLeftComponent(this.stack.get(this.stack.size() - 2));
+	// this.stack.get(i).close();
+	// this.stack.remove(i);
+	// this.stackPointer--;
+	// } catch (CloseCanceledException e) {
+	// return; // close canceled; stop here.
+	// }
+	// }
+	// if (this.stack.size() > 1) {
+	// this.setRightComponent(this.stack.get(this.stack.size() - 1));
+	// this.setLeftComponent(this.stack.get(this.stack.size() - 2));
+	// } else if (this.stack.size() == 1) {
+	// this.setLeftComponent(this.stack.get(0));
+	// this.setRightComponent(null);
+	// } else {
+	// throw new RuntimeException("Popped the entire stack!");
+	// }
+	// return;
+	// }
+	// if (origin == this.stack.size() - 1) {
+	// try {
+	// this.stack.get(origin).close();
+	// } catch (CloseCanceledException e) {
+	// // the pop was cancelled
+	// return;
+	// }
+	// }
+	// this.stack.remove(this.stack.size() - 1);
+	// this.stackPointer--;
+	// if (this.stack.size() > 1) {
+	// this.setRightComponent(this.stack.get(this.stack.size() - 1));
+	// this.setLeftComponent(this.stack.get(this.stack.size() - 2));
+	// } else if (this.stack.size() == 1) {
+	// this.setLeftComponent(this.stack.get(0));
+	// this.setRightComponent(null);
+	// } else {
+	// throw new RuntimeException("Popped the entire stack!");
+	// }
+	// this.addButtons();
+	// }
 }

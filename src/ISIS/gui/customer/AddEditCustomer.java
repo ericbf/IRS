@@ -222,6 +222,7 @@ public class AddEditCustomer extends View {
 	
 	@Override
 	public void close() throws CloseCanceledException {
+		// TODO: check if is modified
 		if ((new ConfirmCloseDialog().show(this.splitPane))) {
 			try {
 				this.save();
