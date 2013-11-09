@@ -140,7 +140,20 @@ public final class SplitPane extends JPanel {
 	 * 
 	 * @post views.size() > 0 == true
 	 */
-	public final void push(View view, LayoutType layout) {
+	public final void push(View view, LayoutType layout, View pusher) {
+		if (pusher != null) {
+			int origin = this.stack.indexOf(pusher);
+			if (origin < this.stackPointer) {
+				try {
+					this.popAllAbovePointer();
+					this.pop();
+				} catch (CloseCanceledException e) {
+					return;
+				}
+				this.push(view, layout, null);
+				return;
+			}
+		}
 		// we're trying to push with views higher than us on the stack.
 		if (this.stackPointer < this.stack.size() - 1) {
 			try {
@@ -155,14 +168,11 @@ public final class SplitPane extends JPanel {
 		if (this.stack.isEmpty()) {
 			this.setLeftComponent(view);
 			this.setRightComponent(null);
+			this.stack.add(view);
 		} else {
-			if (this.stack.size() == 1) this.splitPane.setDividerLocation(200);
-			this.setLeftComponent(this.stack.get(this.stack.size() - 1));
-			this.setRightComponent(view);
-			this.stackPointer++;
+			this.stack.add(view);
+			this.forward();
 		}
-		this.stack.add(view);
-		this.addButtons();
 	}
 	
 	/**
@@ -172,21 +182,17 @@ public final class SplitPane extends JPanel {
 	 * @pre views.size() > 0 == true
 	 */
 	public final void pop() throws CloseCanceledException {
+		int diff = this.stack.size() - this.stackPointer - 1;
+		for (int i = 0; i < diff; i++)
+			this.forward();
 		this.stack.get(this.stack.size() - 1).close();
 		this.stack.remove(this.stack.size() - 1);
 		if (this.stackPointer == this.stack.size()) {
-			this.stackPointer--;
-			if (this.stack.size() > 1) {
-				this.splitPane.setDividerLocation(200);
-				this.setRightComponent(this.stack.get(this.stack.size() - 1));
-				this.setLeftComponent(this.stack.get(this.stack.size() - 2));
-			} else if (this.stack.size() == 1) {
-				this.setLeftComponent(this.stack.get(0));
-				this.setRightComponent(null);
-			} else {
+			if (this.stack.size() == 0) {
 				throw new RuntimeException("Popped the entire stack!");
+			} else {
+				this.backward();
 			}
-			this.addButtons();
 		}
 	}
 	
@@ -273,85 +279,59 @@ public final class SplitPane extends JPanel {
 		VERTICAL, HORIZONTAL
 	}
 	
-	// /**
-	// * Pushes a view onto the stack with a given layout and makes it visible.
-	// *
-	// * @post views.size() > 0 == true
-	// */
-	// public final void push(View view, LayoutType layout, View pusher) {
-	// if (pusher != null) {
-	// int origin = this.stack.indexOf(pusher);
-	// if (origin < this.stack.size() - 1) {
-	// this.pop(pusher);
-	// this.push(view, layout, null);
-	// return;
-	// }
-	// }
-	// if (this.stack.isEmpty()) {
-	// this.setLeftComponent(view);
-	// this.setRightComponent(null);
-	// } else {
-	// this.setLeftComponent(this.stack.get(this.stack.size() - 1));
-	// this.setRightComponent(view);
-	// this.stackPointer++;
-	// }
-	// this.stack.add(view);
-	// this.addButtons();
-	// }
-	//
-	// /**
-	// * Completely removes a closed view from the stack. DO NOT call it with
-	// * false.
-	// *
-	// * @pre views.size() > 0 == true
-	// */
-	// public final void pop(View popper) {
-	// int origin = this.stack.indexOf(popper);
-	// if (origin < this.stack.size() - 1) {
-	// this.stackPointer = this.stack.size(); // move to the last view in
-	// // the stack
-	// for (int i = this.stack.size() - 1; i > origin; --i) {
-	// try {
-	// // move to the view we're closing
-	// this.setRightComponent(this.stack.get(this.stack.size() - 1));
-	// this.setLeftComponent(this.stack.get(this.stack.size() - 2));
-	// this.stack.get(i).close();
-	// this.stack.remove(i);
-	// this.stackPointer--;
-	// } catch (CloseCanceledException e) {
-	// return; // close canceled; stop here.
-	// }
-	// }
-	// if (this.stack.size() > 1) {
-	// this.setRightComponent(this.stack.get(this.stack.size() - 1));
-	// this.setLeftComponent(this.stack.get(this.stack.size() - 2));
-	// } else if (this.stack.size() == 1) {
-	// this.setLeftComponent(this.stack.get(0));
-	// this.setRightComponent(null);
-	// } else {
-	// throw new RuntimeException("Popped the entire stack!");
-	// }
-	// return;
-	// }
-	// if (origin == this.stack.size() - 1) {
-	// try {
-	// this.stack.get(origin).close();
-	// } catch (CloseCanceledException e) {
-	// // the pop was cancelled
-	// return;
-	// }
-	// }
-	// this.stack.remove(this.stack.size() - 1);
-	// this.stackPointer--;
-	// if (this.stack.size() > 1) {
-	// this.setRightComponent(this.stack.get(this.stack.size() - 1));
-	// this.setLeftComponent(this.stack.get(this.stack.size() - 2));
-	// } else if (this.stack.size() == 1) {
-	// this.setLeftComponent(this.stack.get(0));
-	// this.setRightComponent(null);
-	// } else {
-	// throw new RuntimeException("Popped the entire stack!");
-	// }
-	// this.addButtons();
-	// }
+	/**
+	 * Completely removes a closed view from the stack. DO NOT call it with
+	 * false.
+	 * 
+	 * @pre views.size() > 0 == true
+	 */
+	public final void pop(View popper) {
+		int origin = this.stack.indexOf(popper);
+		if (origin < this.stack.size() - 1) {
+			this.stackPointer = this.stack.size(); // move to the last view in
+			// the stack
+			for (int i = this.stack.size() - 1; i > origin; --i) {
+				try {
+					// move to the view we're closing
+					this.setRightComponent(this.stack.get(this.stack.size() - 1));
+					this.setLeftComponent(this.stack.get(this.stack.size() - 2));
+					this.stack.get(i).close();
+					this.stack.remove(i);
+					this.stackPointer--;
+				} catch (CloseCanceledException e) {
+					return; // close canceled; stop here.
+				}
+			}
+			if (this.stack.size() > 1) {
+				this.setRightComponent(this.stack.get(this.stack.size() - 1));
+				this.setLeftComponent(this.stack.get(this.stack.size() - 2));
+			} else if (this.stack.size() == 1) {
+				this.setLeftComponent(this.stack.get(0));
+				this.setRightComponent(null);
+			} else {
+				throw new RuntimeException("Popped the entire stack!");
+			}
+			return;
+		}
+		if (origin == this.stack.size() - 1) {
+			try {
+				this.stack.get(origin).close();
+			} catch (CloseCanceledException e) {
+				// the pop was cancelled
+				return;
+			}
+		}
+		this.stack.remove(this.stack.size() - 1);
+		this.stackPointer--;
+		if (this.stack.size() > 1) {
+			this.setRightComponent(this.stack.get(this.stack.size() - 1));
+			this.setLeftComponent(this.stack.get(this.stack.size() - 2));
+		} else if (this.stack.size() == 1) {
+			this.setLeftComponent(this.stack.get(0));
+			this.setRightComponent(null);
+		} else {
+			throw new RuntimeException("Popped the entire stack!");
+		}
+		this.addButtons();
+	}
 }
