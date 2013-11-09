@@ -50,6 +50,9 @@ public class Customer extends Record {
     public Customer(HashMap<String, Field> map) {
         super("customer", true);
         this.initializeFields(map);
+        if(this.getFieldValue("pkey") == null) {
+            System.out.println("WTF");
+        }
     }
 
     /**

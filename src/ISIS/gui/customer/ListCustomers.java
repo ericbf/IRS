@@ -127,26 +127,19 @@ public class ListCustomers extends ListView<Customer> {
 							+ customer.getLastName();
 					Phone num = customer.getPrimaryNum();
 					if (num != null) {
-						array[col++] = num.getNumber();
+						array[col] = num.getNumber();
 					}
+					col++;
+					
 					array[col++] = customer.getEmail();
 					if (customer.getPrimaryAddress() != null) {
-						array[col++] = customer.getPrimaryAddress().getZIP();
+						array[col] = customer.getPrimaryAddress().getZIP();
 					}
-					super.addRow(array); // don't add row until we successfully
-											// retrieve data.
-					ListCustomers.this.keys.add(customer.getPkey()); // don't
-																		// add
-																		// customer
-																		// key
-																		// to
-																		// list
-																		// until
-																		// we
-																		// know
-																		// adding
-																		// is a
-																		// success.
+					col++;
+					 // don't add row until we successfully retrieve data.
+					super.addRow(array);
+					 // don't add customer key to list until we know adding is a success.
+					ListCustomers.this.keys.add(customer.getPkey());
 				} catch (SQLException e) {
 					ErrorLogger
 							.error(e, "Failed to display a row.", true, true);
@@ -174,10 +167,18 @@ public class ListCustomers extends ListView<Customer> {
 		try {
 			if (searchFieldText.length() >= 1) {
 				String search = searchFieldText + " ";
-				search = search.replaceFirst("^\\s+", "");
-				search = search.replaceAll("\\s+", "* ");
-				String sqlQuery = "SELECT c.* FROM (SELECT docid FROM customer_search WHERE customer_search MATCH ?) "
-						+ "LEFT JOIN customer AS c ON docid=c.pkey";
+				search = search.replaceFirst("^\\s+", ""); // remove leading
+															// whitespace
+				search = search.replaceAll("\\s+", "* "); // replaces whitespace
+															// with wildcards
+															// then wildspace
+				search = search.replaceAll("([\\(\\)])", ""); // these aren't
+																// indexed
+																// anyway, so...
+				search = search.replaceAll("\\\"", ""); // TODO: actually fix
+														// this
+				String sqlQuery = "SELECT c.* FROM (SELECT pkey AS row FROM customer_search WHERE customer_search MATCH ?) "
+						+ "LEFT JOIN customer AS c ON row=c.pkey";
 				stmt = Session.getDB().prepareStatement(sqlQuery);
 				stmt.setString(1, search);
 			} else {
