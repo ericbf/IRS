@@ -123,12 +123,16 @@ public class ListCustomers extends ListView<Customer> {
 							+ customer.getLastName();
 					Phone num = customer.getPrimaryNum();
 					if (num != null) {
-						array[col++] = num.getNumber();
+						array[col] = num.getNumber();
 					}
+                    col++;
+
 					array[col++] = customer.getEmail();
 					if (customer.getPrimaryAddress() != null) {
-						array[col++] = customer.getPrimaryAddress().getZIP();
+						array[col] = customer.getPrimaryAddress().getZIP();
 					}
+                    col++;
+
 					super.addRow(array); // don't add row until we successfully
 											// retrieve data.
 					ListCustomers.this.keys.add(customer.getPkey()); // don't
@@ -170,8 +174,8 @@ public class ListCustomers extends ListView<Customer> {
 		try {
 			if (searchFieldText.length() >= 1) {
 				String search = searchFieldText + " ";
-				search = search.replaceFirst("^\\s+", "");
-				search = search.replaceAll("\\s+", "* ");
+				search = search.replaceFirst("^\\s+", ""); //remove leading whitespace
+				search = search.replaceAll("\\s+", "* "); //replaces whitespace with wildcards then wildspace
                 search = search.replaceAll("([\\(\\)])", ""); //these aren't indexed anyway, so...
                 search = search.replaceAll("\\\"", ""); //TODO: actually fix this
                 System.out.println(search);
