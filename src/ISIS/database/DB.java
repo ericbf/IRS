@@ -128,8 +128,9 @@ public final class DB {
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_insert AFTER INSERT ON customer BEGIN\n" + customer_search_insert +
                               "new.rowid; END;");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_update_after AFTER UPDATE ON customer BEGIN\n" + "DELETE FROM " +
-                              "customer_search WHERE docid=old.rowid;\n" + customer_search_insert + "old.rowid;\nEND;\n");
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_delete BEFORE DELETE ON customer BEGIN\n" + "  DELETE FROM customer_search WHERE docid=old.pkey;\n" + "END;\n");
+                              "customer_search WHERE pkey=old.pkey;\n" + customer_search_insert + "old.rowid;\nEND;\n");
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_delete BEFORE DELETE ON customer BEGIN\n" + "  DELETE FROM " +
+                              "customer_search WHERE pkey=old.pkey;\n" + "END;\n");
 
         // update virtual table when grouped columns are updated
         for (String junction : new String[]{"customer_phone", "customer_address"}) {
