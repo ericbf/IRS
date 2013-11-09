@@ -16,8 +16,8 @@ import ISIS.item.Item;
  * List of items. Allows you to query and act on items.
  */
 public class ListItems extends ListView<Item> {
-	
 	private static final long	serialVersionUID	= 1L;
+	private JButton				editButton;
 	
 	/* Fields omitted */
 	/**
@@ -30,7 +30,7 @@ public class ListItems extends ListView<Item> {
 		
 		int buttonNameSel = 0;
 		JButton addButton = new JButton(this.buttonNames[buttonNameSel++]);
-		JButton editButton = new JButton(this.buttonNames[buttonNameSel++]);
+		this.editButton = new JButton(this.buttonNames[buttonNameSel++]);
 		JButton activeButton = new JButton(this.buttonNames[buttonNameSel++]);
 		
 		int x = 0, y = 0;
@@ -44,7 +44,7 @@ public class ListItems extends ListView<Item> {
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = x++;
-		this.add(editButton, c);
+		this.add(this.editButton, c);
 		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -87,5 +87,10 @@ public class ListItems extends ListView<Item> {
 	@Override
 	protected void fillTable() {
 		// throw new UnsupportedOperationException("Not supported yet.");
+	}
+	
+	@Override
+	protected void actionHandlerActionForSearchField() {
+		this.editButton.doClick();
 	}
 }

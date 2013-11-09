@@ -17,6 +17,7 @@ import ISIS.transaction.Transaction;
  */
 public class ListTransactions extends ListView<Transaction> {
 	private static final long	serialVersionUID	= 1L;
+	private JButton				viewButton;
 	
 	/* Fields omitted */
 	
@@ -29,7 +30,7 @@ public class ListTransactions extends ListView<Transaction> {
 		GridBagConstraints c;
 		
 		int buttonNameSel = 3;
-		JButton viewButton = new JButton(this.buttonNames[buttonNameSel++]);
+		this.viewButton = new JButton(this.buttonNames[buttonNameSel++]);
 		JButton generateButton = new JButton(this.buttonNames[buttonNameSel++]);
 		
 		int x = 0, y = 0;
@@ -38,7 +39,7 @@ public class ListTransactions extends ListView<Transaction> {
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = x++;
 		c.gridy = y;
-		this.add(viewButton, c);
+		this.add(this.viewButton, c);
 		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -82,5 +83,10 @@ public class ListTransactions extends ListView<Transaction> {
 	@Override
 	protected void fillTable() {
 		// throw new UnsupportedOperationException("Not supported yet.");
+	}
+	
+	@Override
+	protected void actionHandlerActionForSearchField() {
+		this.viewButton.doClick();
 	}
 }

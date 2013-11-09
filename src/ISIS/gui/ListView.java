@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.DefaultFocusTraversalPolicy;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -74,6 +75,9 @@ public abstract class ListView<E extends Record> extends View {
 										0);
 							}
 						}
+						int sel;
+						if ((sel = ListView.this.table.getSelectedRow()) != -1)
+							ListView.this.selected = sel;
 						break;
 					case UP:
 						if (ListView.this.table.getRowCount() > 0) {
@@ -91,8 +95,18 @@ public abstract class ListView<E extends Record> extends View {
 										upSel, upSel);
 							}
 						}
+						int selPasser;
+						if ((selPasser = ListView.this.table.getSelectedRow()) != -1)
+							ListView.this.selected = selPasser;
 						break;
 				}
+			}
+		});
+		this.searchField.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ListView.this.actionHandlerActionForSearchField();
 			}
 		});
 		this.table.addKeyListener(new KeyListener() {
@@ -121,6 +135,9 @@ public abstract class ListView<E extends Record> extends View {
 										0);
 							}
 						}
+						int sel;
+						if ((sel = ListView.this.table.getSelectedRow()) != -1)
+							ListView.this.selected = sel;
 						break;
 					case UP:
 						if (ListView.this.table.getRowCount() > 0) {
@@ -134,6 +151,9 @@ public abstract class ListView<E extends Record> extends View {
 										rowCount, rowCount);
 							}
 						}
+						int selPasser;
+						if ((selPasser = ListView.this.table.getSelectedRow()) != -1)
+							ListView.this.selected = selPasser;
 						break;
 				}
 			}
@@ -176,6 +196,8 @@ public abstract class ListView<E extends Record> extends View {
 		this.table.setModel(model);
 		this.table.setFocusable(false);
 	}
+	
+	protected abstract void actionHandlerActionForSearchField();
 	
 	/**
 	 * This type of view needs not be saved.

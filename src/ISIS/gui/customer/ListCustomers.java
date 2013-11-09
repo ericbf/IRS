@@ -28,6 +28,7 @@ import ISIS.session.Session;
  */
 public class ListCustomers extends ListView<Customer> {
 	private static final long	serialVersionUID	= 1L;
+	private JButton				editButton;
 	
 	/* Fields omitted */
 	
@@ -43,7 +44,7 @@ public class ListCustomers extends ListView<Customer> {
 		
 		int buttonNameSel = 0;
 		JButton addButton = new JButton(this.buttonNames[buttonNameSel++]);
-		JButton editButton = new JButton(this.buttonNames[buttonNameSel++]);
+		this.editButton = new JButton(this.buttonNames[buttonNameSel++]);
 		JButton activeButton = new JButton(this.buttonNames[buttonNameSel++]);
 		
 		addButton.addActionListener(new ActionListener() {
@@ -58,17 +59,17 @@ public class ListCustomers extends ListView<Customer> {
 			}
 		});
 		
-		editButton.addActionListener(new ActionListener() {
+		this.editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int selected = ListCustomers.this.table.getSelectedRow();
 				
 				if (selected == -1) {
 					selected = ListCustomers.this.selected;
+					if (selected == -1) return;
 					ListCustomers.this.table.setRowSelectionInterval(selected,
 							selected);
 				}
-				if (selected == -1) return;
 				
 				int pkey = ListCustomers.this.keys.get(selected);
 				
@@ -99,7 +100,7 @@ public class ListCustomers extends ListView<Customer> {
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = x++;
-		this.add(editButton, c);
+		this.add(this.editButton, c);
 		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -204,5 +205,10 @@ public class ListCustomers extends ListView<Customer> {
 		for (Customer c : this.records) {
 			this.tableModel.addRow(c);
 		}
+	}
+	
+	@Override
+	protected void actionHandlerActionForSearchField() {
+		this.editButton.doClick();
 	}
 }
