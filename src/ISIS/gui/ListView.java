@@ -6,6 +6,8 @@ import java.awt.DefaultFocusTraversalPolicy;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -28,10 +30,12 @@ public abstract class ListView<E extends Record> extends View {
 			"Toggle Active", "View", "Generate Nonfinal Invoice(s)",
 			"Close and Generate Invoice"				};
 	protected ArrayList<Integer>	keys				= new ArrayList<>();
+	protected int					selected;
 	
 	public ListView(SplitPane splitPane) {
 		super(splitPane);
 		this.table = new JTable();
+		this.selected = -1;
 		this.searchField = new HintField("Enter query to search...");
 		this.searchField.addCaretListener(new CaretListener() {
 			@Override
@@ -132,6 +136,27 @@ public abstract class ListView<E extends Record> extends View {
 						}
 						break;
 				}
+			}
+		});
+		this.table.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int sel;
+				if ((sel = ListView.this.table.getSelectedRow()) != -1)
+					ListView.this.selected = sel;
 			}
 		});
 		this.setFocusCycleRoot(true);

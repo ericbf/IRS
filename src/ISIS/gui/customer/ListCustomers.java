@@ -63,6 +63,11 @@ public class ListCustomers extends ListView<Customer> {
 			public void actionPerformed(ActionEvent e) {
 				int selected = ListCustomers.this.table.getSelectedRow();
 				
+				if (selected == -1) {
+					selected = ListCustomers.this.selected;
+					ListCustomers.this.table.setRowSelectionInterval(selected,
+							selected);
+				}
 				if (selected == -1) return;
 				
 				int pkey = ListCustomers.this.keys.get(selected);
