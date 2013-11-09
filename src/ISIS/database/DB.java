@@ -127,21 +127,27 @@ public final class DB {
         // triggers to populate virtual table
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_insert AFTER INSERT ON customer BEGIN\n" + customer_search_insert +
                               "new.rowid; END;");
-        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_update_after AFTER UPDATE ON customer BEGIN\n" + "DELETE FROM " +
-                              "customer_search WHERE pkey=old.pkey;\n" + customer_search_insert + "old.rowid;\nEND;\n");
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_update_before BEFORE UPDATE ON customer BEGIN\n" + "DELETE FROM " +
+                              "customer_search WHERE pkey=old.pkey;\nEND;\n");
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_update_after AFTER UPDATE ON customer BEGIN\n" +
+                              customer_search_insert + "new.rowid;\nEND;\n");
         executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_delete BEFORE DELETE ON customer BEGIN\n" + "  DELETE FROM " +
                               "customer_search WHERE pkey=old.pkey;\n" + "END;\n");
 
         // update virtual table when grouped columns are updated
         for (String junction : new String[]{"customer_phone", "customer_address"}) {
-            executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_" + junction + "_insert AFTER INSERT ON " + junction + " BEGIN\n" +
-                                  "DELETE FROM customer_search WHERE docid=new.customer;\n" + customer_search_insert + "new.customer;" +
-                                  "\nEND;");
+            executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_" + junction + "_insert_before BEFORE INSERT ON " + junction + " " +
+                                  "BEGIN\nDELETE FROM customer_search WHERE docid=new.customer;\nEND;");
+            executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_" + junction + "_insert_after AFTER INSERT ON " + junction + " " +
+                                  "BEGIN\n" + customer_search_insert + "new" + ".customer;" + "\nEND;");
+            executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_" + junction + "_update_before BEFORE UPDATE ON " + junction + " " +
+                                  "BEGIN\nDELETE FROM customer_search WHERE docid=old.customer;\nEND;\n");
             executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_" + junction + "_update_after AFTER UPDATE ON " + junction + " BEGIN\n" +
-                                  "DELETE FROM customer_search WHERE docid=old.customer;" +
                                   customer_search_insert + "old.customer;\nEND;\n");
-            executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_" + junction + "_delete AFTER DELETE ON " + junction + " BEGIN\n" + " DELETE" + " FROM customer_search WHERE docid=old.customer;\n" + customer_search_insert + "old" +
-                                  ".customer;\nEND;");
+            executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_" + junction + "_delete_before BEFORE DELETE ON " + junction + " " +
+                                  "BEGIN\nDELETE FROM customer_search WHERE docid=old.customer;\nEND;");
+            executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_" + junction + "_delete_after AFTER DELETE ON " + junction + " " +
+                                  "BEGIN\n" + customer_search_insert + "old.customer;\nEND;");
         }
 
         // item
