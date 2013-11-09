@@ -74,5 +74,5 @@ public abstract class View extends JPanel {
 	 * Overridden for windows where cleanup is necessary, but save and cancel do
 	 * not apply.
 	 */
-	public void close() {}
+	public void close() throws CloseCanceledException {}
 }
