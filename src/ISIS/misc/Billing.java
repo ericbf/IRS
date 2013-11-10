@@ -22,7 +22,6 @@ public class Billing extends Record {
      */
     public Billing(int pkey, boolean populate) throws SQLException {
         super("billing", true);
-        this.initializeFields(this.getFields());
 
         this.setPkey(pkey);
         if (populate) {
@@ -41,7 +40,6 @@ public class Billing extends Record {
         if (address != null) {
             this.setFieldValue("address", address.getPkey());
         }
-        this.initializeFields(this.getFields());
 
         this.setFieldValue("number", cardNumber);
         SimpleDateFormat df = new SimpleDateFormat("MM/yy");
@@ -60,7 +58,6 @@ public class Billing extends Record {
         }
         this.setFieldValue("type", billingType.toString());
 
-        this.initializeFields(this.getFields());
         if (address != null) {
             this.setFieldValue("address", address.getPkey());
         }
@@ -68,20 +65,6 @@ public class Billing extends Record {
 
     public Billing(HashMap<String, Field> map) {
         super("billing", true, map);
-    }
-
-    /**
-     * This table's fields.
-     */
-    private HashMap<String, Field> getFields() {
-        HashMap<String, Field> fields = new HashMap<>(7);
-        fields.put("pkey", new Field(false));
-        fields.put("active", new Field(true));
-        fields.put("number", new Field(false));
-        fields.put("expiration", new Field(false));
-        fields.put("CCV", new Field(true));
-        fields.put("address", new Field(false));
-        return fields;
     }
 
     /**

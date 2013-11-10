@@ -39,7 +39,6 @@ public class Customer extends Record {
      */
     public Customer(int pkey, boolean populate) throws SQLException {
         super("customer", true);
-        this.initializeFields(this.getFields());
 
         this.setPkey(pkey);
         if (populate) {
@@ -56,7 +55,6 @@ public class Customer extends Record {
      */
     public Customer(String fname, String lname, String email, String note, String password, boolean active) {
         super("customer", true);
-        this.initializeFields(this.getFields());
 
         this.setFieldValue("fname", fname);
         this.setFieldValue("lname", lname);
@@ -64,21 +62,6 @@ public class Customer extends Record {
         this.setFieldValue("note", note);
         this.setFieldValue("password", password);
         this.setFieldValue("active", active);
-    }
-
-    /**
-     * This table's fields.
-     */
-    private HashMap<String, Field> getFields() {
-        HashMap<String, Field> fields = new HashMap<>(7);
-        fields.put("pkey", new Field(false));
-        fields.put("active", new Field(true));
-        fields.put("password", new Field(true));
-        fields.put("fname", new Field(false));
-        fields.put("lname", new Field(false));
-        fields.put("email", new Field(true));
-        fields.put("note", new Field(true));
-        return fields;
     }
 
     @Override

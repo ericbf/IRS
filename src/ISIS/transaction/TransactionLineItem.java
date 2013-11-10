@@ -20,7 +20,6 @@ public class TransactionLineItem extends Record {
 			BigDecimal price, BigDecimal adjustment, BigDecimal quantity,
 			String description) {
 		super("transaction_item", true);
-		this.initializeFields(this.getFields());
 		this.setFieldValue("transaction_", transaction);
 		this.setFieldValue("item", item);
 		this.setFieldValue("price", price);
@@ -39,26 +38,13 @@ public class TransactionLineItem extends Record {
 	 */
 	public TransactionLineItem(int pkey, boolean populate) throws SQLException {
 		super("transaction_item", true);
-		this.initializeFields(this.getFields());
-		
+
 		this.setPkey(pkey);
 		if (populate) {
 			this.fetch();
 		}
 	}
-	
-	private HashMap<String, Field> getFields() {
-		HashMap<String, Field> fields = new HashMap<>(6);
-		fields.put("pkey", new Field(false));
-		fields.put("transaction_", new Field(false));
-		fields.put("item", new Field(false));
-		fields.put("price", new Field(false));
-		fields.put("adjustment", new Field(true));
-		fields.put("quantity", new Field(true));
-		fields.put("description", new Field(true));
-		return fields;
-	}
-	
+
 	/**
 	 * For checking if an item is already in the transaction.
 	 */

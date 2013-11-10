@@ -47,7 +47,7 @@ public final class DB {
         while (rs.next()) {
             HashMap<String, Field> row = new HashMap<>(md.getColumnCount());
             for (int i = 1; i <= md.getColumnCount(); ++i) {
-                Field field = new Field(true);
+                Field field = new Field();
                 field.initField(rs.getObject(i));
                 row.put(md.getColumnName(i), field);
             }

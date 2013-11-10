@@ -20,7 +20,6 @@ public class Phone extends Record {
      */
     public Phone(String number, boolean primary, PhoneType type) {
         super("phone", true);
-        this.initializeFields(this.getFields());
         this.setFieldValue("number", number);
         this.setFieldValue("primary_num", (primary ? 1 : 0));
         this.setFieldValue("type", type.toString());
@@ -32,7 +31,6 @@ public class Phone extends Record {
      */
     public Phone(int pkey, boolean populate) throws SQLException {
         super("phone", true);
-        this.initializeFields(this.getFields());
 
         this.setPkey(pkey);
         if (populate) {
@@ -42,18 +40,6 @@ public class Phone extends Record {
 
     public Phone(HashMap<String, Field> map) {
         super("phone", true, map);
-    }
-
-    /**
-     * This table's fields.
-     */
-    private HashMap<String, Field> getFields() {
-        HashMap<String, Field> fields = new HashMap<>(4);
-        fields.put("pkey", new Field(false));
-        fields.put("number", new Field(false));
-        fields.put("primary_num", new Field(true));
-        fields.put("type", new Field(false));
-        return fields;
     }
 
     /**

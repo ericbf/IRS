@@ -5,15 +5,11 @@ public final class Field {
 	private Object	field		= null;         // the value
 	private Boolean	changed		= false;	// whether it has been modified or
 											// not
-	private Boolean	modifiable;			// whether it can be modified
 	private Boolean	initialized	= false;	// whether anything has been put in
 											// it (to tell null apart from
 											// uninitialzied)
-	/*
-         * 
-         */										
-	public Field(boolean modifiable) {
-		this.modifiable = modifiable;
+
+	public Field() {
 	}
 	
 	/**
@@ -28,9 +24,9 @@ public final class Field {
 	 * For use in record classes.
 	 */
 	public void setValue(Object value) {
-		if (this.initialized && !this.modifiable) {
-			throw new UnmodifiableFieldException();
-		}
+        if(value.equals(this.field)) {
+            return;  // old value == new value, do nothing.
+        }
 		this.initialized = true;
 		this.field = value;
 		this.changed = true;
@@ -52,21 +48,7 @@ public final class Field {
 	public Boolean getWasInitialized() {
 		return this.initialized;
 	}
-	
-	/**
-	 * Makes a field unmodifiable.
-	 */
-	public void setUnmodifiable() {
-		this.modifiable = false;
-	}
-	
-	/**
-	 * Check if a field can be modified.
-	 */
-	public Boolean isUnmodifiable() {
-		return !modifiable;
-	}
-	
+
 	/**
 	 * Checks if this field was changed in a record class.
 	 */

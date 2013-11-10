@@ -1,10 +1,10 @@
 package ISIS.misc;
 
-import java.sql.SQLException;
-import java.util.HashMap;
-
 import ISIS.database.Field;
 import ISIS.database.Record;
+
+import java.sql.SQLException;
+import java.util.HashMap;
 
 /**
  * General purpose class for representing postal addresses.
@@ -18,7 +18,6 @@ public class Address extends Record {
 			String title, String zip, String state, String city, String county,
 			String streetAddress) {
 		super("address", true);
-		this.initializeFields(this.getFields());
 		this.setFieldValue("active", (active ? 1 : 0));
 		this.setFieldValue("primary_status", (primary ? 1 : 0));
 		this.setFieldValue("title", title);
@@ -36,8 +35,7 @@ public class Address extends Record {
 	 */
 	public Address(int pkey, boolean populate) throws SQLException {
 		super("address", true);
-		this.initializeFields(this.getFields());
-		
+
 		this.setPkey(pkey);
 		if (populate) {
 			this.fetch();
@@ -62,24 +60,6 @@ public class Address extends Record {
 	public void setPrimary(boolean primary) {
 		this.setFieldValue("primary", (primary ? 1 : 0));
 		
-	}
-	
-	/**
-	 * This table's fields.
-	 */
-	private HashMap<String, Field> getFields() {
-		HashMap<String, Field> fields = new HashMap<>(4);
-		fields.put("pkey", new Field(false));
-		fields.put("active", new Field(true));
-		fields.put("primary_status", new Field(true));
-		fields.put("title", new Field(false));
-		fields.put("city", new Field(false));
-		fields.put("state", new Field(false));
-		fields.put("zip", new Field(false));
-		fields.put("county", new Field(false));
-		fields.put("country", new Field(false));
-		fields.put("st_address", new Field(false));
-		return fields;
 	}
 	
 	/**

@@ -1,5 +1,13 @@
 package ISIS.user;
 
+import ISIS.database.DB;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.database.RecordNotFoundException;
+import ISIS.gui.ErrorLogger;
+import ISIS.misc.Picture;
+import ISIS.session.Session;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -8,14 +16,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
-import ISIS.database.DB;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.database.RecordNotFoundException;
-import ISIS.gui.ErrorLogger;
-import ISIS.misc.Picture;
-import ISIS.session.Session;
 
 /**
  * The class representing the person who is employed by the client and is using IRS. It consists of information about
@@ -35,7 +35,6 @@ public final class User extends Record {
     public User(String username, boolean active, String password, String fname,
             String lname, String note) {
         super("user", true);
-        this.initializeFields(getFields());
 
         this.setFieldValue("username", username);
         this.setFieldValue("active", active);
@@ -51,7 +50,6 @@ public final class User extends Record {
     public User(Integer pkey, boolean populate) throws SQLException,
             RecordNotFoundException {
         super("user", true);
-        this.initializeFields(getFields());
 
         this.setPkey(pkey);
         if (populate) {
@@ -65,7 +63,6 @@ public final class User extends Record {
     public User(String username, String password) throws SQLException,
             AuthenticationException {
         super("user", true);
-        this.initializeFields(getFields());
 
         PreparedStatement stmt = Session.getDB().prepareStatement(
                 "SELECT * FROM USER WHERE username=?");
@@ -85,18 +82,6 @@ public final class User extends Record {
                     "Username or password is incorrect.",
                     AuthenticationException.exceptionType.PASSWORD);
         }
-    }
-
-    private HashMap<String, Field> getFields() {
-        HashMap<String, Field> fields = new HashMap<>(7);
-        fields.put("pkey", new Field(false));
-        fields.put("active", new Field(true));
-        fields.put("username", new Field(false));
-        fields.put("password", new Field(true));
-        fields.put("fname", new Field(false));
-        fields.put("lname", new Field(false));
-        fields.put("note", new Field(true));
-        return fields;
     }
 
     /**

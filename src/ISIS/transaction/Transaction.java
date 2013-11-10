@@ -44,7 +44,6 @@ public class Transaction extends Record {
      */
     public Transaction(Customer customer) {
         super("transaction_", true);
-        this.initializeFields(this.getFields());
 
         this.setFieldValue("customer", customer.getPkey());
         this.setFieldValue("status", TransactionStatus.ACTIVE);
@@ -57,7 +56,6 @@ public class Transaction extends Record {
      */
     public Transaction(int pkey, boolean populate) throws SQLException {
         super("transaction_", true);
-        this.initializeFields(this.getFields());
 
         this.setPkey(pkey);
         if (populate) {
@@ -78,26 +76,9 @@ public class Transaction extends Record {
      */
     public Transaction(Transaction originalSale) {
         super("transaction_", true);
-        this.initializeFields(this.getFields());
 
         this.originalTransaction = originalSale;
         this.setFieldValue("parent_transaction", originalTransaction.getPkey());
-    }
-
-    /**
-     * This table's fields.
-     */
-    private HashMap<String, Field> getFields() {
-        HashMap<String, Field> fields = new HashMap<>(7);
-        fields.put("pkey", new Field(false));
-        fields.put("status", new Field(true));
-        fields.put("customer", new Field(false));
-        fields.put("type", new Field(false));
-        fields.put("modified", new Field(true));
-        fields.put("parent_transaction", new Field(false));
-        fields.put("address", new Field(true));
-        fields.put("billing", new Field(true));
-        return fields;
     }
 
     @Override
