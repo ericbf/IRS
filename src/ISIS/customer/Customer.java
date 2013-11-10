@@ -192,9 +192,10 @@ public class Customer extends Record {
 
     /**
      * Returns the primary address, or null if there are no addresses. If no address is marked primary, then one is picked arbitrarily.
+     *
      * @return
      */
-    public Address getPrimaryAddress() throws SQLException{
+    public Address getPrimaryAddress() throws SQLException {
         ArrayList<Address> addresses = this.getAddresses();
         if (addresses.size() == 0) {
             return null;

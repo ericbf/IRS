@@ -1,20 +1,18 @@
 package ISIS.transaction;
 
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.HashMap;
-
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.item.Item;
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.HashMap;
 
 /**
  * Attributes of an item as it relates to a transaction -- e.g. amount being
  * bought, a discount, or a note.
  */
 public class TransactionLineItem extends Record {
-	/* Fields omitted */
-	
 	/**
 	 * Public constructor. Initializes all fields of the object.
 	 */
@@ -30,7 +28,11 @@ public class TransactionLineItem extends Record {
 		this.setFieldValue("quantity", quantity);
 		this.setFieldValue("description", description);
 	}
-	
+
+    public TransactionLineItem(HashMap<String, Field> map) {
+        super("transaction_item", true, map);
+    }
+
 	/**
 	 * Public constructor. Take a transaction_item database key, and has the
 	 * option to populate the fields from the database.

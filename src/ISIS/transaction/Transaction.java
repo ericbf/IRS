@@ -124,11 +124,11 @@ public class Transaction extends Record {
      * @pre getItems().contains(item) == false
      * @post getItems().contains(item) == true
      */
-    public void addItem(Item item, BigDecimal adjustment, BigDecimal quantity, String note) {
+    public void addItem(Item item, BigDecimal price, BigDecimal adjustment, BigDecimal quantity, String note) {
         if (this.items.contains(item)) {
             throw new RuntimeException("The transaction already contains this item.");
         }
-        this.items.add(new TransactionLineItem(this, item, adjustment, quantity, note));
+        this.items.add(new TransactionLineItem(this, item, price, adjustment, quantity, note));
     }
 
     /**
@@ -150,7 +150,7 @@ public class Transaction extends Record {
         TransactionLineItem itemToMod = this.items.get(this.items.indexOf(item));
         itemToMod.setAdjustment(adjustment);
         itemToMod.setQuantity(quantity);
-        itemToMod.setNote(note);
+        itemToMod.setDescription(note);
     }
 
     /**
