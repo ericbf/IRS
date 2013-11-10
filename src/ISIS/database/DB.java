@@ -155,13 +155,11 @@ public final class DB {
                               "cost VARCHAR(30) NOT NULL, description TEXT NOT NULL, uom VARCHAR(10), reorder_qty VARCHAR(30) NOT NULL, lastest BOOLEAN NOT NULL, " + datesSql + ")");
 
         // transaction
-        executeUpdate("CREATE TABLE IF NOT EXISTS transaction_ (pkey INTEGER PRIMARY KEY, status VARCHAR(20) NOT NULL, " + "type VARCHAR(20) NOT NULL, modified BOOLEAN NOT NULL, parent_transaction INT REFERENCES transaction_(pkey), " + datesSql + ")");
+        executeUpdate("CREATE TABLE IF NOT EXISTS transaction_ (pkey INTEGER PRIMARY KEY, status VARCHAR(20) NOT NULL, " +
+                              "" + "type VARCHAR(20) NOT NULL, modified BOOLEAN NOT NULL, parent_transaction INT REFERENCES transaction_" +
+                              "(pkey), address INT REFERENCES address(pkey), billing INT REFERENCES billing(pkey), " + datesSql + ")");
         // transaction-item
         executeUpdate("CREATE TABLE IF NOT EXISTS transaction_item (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, " + "item INT REFERENCES item(pkey) NOT NULL, price VARCHAR(30) NOT NULL, adjustment VARCHAR(30) NOT NULL, description TEXT, " + datesSql + ")");
-        // transaction-address
-        executeUpdate("CREATE TABLE IF NOT EXISTS transaction_address (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, " + "address INT REFERENCES address(pkey) NOT NULL)");
-        // transaction-billing
-        executeUpdate("CREATE TABLE IF NOT EXISTS transaction_billing (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, " + "billing INT REFERENCES billing(pkey) NOT NULL)");
 
         // TODO: add indices
         // TODO: keywords
