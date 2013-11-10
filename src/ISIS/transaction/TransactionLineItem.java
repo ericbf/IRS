@@ -58,44 +58,6 @@ public class TransactionLineItem extends Record {
 	}
 	
 	/**
-	 * @return the transaction
-	 */
-	public Transaction getTransaction() {
-		return (Transaction) this.getFieldValue("transaction_");
-	}
-	
-	/**
-	 * @return the price
-	 */
-	public BigDecimal getPrice() {
-		return (BigDecimal) this.getFieldValue("price");
-	}
-	
-	/**
-	 * @param adjustment
-	 *            the adjustment to set
-	 */
-	public void setAdjustment(BigDecimal adjustment) {
-		this.setFieldValue("adjustment", adjustment);
-	}
-	
-	/**
-	 * @param quantity
-	 *            the quantity to set
-	 */
-	public void setQuantity(BigDecimal quantity) {
-		this.setFieldValue("quantity", quantity);
-	}
-	
-	/**
-	 * @param description
-	 *            the description to set
-	 */
-	public void setDescription(String description) {
-		this.setFieldValue("description", description);
-	}
-	
-	/**
 	 * For checking if an item is already in the transaction.
 	 */
 	@Override
@@ -136,5 +98,43 @@ public class TransactionLineItem extends Record {
 	 */
 	public String getDescription() {
 		return (String) this.getFieldValue("description");
+	}
+	
+	/**
+	 * @return the transaction
+	 */
+	public Transaction getTransaction() {
+		return (Transaction) this.getFieldValue("transaction_");
+	}
+	
+	/**
+	 * @return the price
+	 */
+	public BigDecimal getPrice() {
+		return (BigDecimal) this.getFieldValue("price");
+	}
+	
+	/**
+	 * @param adjustment
+	 *            the adjustment to set
+	 */
+	public void setAdjustment(BigDecimal adjustment) {
+		this.setFieldValue("adjustment", adjustment);
+	}
+	
+	/**
+	 * @param quantity
+	 *            the quantity to set
+	 */
+	public void setQuantity(BigDecimal quantity) {
+		this.setFieldValue("quantity", quantity);
+	}
+	
+	/**
+	 * @param description
+	 *            the description to set
+	 */
+	public void setDescription(String description) {
+		this.setFieldValue("description", description);
 	}
 }
