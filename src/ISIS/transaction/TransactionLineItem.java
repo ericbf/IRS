@@ -1,6 +1,7 @@
 package ISIS.transaction;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import ISIS.database.Field;
@@ -30,6 +31,20 @@ public class TransactionLineItem extends Record {
 		this.setFieldValue("description", description);
 	}
 	
+	/**
+	 * Public constructor. Take a transaction_item database key, and has the
+	 * option to populate the fields from the database.
+	 */
+	public TransactionLineItem(int pkey, boolean populate) throws SQLException {
+		super("transaction_item", true);
+		this.initializeFields(this.getFields());
+		
+		this.setPkey(pkey);
+		if (populate) {
+			this.fetch();
+		}
+	}
+	
 	private HashMap<String, Field> getFields() {
 		HashMap<String, Field> fields = new HashMap<>(6);
 		fields.put("pkey", new Field(false));
@@ -37,8 +52,47 @@ public class TransactionLineItem extends Record {
 		fields.put("item", new Field(false));
 		fields.put("price", new Field(false));
 		fields.put("adjustment", new Field(true));
+		fields.put("quantity", new Field(true));
 		fields.put("description", new Field(true));
 		return fields;
+	}
+	
+	/**
+	 * @return the transaction
+	 */
+	public Transaction getTransaction() {
+		return (Transaction) this.getFieldValue("transaction_");
+	}
+	
+	/**
+	 * @return the price
+	 */
+	public BigDecimal getPrice() {
+		return (BigDecimal) this.getFieldValue("price");
+	}
+	
+	/**
+	 * @param adjustment
+	 *            the adjustment to set
+	 */
+	public void setAdjustment(BigDecimal adjustment) {
+		this.setFieldValue("adjustment", adjustment);
+	}
+	
+	/**
+	 * @param quantity
+	 *            the quantity to set
+	 */
+	public void setQuantity(BigDecimal quantity) {
+		this.setFieldValue("quantity", quantity);
+	}
+	
+	/**
+	 * @param description
+	 *            the description to set
+	 */
+	public void setDescription(String description) {
+		this.setFieldValue("description", description);
 	}
 	
 	/**
@@ -67,20 +121,20 @@ public class TransactionLineItem extends Record {
 	 * discount.
 	 */
 	public BigDecimal getAdjustment() {
-		return null;
+		return (BigDecimal) this.getFieldValue("adjustment");
 	}
 	
 	/**
 	 * Gets the quantity of the item involved in the transaction.
 	 */
 	public BigDecimal getQuantity() {
-		return null;
+		return (BigDecimal) this.getFieldValue("quantity");
 	}
 	
 	/**
 	 * Gets the note associated with the transaction and this item.
 	 */
-	public String getnote() {
-		return null;
+	public String getDescription() {
+		return (String) this.getFieldValue("description");
 	}
 }
