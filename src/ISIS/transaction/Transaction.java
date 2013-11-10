@@ -38,10 +38,6 @@ public class Transaction extends Record {
     boolean itemsInitialized = false;
     private ArrayList<TransactionLineItem> items = new ArrayList<>();
 
-    {
-        return this.billing;
-    }
-
     /**
      * Public constructor. A Transaction starts with a user and a customer.
      * These attributes cannot be changed.
@@ -181,7 +177,6 @@ public class Transaction extends Record {
         }
         return this.items;
     }
-
     /**
      * Gets the billing information associated with this transaction.
      */

@@ -98,7 +98,9 @@ public final class DB {
                               "st_address TEXT NOT NULL, zip VARCHAR(255) NOT NULL, " + datesSql + ")");
 
         // billing
-        executeUpdate("CREATE TABLE IF NOT EXISTS billing (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " + "number VARCHAR(255), expiration VARCHAR(5), CCV VARCHAR(5) NOT NULL, " + "address INT REFERENCES address(pkey), " + datesSql + ")");
+        executeUpdate("CREATE TABLE IF NOT EXISTS billing (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " + "number VARCHAR(255), " +
+                              "expiration VARCHAR(5), CCV VARCHAR(5), " + "address INT REFERENCES address(pkey), " +
+                              "type VARCHAR(50), " + datesSql + ")");
 
         // customer
         executeUpdate("CREATE TABLE IF NOT EXISTS customer (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " + "password VARCHAR(255) NOT NULL, fname VARCHAR(255) NOT NULL, lname VARCHAR(255) NOT NULL, " + "email TEXT NOT NULL, note TEXT NOT NULL, " + datesSql + ")");

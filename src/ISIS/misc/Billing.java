@@ -1,70 +1,145 @@
 package ISIS.misc;
 
-import java.util.Date;
-
+import ISIS.database.Field;
 import ISIS.database.Record;
+import ISIS.gui.ErrorLogger;
+
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * General purpose class for representing billing information.
  */
 public class Billing extends Record {
-	/* Fields omitted */
-	
-	public static enum BillingType {
-		
-		CREDIT, CASH, OTHER
-	}
-	
-	/**
-	 * Public constructor for CREDIT billing.
-	 */
-	public Billing(Address address, String cardNumber, Date expDate, String CSC) {
-		super("Penis", false);
-	}
-	
-	/**
-	 * Public constructor for CASH billing.
-	 */
-	public Billing(Address address) {
-		super("Penis", false);
-	}
-	
-	/**
-	 * Public constructor for OTHER billing.
-	 */
-	public Billing(Address address, String note) {
-		super("Penis", false);
-	}
-	
-	/**
-	 * Gets the billing type associated with the record.
-	 */
-	public BillingType getBillingType() {
-		return null;
-	}
-	
-	/**
-	 * Gets the billing address.
-	 */
-	public Address getAddress() {
-		return null;
-	}
-	
-	/**
-	 * Gets the credit card number.
-	 * 
-	 * @pre getBillingType == BillingType.CREDIT
-	 */
-	public String getCardNumber() {
-		return null;
-	}
-	
-	/**
-	 * Gets the note.
-	 * 
-	 * @pre getBillingType() == BillingType.OTHER
-	 */
-	public String getNote() {
-		return null;
-	}
+    Address address = null;
+
+    /**
+     * Gets a set of billing info from the DB using the given key.
+     */
+    public Billing(int pkey, boolean populate) throws SQLException {
+        super("billing", true);
+        this.initializeFields(this.getFields());
+
+        this.setPkey(pkey);
+        if (populate) {
+            this.fetch();
+        }
+    }
+
+    /**
+     * Public constructor for CREDIT billing.
+     */
+    public Billing(Address address, String cardNumber, Date expDate, String CCV) {
+        super("billing", true);
+
+        this.setFieldValue("type", BillingType.CREDIT.toString());
+        this.address = address;
+        if (address != null) {
+            this.setFieldValue("address", address.getPkey());
+        }
+        this.initializeFields(this.getFields());
+
+        this.setFieldValue("number", cardNumber);
+        SimpleDateFormat df = new SimpleDateFormat("MM/yy");
+        this.setFieldValue("expiration", df.format(expDate));
+        this.setFieldValue("CCV", CCV);
+    }
+
+    /**
+     * Public constructor for CASH or OTHER billing.
+     */
+    public Billing(Address address, BillingType billingType) {
+        super("billing", true);
+
+        if (billingType.equals(BillingType.CREDIT)) {
+            throw new RuntimeException("COMMENTS.");
+        }
+        this.setFieldValue("type", billingType.toString());
+
+        this.initializeFields(this.getFields());
+        if (address != null) {
+            this.setFieldValue("address", address.getPkey());
+        }
+    }
+
+    public Billing(HashMap<String, Field> map) {
+        super("billing", true, map);
+    }
+
+    /**
+     * This table's fields.
+     */
+    private HashMap<String, Field> getFields() {
+        HashMap<String, Field> fields = new HashMap<>(7);
+        fields.put("pkey", new Field(false));
+        fields.put("active", new Field(true));
+        fields.put("number", new Field(false));
+        fields.put("expiration", new Field(false));
+        fields.put("CCV", new Field(true));
+        fields.put("address", new Field(false));
+        return fields;
+    }
+
+    /**
+     * Gets the billing type associated with the record.
+     */
+    public BillingType getBillingType() {
+        return BillingType.valueOf(((String) this.getFieldValue("type")));
+    }
+
+    /**
+     * Gets the billing address.
+     */
+    public Address getAddress() throws SQLException {
+        if (this.address == null) {
+            return new Address((int) this.getFieldValue("address"), false);
+        } else {
+            return this.address;
+        }
+    }
+
+    /**
+     * Gets the credit card number.
+     *
+     * @pre getBillingType == BillingType.CREDIT
+     */
+    public String getCardNumber() {
+        if (this.getBillingType().equals(BillingType.CREDIT)) {
+            return (String) this.getFieldValue("number");
+        } else {
+            throw new RuntimeException("Cannot get card number unless the billing info is a card!");
+        }
+    }
+
+    /**
+     * Gets the credit card number.
+     *
+     * @pre getBillingType == BillingType.CREDIT
+     */
+    public String getCCV() {
+        if (this.getBillingType().equals(BillingType.CREDIT)) {
+            return (String) this.getFieldValue("CCV");
+        } else {
+            throw new RuntimeException("Cannot get CCV unless the billing info is a card!");
+        }
+    }
+
+    public Date getExpiration() {
+        try {
+            Date date = new SimpleDateFormat("MM/yy", Locale.ENGLISH).parse((String) this.getFieldValue("expiration"));
+            return date;
+        } catch (ParseException e) {
+            ErrorLogger.error(e, "Failed to parse expiration date.", true, false);
+            throw new RuntimeException("Failed to retrieve date");
+        }
+    }
+
+    public static enum BillingType {
+
+        CREDIT, CASH, OTHER
+    }
 }
