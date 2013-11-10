@@ -41,8 +41,7 @@ public class Phone extends Record {
     }
 
     public Phone(HashMap<String, Field> map) {
-        super("phone", true);
-        this.initializeFields(map);
+        super("phone", true, map);
     }
 
     /**

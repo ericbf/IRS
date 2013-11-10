@@ -44,8 +44,7 @@ public class Address extends Record {
     }
 
     public Address(HashMap<String, Field> map) {
-        super("address", true);
-        this.initializeFields(map);
+        super("address", true, map);
     }
 
     /**
