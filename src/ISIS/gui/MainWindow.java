@@ -55,6 +55,7 @@ public class MainWindow extends JFrame {
 		
 		// new BorderLayout()
 		JTabbedPane tabs = new JTabbedPane(JTabbedPane.LEFT);
+		tabs.setFocusable(false);
 		tabs.add("Customers", this.customerPane);
 		tabs.add("Inventory", this.inventoryPane);
 		tabs.add("Transactions", this.transactionPane);
@@ -78,7 +79,7 @@ public class MainWindow extends JFrame {
 				MainWindow frame = new MainWindow();
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.pack();
-				frame.setMinimumSize(new Dimension(400, 400));
+				frame.setMinimumSize(new Dimension(800, 400));
 				frame.setVisible(true);
 			}
 		});

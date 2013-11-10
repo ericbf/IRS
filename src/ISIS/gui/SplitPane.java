@@ -11,9 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -215,7 +213,7 @@ public final class SplitPane extends JPanel {
 		} else {
 			this.setLeftComponent(this.stack.get(--this.stackPointer - 1));
 			this.setRightComponent(this.stack.get(this.stackPointer));
-			this.splitPane.setDividerLocation(200);
+			this.splitPane.setDividerLocation(this.getWidth() / 2);
 		}
 		this.addButtons();
 		this.validate();
@@ -230,7 +228,7 @@ public final class SplitPane extends JPanel {
 	protected final void forward() {
 		this.setRightComponent(this.stack.get(++this.stackPointer));
 		this.setLeftComponent(this.stack.get(this.stackPointer - 1));
-		this.splitPane.setDividerLocation(200);
+		this.splitPane.setDividerLocation(this.getWidth() / 2);
 		this.addButtons();
 	}
 	
@@ -244,7 +242,8 @@ public final class SplitPane extends JPanel {
 			this.splitPane.setRightComponent(null);
 		} else {
 			this.splitPane.setDividerSize(this.defaultDividerSize);
-			this.splitPane.setRightComponent(this.getWrappedComponent(comp));
+			// this.splitPane.setRightComponent(this.getWrappedComponent(comp));
+			this.splitPane.setRightComponent(comp);
 		}
 		
 	}
@@ -254,25 +253,24 @@ public final class SplitPane extends JPanel {
 	 */
 	public void setLeftComponent(Component comp) {
 		if (comp != null) {
-			this.splitPane.setLeftComponent(this.getWrappedComponent(comp));
+			// this.splitPane.setLeftComponent(this.getWrappedComponent(comp));
+			this.splitPane.setLeftComponent(comp);
 		} else this.splitPane.setLeftComponent(null);
 	}
 	
-	/**
-	 * Wraps the component in a JScrollPane and sets its settings
-	 * 
-	 * @param comp
-	 * @return
-	 */
-	private JScrollPane getWrappedComponent(Component comp) {
-		JScrollPane sp = new JScrollPane(comp);
-		sp.setOpaque(false);
-		sp.getViewport().setOpaque(false);
-		// sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		// sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		sp.setBorder(new EmptyBorder(4, 0, 10, 5));
-		return sp;
-	}
+	// /**
+	// * Wraps the component in a JScrollPane and sets its settings
+	// *
+	// * @param comp
+	// * @return
+	// */
+	// private JScrollPane getWrappedComponent(Component comp) {
+	// JScrollPane sp = new JScrollPane(comp);
+	// sp.setOpaque(false);
+	// sp.getViewport().setOpaque(false);
+	// sp.setBorder(new EmptyBorder(4, 0, 10, 5));
+	// return sp;
+	// }
 	
 	/**
 	 * The ways of laying out the views.
