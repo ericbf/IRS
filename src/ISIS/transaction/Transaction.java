@@ -1,14 +1,19 @@
 package ISIS.transaction;
 
 import ISIS.customer.Customer;
+import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
+import ISIS.database.UninitializedFieldException;
+import ISIS.gui.ErrorLogger;
 import ISIS.item.Item;
 import ISIS.misc.Address;
 import ISIS.misc.Billing;
+import ISIS.session.Session;
 import ISIS.user.User;
 
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,10 +32,16 @@ import java.util.HashMap;
  * @pkey > 0
  */
 public class Transaction extends Record {
+    Customer customer = null;
+    Billing billing = null;
+    Address address = null;
+    Transaction originalTransaction = null;
     boolean itemsInitialized = false;
     private ArrayList<TransactionLineItem> items = new ArrayList<>();
-    Customer customer = null;
-    Transaction originalTransaction = null;
+
+    {
+        return this.billing;
+    }
 
     /**
      * Public constructor. A Transaction starts with a user and a customer.
@@ -92,88 +103,13 @@ public class Transaction extends Record {
         return fields;
     }
 
-    //    @Override
-    //    protected void postSave() throws SQLException {
-    //        //delete removed numbers
-    //        if (numbersToRemove.size() > 0) {
-    //            String sql = "DELETE FROM customer_phone WHERE phone IN (" + DB.preparedArgsBuilder(this.numbersToRemove.size(), "?") + ") AND customer=?";
-    //            try {
-    //                PreparedStatement stmt = Session.getDB().prepareStatement(sql);
-    //                int i = 1;
-    //                for (; i < (this.numbersToRemove.size() + 1); ++i) {
-    //                    stmt.setInt(i, this.numbersToRemove.get(i - 1).getPkey());
-    //                }
-    //                stmt.setInt(i, this.getPkey());
-    //                stmt.executeUpdate();
-    //            } catch (SQLException e) {
-    //                ErrorLogger.error(e, "Could not remove phone numbers.", true, true);
-    //                throw e;
-    //            }
-    //        }
-    //
-    //        //save any new phone numbers
-    //        if (this.numbers.size() > 0) {
-    //            try {
-    //                String sql = "INSERT INTO customer_phone (customer, phone) VALUES " + DB.preparedArgsBuilder(this.numbers.size(), "(?, ?)");
-    //                PreparedStatement stmt = Session.getDB().prepareStatement(sql);
-    //                int i = 1;
-    //                while (i < ((this.numbers.size()) * 2 + 1)) {
-    //                    stmt.setInt(i++, this.getPkey());
-    //                    try {
-    //                        this.numbers.get(i / 2 - 1).save();
-    //                    } catch (SQLException e) {
-    //                        ErrorLogger.error(e, "Saving a phone number failed.", true, true);
-    //                        throw e;
-    //                    }
-    //                    stmt.setInt(i++, this.numbers.get(i / 2 - 1).getPkey());
-    //                }
-    //                stmt.executeUpdate();
-    //            } catch (SQLException e) {
-    //                ErrorLogger.error(e, "Could not save phone numbers.", true, true);
-    //                throw e;
-    //            }
-    //        }
-    //
-    //        //delete removed numbers
-    //        if (addressesToRemove.size() > 0) {
-    //            String sql = "DELETE FROM customer_address WHERE address IN (" + DB.preparedArgsBuilder(this.addressesToRemove.size(), "?") + ") AND customer=?";
-    //            try {
-    //                PreparedStatement stmt = Session.getDB().prepareStatement(sql);
-    //                int i = 1;
-    //                for (; i < (this.addressesToRemove.size() + 1); ++i) {
-    //                    stmt.setInt(i, this.addressesToRemove.get(i - 1).getPkey());
-    //                }
-    //                stmt.setInt(i, this.getPkey());
-    //                stmt.executeUpdate();
-    //            } catch (SQLException e) {
-    //                ErrorLogger.error(e, "Could not remove addresses.", true, true);
-    //                throw e;
-    //            }
-    //        }
-    //
-    //        //save any new addresses
-    //        if (this.addresses.size() > 0) {
-    //            try {
-    //                String sql = "INSERT INTO customer_address (customer, address) VALUES " + DB.preparedArgsBuilder(this.addresses.size(), "(?, ?)");
-    //                PreparedStatement stmt = Session.getDB().prepareStatement(sql);
-    //                int i = 1;
-    //                while (i < ((this.addresses.size()) * 2 + 1)) {
-    //                    stmt.setInt(i++, this.getPkey());
-    //                    try {
-    //                        this.addresses.get(i / 2 - 1).save();
-    //                    } catch (SQLException e) {
-    //                        ErrorLogger.error(e, "Saving an address failed.", true, true);
-    //                        throw e;
-    //                    }
-    //                    stmt.setInt(i++, this.addresses.get(i / 2 - 1).getPkey());
-    //                }
-    //                stmt.executeUpdate();
-    //            } catch (SQLException e) {
-    //                ErrorLogger.error(e, "Could not save addresses.", true, true);
-    //                throw e;
-    //            }
-    //        }
-    //    }
+    @Override
+    protected void postSave() throws SQLException {
+        //save any new LineItems.
+        for (TransactionLineItem item : this.items) {
+            item.save();
+        }
+    }
 
     /**
      * Gets a list of returns that have been made on the transaction, or the
@@ -195,7 +131,7 @@ public class Transaction extends Record {
         if (this.items.contains(item)) {
             throw new RuntimeException("The transaction already contains this item.");
         }
-        this.items.add(new TransactionLineItem(item, adjustment, quantity, note));
+        this.items.add(new TransactionLineItem(this, item, adjustment, quantity, note));
     }
 
     /**
@@ -205,6 +141,7 @@ public class Transaction extends Record {
      * @post getItems().contains(item) == false
      */
     public void removeItem(Item item) {
+        this.items.remove(item);
     }
 
     /**
@@ -213,39 +150,95 @@ public class Transaction extends Record {
      * @pre getItems().contains(item) == true
      */
     public void modItem(Item item, BigDecimal adjustment, BigDecimal quantity, String note) {
+        TransactionLineItem itemToMod = this.items.get(this.items.indexOf(item));
+        itemToMod.setAdjustment(adjustment);
+        itemToMod.setQuantity(quantity);
+        itemToMod.setNote(note);
     }
 
     /**
      * Gets information associated with all involved items in this transaction.
      */
-    public ArrayList<TransactionLineItem> getItems() {
-        return null;
+    public ArrayList<TransactionLineItem> getItems() throws SQLException {
+        if (!this.itemsInitialized) {
+            try {
+                this.getPkey();
+            } catch (UninitializedFieldException e) {
+                return this.items;
+            }
+            try {
+                PreparedStatement stmt = Session.getDB().prepareStatement("SELECT * FROM transaction_item WHERE transaction_=?");
+                stmt.setInt(1, this.getPkey());
+                for (HashMap<String, Field> row : DB.mapResultSet(stmt.executeQuery())) {
+                    this.items.add(new TransactionLineItem(row));
+                }
+            } catch (SQLException e) {
+                ErrorLogger.error(e, "Failed to retrieve transaction's items.", true, true);
+                throw e;
+            }
+
+        }
+        return this.items;
     }
+
+    else
 
     /**
      * Gets the billing information associated with this transaction.
      */
-    public Billing getBilling() {
-        return null;
+    public Billing getBilling() throws SQLException {
+        if (this.billing != null) {
+            return this.billing;
+        }
+        try {
+            this.getPkey();
+        } catch (UninitializedFieldException e) {
+            return null;  //the transaction has never been saved, so no billing has been set.
+        }
+        try {
+            this.billing = new Billing((Integer) this.getFieldValue("billing"), false);
+        } catch (SQLException e) {
+            ErrorLogger.error(e, "Failed to retrieve address.", true, true);
+            throw e;
+        }
+        return this.billing;
     }
 
     /**
      * Sets the billing information for this transaction.
      */
-    public void setBilling(Billing billing) {
+    public void setBilling(Billing billing) throws SQLException {
+        this.setFieldValue("billing", billing.getPkey());
+        this.billing = billing;
     }
 
     /**
      * Gets the address associated with this transaction.
      */
-    public Address getAddress() {
-        return null;
+    public Address getAddress() throws SQLException {
+        if (this.address != null) {
+            return this.address;
+        }
+        try {
+            this.getPkey();
+        } catch (UninitializedFieldException e) {
+            return null;  //the transaction has never been saved, so no address has been set.
+        }
+        try {
+            this.address = new Address((Integer) this.getFieldValue("address"), false);
+        } catch (SQLException e) {
+            ErrorLogger.error(e, "Failed to retrieve address.", true, true);
+            throw e;
+        }
+        return this.billing;
     }
 
     /**
      * Sets the address for this transaction.
      */
     public void setAddress(Address address) {
+        this.setFieldValue("address", address.getPkey());
+        this.address = address;
     }
 
     /**
@@ -275,7 +268,7 @@ public class Transaction extends Record {
     /**
      * Gets customer associated with this transaction.
      */
-    public Customer getCustomer() throws SQLException{
+    public Customer getCustomer() throws SQLException {
         return new Customer((Integer) this.getFieldValue("customer"), false);
     }
 

@@ -123,7 +123,7 @@ public class Customer extends Record {
             }
         }
 
-        //delete removed numbers
+        //delete removed addresses
         if (addressesToRemove.size() > 0) {
             String sql = "DELETE FROM customer_address WHERE address IN (" + DB.preparedArgsBuilder(this.addressesToRemove.size(), "?") + ") AND customer=?";
             try {
