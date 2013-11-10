@@ -156,7 +156,8 @@ public final class DB {
 
         // transaction
         executeUpdate("CREATE TABLE IF NOT EXISTS transaction_ (pkey INTEGER PRIMARY KEY, status VARCHAR(20) NOT NULL, " +
-                              "" + "type VARCHAR(20) NOT NULL, modified BOOLEAN NOT NULL, parent_transaction INT REFERENCES transaction_" +
+                              "customer INT REFERENCES customer(pkey), " + "type VARCHAR(20) NOT NULL, modified BOOLEAN NOT NULL, " +
+                              "parent_transaction INT REFERENCES transaction_" +
                               "(pkey), address INT REFERENCES address(pkey), billing INT REFERENCES billing(pkey), " + datesSql + ")");
         // transaction-item
         executeUpdate("CREATE TABLE IF NOT EXISTS transaction_item (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, " + "item INT REFERENCES item(pkey) NOT NULL, price VARCHAR(30) NOT NULL, adjustment VARCHAR(30) NOT NULL, description TEXT, " + datesSql + ")");

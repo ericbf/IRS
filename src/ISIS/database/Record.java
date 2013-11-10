@@ -29,7 +29,18 @@ public abstract class Record {
         this.tableName = tableName;
         this.hasDates = hasDates;
     }
-
+    /**
+     * Base initializer for a Record whose data has already been retrieved.
+     */
+    protected Record(String tableName, boolean hasDates, HashMap<String, Field> map) {
+        this.tableName = tableName;
+        this.hasDates = hasDates;
+        this.initializeFields(map);
+        //This condition seems to happen sometimes on (faulty) joins, and obviously we're just going to get errors everywhere if it does.
+        if (this.getField("pkey").getValue() == null) {
+            throw new RecordNotFoundException("Record has no primary key... Faulty join?");
+        }
+    }
     /**
      * Maps our pkey-based select to a hashmap, leveraging the method in the DB class. WARNING: All fields are set to
      * modifiable; you have to fix it yourself.
@@ -95,7 +106,11 @@ public abstract class Record {
     public final Object getFieldValue(String key) {
         Object value;
         try {
-            value = this.fields.get(key).getValue();
+            try {
+                value = this.fields.get(key).getValue();
+            } catch (NullPointerException e) {
+                throw new RecordNotFoundException("Record has no primary key.. This should never happen.");
+            }
         } catch (UninitializedFieldException e) {
             try {
                 // check that there is a pkey (will throw
