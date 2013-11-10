@@ -10,7 +10,6 @@ import ISIS.item.Item;
 import ISIS.misc.Address;
 import ISIS.misc.Billing;
 import ISIS.session.Session;
-import ISIS.user.User;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -52,6 +51,8 @@ public class Transaction extends Record {
         this.initializeFields(this.getFields());
 
         this.setFieldValue("customer", customer.getPkey());
+        this.setFieldValue("status", TransactionStatus.ACTIVE);
+        this.setFieldValue("modified", 0);
     }
 
     /**
@@ -181,8 +182,6 @@ public class Transaction extends Record {
         return this.items;
     }
 
-    else
-
     /**
      * Gets the billing information associated with this transaction.
      */
@@ -230,7 +229,7 @@ public class Transaction extends Record {
             ErrorLogger.error(e, "Failed to retrieve address.", true, true);
             throw e;
         }
-        return this.billing;
+        return this.address;
     }
 
     /**
@@ -245,7 +244,17 @@ public class Transaction extends Record {
      * Gets status associated with this transaction.
      */
     public TransactionStatus getStatus() {
-        return null;
+        if (this.getFieldValue("status") == null) {
+            return null;
+        }
+        return TransactionStatus.valueOf((String) this.getFieldValue("status"));
+    }
+
+    /**
+     * Sets the transaction's status.
+     */
+    public void setStatus(TransactionStatus status) {
+        this.setFieldValue("status", status.toString());
     }
 
     /**
@@ -255,14 +264,7 @@ public class Transaction extends Record {
      * @pre getStatus() == status.Finalized
      */
     public boolean isModified() {
-        return false;
-    }
-
-    /**
-     * Gets user (employee) associated with this transaction.
-     */
-    public User getUser() {
-        return null;
+        return ((Integer) this.getFieldValue("modified")) == 1;
     }
 
     /**
@@ -279,9 +281,10 @@ public class Transaction extends Record {
      * @pre getAddress() != null
      * @pre getBilling() != null
      * @pre getItems().size() > 0
-     * @post getStatus() == status.Finalized
+     * @post getStatus() == TransactionStatus.CLOSED
      */
     public void finalizeTransaction() {
+        this.setStatus(TransactionStatus.CLOSED);
     }
 
     /**
