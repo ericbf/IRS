@@ -53,7 +53,7 @@ public class Item extends Record {
 	 */
 	public Item(String name, String SKU, String description, BigDecimal price,
 			BigDecimal onHandQty, BigDecimal ReorderQty, String UOM,
-			BigDecimal cost) {
+			BigDecimal cost, boolean active) {
 		super();
 		this.setName(name);
 		this.setFieldValue("sku", SKU);
@@ -63,6 +63,8 @@ public class Item extends Record {
 		this.setReorderQty(ReorderQty);
 		this.setFieldValue("uom", UOM);
 		this.setCost(cost);
+		this.setActive(active);
+		this.setFieldValue("latest", true);
 	}
 	
 	/**
@@ -116,13 +118,6 @@ public class Item extends Record {
 		return (BigDecimal) this.getFieldValue("price");
 	}
 	
-	// /**
-	// * Gets the pictures associated with the item.
-	// */
-	// public ArrayList<Picture> getPictures() {
-	// return (ArrayList<Picture>) this.getFieldValue("reorder_qty");
-	// } TODO: implement this?
-	
 	/**
 	 * Gets the reorder quantity of the item.
 	 */
@@ -136,6 +131,13 @@ public class Item extends Record {
 	public int getSKU() {
 		return (int) this.getFieldValue("uom");
 	}
+	
+	// /**
+	// * Gets the pictures associated with the item.
+	// */
+	// public ArrayList<Picture> getPictures() {
+	// return (ArrayList<Picture>) this.getFieldValue("reorder_qty");
+	// } TODO: implement this?
 	
 	@Override
 	protected String getTableName() {
@@ -155,10 +157,28 @@ public class Item extends Record {
 	}
 	
 	/**
+	 * Returns the database record's active field
+	 * 
+	 * @return
+	 */
+	public boolean isActive() {
+		return (boolean) this.getFieldValue("active");
+	}
+	
+	/**
 	 * Checks if this record is the latest version of the associated item.
 	 */
 	public boolean isLatestVersion() {
 		return (boolean) this.getFieldValue("latest");
+	}
+	
+	/**
+	 * Set whether this is the active record
+	 * 
+	 * @param active
+	 */
+	public void setActive(boolean active) {
+		this.setFieldValue("active", active);
 	}
 	
 	/**

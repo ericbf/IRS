@@ -1,5 +1,15 @@
 package ISIS.gui;
 
+import java.awt.Dimension;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import ISIS.customer.Customer;
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.ListCustomers;
@@ -12,55 +22,12 @@ import ISIS.session.Session;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
 
-import javax.swing.*;
-import java.awt.*;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-
 /**
  * Class for main window. No public methods available.
  */
 public class MainWindow extends JFrame {
 	
 	private static final long	serialVersionUID	= 1L;
-	private SplitPane			inventoryPane;
-	private SplitPane			customerPane;
-	private SplitPane			transactionPane;
-	
-	// private SplitPane reportPane;
-	
-	public MainWindow() {
-		super("IRS");
-		this.inventoryPane = new SplitPane();
-		this.inventoryPane.push(new ListItems(this.inventoryPane),
-				SplitPane.LayoutType.HORIZONTAL, null);
-		// this.inventoryPane.push(new ListItems(this.inventoryPane),
-		// SplitPane.LayoutType.HORIZONTAL);
-		
-		this.customerPane = new SplitPane();
-		this.customerPane.push(new ListCustomers(this.customerPane),
-				SplitPane.LayoutType.HORIZONTAL, null);
-		// this.customerPane.push(new ListCustomers(this.customerPane),
-		// SplitPane.LayoutType.HORIZONTAL);
-		
-		this.transactionPane = new SplitPane();
-		this.transactionPane.push(new ListTransactions(this.transactionPane),
-				SplitPane.LayoutType.HORIZONTAL, null);
-		// this.transactionPane.push(new ListTransactions(this.transactionPane),
-		// SplitPane.LayoutType.HORIZONTAL);
-		
-		// this.reportPane = new SplitPane();
-		// this.reportPane.push(new ReportSelectorView(this.reportPane),
-		// SplitPane.LayoutType.HORIZONTAL);
-		
-		// new BorderLayout()
-		JTabbedPane tabs = new JTabbedPane(JTabbedPane.LEFT);
-		tabs.setFocusable(false);
-		tabs.add("Customers", this.customerPane);
-		tabs.add("Inventory", this.inventoryPane);
-		tabs.add("Transactions", this.transactionPane);
-		this.setContentPane(tabs);
-	}
 	
 	public static void main(String args[]) {
 		
@@ -98,7 +65,7 @@ public class MainWindow extends JFrame {
 		
 		try {
 			if (!User.userExists("jdickhead")) {
-                sampledata();
+				sampledata();
 				User testUser = new User("jdickhead", true, "penismonger",
 						"Janet", "Dickhead", "This is a note.");
 				testUser.save();
@@ -142,25 +109,71 @@ public class MainWindow extends JFrame {
 			ErrorLogger.error(ex, "something went wrong lel", true, true);
 		}
 	}
-
-    private static void sampledata() throws SQLException {
-        Customer customer = new Customer("Joe", "Doe", "sammich@penis.info", "This is a note.", "this is a password?", true);
-        customer.addPhoneNum(new Phone("404040404", false, Phone.PhoneType.HOME));
-        customer.addPhoneNum(new Phone("987654321", false, Phone.PhoneType.HOME));
-        customer.addPhoneNum(new Phone("123456789", true, Phone.PhoneType.HOME));
-        customer.save();
-        customer = new Customer("Sammich", "Bob", "whuh@what.com", "This is a note.", "this is a password?", true);
-        Phone asdf = new Phone("301231213", true, Phone.PhoneType.HOME);
-        customer.addPhoneNum(asdf);
-        customer.save();
-        customer.removePhoneNum(asdf);
-        customer.save();
-        customer = new Customer("Jizzle", "Dizzle", "cookies@gmail.com", "This is a note.", "this is a password?", true);
-        customer.addPhoneNum(new Phone("56565656", true, Phone.PhoneType.HOME));
-        customer.addAddress(new Address(true, true, "mars", "aliens", "9001", "state", "city", "county", "this is pretty unique huh"));
-        customer.save();
-        Item item = new Item("new item", "12345", "penises", new BigDecimal(1234.5), new BigDecimal(1234.5), new BigDecimal(1234.5),
-                             "LBS", new BigDecimal(1234.5));
-        item.save();
-    }
+	
+	private static void sampledata() throws SQLException {
+		Customer customer = new Customer("Joe", "Doe", "sammich@penis.info",
+				"This is a note.", "this is a password?", true);
+		customer.addPhoneNum(new Phone("404040404", false, Phone.PhoneType.HOME));
+		customer.addPhoneNum(new Phone("987654321", false, Phone.PhoneType.HOME));
+		customer.addPhoneNum(new Phone("123456789", true, Phone.PhoneType.HOME));
+		customer.save();
+		customer = new Customer("Sammich", "Bob", "whuh@what.com",
+				"This is a note.", "this is a password?", true);
+		Phone asdf = new Phone("301231213", true, Phone.PhoneType.HOME);
+		customer.addPhoneNum(asdf);
+		customer.save();
+		customer.removePhoneNum(asdf);
+		customer.save();
+		customer = new Customer("Jizzle", "Dizzle", "cookies@gmail.com",
+				"This is a note.", "this is a password?", true);
+		customer.addPhoneNum(new Phone("56565656", true, Phone.PhoneType.HOME));
+		customer.addAddress(new Address(true, true, "mars", "aliens", "9001",
+				"state", "city", "county", "this is pretty unique huh"));
+		customer.save();
+		Item item = new Item("new item", "12345", "penises", new BigDecimal(
+				1234.5), new BigDecimal(1234.5), new BigDecimal(1234.5), "LBS",
+				new BigDecimal(1234.5), true);
+		item.save();
+	}
+	
+	private SplitPane	inventoryPane;
+	
+	// private SplitPane reportPane;
+	
+	private SplitPane	customerPane;
+	
+	private SplitPane	transactionPane;
+	
+	public MainWindow() {
+		super("IRS");
+		this.inventoryPane = new SplitPane();
+		this.inventoryPane.push(new ListItems(this.inventoryPane),
+				SplitPane.LayoutType.HORIZONTAL, null);
+		// this.inventoryPane.push(new ListItems(this.inventoryPane),
+		// SplitPane.LayoutType.HORIZONTAL);
+		
+		this.customerPane = new SplitPane();
+		this.customerPane.push(new ListCustomers(this.customerPane),
+				SplitPane.LayoutType.HORIZONTAL, null);
+		// this.customerPane.push(new ListCustomers(this.customerPane),
+		// SplitPane.LayoutType.HORIZONTAL);
+		
+		this.transactionPane = new SplitPane();
+		this.transactionPane.push(new ListTransactions(this.transactionPane),
+				SplitPane.LayoutType.HORIZONTAL, null);
+		// this.transactionPane.push(new ListTransactions(this.transactionPane),
+		// SplitPane.LayoutType.HORIZONTAL);
+		
+		// this.reportPane = new SplitPane();
+		// this.reportPane.push(new ReportSelectorView(this.reportPane),
+		// SplitPane.LayoutType.HORIZONTAL);
+		
+		// new BorderLayout()
+		JTabbedPane tabs = new JTabbedPane(JTabbedPane.LEFT);
+		tabs.setFocusable(false);
+		tabs.add("Customers", this.customerPane);
+		tabs.add("Inventory", this.inventoryPane);
+		tabs.add("Transactions", this.transactionPane);
+		this.setContentPane(tabs);
+	}
 }
