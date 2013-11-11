@@ -1,11 +1,11 @@
 package ISIS.item;
 
+import ISIS.database.Field;
+import ISIS.database.Record;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import ISIS.database.Field;
-import ISIS.database.Record;
 
 /**
  * A good available and currently managed by the client. An item record consists
@@ -56,7 +56,7 @@ public class Item extends Record {
 			BigDecimal cost, boolean active) {
 		super();
 		this.setName(name);
-		this.setFieldValue("sku", SKU);
+		this.setFieldValue("SKU", SKU);
 		this.setDescription(description);
 		this.setPrice(price);
 		this.setOnHandQty(onHandQty);
@@ -71,7 +71,7 @@ public class Item extends Record {
 	 * Gets the cost of the item.
 	 */
 	public BigDecimal getCost() {
-		return (BigDecimal) this.getFieldValue("cost");
+		return new BigDecimal((String) this.getFieldValue("cost"));
 	}
 	
 	/**
@@ -99,7 +99,7 @@ public class Item extends Record {
 	 * Gets the on hand quantity of the item.
 	 */
 	public BigDecimal getOnHandQty() {
-		return (BigDecimal) this.getFieldValue("onhand_qty");
+		return new BigDecimal((String) this.getFieldValue("onhand_qty"));
 	}
 	
 	/**
@@ -115,21 +115,21 @@ public class Item extends Record {
 	 * Gets the item's price.
 	 */
 	public BigDecimal getPrice() {
-		return (BigDecimal) this.getFieldValue("price");
+		return new BigDecimal((String) this.getFieldValue("price"));
 	}
 	
 	/**
 	 * Gets the reorder quantity of the item.
 	 */
 	public BigDecimal getReorderQuantity() {
-		return (BigDecimal) this.getFieldValue("reorder_qty");
+		return new BigDecimal((String) this.getFieldValue("reorder_qty"));
 	}
 	
 	/**
 	 * Gets the item's SKU.
 	 */
-	public int getSKU() {
-		return (int) this.getFieldValue("uom");
+	public String getSKU() {
+		return (String) this.getFieldValue("SKU");
 	}
 	
 	// /**
@@ -162,14 +162,14 @@ public class Item extends Record {
 	 * @return
 	 */
 	public boolean isActive() {
-		return (boolean) this.getFieldValue("active");
+		return ((Integer) this.getFieldValue("active")) == 1;
 	}
 	
 	/**
 	 * Checks if this record is the latest version of the associated item.
 	 */
 	public boolean isLatestVersion() {
-		return (boolean) this.getFieldValue("latest");
+		return ((Integer) this.getFieldValue("latest")) == 1;
 	}
 	
 	/**
@@ -178,14 +178,14 @@ public class Item extends Record {
 	 * @param active
 	 */
 	public void setActive(boolean active) {
-		this.setFieldValue("active", active);
+		this.setFieldValue("active", (active ? 1 : 0));
 	}
 	
 	/**
 	 * Sets the cost of the item.
 	 */
 	public void setCost(BigDecimal cost) {
-		this.setFieldValue("cost", cost);
+		this.setFieldValue("cost", cost.toString());
 	}
 	
 	/**
@@ -206,20 +206,20 @@ public class Item extends Record {
 	 * Sets the on hand quantity of the item.
 	 */
 	public void setOnHandQty(BigDecimal onHandQty) {
-		this.setFieldValue("onhand_qty", onHandQty);
+		this.setFieldValue("onhand_qty", onHandQty.toString());
 	}
 	
 	/**
 	 * Sets the item's price.
 	 */
 	public void setPrice(BigDecimal price) {
-		this.setFieldValue("price", price);
+		this.setFieldValue("price", price.toString());
 	}
 	
 	/**
 	 * Sets the on hand quantity at which the item should be reordered.
 	 */
 	public void setReorderQty(BigDecimal reOrderQty) {
-		this.setFieldValue("reorder_qty", reOrderQty);
+		this.setFieldValue("reorder_qty", reOrderQty.toString());
 	}
 }
