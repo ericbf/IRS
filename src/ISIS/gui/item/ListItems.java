@@ -1,6 +1,5 @@
 package ISIS.gui.item;
 
-import ISIS.customer.Customer;
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
@@ -116,9 +115,9 @@ public class ListItems extends ListView<Item> {
             // TODO add phone
             ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt.executeQuery());
             this.records = new ArrayList<>();
-            for (HashMap<String, Field> map : results) {
-                this.records.add(new Item(map));
-            }
+//            for (HashMap<String, Field> map : results) {
+//                this.records.add(new Item(map));
+//            }
             this.populateTable();
         } catch (SQLException e) {
             ErrorLogger.error(e, "Error populating customer table.", true, true);
@@ -129,9 +128,9 @@ public class ListItems extends ListView<Item> {
         this.table.removeAll();
         this.keys.clear();
         this.tableModel.setRowCount(0);
-        for (Customer c : this.records) {
-            this.tableModel.addRow(c);
-        }
+//        for (Customer c : this.records) {
+//            this.tableModel.addRow(c);
+//        }
     }
 
     @Override
