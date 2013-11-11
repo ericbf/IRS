@@ -37,13 +37,15 @@ public class Transaction extends Record {
     Transaction originalTransaction = null;
     boolean itemsInitialized = false;
     private ArrayList<TransactionLineItem> items = new ArrayList<>();
+    public static String tableName =  "transaction_";
+    public static boolean hasDates_ = true;
 
     /**
      * Public constructor. A Transaction starts with a user and a customer.
      * These attributes cannot be changed.
      */
     public Transaction(Customer customer) {
-        super("transaction_", true);
+        super();
 
         this.setFieldValue("customer", customer.getPkey());
         this.setFieldValue("status", TransactionStatus.ACTIVE);
@@ -55,7 +57,7 @@ public class Transaction extends Record {
      * to populate the fields from the database.
      */
     public Transaction(int pkey, boolean populate) throws SQLException {
-        super("transaction_", true);
+        super();
 
         this.setPkey(pkey);
         if (populate) {
@@ -64,7 +66,7 @@ public class Transaction extends Record {
     }
 
     public Transaction(HashMap<String, Field> map) {
-        super("transaction_", true, map);
+        super(map);
     }
 
     /**
@@ -75,10 +77,20 @@ public class Transaction extends Record {
      * @post originalSale.getModified() == true
      */
     public Transaction(Transaction originalSale) {
-        super("transaction_", true);
+        super();
 
         this.originalTransaction = originalSale;
         this.setFieldValue("parent_transaction", originalTransaction.getPkey());
+    }
+
+    @Override
+    protected String getTableName() {
+        return Transaction.tableName;
+    }
+
+    @Override
+    protected boolean hasDates() {
+        return Transaction.hasDates_;
     }
 
     @Override

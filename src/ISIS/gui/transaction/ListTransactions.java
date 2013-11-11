@@ -107,6 +107,6 @@ public class ListTransactions extends ListView<Transaction> {
 	protected ArrayList<Transaction> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 }

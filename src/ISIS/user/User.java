@@ -26,6 +26,8 @@ import java.util.Random;
  * @pkey > 0
  */
 public final class User extends Record {
+    public static String tableName =  "user";
+    public static boolean hasDates_ = true;
 
     /**
      * Public constructor. A User starts with all fields populated.
@@ -34,7 +36,7 @@ public final class User extends Record {
      */
     public User(String username, boolean active, String password, String fname,
             String lname, String note) {
-        super("user", true);
+        super();
 
         this.setFieldValue("username", username);
         this.setFieldValue("active", active);
@@ -49,7 +51,7 @@ public final class User extends Record {
      */
     public User(Integer pkey, boolean populate) throws SQLException,
             RecordNotFoundException {
-        super("user", true);
+        super();
 
         this.setPkey(pkey);
         if (populate) {
@@ -62,7 +64,7 @@ public final class User extends Record {
      */
     public User(String username, String password) throws SQLException,
             AuthenticationException {
-        super("user", true);
+        super();
 
         PreparedStatement stmt = Session.getDB().prepareStatement(
                 "SELECT * FROM USER WHERE username=?");
@@ -82,6 +84,16 @@ public final class User extends Record {
                     "Username or password is incorrect.",
                     AuthenticationException.exceptionType.PASSWORD);
         }
+    }
+
+    @Override
+    protected String getTableName() {
+        return User.tableName;
+    }
+
+    @Override
+    protected boolean hasDates() {
+        return User.hasDates_;
     }
 
     /**
@@ -116,7 +128,7 @@ public final class User extends Record {
      * Gets the User's active status.
      */
     public boolean getActive() {
-        return ((int) this.getFieldValue("active") == 1) ? true : false;
+        return ((int) this.getFieldValue("active") == 1);
     }
 
     /**
@@ -132,8 +144,7 @@ public final class User extends Record {
     private static String bytesToHex(byte[] bytes) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
-            result.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16)
-                    .substring(1));
+            result.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
 
         return result.toString();

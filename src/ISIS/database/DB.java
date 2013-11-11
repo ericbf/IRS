@@ -86,7 +86,7 @@ public final class DB {
 
         //phone
         executeUpdate("CREATE TABLE IF NOT EXISTS phone (pkey INTEGER PRIMARY KEY, primary_num BOOLEAN NOT NULL, " +
-                              "type VARCHAR(255) NOT NULL, " + "number VARCHAR(255) NOT NULL, " + datesSql + ")");
+                              "type VARCHAR(255) NOT NULL, " + "number VARCHAR(255) NOT NULL)");
 
         // address
         executeUpdate("CREATE TABLE IF NOT EXISTS address (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " +
@@ -97,7 +97,7 @@ public final class DB {
         // billing
         executeUpdate("CREATE TABLE IF NOT EXISTS billing (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " + "number VARCHAR(255), " +
                               "expiration VARCHAR(5), CCV VARCHAR(5), " + "address INT REFERENCES address(pkey), " +
-                              "type VARCHAR(50), " + datesSql + ")");
+                              "type VARCHAR(50))");
 
         // customer
         executeUpdate("CREATE TABLE IF NOT EXISTS customer (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " + "password VARCHAR(255) NOT NULL, fname VARCHAR(255) NOT NULL, lname VARCHAR(255) NOT NULL, " + "email TEXT NOT NULL, note TEXT NOT NULL, " + datesSql + ")");
@@ -177,7 +177,7 @@ public final class DB {
         executeUpdate("CREATE TABLE IF NOT EXISTS transaction_ (pkey INTEGER PRIMARY KEY, status VARCHAR(20) NOT NULL, " +
                               "customer INT REFERENCES customer(pkey), " + "type VARCHAR(20) NOT NULL, modified BOOLEAN NOT NULL, " +
                               "parent_transaction INT REFERENCES transaction_" +
-                              "(pkey), address INT REFERENCES address(pkey), billing INT REFERENCES billing(pkey), " + datesSql + ")");
+                              "(pkey), address INT REFERENCES address(pkey), billing INT REFERENCES billing(pkey))");
         // transaction-item
         executeUpdate("CREATE TABLE IF NOT EXISTS transaction_item (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, " + "item INT REFERENCES item(pkey) NOT NULL, price VARCHAR(30) NOT NULL, adjustment VARCHAR(30) NOT NULL, description TEXT, " + datesSql + ")");
 

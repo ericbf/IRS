@@ -16,12 +16,14 @@ import java.util.Locale;
  */
 public class Billing extends Record {
     Address address = null;
+    public static String tableName =  "billing";
+    public static boolean hasDates_ = false;
 
     /**
      * Gets a set of billing info from the DB using the given key.
      */
     public Billing(int pkey, boolean populate) throws SQLException {
-        super("billing", true);
+        super();
 
         this.setPkey(pkey);
         if (populate) {
@@ -33,7 +35,7 @@ public class Billing extends Record {
      * Public constructor for CREDIT billing.
      */
     public Billing(Address address, String cardNumber, Date expDate, String CCV) {
-        super("billing", true);
+        super();
 
         this.setFieldValue("type", BillingType.CREDIT.toString());
         this.address = address;
@@ -51,7 +53,7 @@ public class Billing extends Record {
      * Public constructor for CASH or OTHER billing.
      */
     public Billing(Address address, BillingType billingType) {
-        super("billing", true);
+        super();
 
         if (billingType.equals(BillingType.CREDIT)) {
             throw new RuntimeException("COMMENTS.");
@@ -64,7 +66,17 @@ public class Billing extends Record {
     }
 
     public Billing(HashMap<String, Field> map) {
-        super("billing", true, map);
+        super(map);
+    }
+
+    @Override
+    protected String getTableName() {
+        return Billing.tableName;
+    }
+
+    @Override
+    protected boolean hasDates() {
+        return Billing.hasDates_;
     }
 
     /**

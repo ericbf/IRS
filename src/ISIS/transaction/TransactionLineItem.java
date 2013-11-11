@@ -13,13 +13,16 @@ import java.util.HashMap;
  * bought, a discount, or a note.
  */
 public class TransactionLineItem extends Record {
+    public static String tableName =  "transaction_item";
+    public static boolean hasDates_ = false;
+
 	/**
 	 * Public constructor. Initializes all fields of the object.
 	 */
 	public TransactionLineItem(Transaction transaction, Item item,
 			BigDecimal price, BigDecimal adjustment, BigDecimal quantity,
 			String description) {
-		super("transaction_item", true);
+		super();
 		this.setFieldValue("transaction_", transaction);
 		this.setFieldValue("item", item);
 		this.setFieldValue("price", price);
@@ -29,21 +32,31 @@ public class TransactionLineItem extends Record {
 	}
 
     public TransactionLineItem(HashMap<String, Field> map) {
-        super("transaction_item", true, map);
+        super(map);
     }
 
-	/**
+    /**
 	 * Public constructor. Take a transaction_item database key, and has the
 	 * option to populate the fields from the database.
 	 */
 	public TransactionLineItem(int pkey, boolean populate) throws SQLException {
-		super("transaction_item", true);
+		super();
 
 		this.setPkey(pkey);
 		if (populate) {
 			this.fetch();
 		}
 	}
+
+    @Override
+    protected String getTableName() {
+        return TransactionLineItem.tableName;
+    }
+
+    @Override
+    protected boolean hasDates() {
+        return TransactionLineItem.hasDates_;
+    }
 
 	/**
 	 * For checking if an item is already in the transaction.
