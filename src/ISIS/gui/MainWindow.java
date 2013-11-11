@@ -161,5 +161,6 @@ public class MainWindow extends JFrame {
         customer.save();
         Item item = new Item("new item", "12345", "penises", new BigDecimal(1234.5), new BigDecimal(1234.5), new BigDecimal(1234.5),
                              "LBS", new BigDecimal(1234.5));
+        item.save();
     }
 }

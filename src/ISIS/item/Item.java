@@ -19,7 +19,7 @@ import java.util.HashMap;
  * @pkey > 0
  */
 public class Item extends Record {
-    public static String tableName =  "";
+    public static String tableName =  "item";
     public static boolean hasDates_ = true;
 
 	/**

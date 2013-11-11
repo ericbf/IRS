@@ -153,8 +153,8 @@ public final class DB {
         executeUpdate("CREATE TABLE IF NOT EXISTS item (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " + "name VARCHAR(255) NOT NULL, SKU VARCHAR(255) NOT NULL, price VARCHAR(30) NOT NULL, onhand_qty VARCHAR(30) NOT NULL, " +
                               "cost VARCHAR(30) NOT NULL, description TEXT NOT NULL, uom VARCHAR(10), reorder_qty VARCHAR(30) NOT NULL, lastest BOOLEAN NOT NULL, " + datesSql + ")");
         //item searching
-        String item_search_columns = "pkey, name, SKU, price, description, uom";
-        String item_search_insert = "INSERT INTO item_search SELECT csv.* FROM item_search_view AS csv WHERE csv.pkey=";
+        String item_search_columns = "name, SKU, price, description, uom";
+        String item_search_insert = "INSERT INTO item_search SELECT csv.* FROM item_search_view AS csv WHERE csv.docid=";
 
         // view representing data inside item_search
         executeUpdate("CREATE VIEW IF NOT EXISTS item_search_view AS SELECT pkey AS docid, " + item_search_columns + " FROM item");
