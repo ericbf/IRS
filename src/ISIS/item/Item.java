@@ -2,10 +2,10 @@ package ISIS.item;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import ISIS.database.Field;
 import ISIS.database.Record;
-import ISIS.misc.Picture;
-import java.sql.SQLException;
 
 /**
  * A good available and currently managed by the client. An item record consists
@@ -19,25 +19,33 @@ import java.sql.SQLException;
  * @pkey > 0
  */
 public class Item extends Record {
-<<<<<<< HEAD
-    public static String tableName =  "item";
-    public static boolean hasDates_ = true;
-
-=======
-	/* Fields omitted */
+	/**
+	 * The static string returned of getTableName(). This is the table name used
+	 * by the database.
+	 */
+	public static String	tableName	= "item";
+	/**
+	 * The static boolean that tells whether this type of record has the
+	 * mod_date, creation_date, and et cetera of other records.
+	 */
+	public static boolean	hasDates_	= true;
 	
->>>>>>> b3750ab836ed47628518b3383e22c05d43d47fae
+	/**
+	 * Constructor to pass a pre-populated HashMap of the fields.
+	 * 
+	 * @param map
+	 */
+	public Item(HashMap<String, Field> map) {
+		super();
+		this.initializeFields(map);
+	}
+	
 	/**
 	 * Public constructor. Takes an Item database key, and has the option to
 	 * populate the fields from the database.
 	 */
-	public Item(int pkey, boolean populate) throws SQLException {
-		super("item", true);
-                
-                this.setPkey(pkey);
-                if (populate) {
-                    this.fetch();
-                }
+	public Item(int pkey, boolean populate) {
+		super();
 	}
 	
 	/**
@@ -46,56 +54,50 @@ public class Item extends Record {
 	public Item(String name, String SKU, String description, BigDecimal price,
 			BigDecimal onHandQty, BigDecimal ReorderQty, String UOM,
 			BigDecimal cost) {
-		super("item", true);
-                
-                this.setFieldValue("name", name);
-                this.setFieldValue("SKU", SKU);
-                this.setFieldValue("description", description);
-                this.setFieldValue("price", price);
-                this.setFieldValue("onHandQty", onHandQty);
-                this.setFieldValue("ReorderQty", ReorderQty);
-                this.setFieldValue("Uom", UOM);
-                this.setFieldValue("cost", cost);
+		super();
+		this.setName(name);
+		this.setFieldValue("sku", SKU);
+		this.setDescription(description);
+		this.setPrice(price);
+		this.setOnHandQty(onHandQty);
+		this.setReorderQty(ReorderQty);
+		this.setFieldValue("uom", UOM);
+		this.setCost(cost);
 	}
-	
-	/**
-	 * Adds a picture to the item.
-	 */
-	public void addPicture(Picture picture) {}
 	
 	/**
 	 * Gets the cost of the item.
 	 */
 	public BigDecimal getCost() {
-		return null;
+		return (BigDecimal) this.getFieldValue("cost");
 	}
 	
 	/**
 	 * Gets the item's description.
 	 */
 	public String getDescription() {
-		return null;
+		return (String) this.getFieldValue("description");
 	}
+	
+	// /**
+	// * Adds a picture to the item.
+	// */
+	// public void addPicture(Picture picture) {
+	//
+	// } TODO: implement this?
 	
 	/**
 	 * Gets the item's name.
 	 */
 	public String getName() {
-		return null;
+		return (String) this.getFieldValue("name");
 	}
 	
 	/**
 	 * Gets the on hand quantity of the item.
 	 */
 	public BigDecimal getOnHandQty() {
-		return null;
-	}
-	
-	/**
-	 * Gets the pictures associated with the item.
-	 */
-	public ArrayList<Picture> getPictures() {
-		return null;
+		return (BigDecimal) this.getFieldValue("onhand_qty");
 	}
 	
 	/**
@@ -103,6 +105,7 @@ public class Item extends Record {
 	 * there are none.
 	 */
 	public ArrayList<Item> getPreviousVersions() {
+		// TODO: get previous versions
 		return null;
 	}
 	
@@ -110,64 +113,93 @@ public class Item extends Record {
 	 * Gets the item's price.
 	 */
 	public BigDecimal getPrice() {
-		return null;
+		return (BigDecimal) this.getFieldValue("price");
 	}
+	
+	// /**
+	// * Gets the pictures associated with the item.
+	// */
+	// public ArrayList<Picture> getPictures() {
+	// return (ArrayList<Picture>) this.getFieldValue("reorder_qty");
+	// } TODO: implement this?
 	
 	/**
 	 * Gets the reorder quantity of the item.
 	 */
 	public BigDecimal getReorderQuantity() {
-		return null;
+		return (BigDecimal) this.getFieldValue("reorder_qty");
 	}
 	
 	/**
 	 * Gets the item's SKU.
 	 */
 	public int getSKU() {
-		return 0;
+		return (int) this.getFieldValue("uom");
+	}
+	
+	@Override
+	protected String getTableName() {
+		return Item.tableName;
 	}
 	
 	/**
 	 * Sets the unit of measure of the item (e.g. pounds).
 	 */
 	public String getUOM() {
-		return null;
+		return (String) this.getFieldValue("uom");
+	}
+	
+	@Override
+	protected boolean hasDates() {
+		return Item.hasDates_;
 	}
 	
 	/**
 	 * Checks if this record is the latest version of the associated item.
 	 */
 	public boolean isLatestVersion() {
-		return false;
+		return (boolean) this.getFieldValue("latest");
 	}
 	
 	/**
 	 * Sets the cost of the item.
 	 */
-	public void setCost(BigDecimal cost) {}
+	public void setCost(BigDecimal cost) {
+		this.setFieldValue("cost", cost);
+	}
 	
 	/**
 	 * Changes the item's description.
 	 */
-	public void setDescription(String description) {}
+	public void setDescription(String description) {
+		this.setFieldValue("description", description);
+	}
 	
 	/**
 	 * Changes the item's name.
 	 */
-	public void setName(String name) {}
+	public void setName(String name) {
+		this.setFieldValue("name", name);
+	}
 	
 	/**
 	 * Sets the on hand quantity of the item.
 	 */
-	public void setOnHandQty(BigDecimal quantity) {}
+	public void setOnHandQty(BigDecimal onHandQty) {
+		this.setFieldValue("onhand_qty", onHandQty);
+	}
 	
 	/**
 	 * Sets the item's price.
 	 */
-	public void setPrice(BigDecimal price) {}
+	public void setPrice(BigDecimal price) {
+		this.setFieldValue("price", price);
+	}
 	
 	/**
 	 * Sets the on hand quantity at which the item should be reordered.
 	 */
-	public void setReorderQty(BigDecimal quantity) {}
+	public void setReorderQty(BigDecimal reOrderQty) {
+		this.setFieldValue("reorder_qty", reOrderQty);
+	}
 }
