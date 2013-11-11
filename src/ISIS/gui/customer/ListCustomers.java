@@ -179,7 +179,7 @@ public class ListCustomers extends ListView<Customer> {
 				stmt = Session.getDB().prepareStatement(sqlQuery);
 				stmt.setString(1, search);
 			} else {
-				String sqlQuery = "SELECT c.*, FROM customer AS c";
+				String sqlQuery = "SELECT c.* FROM customer AS c";
 				stmt = Session.getDB().prepareStatement(sqlQuery);
 			}
 			// TODO add phone
