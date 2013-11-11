@@ -223,15 +223,12 @@ public abstract class ListView<E extends Record> extends View {
 				// these aren't indexed anyway, so...
 				search = search.replaceAll("([\\(\\)])", "");
 				search = search.replaceAll("\\\"", ""); // TODO: actually fix
-				String sql = "SELECT i.* FROM (SELECT pkey AS row FROM item_search WHERE item_search MATCH ?) "
-						+ "LEFT JOIN"
-						+ " "
-						+ this.getTableName()
-						+ " AS i ON row=i.pkey";
+				String sql = "SELECT i.* FROM (SELECT docid AS row FROM " + this.getTableName() + "_search WHERE item_search MATCH ?) "
+						+ "LEFT JOIN " + this.getTableName() + " AS i ON row=i.pkey";
 				stmt = Session.getDB().prepareStatement(sql);
 				stmt.setString(1, search);
 			} else {
-				String sqlQuery = "SELECT i.* from item AS i";
+				String sqlQuery = "SELECT i.* from " + this.getTableName() + " AS i";
 				stmt = Session.getDB().prepareStatement(sqlQuery);
 			}
 			ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt

@@ -69,7 +69,7 @@ public class ListTransactions extends ListView<Transaction> {
 		});
 		this.tableModel.setColumnTitles("customer", "other", "headers", "date",
 				"status");
-		this.fillTable();
+//		this.fillTable();
 		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
