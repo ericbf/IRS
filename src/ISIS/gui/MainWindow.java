@@ -1,21 +1,19 @@
 package ISIS.gui;
 
-import java.awt.Dimension;
-import java.sql.SQLException;
-
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
+import ISIS.customer.Customer;
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.ListCustomers;
 import ISIS.gui.item.ListItems;
 import ISIS.gui.transaction.ListTransactions;
+import ISIS.misc.Address;
+import ISIS.misc.Phone;
 import ISIS.session.Session;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
+
+import javax.swing.*;
+import java.awt.*;
+import java.sql.SQLException;
 
 /**
  * Class for main window. No public methods available.
@@ -98,7 +96,7 @@ public class MainWindow extends JFrame {
 		
 		try {
 			if (!User.userExists("jdickhead")) {
-				Session.getDB().sampleData();
+                sampledata();
 				User testUser = new User("jdickhead", true, "penismonger",
 						"Janet", "Dickhead", "This is a note.");
 				testUser.save();
@@ -142,4 +140,22 @@ public class MainWindow extends JFrame {
 			ErrorLogger.error(ex, "something went wrong lel", true, true);
 		}
 	}
+
+    private static void sampledata() throws SQLException {
+        Customer customer = new Customer("Joe", "Doe", "sammich@penis.info", "This is a note.", "this is a password?", true);
+        customer.addPhoneNum(new Phone("404040404", false, Phone.PhoneType.HOME));
+        customer.addPhoneNum(new Phone("987654321", false, Phone.PhoneType.HOME));
+        customer.addPhoneNum(new Phone("123456789", true, Phone.PhoneType.HOME));
+        customer.save();
+        customer = new Customer("Sammich", "Bob", "whuh@what.com", "This is a note.", "this is a password?", true);
+        Phone asdf = new Phone("301231213", true, Phone.PhoneType.HOME);
+        customer.addPhoneNum(asdf);
+        customer.save();
+        customer.removePhoneNum(asdf);
+        customer.save();
+        customer = new Customer("Jizzle", "Dizzle", "cookies@gmail.com", "This is a note.", "this is a password?", true);
+        customer.addPhoneNum(new Phone("56565656", true, Phone.PhoneType.HOME));
+        customer.addAddress(new Address(true, true, "mars", "aliens", "9001", "state", "city", "county", "this is pretty unique huh"));
+        customer.save();
+    }
 }

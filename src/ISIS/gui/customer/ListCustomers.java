@@ -1,17 +1,5 @@
 package ISIS.gui.customer;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
 import ISIS.customer.Customer;
 import ISIS.database.DB;
 import ISIS.database.Field;
@@ -22,6 +10,15 @@ import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.misc.Phone;
 import ISIS.session.Session;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * List of customers. Allows you to query and act on customers.
@@ -182,7 +179,7 @@ public class ListCustomers extends ListView<Customer> {
 				stmt = Session.getDB().prepareStatement(sqlQuery);
 				stmt.setString(1, search);
 			} else {
-				String sqlQuery = "SELECT c.*, 'phone' AS phone FROM customer AS c";
+				String sqlQuery = "SELECT c.*, FROM customer AS c";
 				stmt = Session.getDB().prepareStatement(sqlQuery);
 			}
 			// TODO add phone

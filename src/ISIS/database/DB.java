@@ -1,9 +1,6 @@
 package ISIS.database;
 
-import ISIS.customer.Customer;
 import ISIS.gui.ErrorLogger;
-import ISIS.misc.Address;
-import ISIS.misc.Phone;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -155,6 +152,26 @@ public final class DB {
         // item
         executeUpdate("CREATE TABLE IF NOT EXISTS item (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " + "name VARCHAR(255) NOT NULL, SKU VARCHAR(255) NOT NULL, price VARCHAR(30) NOT NULL, onhand_qty VARCHAR(30) NOT NULL, " +
                               "cost VARCHAR(30) NOT NULL, description TEXT NOT NULL, uom VARCHAR(10), reorder_qty VARCHAR(30) NOT NULL, lastest BOOLEAN NOT NULL, " + datesSql + ")");
+        //item searching
+        String item_search_columns = "pkey, name, SKU, price, description, uom";
+        String item_search_insert = "INSERT INTO item_search SELECT csv.* FROM item_search_view AS csv WHERE csv.pkey=";
+
+        // view representing data inside item_search
+        executeUpdate("CREATE VIEW IF NOT EXISTS item_search_view AS SELECT pkey AS docid, " + item_search_columns + " FROM item");
+        // virtual table for searching items
+        executeUpdate("CREATE VIRTUAL TABLE IF NOT EXISTS item_search USING fts3(content=\"item_search_view\", " +
+                              customer_search_columns + ")");
+
+        // triggers to populate virtual table
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS item_search_insert AFTER INSERT ON item BEGIN\n" + item_search_insert +
+                              "new.rowid; END;");
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS item_search_update_before BEFORE UPDATE ON item BEGIN\n" + "DELETE FROM " +
+                              "item_search WHERE pkey=old.pkey;\nEND;\n");
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS item_search_update_after AFTER UPDATE ON item BEGIN\n" +
+                              item_search_insert + "new.rowid;\nEND;\n");
+        executeUpdate("CREATE TRIGGER IF NOT EXISTS item_search_delete BEFORE DELETE ON item BEGIN\n" + "  DELETE FROM " +
+                              "item_search WHERE pkey=old.pkey;\n" + "END;\n");
+
 
         // transaction
         executeUpdate("CREATE TABLE IF NOT EXISTS transaction_ (pkey INTEGER PRIMARY KEY, status VARCHAR(20) NOT NULL, " +
@@ -164,27 +181,9 @@ public final class DB {
         // transaction-item
         executeUpdate("CREATE TABLE IF NOT EXISTS transaction_item (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, " + "item INT REFERENCES item(pkey) NOT NULL, price VARCHAR(30) NOT NULL, adjustment VARCHAR(30) NOT NULL, description TEXT, " + datesSql + ")");
 
-        // TODO: add indices
         // TODO: keywords
+        // TODO: add indices
 
-    }
-
-    public void sampleData() throws SQLException {
-        Customer customer = new Customer("Joe", "Doe", "sammich@penis.info", "This is a note.", "this is a password?", true);
-        customer.addPhoneNum(new Phone("404040404", false, Phone.PhoneType.HOME));
-        customer.addPhoneNum(new Phone("987654321", false, Phone.PhoneType.HOME));
-        customer.addPhoneNum(new Phone("123456789", true, Phone.PhoneType.HOME));
-        customer.save();
-        customer = new Customer("Sammich", "Bob", "whuh@what.com", "This is a note.", "this is a password?", true);
-        Phone asdf = new Phone("301231213", true, Phone.PhoneType.HOME);
-        customer.addPhoneNum(asdf);
-        customer.save();
-        customer.removePhoneNum(asdf);
-        customer.save();
-        customer = new Customer("Jizzle", "Dizzle", "cookies@gmail.com", "This is a note.", "this is a password?", true);
-        customer.addPhoneNum(new Phone("56565656", true, Phone.PhoneType.HOME));
-        customer.addAddress(new Address(true, true, "mars", "aliens", "9001", "state", "city", "county", "this is pretty unique huh"));
-        customer.save();
     }
 
     /**

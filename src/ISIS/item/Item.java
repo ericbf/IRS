@@ -1,10 +1,10 @@
 package ISIS.item;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-
 import ISIS.database.Record;
 import ISIS.misc.Picture;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
 
 /**
  * A good available and currently managed by the client. An item record consists
@@ -34,8 +34,8 @@ public class Item extends Record {
 	public Item(String name, String SKU, String description, BigDecimal price,
 			BigDecimal onHandQty, BigDecimal ReorderQty, String UOM,
 			BigDecimal cost) {
-		super("Penis", true);
-	}
+        super("item", true);
+    }
 	
 	/**
 	 * Adds a picture to the item.
