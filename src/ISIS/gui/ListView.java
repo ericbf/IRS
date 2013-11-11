@@ -236,7 +236,7 @@ public abstract class ListView<E extends Record> extends View {
 				String sql = "SELECT i.* FROM (SELECT pkey AS row FROM item_search WHERE item_search MATCH ?) "
 						+ "LEFT JOIN"
 						+ " "
-						+ this.tableName()
+						+ this.getTableName()
 						+ " AS i ON row=i.pkey";
 				stmt = Session.getDB().prepareStatement(sql);
 				stmt.setString(1, search);
@@ -252,6 +252,8 @@ public abstract class ListView<E extends Record> extends View {
 			ErrorLogger.error(e, "Error populating item table.", true, true);
 		}
 	}
+	
+	protected abstract String getTableName();
 	
 	protected abstract boolean hasDates();
 	
@@ -288,6 +290,4 @@ public abstract class ListView<E extends Record> extends View {
 		this.table.setModel(model);
 		this.table.setFocusable(false);
 	}
-	
-	protected abstract String tableName();
 }
