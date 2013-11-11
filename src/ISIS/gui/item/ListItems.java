@@ -95,4 +95,23 @@ public class ListItems extends ListView<Item> {
     protected void actionHandlerActionForSearchField() {
         this.editButton.doClick();
     }
+
+    @Override
+    protected ArrayList<Item> mapResults(ArrayList<HashMap<String, Field>> results) {
+        ArrayList<Item> items = new ArrayList<>(results.size());
+        for (HashMap<String, Field> result : results) {
+            items.add(new Item(result));
+        }
+        return items;
+    }
+
+    @Override
+    protected boolean hasDates () {
+        return true;
+    }
+
+    @Override
+    protectd String tableName() {
+        return "item";
+    }
 }
