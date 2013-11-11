@@ -1,5 +1,6 @@
 package ISIS.gui.item;
 
+import ISIS.customer.Customer;
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
@@ -88,49 +89,6 @@ public class ListItems extends ListView<Item> {
         c.gridx = x = 0;
         c.weighty = 1;
         this.add(new JScrollPane(this.table), c);
-    }
-
-    @Override
-    protected void fillTable() {
-        String searchFieldText = this.searchField.getText();
-        PreparedStatement stmt = null;
-        try {
-            if (searchFieldText.length() >= 1) {
-                String search = searchFieldText + " ";
-                // remove leading whitespace
-                search = search.replaceFirst("^\\s+", "");
-                // replaces whitespace with wildcards then a space.
-                search = search.replaceAll("\\s+", "* ");
-                // these aren't indexed anyway, so...
-                search = search.replaceAll("([\\(\\)])", "");
-                search = search.replaceAll("\\\"", ""); // TODO: actually fix
-                String sqlQuery = "SELECT i.* FROM (SELECT pkey AS row FROM item_search WHERE item_search MATCH ?) " + "LEFT JOIN" +
-                        " item AS i ON row=i.pkey";
-                stmt = Session.getDB().prepareStatement(sqlQuery);
-                stmt.setString(1, search);
-            } else {
-                String sqlQuery = "SELECT i.* from item AS i";
-                stmt = Session.getDB().prepareStatement(sqlQuery);
-            }
-            // TODO add phone
-            ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt.executeQuery());
-            this.records = new ArrayList<>();
-//            for (HashMap<String, Field> map : results) {
-//                this.records.add(new Item(map));
-//            }
-            this.populateTable();
-        } catch (SQLException e) {
-            ErrorLogger.error(e, "Error populating customer table.", true, true);
-        }
-    }
-
-    private void populateTable() {
-        this.table.removeAll();
-        this.keys.clear();
-        this.tableModel.setRowCount(0);
-//        for (Customer c : this.records) {
-//            this.tableModel.addRow(c);
-//        }
     }
 
     @Override

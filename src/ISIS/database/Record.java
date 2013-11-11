@@ -1,5 +1,9 @@
 package ISIS.database;
 
+import ISIS.misc.Dates;
+import ISIS.session.Session;
+import ISIS.user.User;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,10 +11,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import ISIS.misc.Dates;
-import ISIS.session.Session;
-import ISIS.user.User;
 
 /**
  * Base class for all record classes.
@@ -21,7 +21,11 @@ public abstract class Record {
 	private HashMap<String, Field>	fields;
 	private Dates					dates	= null;
 	private boolean					hasDates;
-	
+
+    public static recordFromMap(String tableName, boolean hasDates, HashMap<String, Field> map) {
+        return new Record(tableName, hasDates, map);
+    }
+
 	/**
 	 * Base initializer for a Record.
 	 */
