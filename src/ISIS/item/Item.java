@@ -44,13 +44,8 @@ public class Item extends Record {
 	public Item(String name, String SKU, String description, BigDecimal price,
 			BigDecimal onHandQty, BigDecimal ReorderQty, String UOM,
 			BigDecimal cost) {
-<<<<<<< HEAD
 		super("item", true);
 	}
-=======
-        super("item", true);
-    } 
->>>>>>> 3e52c18681c17a53e10f8a9348e44a71a54800b7
 	
 	// /**
 	// * Adds a picture to the item.
