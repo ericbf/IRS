@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import ISIS.database.Record;
 import ISIS.misc.Picture;
+import java.sql.SQLException;
 
 /**
  * A good available and currently managed by the client. An item record consists
@@ -24,8 +25,13 @@ public class Item extends Record {
 	 * Public constructor. Takes an Item database key, and has the option to
 	 * populate the fields from the database.
 	 */
-	public Item(int pkey, boolean populate) {
-		super("Penis", true);
+	public Item(int pkey, boolean populate) throws SQLException {
+		super("item", true);
+                
+                this.setPkey(pkey);
+                if (populate) {
+                    this.fetch();
+                }
 	}
 	
 	/**
@@ -34,7 +40,16 @@ public class Item extends Record {
 	public Item(String name, String SKU, String description, BigDecimal price,
 			BigDecimal onHandQty, BigDecimal ReorderQty, String UOM,
 			BigDecimal cost) {
-		super("Penis", true);
+		super("item", true);
+                
+                this.setFieldValue("name", name);
+                this.setFieldValue("SKU", SKU);
+                this.setFieldValue("description", description);
+                this.setFieldValue("price", price);
+                this.setFieldValue("onHandQty", onHandQty);
+                this.setFieldValue("ReorderQty", ReorderQty);
+                this.setFieldValue("Uom", UOM);
+                this.setFieldValue("cost", cost);
 	}
 	
 	/**
