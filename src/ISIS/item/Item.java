@@ -1,10 +1,11 @@
 package ISIS.item;
 
-import ISIS.database.Record;
-import ISIS.misc.Picture;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import ISIS.database.Field;
+import ISIS.database.Record;
 
 /**
  * A good available and currently managed by the client. An item record consists
@@ -18,14 +19,23 @@ import java.util.ArrayList;
  * @pkey > 0
  */
 public class Item extends Record {
-	/* Fields omitted */
+	
+	/**
+	 * Constructor to pass a pre-populated HashMap of the fields.
+	 * 
+	 * @param map
+	 */
+	public Item(HashMap<String, Field> map) {
+		super("item", true);
+		this.initializeFields(map);
+	}
 	
 	/**
 	 * Public constructor. Takes an Item database key, and has the option to
 	 * populate the fields from the database.
 	 */
 	public Item(int pkey, boolean populate) {
-		super("Penis", true);
+		super("item", true);
 	}
 	
 	/**
@@ -34,54 +44,57 @@ public class Item extends Record {
 	public Item(String name, String SKU, String description, BigDecimal price,
 			BigDecimal onHandQty, BigDecimal ReorderQty, String UOM,
 			BigDecimal cost) {
-        super("item", true);
-    }
+		super("item", true);
+	}
 	
-	/**
-	 * Adds a picture to the item.
-	 */
-	public void addPicture(Picture picture) {}
+	// /**
+	// * Adds a picture to the item.
+	// */
+	// public void addPicture(Picture picture) {
+	//
+	// } TODO: implement this?
 	
 	/**
 	 * Gets the cost of the item.
 	 */
 	public BigDecimal getCost() {
-		return null;
+		return (BigDecimal) this.getFieldValue("cost");
 	}
 	
 	/**
 	 * Gets the item's description.
 	 */
 	public String getDescription() {
-		return null;
+		return (String) this.getFieldValue("description");
 	}
 	
 	/**
 	 * Gets the item's name.
 	 */
 	public String getName() {
-		return null;
+		return (String) this.getFieldValue("name");
 	}
 	
 	/**
 	 * Gets the on hand quantity of the item.
 	 */
 	public BigDecimal getOnHandQty() {
-		return null;
+		return (BigDecimal) this.getFieldValue("onhand_qty");
 	}
 	
-	/**
-	 * Gets the pictures associated with the item.
-	 */
-	public ArrayList<Picture> getPictures() {
-		return null;
-	}
+	// /**
+	// * Gets the pictures associated with the item.
+	// */
+	// public ArrayList<Picture> getPictures() {
+	// return (ArrayList<Picture>) this.getFieldValue("reorder_qty");
+	// } TODO: implement this?
 	
 	/**
 	 * Returns a list of previous versions of the item, or an empty list if
 	 * there are none.
 	 */
 	public ArrayList<Item> getPreviousVersions() {
+		// TODO: get previous versions
 		return null;
 	}
 	
@@ -89,64 +102,76 @@ public class Item extends Record {
 	 * Gets the item's price.
 	 */
 	public BigDecimal getPrice() {
-		return null;
+		return (BigDecimal) this.getFieldValue("price");
 	}
 	
 	/**
 	 * Gets the reorder quantity of the item.
 	 */
 	public BigDecimal getReorderQuantity() {
-		return null;
+		return (BigDecimal) this.getFieldValue("reorder_qty");
 	}
 	
 	/**
 	 * Gets the item's SKU.
 	 */
 	public int getSKU() {
-		return 0;
+		return (int) this.getFieldValue("uom");
 	}
 	
 	/**
 	 * Sets the unit of measure of the item (e.g. pounds).
 	 */
 	public String getUOM() {
-		return null;
+		return (String) this.getFieldValue("uom");
 	}
 	
 	/**
 	 * Checks if this record is the latest version of the associated item.
 	 */
 	public boolean isLatestVersion() {
-		return false;
+		return (boolean) this.getFieldValue("latest");
 	}
 	
 	/**
 	 * Sets the cost of the item.
 	 */
-	public void setCost(BigDecimal cost) {}
+	public void setCost(BigDecimal cost) {
+		this.setFieldValue("cost", cost);
+	}
 	
 	/**
 	 * Changes the item's description.
 	 */
-	public void setDescription(String description) {}
+	public void setDescription(String description) {
+		this.setFieldValue("description", description);
+	}
 	
 	/**
 	 * Changes the item's name.
 	 */
-	public void setName(String name) {}
+	public void setName(String name) {
+		this.setFieldValue("name", name);
+	}
 	
 	/**
 	 * Sets the on hand quantity of the item.
 	 */
-	public void setOnHandQty(BigDecimal quantity) {}
+	public void setOnHandQty(BigDecimal onHandQty) {
+		this.setFieldValue("onhand_qty", onHandQty);
+	}
 	
 	/**
 	 * Sets the item's price.
 	 */
-	public void setPrice(BigDecimal price) {}
+	public void setPrice(BigDecimal price) {
+		this.setFieldValue("price", price);
+	}
 	
 	/**
 	 * Sets the on hand quantity at which the item should be reordered.
 	 */
-	public void setReorderQty(BigDecimal quantity) {}
+	public void setReorderQty(BigDecimal reOrderQty) {
+		this.setFieldValue("reorder_qty", reOrderQty);
+	}
 }
