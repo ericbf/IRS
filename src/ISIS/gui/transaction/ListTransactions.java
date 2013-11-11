@@ -95,6 +95,15 @@ public class ListTransactions extends ListView<Transaction> {
 	
 	/*
 	 * (non-Javadoc)
+	 * @see ISIS.gui.ListView#tableName()
+	 */
+	@Override
+	protected String getTableName() {
+		return "transaction";
+	}
+	
+	/*
+	 * (non-Javadoc)
 	 * @see ISIS.gui.ListView#hasDates()
 	 */
 	@Override
@@ -110,16 +119,6 @@ public class ListTransactions extends ListView<Transaction> {
 	@Override
 	protected ArrayList<Transaction> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see ISIS.gui.ListView#tableName()
-	 */
-	@Override
-	protected String tableName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
