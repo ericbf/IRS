@@ -1,17 +1,5 @@
 package ISIS.gui.customer;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
 import ISIS.customer.Customer;
 import ISIS.database.DB;
 import ISIS.database.Field;
@@ -22,6 +10,15 @@ import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.misc.Phone;
 import ISIS.session.Session;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * List of customers. Allows you to query and act on customers.
@@ -136,9 +133,10 @@ public class ListCustomers extends ListView<Customer> {
 						array[col] = customer.getPrimaryAddress().getZIP();
 					}
 					col++;
-					 // don't add row until we successfully retrieve data.
+					// don't add row until we successfully retrieve data.
 					super.addRow(array);
-					 // don't add customer key to list until we know adding is a success.
+					// don't add customer key to list until we know adding is a
+					// success.
 					ListCustomers.this.keys.add(customer.getPkey());
 				} catch (SQLException e) {
 					ErrorLogger
@@ -158,6 +156,11 @@ public class ListCustomers extends ListView<Customer> {
 		this.add(new JScrollPane(this.table), c);
 		
 		this.fillTable();
+	}
+	
+	@Override
+	protected void actionHandlerActionForSearchField() {
+		this.editButton.doClick();
 	}
 	
 	@Override
@@ -182,7 +185,7 @@ public class ListCustomers extends ListView<Customer> {
 				stmt = Session.getDB().prepareStatement(sqlQuery);
 				stmt.setString(1, search);
 			} else {
-				String sqlQuery = "SELECT c.*, 'phone' AS phone FROM customer AS c";
+				String sqlQuery = "SELECT c.* FROM customer AS c";
 				stmt = Session.getDB().prepareStatement(sqlQuery);
 			}
 			// TODO add phone
@@ -199,6 +202,26 @@ public class ListCustomers extends ListView<Customer> {
 		}
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.ListView#tableName()
+	 */
+	@Override
+	protected String getTableName() {
+		return "customer";
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.ListView#mapResults(java.util.ArrayList)
+	 */
+	@Override
+	protected ArrayList<Customer> mapResults(
+			ArrayList<HashMap<String, Field>> results) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	private void populateTable() {
 		this.table.removeAll();
 		this.keys.clear();
@@ -206,10 +229,5 @@ public class ListCustomers extends ListView<Customer> {
 		for (Customer c : this.records) {
 			this.tableModel.addRow(c);
 		}
-	}
-	
-	@Override
-	protected void actionHandlerActionForSearchField() {
-		this.editButton.doClick();
 	}
 }

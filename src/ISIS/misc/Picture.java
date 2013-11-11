@@ -15,7 +15,7 @@ public class Picture extends Record {
 	 * a note, and dates associated with its creation.
 	 */
 	public Picture(String name, byte[] picture, String note, Dates dates) {
-		super("Penis", true);
+		super();
 	}
 	
 	/**
@@ -23,7 +23,7 @@ public class Picture extends Record {
 	 * populate fields from the database.
 	 */
 	public Picture(int pkey, boolean populate) {
-		super("Penis", true);
+		super();
 	}
 	
 	/**
@@ -46,4 +46,14 @@ public class Picture extends Record {
 	public byte[] getPicture() {
 		return null;
 	}
+
+    @Override
+    protected String getTableName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected boolean hasDates() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

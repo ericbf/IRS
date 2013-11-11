@@ -1,16 +1,16 @@
 package ISIS.gui.transaction;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
+import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.IRSTableModel;
 import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.transaction.Transaction;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * List of transactions. Allows you to query and act on transactions.
@@ -80,13 +80,33 @@ public class ListTransactions extends ListView<Transaction> {
 		this.add(new JScrollPane(this.table), c);
 	}
 	
-	@Override
-	protected void fillTable() {
-		// throw new UnsupportedOperationException("Not supported yet.");
-	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.ListView#actionHandlerActionForSearchField()
+	 */
 	@Override
 	protected void actionHandlerActionForSearchField() {
-		this.viewButton.doClick();
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.ListView#tableName()
+	 */
+	@Override
+	protected String getTableName() {
+		return "transaction";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.ListView#mapResults(java.util.ArrayList)
+	 */
+	@Override
+	protected ArrayList<Transaction> mapResults(
+			ArrayList<HashMap<String, Field>> results) {
+		// TODO Auto-generated method stub
+		return new ArrayList<>();
 	}
 }

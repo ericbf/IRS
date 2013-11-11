@@ -13,13 +13,14 @@ import java.util.HashMap;
  * @number != null, primary == true || primary == false, PhoneType != null
  */
 public class Phone extends Record {
-
+    public static String tableName =  "phone";
+    public static boolean hasDates_ = false;
     /**
      * Public constructor. A Phone record starts with a number, primary status,
      * and type (mobile/home/etc).
      */
     public Phone(String number, boolean primary, PhoneType type) {
-        super("phone", true);
+        super();
         this.setFieldValue("number", number);
         this.setFieldValue("primary_num", (primary ? 1 : 0));
         this.setFieldValue("type", type.toString());
@@ -30,7 +31,7 @@ public class Phone extends Record {
      * populate the fields from the database.
      */
     public Phone(int pkey, boolean populate) throws SQLException {
-        super("phone", true);
+        super();
 
         this.setPkey(pkey);
         if (populate) {
@@ -39,7 +40,17 @@ public class Phone extends Record {
     }
 
     public Phone(HashMap<String, Field> map) {
-        super("phone", true, map);
+        super(map);
+    }
+
+    @Override
+    protected String getTableName() {
+        return Phone.tableName;
+    }
+
+    @Override
+    protected boolean hasDates() {
+        return Phone.hasDates_;
     }
 
     /**

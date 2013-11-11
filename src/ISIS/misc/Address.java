@@ -10,14 +10,16 @@ import java.util.HashMap;
  * General purpose class for representing postal addresses.
  */
 public class Address extends Record {
-	
+    public static String tableName = "address";
+    public static boolean hasDates_ = false;
+
 	/**
 	 * Public constructor.
 	 */
 	public Address(boolean active, boolean primary, String country,
 			String title, String zip, String state, String city, String county,
 			String streetAddress) {
-		super("address", true);
+		super();
 		this.setFieldValue("active", (active ? 1 : 0));
 		this.setFieldValue("primary_status", (primary ? 1 : 0));
 		this.setFieldValue("title", title);
@@ -28,13 +30,13 @@ public class Address extends Record {
 		this.setFieldValue("city", city);
 		this.setFieldValue("st_address", streetAddress);
 	}
-	
+
 	/**
 	 * Public constructor. Take an address database key, and has the option to
 	 * populate the fields from the database.
 	 */
 	public Address(int pkey, boolean populate) throws SQLException {
-		super("address", true);
+		super();
 
 		this.setPkey(pkey);
 		if (populate) {
@@ -43,10 +45,20 @@ public class Address extends Record {
 	}
 	
 	public Address(HashMap<String, Field> map) {
-		super("address", true, map);
+		super(map);
 	}
-	
-	/**
+
+    @Override
+    protected String getTableName() {
+        return Address.tableName;
+    }
+
+    @Override
+    protected boolean hasDates() {
+        return Address.hasDates_;
+    }
+
+    /**
 	 * gets the record's primary status
 	 */
 	public boolean getPrimary() {

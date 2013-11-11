@@ -17,26 +17,21 @@ import java.util.Map;
  */
 public abstract class Record {
 
-    public final String tableName;
     private HashMap<String, Field> fields;
     private Dates dates = null;
-    private boolean hasDates;
+
 
     /**
      * Base initializer for a Record.
      */
-    protected Record(String tableName, boolean hasDates) {
-        this.tableName = tableName;
-        this.hasDates = hasDates;
+    protected Record() {
         this.fields = new HashMap<>();
     }
 
     /**
      * Base initializer for a Record whose data has already been retrieved.
      */
-    protected Record(String tableName, boolean hasDates, HashMap<String, Field> map) {
-        this.tableName = tableName;
-        this.hasDates = hasDates;
+    protected Record(HashMap<String, Field> map) {
         this.initializeFields(map);
         // This condition seems to happen sometimes on (faulty) joins, and
         // obviously we're just going to get errors everywhere if it does.
@@ -47,8 +42,8 @@ public abstract class Record {
 
     /**
      * Maps our pkey-based select to a hashmap, leveraging the method in the DB
-     * class. WARNING: All fields are set to modifiable; you have to fix it
-     * yourself.
+     * class. WARNING: All fields are set to modifiable, but we don't care
+     * anymore
      */
     protected static HashMap<String, Field> mapResultSet(ResultSet rs) throws SQLException, RecordNotFoundException {
 
@@ -58,6 +53,9 @@ public abstract class Record {
         }
         return result.get(0);
     }
+
+    protected abstract String getTableName();
+    protected abstract boolean hasDates();
 
     /**
      * Gets the primary key associated with this record.
@@ -88,7 +86,7 @@ public abstract class Record {
      * Gets the dates object associated with the record.
      */
     public final Dates getDates() {
-        if (this.hasDates) {
+        if (this.hasDates()) {
             return this.dates;
         } else {
             throw new UnsupportedOperationException();
@@ -127,8 +125,7 @@ public abstract class Record {
         } catch (UninitializedFieldException e) {
             try {
                 // check that there is a pkey (will throw
-                // uninitializedfieldexception otherwise)
-
+                // UninitializedFieldException otherwise)
                 if (key.equals("pkey")) {
                     throw e;
                 }
@@ -157,7 +154,7 @@ public abstract class Record {
      * columns we have initialized already.
      */
     protected final void fetch() throws SQLException, RecordNotFoundException {
-        PreparedStatement stmt = Session.getDB().prepareStatement("SELECT * FROM " + this.tableName + " WHERE pkey=?");
+        PreparedStatement stmt = Session.getDB().prepareStatement("SELECT * FROM " + this.getTableName() + " WHERE pkey=?");
         stmt.setInt(1, this.getPkey());
         this.fields = Record.mapResultSet(stmt.executeQuery());
 
@@ -168,7 +165,7 @@ public abstract class Record {
      * Reads the dates columns into a date class.
      */
     private void readDates() throws SQLException {
-        if (this.hasDates) {
+        if (this.hasDates()) {
             this.dates = new Dates(new Date(((Number) this.getFieldValue("createDate")).longValue()), new User((Integer) this.getFieldValue("createUser"), false), new Date(((Number) this.getFieldValue("modDate")).longValue()), new User((Integer) this.getFieldValue("modUser"), false));
         }
     }
@@ -178,12 +175,12 @@ public abstract class Record {
      */
     private void updateDates() {
         // if no date information is set, set it now.
-        if (this.hasDates && this.dates == null) {
+        if (this.hasDates() && this.dates == null) {
             this.dates = new Dates();
         }
 
         // Update date information--if no date information is set, set it now.
-        if (this.hasDates) {
+        if (this.hasDates()) {
             if (this.dates.modified()) { // modified, so tell the map that we're
                 // updating
                 this.fields.put("createDate", new Field());
@@ -202,7 +199,7 @@ public abstract class Record {
      * Called before saving the record; override it if it is necessary in your
      * subclass.
      */
-    protected void savePrep() {
+    protected void preSave() {
     }
 
     /**
@@ -221,7 +218,7 @@ public abstract class Record {
         this.updateDates();
 
         // prep
-        this.savePrep();
+        this.preSave();
 
         /**
          * Get a list of columns that have been changed. Should be all columns
@@ -237,7 +234,7 @@ public abstract class Record {
         if (!this.fields.containsKey("pkey")) { // New record
             // generate sql--something like INSERT INTO tab (col1, col2) VALUES
             // (?, ?)
-            StringBuilder sql = new StringBuilder("INSERT INTO " + this.tableName + "(" + columns.get(0));
+            StringBuilder sql = new StringBuilder("INSERT INTO " + this.getTableName() + "(" + columns.get(0));
             StringBuilder params = new StringBuilder("?");
             for (int i = 1; i < columns.size(); ++i) {
                 sql.append(", ").append(columns.get(i));
@@ -268,7 +265,7 @@ public abstract class Record {
             }
             // generate sql--something like UPDATE tab SET col1=?, col2=? WHERE
             // pkey=?
-            String sql = "UPDATE " + this.tableName + " SET " + columns.get(0) + "=?";
+            String sql = "UPDATE " + this.getTableName() + " SET " + columns.get(0) + "=?";
             for (int i = 1; i < columns.size(); ++i) {
                 sql += ", " + columns.get(i) + "=?";
             }
