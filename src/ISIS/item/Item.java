@@ -35,7 +35,7 @@ public class Item extends Record {
 			BigDecimal onHandQty, BigDecimal ReorderQty, String UOM,
 			BigDecimal cost) {
         super("item", true);
-    }
+    } 
 	
 	/**
 	 * Adds a picture to the item.
