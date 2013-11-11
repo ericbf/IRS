@@ -100,11 +100,6 @@ public class ListItems extends ListView<Item> {
     }
 
     @Override
-    protected boolean hasDates () {
-        return true;
-    }
-
-    @Override
     protected String getTableName() {
         return "item";
     }

@@ -1,29 +1,19 @@
 package ISIS.gui;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.DefaultFocusTraversalPolicy;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.JTable;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.session.Session;
+
+import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Abstract class for views that consist of a list that can be searched.
@@ -254,9 +244,7 @@ public abstract class ListView<E extends Record> extends View {
 	}
 	
 	protected abstract String getTableName();
-	
-	protected abstract boolean hasDates();
-	
+
 	protected abstract ArrayList<E> mapResults(
 			ArrayList<HashMap<String, Field>> results);
 	
