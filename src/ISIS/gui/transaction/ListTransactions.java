@@ -2,10 +2,13 @@ package ISIS.gui.transaction;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
+import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.IRSTableModel;
 import ISIS.gui.ListView;
@@ -80,13 +83,24 @@ public class ListTransactions extends ListView<Transaction> {
 		this.add(new JScrollPane(this.table), c);
 	}
 	
-	@Override
-	protected void fillTable() {
-		// throw new UnsupportedOperationException("Not supported yet.");
-	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.ListView#actionHandlerActionForSearchField()
+	 */
 	@Override
 	protected void actionHandlerActionForSearchField() {
-		this.viewButton.doClick();
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.ListView#mapResults(java.util.ArrayList)
+	 */
+	@Override
+	protected ArrayList<Transaction> mapResults(
+			ArrayList<HashMap<String, Field>> results) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
