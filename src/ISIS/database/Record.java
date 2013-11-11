@@ -22,9 +22,6 @@ public abstract class Record {
 	private Dates					dates	= null;
 	private boolean					hasDates;
 
-    public static recordFromMap(String tableName, boolean hasDates, HashMap<String, Field> map) {
-        return new Record(tableName, hasDates, map);
-    }
 
 	/**
 	 * Base initializer for a Record.
