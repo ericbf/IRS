@@ -1,7 +1,6 @@
 package ISIS.gui.customer;
 
 import ISIS.customer.Customer;
-import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.ErrorLogger;
@@ -9,13 +8,11 @@ import ISIS.gui.IRSTableModel;
 import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.misc.Phone;
-import ISIS.session.Session;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -163,45 +160,7 @@ public class ListCustomers extends ListView<Customer> {
 		this.editButton.doClick();
 	}
 	
-	@Override
-	protected void fillTable() {
-		String searchFieldText = this.searchField.getText();
-		PreparedStatement stmt = null;
-		try {
-			if (searchFieldText.length() >= 1) {
-				String search = searchFieldText + " ";
-				search = search.replaceFirst("^\\s+", ""); // remove leading
-															// whitespace
-				search = search.replaceAll("\\s+", "* "); // replaces whitespace
-															// with wildcards
-															// then wildspace
-				search = search.replaceAll("([\\(\\)])", ""); // these aren't
-																// indexed
-																// anyway, so...
-				search = search.replaceAll("\\\"", ""); // TODO: actually fix
-														// this
-				String sqlQuery = "SELECT c.* FROM (SELECT pkey AS row FROM customer_search WHERE customer_search MATCH ?) "
-						+ "LEFT JOIN customer AS c ON row=c.pkey";
-				stmt = Session.getDB().prepareStatement(sqlQuery);
-				stmt.setString(1, search);
-			} else {
-				String sqlQuery = "SELECT c.* FROM customer AS c";
-				stmt = Session.getDB().prepareStatement(sqlQuery);
-			}
-			// TODO add phone
-			ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt
-					.executeQuery());
-			this.records = new ArrayList<>();
-			for (HashMap<String, Field> map : results) {
-				this.records.add(new Customer(map));
-			}
-			this.populateTable();
-		} catch (SQLException e) {
-			ErrorLogger
-					.error(e, "Error populating customer table.", true, true);
-		}
-	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.ListView#tableName()
@@ -218,8 +177,11 @@ public class ListCustomers extends ListView<Customer> {
 	@Override
 	protected ArrayList<Customer> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
-		// TODO Auto-generated method stub
-		return null;
+        ArrayList<Customer> customers = new ArrayList<>(results.size());
+		for(HashMap<String, Field> result : results) {
+            customers.add(new Customer(result));
+        }
+        return customers;
 	}
 	
 	private void populateTable() {

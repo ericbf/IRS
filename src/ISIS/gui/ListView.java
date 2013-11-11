@@ -29,6 +29,7 @@ public abstract class ListView<E extends Record> extends View {
 			"Close and Generate Invoice"				};
 	protected ArrayList<Integer>	keys				= new ArrayList<>();
 	protected int					selected;
+    private String lastSearchFieldValue = " ";
 	
 	public ListView(SplitPane splitPane) {
 		super(splitPane);
@@ -36,11 +37,11 @@ public abstract class ListView<E extends Record> extends View {
 		this.selected = -1;
 		this.searchField = new HintField("Enter query to search...");
 		this.searchField.addCaretListener(new CaretListener() {
-			@Override
-			public void caretUpdate(CaretEvent e) {
-				ListView.this.fillTable();
-			}
-		});
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                ListView.this.fillTable();
+            }
+        });
 		this.searchField.addKeyListener(new KeyListener() {
 			private final int	DOWN	= 40, UP = 38;
 			
@@ -210,8 +211,12 @@ public abstract class ListView<E extends Record> extends View {
 		throw new UnsupportedOperationException("Not supported.");
 	}
 	
-	protected void fillTable() {
+	protected final void fillTable() {
 		String searchFieldText = this.searchField.getText();
+        if(searchFieldText.equals(this.lastSearchFieldValue)) {
+            return;
+        }
+        this.lastSearchFieldValue = searchFieldText;
 		try {
 			PreparedStatement stmt;
 			if (searchFieldText.length() >= 1) {
@@ -223,8 +228,8 @@ public abstract class ListView<E extends Record> extends View {
 				// these aren't indexed anyway, so...
 				search = search.replaceAll("([\\(\\)])", "");
 				search = search.replaceAll("\\\"", ""); // TODO: actually fix
-				String sql = "SELECT i.* FROM (SELECT docid AS row FROM " + this.getTableName() + "_search WHERE item_search MATCH ?) "
-						+ "LEFT JOIN " + this.getTableName() + " AS i ON row=i.pkey";
+				String sql = "SELECT i.* FROM (SELECT docid AS row FROM " + this.getTableName() + "_search WHERE " + this.getTableName() +
+                        "_search MATCH ?) " + "LEFT JOIN " + this.getTableName() + " AS i ON row=i.pkey";
 				stmt = Session.getDB().prepareStatement(sql);
 				stmt.setString(1, search);
 			} else {
