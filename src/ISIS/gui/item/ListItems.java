@@ -1,20 +1,14 @@
 package ISIS.gui.item;
 
-import ISIS.customer.Customer;
-import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
-import ISIS.gui.ErrorLogger;
 import ISIS.gui.IRSTableModel;
 import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
-import ISIS.session.Session;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -111,7 +105,7 @@ public class ListItems extends ListView<Item> {
     }
 
     @Override
-    protectd String tableName() {
+    protected String tableName() {
         return "item";
     }
 }
