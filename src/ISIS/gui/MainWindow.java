@@ -5,6 +5,7 @@ import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.ListCustomers;
 import ISIS.gui.item.ListItems;
 import ISIS.gui.transaction.ListTransactions;
+import ISIS.item.Item;
 import ISIS.misc.Address;
 import ISIS.misc.Phone;
 import ISIS.session.Session;
@@ -13,6 +14,7 @@ import ISIS.user.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 /**
@@ -157,5 +159,7 @@ public class MainWindow extends JFrame {
         customer.addPhoneNum(new Phone("56565656", true, Phone.PhoneType.HOME));
         customer.addAddress(new Address(true, true, "mars", "aliens", "9001", "state", "city", "county", "this is pretty unique huh"));
         customer.save();
+        Item item = new Item("new item", "12345", "penises", new BigDecimal(1234.5), new BigDecimal(1234.5), new BigDecimal(1234.5),
+                             "LBS", new BigDecimal(1234.5));
     }
 }

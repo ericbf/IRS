@@ -105,7 +105,7 @@ public class ListItems extends ListView<Item> {
     }
 
     @Override
-    protected String tableName() {
+    protected String getTableName() {
         return "item";
     }
 }
