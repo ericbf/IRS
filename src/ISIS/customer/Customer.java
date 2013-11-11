@@ -26,6 +26,9 @@ import java.util.HashMap;
  * @fname != null, lname != null, mname != null
  */
 public class Customer extends Record {
+    public static String tableName =  "customer";
+    public static boolean hasDates_ = true;
+
 
     boolean addressesInitialized = false, numbersInitialized = false;
     private ArrayList<Address> addresses = new ArrayList<>();
@@ -38,7 +41,7 @@ public class Customer extends Record {
      * populate the fields from the database.
      */
     public Customer(int pkey, boolean populate) throws SQLException {
-        super("customer", true);
+        super();
 
         this.setPkey(pkey);
         if (populate) {
@@ -47,14 +50,24 @@ public class Customer extends Record {
     }
 
     public Customer(HashMap<String, Field> map) {
-        super("customer", true, map);
+        super(map);
+    }
+
+    @Override
+    protected String getTableName() {
+        return Customer.tableName;
+    }
+
+    @Override
+    protected boolean hasDates() {
+        return Customer.hasDates_;
     }
 
     /**
      * Public constructor. A Customer starts with a name and a status.
      */
     public Customer(String fname, String lname, String email, String note, String password, boolean active) {
-        super("customer", true);
+        super();
 
         this.setFieldValue("fname", fname);
         this.setFieldValue("lname", lname);

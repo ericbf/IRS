@@ -1,11 +1,11 @@
 package ISIS.item;
 
+import ISIS.database.Field;
+import ISIS.database.Record;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import ISIS.database.Field;
-import ISIS.database.Record;
 
 /**
  * A good available and currently managed by the client. An item record consists
@@ -19,34 +19,46 @@ import ISIS.database.Record;
  * @pkey > 0
  */
 public class Item extends Record {
-	
+    public static String tableName =  "";
+    public static boolean hasDates_ = true;
+
 	/**
 	 * Constructor to pass a pre-populated HashMap of the fields.
 	 * 
 	 * @param map
 	 */
 	public Item(HashMap<String, Field> map) {
-		super("item", true);
+		super();
 		this.initializeFields(map);
 	}
-	
-	/**
+
+    /**
 	 * Public constructor. Takes an Item database key, and has the option to
 	 * populate the fields from the database.
 	 */
 	public Item(int pkey, boolean populate) {
-		super("item", true);
+		super();
 	}
-	
+
 	/**
 	 * Public constructor. An item starts with all fields populated.
 	 */
 	public Item(String name, String SKU, String description, BigDecimal price,
 			BigDecimal onHandQty, BigDecimal ReorderQty, String UOM,
 			BigDecimal cost) {
-		super("item", true);
+		super();
 	}
-	
+
+    @Override
+    protected String getTableName() {
+        return Item.tableName;
+    }
+
+    @Override
+    protected boolean hasDates() {
+        return Item.hasDates_;
+    }
+
 	// /**
 	// * Adds a picture to the item.
 	// */

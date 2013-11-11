@@ -92,7 +92,7 @@ public final class DB {
         executeUpdate("CREATE TABLE IF NOT EXISTS address (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " +
                               "primary_status BOOLEAN NOT NULL, title VARCHAR(255) NOT NULL, " + "city VARCHAR(255) NOT NULL, " +
                               "state VARCHAR(255) NOT NULL, county VARCHAR(255) NOT NULL, country VARCHAR(3) NOT NULL, " +
-                              "st_address TEXT NOT NULL, zip VARCHAR(255) NOT NULL, " + datesSql + ")");
+                              "st_address TEXT NOT NULL, zip VARCHAR(255) NOT NULL)");
 
         // billing
         executeUpdate("CREATE TABLE IF NOT EXISTS billing (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, " + "number VARCHAR(255), " +
