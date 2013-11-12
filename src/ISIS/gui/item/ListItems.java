@@ -1,13 +1,5 @@
 package ISIS.gui.item;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.ErrorLogger;
@@ -15,10 +7,14 @@ import ISIS.gui.IRSTableModel;
 import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
-import ISIS.gui.item.AddEditItem;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * List of items. Allows you to query and act on items.
@@ -124,7 +120,8 @@ public class ListItems extends ListView<Item> {
 				array[i++] = item.getUOM();
 				
 				super.addRow(array);
-			}
+                ListItems.this.keys.add(item.getPkey());
+            }
 		});
 		this.tableModel.setColumnTitles("SKU", "price", "qty", "UOM");
 		this.fillTable();
