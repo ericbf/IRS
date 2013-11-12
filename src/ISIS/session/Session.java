@@ -1,13 +1,13 @@
 package ISIS.session;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import ISIS.database.DB;
 import ISIS.gui.TableUpdateListener;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Various information and methods that is associated with a session. This
@@ -15,10 +15,10 @@ import java.util.HashMap;
  */
 public class Session {
 	
-	private static Session	session	= null;
-	private static DB		db		= null;
-	private User			user;
-    private static HashMap<DB.TableName, ArrayList<TableUpdateListener>> tableListeners = new HashMap<>();
+	private static Session													session			= null;
+	private static DB														db				= null;
+	private User															user;
+	private static HashMap<DB.TableName, ArrayList<TableUpdateListener>>	tableListeners	= new HashMap<>();
 	
 	private Session(User user) {
 		this.user = user;
@@ -86,33 +86,36 @@ public class Session {
 	public static Session getCurrentSession() {
 		return session;
 	}
-
-    /**
-     * Watch a database table for updates.
-     */
-    public static void watchTable(DB.TableName tableName, TableUpdateListener listener) {
-        if(Session.tableListeners.containsKey(tableName)) {
-            Session.tableListeners.get(tableName).add(listener);
-        } else {
-            ArrayList<TableUpdateListener> listeners = new ArrayList<>();
-            listeners.add(listener);
-            Session.tableListeners.put(tableName, listeners);
-        }
-    }
-
-    /**
-     * Notifies listeners that the record with the specified key was changed in some way.
-     */
-    public static void updateTable(DB.TableName tableName, Integer pkey) {
-        if(Session.tableListeners.containsKey(tableName)) {
-            for(TableUpdateListener listener : Session.tableListeners.get(tableName)) {
-                synchronized (listener) {
-                        listener.setKey(pkey);
-                        listener.actionPerformed(null);
-                }
-            }
-        }
-    }
+	
+	/**
+	 * Watch a database table for updates.
+	 */
+	public static void watchTable(DB.TableName tableName,
+			TableUpdateListener listener) {
+		if (Session.tableListeners.containsKey(tableName)) {
+			Session.tableListeners.get(tableName).add(listener);
+		} else {
+			ArrayList<TableUpdateListener> listeners = new ArrayList<>();
+			listeners.add(listener);
+			Session.tableListeners.put(tableName, listeners);
+		}
+	}
+	
+	/**
+	 * Notifies listeners that the record with the specified key was changed in
+	 * some way.
+	 */
+	public static void updateTable(DB.TableName tableName, Integer pkey) {
+		if (Session.tableListeners.containsKey(tableName)) {
+			for (TableUpdateListener listener : Session.tableListeners
+					.get(tableName)) {
+				synchronized (listener) {
+					listener.setKey(pkey);
+					listener.actionPerformed(null);
+				}
+			}
+		}
+	}
 	
 	/**
 	 * Gets a reference to the database.

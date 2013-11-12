@@ -89,7 +89,7 @@ public final class SplitPane extends JPanel {
 		if (this.stack.get(this.stackPointer).needsSave()) {
 			hasButtons = true;
 			JButton save = new JButton("Save");
-			JButton cancel = new JButton("Cancel");
+			JButton cancel = new JButton("Close");
 			
 			c = new GridBagConstraints();
 			c.gridy = 0;

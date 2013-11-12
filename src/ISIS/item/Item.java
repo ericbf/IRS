@@ -1,13 +1,13 @@
 package ISIS.item;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import ISIS.database.DB.TableName;
 import ISIS.database.Field;
 import ISIS.database.Record;
-import java.sql.SQLException;
 
 /**
  * A good available and currently managed by the client. An item record consists
@@ -49,8 +49,8 @@ public class Item extends Record {
 	 */
 	public Item(int pkey, boolean populate) throws SQLException {
 		super();
-                
-                this.setPkey(pkey);
+		
+		this.setPkey(pkey);
 		if (populate) {
 			this.fetch();
 		}
