@@ -10,10 +10,15 @@ import javax.swing.JScrollPane;
 
 import ISIS.database.Field;
 import ISIS.database.Record;
+import ISIS.gui.ErrorLogger;
 import ISIS.gui.IRSTableModel;
 import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
+import ISIS.gui.item.AddEditItem;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 /**
  * List of items. Allows you to query and act on items.
@@ -37,6 +42,49 @@ public class ListItems extends ListView<Item> {
 		this.editButton = new JButton(this.buttonNames[buttonNameSel++]);
 		JButton activeButton = new JButton(this.buttonNames[buttonNameSel++]);
 		
+                addButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// ListCustomers.this.splitPane.push(new AddEditCustomer(
+				// ListCustomers.this.splitPane),
+				// SplitPane.LayoutType.HORIZONTAL);
+				ListItems.this.splitPane.push(new AddEditItem(
+						ListItems.this.splitPane),
+						SplitPane.LayoutType.HORIZONTAL, ListItems.this);
+			}
+		});
+                
+                this.editButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selected = ListItems.this.table.getSelectedRow();
+				
+				if (selected == -1) {
+					selected = ListItems.this.selected;
+					if (selected == -1) return;
+					ListItems.this.table.setRowSelectionInterval(selected,
+							selected);
+				}
+				
+				int pkey = ListItems.this.keys.get(selected);
+				
+				try {
+					// ListItems.this.splitPane.push(new AddEditItem(
+					// ListItems.this.splitPane, pkey),
+					// SplitPane.LayoutType.HORIZONTAL);
+					ListItems.this.splitPane
+							.push(new AddEditItem(
+									ListItems.this.splitPane, pkey),
+									SplitPane.LayoutType.HORIZONTAL,
+									ListItems.this);
+                                
+				} catch (SQLException ex) {
+					ErrorLogger.error(ex,
+							"Failed to open the item record.", true, true);
+				}
+			}
+		});
+                
 		int x = 0, y = 0;
 		
 		c = new GridBagConstraints();
