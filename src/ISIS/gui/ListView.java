@@ -1,29 +1,19 @@
 package ISIS.gui;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.DefaultFocusTraversalPolicy;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.JTable;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.session.Session;
+
+import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Abstract class for views that consist of a list that can be searched.
@@ -43,6 +33,12 @@ public abstract class ListView<E extends Record> extends View {
 	
 	public ListView(SplitPane splitPane) {
 		super(splitPane);
+        Session.watchTable(this.getTableName(), new TableUpdateListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListView.this.doFillTable();
+            }
+        });
 		this.table = new JTable();
 		this.selected = -1;
 		this.searchField = new HintField("Enter query to search...");
@@ -227,39 +223,44 @@ public abstract class ListView<E extends Record> extends View {
 			return;
 		}
 		this.lastSearchFieldValue = searchFieldText;
-		try {
-			PreparedStatement stmt;
-			if (searchFieldText.length() >= 1) {
-				String search = searchFieldText + " ";
-				// remove leading whitespace
-				search = search.replaceFirst("^\\s+", "");
-				// replaces whitespace with wildcards then a space.
-				search = search.replaceAll("\\s+", "* ");
-				// these aren't indexed anyway, so...
-				search = search.replaceAll("([\\(\\)])", "");
-				search = search.replaceAll("\\\"", ""); // TODO: actually fix
-				String sql = "SELECT i.* FROM (SELECT docid AS row FROM "
-						+ this.getTableName() + "_search WHERE "
-						+ this.getTableName() + "_search MATCH ?) "
-						+ "LEFT JOIN " + this.getTableName()
-						+ " AS i ON row=i.pkey";
-				stmt = Session.getDB().prepareStatement(sql);
-				stmt.setString(1, search);
-			} else {
-				String sqlQuery = "SELECT i.* from " + this.getTableName()
-						+ " AS i";
-				stmt = Session.getDB().prepareStatement(sqlQuery);
-			}
-			ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt
-					.executeQuery());
-			this.records = this.mapResults(results);
-			this.populateTable();
-		} catch (SQLException e) {
-			ErrorLogger.error(e, "Error populating item table.", true, true);
-		}
+        this.doFillTable();
 	}
-	
-	protected abstract String getTableName();
+
+    private final void doFillTable() {
+        String searchFieldText = this.searchField.getText();
+        try {
+            PreparedStatement stmt;
+            if (searchFieldText.length() >= 1) {
+                String search = searchFieldText + " ";
+                // remove leading whitespace
+                search = search.replaceFirst("^\\s+", "");
+                // replaces whitespace with wildcards then a space.
+                search = search.replaceAll("\\s+", "* ");
+                // these aren't indexed anyway, so...
+                search = search.replaceAll("([\\(\\)])", "");
+                search = search.replaceAll("\\\"", ""); // TODO: actually fix
+                String sql = "SELECT i.* FROM (SELECT docid AS row FROM "
+                        + this.getTableName() + "_search WHERE "
+                        + this.getTableName() + "_search MATCH ?) "
+                        + "LEFT JOIN " + this.getTableName()
+                        + " AS i ON row=i.pkey";
+                stmt = Session.getDB().prepareStatement(sql);
+                stmt.setString(1, search);
+            } else {
+                String sqlQuery = "SELECT i.* from " + this.getTableName()
+                        + " AS i";
+                stmt = Session.getDB().prepareStatement(sqlQuery);
+            }
+            ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt
+                                                                                .executeQuery());
+            this.records = this.mapResults(results);
+            this.populateTable();
+        } catch (SQLException e) {
+            ErrorLogger.error(e, "Error populating item table.", true, true);
+        }
+    }
+
+	protected abstract DB.TableName getTableName();
 	
 	protected abstract ArrayList<E> mapResults(
 			ArrayList<HashMap<String, Field>> results);

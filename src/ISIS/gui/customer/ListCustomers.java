@@ -1,6 +1,7 @@
 package ISIS.gui.customer;
 
 import ISIS.customer.Customer;
+import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.ErrorLogger;
@@ -165,8 +166,8 @@ public class ListCustomers extends ListView<Customer> {
 	 * @see ISIS.gui.ListView#tableName()
 	 */
 	@Override
-	protected String getTableName() {
-		return "customer";
+	protected DB.TableName getTableName() {
+		return DB.TableName.customer;
 	}
 	
 	/*

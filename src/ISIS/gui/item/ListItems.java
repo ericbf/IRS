@@ -1,5 +1,6 @@
 package ISIS.gui.item;
 
+import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.ErrorLogger;
@@ -141,8 +142,8 @@ public class ListItems extends ListView<Item> {
 	}
 	
 	@Override
-	protected String getTableName() {
-		return "item";
+	protected DB.TableName getTableName() {
+		return DB.TableName.item;
 	}
 	
 	@Override
