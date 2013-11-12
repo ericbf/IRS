@@ -1,15 +1,24 @@
 package ISIS.gui.customer;
 
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.sql.SQLException;
+
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.border.EtchedBorder;
+
 import ISIS.customer.Customer;
-import ISIS.gui.*;
+import ISIS.gui.HintField;
+import ISIS.gui.SplitPane;
+import ISIS.gui.View;
 import ISIS.misc.Address;
 import ISIS.misc.Phone;
 import ISIS.transaction.Transaction;
-
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import java.awt.*;
-import java.sql.SQLException;
 
 /**
  * View for adding and editing customers.
@@ -207,7 +216,6 @@ public class AddEditCustomer extends View {
 		}
 		this.customer.save();
 	}
-
 	
 	/**
 	 * Discards any modifications.

@@ -17,11 +17,19 @@ import javax.swing.JSplitPane;
  *
  */
 public final class SplitPane extends JPanel {
+	/**
+	 * The ways of laying out the views.
+	 */
+	public static enum LayoutType {
+		VERTICAL, HORIZONTAL
+	}
+	
 	private static final long	serialVersionUID	= 1L;
 	private final int			defaultDividerSize;
 	ArrayList<View>				stack;
 	private int					stackPointer;
 	private JSplitPane			splitPane;
+	
 	JPanel						buttons;
 	
 	SplitPane() {
@@ -35,7 +43,7 @@ public final class SplitPane extends JPanel {
 		this.defaultDividerSize = 9;
 		GridBagLayout buttonLayout;
 		this.buttons = new JPanel(buttonLayout = new GridBagLayout());
-		buttonLayout.columnWidths = new int[] { 0, 94, 94 };
+		buttonLayout.columnWidths = new int[] { 0, 94, 94, 94, 94 };
 		this.buttons.setOpaque(false);
 		this.add(this.buttons, BorderLayout.NORTH);
 	}
@@ -81,17 +89,17 @@ public final class SplitPane extends JPanel {
 		if (this.stack.get(this.stackPointer).needsSave()) {
 			hasButtons = true;
 			JButton save = new JButton("Save");
-			JButton cancel = new JButton("Cancel");
+			JButton cancel = new JButton("Close");
 			
 			c = new GridBagConstraints();
-			c.gridy = 1;
-			c.gridx = 1;
+			c.gridy = 0;
+			c.gridx = 3;
 			c.fill = GridBagConstraints.BOTH;
 			this.buttons.add(cancel, c);
 			
 			c = new GridBagConstraints();
-			c.gridy = 1;
-			c.gridx = 2;
+			c.gridy = 0;
+			c.gridx = 4;
 			c.fill = GridBagConstraints.BOTH;
 			this.buttons.add(save, c);
 			save.addActionListener(new ActionListener() {
@@ -123,7 +131,6 @@ public final class SplitPane extends JPanel {
 		
 		if (hasButtons) {
 			c = new GridBagConstraints();
-			c.gridheight = 2;
 			c.weightx = 1;
 			c.gridx = 0;
 			c.gridy = 0;
@@ -131,6 +138,66 @@ public final class SplitPane extends JPanel {
 			this.buttons.add(spacer = new JPanel(), c);
 			spacer.setOpaque(false);
 		}
+		this.buttons.repaint();
+	}
+	
+	/**
+	 * Hides the current view by shifting the one view backwards in the stack.
+	 * 
+	 * @pre previousViews() == true
+	 * @post hiddenViews() == true
+	 */
+	public final void backward() {
+		if (this.stackPointer == 1) {
+			this.setLeftComponent(this.stack.get(--this.stackPointer));
+			this.setRightComponent(null);
+		} else {
+			this.setLeftComponent(this.stack.get(--this.stackPointer - 1));
+			this.setRightComponent(this.stack.get(this.stackPointer));
+			this.splitPane.setDividerLocation(this.getWidth() / 2);
+		}
+		this.addButtons();
+		this.validate();
+	}
+	
+	/**
+	 * Shows hidden views by shifting forwards in the stack.
+	 * 
+	 * @pre hiddenViews() == true
+	 * @post previousViews() == true
+	 */
+	protected final void forward() {
+		this.setRightComponent(this.stack.get(++this.stackPointer));
+		this.setLeftComponent(this.stack.get(this.stackPointer - 1));
+		this.splitPane.setDividerLocation(this.getWidth() / 2);
+		this.addButtons();
+	}
+	
+	/**
+	 * Completely removes the top view from the stack. If you call this method
+	 * from the left pane, the left pane will not be removed.
+	 * 
+	 * @throws CloseCanceledException
+	 * @pre views.size() > 0 == true
+	 */
+	public final void pop() throws CloseCanceledException {
+		int diff = this.stack.size() - this.stackPointer - 1;
+		for (int i = 0; i < diff; i++)
+			this.forward();
+		this.stack.get(this.stack.size() - 1).close();
+		this.stack.remove(this.stack.size() - 1);
+		if (this.stackPointer == this.stack.size()) {
+			if (this.stack.size() == 0) {
+				throw new RuntimeException("Popped the entire stack!");
+			} else {
+				this.backward();
+			}
+		}
+	}
+	
+	public final void popAllAbovePointer() throws CloseCanceledException {
+		for (int i = this.stack.size(); i > this.stackPointer + 1; i--)
+			this.pop();
 	}
 	
 	/**
@@ -174,81 +241,6 @@ public final class SplitPane extends JPanel {
 	}
 	
 	/**
-	 * Completely removes the top view from the stack. If you call this method
-	 * from the left pane, the left pane will not be removed.
-	 * 
-	 * @throws CloseCanceledException
-	 * @pre views.size() > 0 == true
-	 */
-	public final void pop() throws CloseCanceledException {
-		int diff = this.stack.size() - this.stackPointer - 1;
-		for (int i = 0; i < diff; i++)
-			this.forward();
-		this.stack.get(this.stack.size() - 1).close();
-		this.stack.remove(this.stack.size() - 1);
-		if (this.stackPointer == this.stack.size()) {
-			if (this.stack.size() == 0) {
-				throw new RuntimeException("Popped the entire stack!");
-			} else {
-				this.backward();
-			}
-		}
-	}
-	
-	public final void popAllAbovePointer() throws CloseCanceledException {
-		for (int i = this.stack.size(); i > this.stackPointer + 1; i--)
-			this.pop();
-	}
-	
-	/**
-	 * Hides the current view by shifting the one view backwards in the stack.
-	 * 
-	 * @pre previousViews() == true
-	 * @post hiddenViews() == true
-	 */
-	public final void backward() {
-		if (this.stackPointer == 1) {
-			this.setLeftComponent(this.stack.get(--this.stackPointer));
-			this.setRightComponent(null);
-		} else {
-			this.setLeftComponent(this.stack.get(--this.stackPointer - 1));
-			this.setRightComponent(this.stack.get(this.stackPointer));
-			this.splitPane.setDividerLocation(this.getWidth() / 2);
-		}
-		this.addButtons();
-		this.validate();
-	}
-	
-	/**
-	 * Shows hidden views by shifting forwards in the stack.
-	 * 
-	 * @pre hiddenViews() == true
-	 * @post previousViews() == true
-	 */
-	protected final void forward() {
-		this.setRightComponent(this.stack.get(++this.stackPointer));
-		this.setLeftComponent(this.stack.get(this.stackPointer - 1));
-		this.splitPane.setDividerLocation(this.getWidth() / 2);
-		this.addButtons();
-	}
-	
-	/**
-	 * When setting this SplitPane to single view mode, hide the divider line,
-	 * else set it to the default size
-	 */
-	public void setRightComponent(Component comp) {
-		if (comp == null) {
-			this.splitPane.setDividerSize(0);
-			this.splitPane.setRightComponent(null);
-		} else {
-			this.splitPane.setDividerSize(this.defaultDividerSize);
-			// this.splitPane.setRightComponent(this.getWrappedComponent(comp));
-			this.splitPane.setRightComponent(comp);
-		}
-		
-	}
-	
-	/**
 	 * Alias to JSplitPane.setLeftComponent
 	 */
 	public void setLeftComponent(Component comp) {
@@ -273,10 +265,19 @@ public final class SplitPane extends JPanel {
 	// }
 	
 	/**
-	 * The ways of laying out the views.
+	 * When setting this SplitPane to single view mode, hide the divider line,
+	 * else set it to the default size
 	 */
-	public static enum LayoutType {
-		VERTICAL, HORIZONTAL
+	public void setRightComponent(Component comp) {
+		if (comp == null) {
+			this.splitPane.setDividerSize(0);
+			this.splitPane.setRightComponent(null);
+		} else {
+			this.splitPane.setDividerSize(this.defaultDividerSize);
+			// this.splitPane.setRightComponent(this.getWrappedComponent(comp));
+			this.splitPane.setRightComponent(comp);
+		}
+		
 	}
 	
 	// /**

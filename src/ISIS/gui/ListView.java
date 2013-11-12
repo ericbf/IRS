@@ -8,7 +8,6 @@ import ISIS.session.Session;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.PreparedStatement;
@@ -35,6 +34,8 @@ public abstract class ListView<E extends Record> extends View {
 	public ListView(SplitPane splitPane) {
 		super(splitPane);
         Session.watchTable(this.getTableName(), new TableUpdateListener() {
+            private static final long	serialVersionUID	= 1L;
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 ListView.this.doFillTable();

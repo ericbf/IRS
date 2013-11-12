@@ -1,8 +1,9 @@
 package ISIS.gui;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.sql.SQLException;
+
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Abstract class for all views.
@@ -74,18 +75,18 @@ public abstract class View extends JPanel {
 	 * not apply.
 	 */
 	public void close() throws CloseCanceledException {
-        if(this.needsSave()) {
-            if ((new ConfirmCloseDialog().show(this.splitPane))) {
-                try {
-                    this.save();
-                } catch (SQLException e) {
-                    ErrorLogger.error(e, "Failed to save. Canceling close.", true,
-                                      true);
-                    throw new CloseCanceledException();
-                }
-            } else {
-                // do nothing
-            }
-        }
-    }
+		if (this.needsSave()) {
+			if ((new ConfirmCloseDialog().show(this.splitPane))) {
+				try {
+					this.save();
+				} catch (SQLException e) {
+					ErrorLogger.error(e, "Failed to save. Canceling close.",
+							true, true);
+					throw new CloseCanceledException();
+				}
+			} else {
+				// do nothing
+			}
+		}
+	}
 }
