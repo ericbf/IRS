@@ -7,6 +7,7 @@ import java.util.HashMap;
 import ISIS.database.DB.TableName;
 import ISIS.database.Field;
 import ISIS.database.Record;
+import java.sql.SQLException;
 
 /**
  * A good available and currently managed by the client. An item record consists
@@ -46,8 +47,13 @@ public class Item extends Record {
 	 * Public constructor. Takes an Item database key, and has the option to
 	 * populate the fields from the database.
 	 */
-	public Item(int pkey, boolean populate) {
+	public Item(int pkey, boolean populate) throws SQLException {
 		super();
+                
+                this.setPkey(pkey);
+		if (populate) {
+			this.fetch();
+		}
 	}
 	
 	/**

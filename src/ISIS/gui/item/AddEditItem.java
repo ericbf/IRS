@@ -21,9 +21,8 @@ import javax.swing.border.EtchedBorder;
 public class AddEditItem extends View {
 	private static final long serialVersionUID = 1L;
 	private JCheckBox active;
-        private HintField SKU, name, price;
+        private HintField SKU, name, price, stock, UOM;
         private Item item;
-        private JSpinner stock;
         private JTextArea description;
 	/**
 	 * Public constructor: returns new instance of add/edit item view.
@@ -47,10 +46,11 @@ public class AddEditItem extends View {
 		this.SKU.setText(this.item.getSKU());
 		this.name.setText(this.item.getName());
 		this.price.setText(this.item.getPrice().toString());
-                SpinnerModel model = new SpinnerNumberModel(this.item.getOnHandQty(),0,999999999,1);
-		this.stock.setModel(model);
+		this.stock.setText(this.item.getOnHandQty().toString());
+                this.UOM.setText(this.item.getUOM());
 		this.description.setText(this.item.getDescription());
 	}
+        
         /**
 	 * Draws all necessary components on the window.
 	 */
@@ -124,11 +124,17 @@ public class AddEditItem extends View {
 		
 		c = new GridBagConstraints();
 		c.weightx = 1;
+		c.gridx = x;
+		c.gridy = y;
+		c.anchor = GridBagConstraints.CENTER;
+		this.add(this.stock = new HintField("aomunt"), c);
+                
+                c = new GridBagConstraints();
+		c.weightx = 1;
 		c.gridx = x--;
 		c.gridy = y++;
 		c.anchor = GridBagConstraints.EAST;
-                SpinnerModel model = new SpinnerNumberModel(0,0,999999999,1);
-		this.add(this.stock = new JSpinner(model), c);
+		this.add(this.UOM = new HintField("UOM"), c);
                 
                 c = new GridBagConstraints();
 		c.weightx = 0;
