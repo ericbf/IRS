@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import ISIS.database.DB.TableName;
 import ISIS.misc.Dates;
 import ISIS.session.Session;
 import ISIS.user.User;
@@ -127,7 +128,7 @@ public abstract class Record {
 		return (int) this.getFieldValue("pkey");
 	}
 	
-	protected abstract String getTableName();
+	protected abstract TableName getTableName();
 	
 	protected abstract boolean hasDates();
 	

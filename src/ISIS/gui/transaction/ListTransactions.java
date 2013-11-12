@@ -1,16 +1,19 @@
 package ISIS.gui.transaction;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.IRSTableModel;
 import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.transaction.Transaction;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * List of transactions. Allows you to query and act on transactions.
@@ -69,7 +72,7 @@ public class ListTransactions extends ListView<Transaction> {
 		});
 		this.tableModel.setColumnTitles("customer", "other", "headers", "date",
 				"status");
-//		this.fillTable();
+		// this.fillTable();
 		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -96,9 +99,9 @@ public class ListTransactions extends ListView<Transaction> {
 	 */
 	@Override
 	protected String getTableName() {
-		return "transaction";
+		return "transaction_";
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.ListView#mapResults(java.util.ArrayList)

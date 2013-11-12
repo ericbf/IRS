@@ -1,5 +1,16 @@
 package ISIS.gui.customer;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+
 import ISIS.customer.Customer;
 import ISIS.database.Field;
 import ISIS.database.Record;
@@ -8,14 +19,6 @@ import ISIS.gui.IRSTableModel;
 import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.misc.Phone;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * List of customers. Allows you to query and act on customers.
@@ -160,7 +163,6 @@ public class ListCustomers extends ListView<Customer> {
 		this.editButton.doClick();
 	}
 	
-
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.ListView#tableName()
@@ -177,13 +179,14 @@ public class ListCustomers extends ListView<Customer> {
 	@Override
 	protected ArrayList<Customer> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
-        ArrayList<Customer> customers = new ArrayList<>(results.size());
-		for(HashMap<String, Field> result : results) {
-            customers.add(new Customer(result));
-        }
-        return customers;
+		ArrayList<Customer> customers = new ArrayList<>(results.size());
+		for (HashMap<String, Field> result : results) {
+			customers.add(new Customer(result));
+		}
+		return customers;
 	}
 	
+	@SuppressWarnings("unused")
 	private void populateTable() {
 		this.table.removeAll();
 		this.keys.clear();

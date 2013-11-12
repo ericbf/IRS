@@ -1,5 +1,6 @@
 package ISIS.misc;
 
+import ISIS.database.DB.TableName;
 import ISIS.database.Record;
 
 /**
@@ -8,21 +9,31 @@ import ISIS.database.Record;
  * instance is always referenced from another record.
  */
 public class Picture extends Record {
-	/* Fields omitted */
+	/**
+	 * The static variable returned of getTableName(). This is the table name
+	 * used by the database.
+	 */
+	// public static TableName tableName = TableName.picture;
 	
 	/**
-	 * Public constructor. A picture starts with a name, binary representation,
-	 * a note, and dates associated with its creation.
+	 * The static boolean that tells whether this type of record has the
+	 * mod_date, creation_date, and et cetera of some records.
 	 */
-	public Picture(String name, byte[] picture, String note, Dates dates) {
-		super();
-	}
+	public static boolean	hasDates_	= false;
 	
 	/**
 	 * Public constructor. Takes a picture database key, and has the option to
 	 * populate fields from the database.
 	 */
 	public Picture(int pkey, boolean populate) {
+		super();
+	}
+	
+	/**
+	 * Public constructor. A picture starts with a name, binary representation,
+	 * a note, and dates associated with its creation.
+	 */
+	public Picture(String name, byte[] picture, String note, Dates dates) {
 		super();
 	}
 	
@@ -46,14 +57,15 @@ public class Picture extends Record {
 	public byte[] getPicture() {
 		return null;
 	}
-
-    @Override
-    protected String getTableName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    protected boolean hasDates() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	
+	@Override
+	protected TableName getTableName() {
+		return null;
+	}
+	
+	@Override
+	protected boolean hasDates() {
+		return false; // To change body of implemented methods use File |
+						// Settings | File Templates.
+	}
 }

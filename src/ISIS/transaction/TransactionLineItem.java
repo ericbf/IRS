@@ -1,21 +1,48 @@
 package ISIS.transaction;
 
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.item.Item;
-
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.HashMap;
+
+import ISIS.database.DB.TableName;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.item.Item;
 
 /**
  * Attributes of an item as it relates to a transaction -- e.g. amount being
  * bought, a discount, or a note.
  */
 public class TransactionLineItem extends Record {
-    public static String tableName =  "transaction_item";
-    public static boolean hasDates_ = false;
-
+	/**
+	 * The static variable returned of getTableName(). This is the table name
+	 * used by the database.
+	 */
+	public static TableName	tableName	= TableName.transaction_item;
+	
+	/**
+	 * The static boolean that tells whether this type of record has the
+	 * mod_date, creation_date, and et cetera of some records.
+	 */
+	public static boolean	hasDates_	= false;
+	
+	public TransactionLineItem(HashMap<String, Field> map) {
+		super(map);
+	}
+	
+	/**
+	 * Public constructor. Take a transaction_item database key, and has the
+	 * option to populate the fields from the database.
+	 */
+	public TransactionLineItem(int pkey, boolean populate) throws SQLException {
+		super();
+		
+		this.setPkey(pkey);
+		if (populate) {
+			this.fetch();
+		}
+	}
+	
 	/**
 	 * Public constructor. Initializes all fields of the object.
 	 */
@@ -30,34 +57,7 @@ public class TransactionLineItem extends Record {
 		this.setFieldValue("quantity", quantity);
 		this.setFieldValue("description", description);
 	}
-
-    public TransactionLineItem(HashMap<String, Field> map) {
-        super(map);
-    }
-
-    /**
-	 * Public constructor. Take a transaction_item database key, and has the
-	 * option to populate the fields from the database.
-	 */
-	public TransactionLineItem(int pkey, boolean populate) throws SQLException {
-		super();
-
-		this.setPkey(pkey);
-		if (populate) {
-			this.fetch();
-		}
-	}
-
-    @Override
-    protected String getTableName() {
-        return TransactionLineItem.tableName;
-    }
-
-    @Override
-    protected boolean hasDates() {
-        return TransactionLineItem.hasDates_;
-    }
-
+	
 	/**
 	 * For checking if an item is already in the transaction.
 	 */
@@ -73,25 +73,11 @@ public class TransactionLineItem extends Record {
 	}
 	
 	/**
-	 * Gets the item.
-	 */
-	public Item getItem() {
-		return (Item) this.getFieldValue("item");
-	}
-	
-	/**
 	 * Gets an adjustment associated with the transaction and item, e.g. a
 	 * discount.
 	 */
 	public BigDecimal getAdjustment() {
 		return (BigDecimal) this.getFieldValue("adjustment");
-	}
-	
-	/**
-	 * Gets the quantity of the item involved in the transaction.
-	 */
-	public BigDecimal getQuantity() {
-		return (BigDecimal) this.getFieldValue("quantity");
 	}
 	
 	/**
@@ -102,10 +88,10 @@ public class TransactionLineItem extends Record {
 	}
 	
 	/**
-	 * @return the transaction
+	 * Gets the item.
 	 */
-	public Transaction getTransaction() {
-		return (Transaction) this.getFieldValue("transaction_");
+	public Item getItem() {
+		return (Item) this.getFieldValue("item");
 	}
 	
 	/**
@@ -113,6 +99,30 @@ public class TransactionLineItem extends Record {
 	 */
 	public BigDecimal getPrice() {
 		return (BigDecimal) this.getFieldValue("price");
+	}
+	
+	/**
+	 * Gets the quantity of the item involved in the transaction.
+	 */
+	public BigDecimal getQuantity() {
+		return (BigDecimal) this.getFieldValue("quantity");
+	}
+	
+	@Override
+	protected TableName getTableName() {
+		return TransactionLineItem.tableName;
+	}
+	
+	/**
+	 * @return the transaction
+	 */
+	public Transaction getTransaction() {
+		return (Transaction) this.getFieldValue("transaction_");
+	}
+	
+	@Override
+	protected boolean hasDates() {
+		return TransactionLineItem.hasDates_;
 	}
 	
 	/**
@@ -124,18 +134,18 @@ public class TransactionLineItem extends Record {
 	}
 	
 	/**
-	 * @param quantity
-	 *            the quantity to set
-	 */
-	public void setQuantity(BigDecimal quantity) {
-		this.setFieldValue("quantity", quantity);
-	}
-	
-	/**
 	 * @param description
 	 *            the description to set
 	 */
 	public void setDescription(String description) {
 		this.setFieldValue("description", description);
+	}
+	
+	/**
+	 * @param quantity
+	 *            the quantity to set
+	 */
+	public void setQuantity(BigDecimal quantity) {
+		this.setFieldValue("quantity", quantity);
 	}
 }

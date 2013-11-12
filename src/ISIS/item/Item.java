@@ -1,11 +1,12 @@
 package ISIS.item;
 
-import ISIS.database.Field;
-import ISIS.database.Record;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import ISIS.database.DB.TableName;
+import ISIS.database.Field;
+import ISIS.database.Record;
 
 /**
  * A good available and currently managed by the client. An item record consists
@@ -20,13 +21,14 @@ import java.util.HashMap;
  */
 public class Item extends Record {
 	/**
-	 * The static string returned of getTableName(). This is the table name used
-	 * by the database.
+	 * The static variable returned of getTableName(). This is the table name
+	 * used by the database.
 	 */
-	public static String	tableName	= "item";
+	public static TableName	tableName	= TableName.item;
+	
 	/**
 	 * The static boolean that tells whether this type of record has the
-	 * mod_date, creation_date, and et cetera of other records.
+	 * mod_date, creation_date, and et cetera of some records.
 	 */
 	public static boolean	hasDates_	= true;
 	
@@ -140,7 +142,7 @@ public class Item extends Record {
 	// } TODO: implement this?
 	
 	@Override
-	protected String getTableName() {
+	protected TableName getTableName() {
 		return Item.tableName;
 	}
 	
