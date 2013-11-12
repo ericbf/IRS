@@ -1,15 +1,5 @@
 package ISIS.gui;
 
-import java.awt.Dimension;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import ISIS.customer.Customer;
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.ListCustomers;
@@ -21,6 +11,11 @@ import ISIS.misc.Phone;
 import ISIS.session.Session;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
+
+import javax.swing.*;
+import java.awt.*;
+import java.math.BigDecimal;
+import java.sql.SQLException;
 
 /**
  * Class for main window. No public methods available.
@@ -131,6 +126,10 @@ public class MainWindow extends JFrame {
 				"state", "city", "county", "this is pretty unique huh"));
 		customer.save();
 		Item item = new Item("new item", "12345", "penises", new BigDecimal(
+				1234.5), new BigDecimal(1234.5), new BigDecimal(1234.5), "LBS",
+				new BigDecimal(1234.5), true);
+		item.save();
+        item = new Item("new itemsessesesse", "54321", "nope", new BigDecimal(
 				1234.5), new BigDecimal(1234.5), new BigDecimal(1234.5), "LBS",
 				new BigDecimal(1234.5), true);
 		item.save();

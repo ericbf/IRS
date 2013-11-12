@@ -1,19 +1,16 @@
 package ISIS.gui.item;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.IRSTableModel;
 import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * List of items. Allows you to query and act on items.
@@ -68,15 +65,17 @@ public class ListItems extends ListView<Item> {
 			public void addRow(Record record) {
 				Item item = (Item) record;
 				Object[] array = new Object[this.getColumnCount()];
+                int i = 0;
 				
-				array[0] = item.getPkey();
-				array[1] = "";
-				array[2] = "";
-				
+				array[i++] = item.getSKU();
+				array[i++] = item.getPrice();
+				array[i++] = item.getOnHandQty();
+				array[i++] = item.getUOM();
+
 				super.addRow(array);
 			}
 		});
-		this.tableModel.setColumnTitles("id", "price", "cost", "latest");
+		this.tableModel.setColumnTitles("SKU", "price", "qty", "UOM");
 		this.fillTable();
 		
 		c = new GridBagConstraints();
