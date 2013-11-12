@@ -8,6 +8,7 @@ import ISIS.session.Session;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.PreparedStatement;
@@ -282,7 +283,7 @@ public abstract class ListView<E extends Record> extends View {
 		this.tableModel.setRowCount(0);
 		for (E i : this.records) {
             this.tableModel.rowColors.add(IRSTableModel.defaultColor);
-			this.tableModel.addRow(i);
+            this.tableModel.addRow(i);
 		}
         for(int i = 0; i < this.table.getColumnCount(); ++i) {
             this.table.getColumn(this.table.getColumnName(i)).setCellRenderer(new DefaultTableCellRenderer() {
