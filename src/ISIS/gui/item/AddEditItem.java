@@ -1,37 +1,38 @@
 package ISIS.gui.item;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.sql.SQLException;
+
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.border.EtchedBorder;
+
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.gui.View;
 import ISIS.item.Item;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.sql.SQLException;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.border.EtchedBorder;
 
 /**
  * View for adding and editing items.
  */
 public class AddEditItem extends View {
-	private static final long serialVersionUID = 1L;
-	private JCheckBox active;
-        private HintField SKU, name, price, stock, UOM;
-        private Item item;
-        private JTextArea description;
+	private static final long	serialVersionUID	= 1L;
+	private JCheckBox			active;
+	private HintField			SKU, name, price, stock, UOM;
+	private Item				item;
+	private JTextArea			description;
+	
 	/**
 	 * Public constructor: returns new instance of add/edit item view.
 	 */
 	public AddEditItem(SplitPane splitPane) {
 		super(splitPane);
-                this.populateElements();
-                this.item = null;
+		this.populateElements();
+		this.item = null;
 	}
+	
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
 	 * 
@@ -47,19 +48,33 @@ public class AddEditItem extends View {
 		this.name.setText(this.item.getName());
 		this.price.setText(this.item.getPrice().toString());
 		this.stock.setText(this.item.getOnHandQty().toString());
-                this.UOM.setText(this.item.getUOM());
+		this.UOM.setText(this.item.getUOM());
 		this.description.setText(this.item.getDescription());
 	}
-        
-        /**
+	
+	/**
+	 * Discards any modifications.
+	 */
+	@Override
+	public void cancel() {}
+	
+	/**
+	 * This view needs to be saved.
+	 */
+	@Override
+	public boolean needsSave() {
+		return true;
+	}
+	
+	/**
 	 * Draws all necessary components on the window.
 	 */
 	private void populateElements() {
-                this.setLayout(new GridBagLayout());
-                GridBagConstraints c;
-                int x = 0, y = 0;
-                
-                c = new GridBagConstraints();
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints c;
+		int x = 0, y = 0;
+		
+		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
@@ -72,8 +87,8 @@ public class AddEditItem extends View {
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.SKU = new HintField("SKU"), c);
-                
-            	c = new GridBagConstraints();
+		
+		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
@@ -86,8 +101,8 @@ public class AddEditItem extends View {
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.active = new JCheckBox("", true), c);
-                
-                c = new GridBagConstraints();
+		
+		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
@@ -100,8 +115,8 @@ public class AddEditItem extends View {
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.name = new HintField("Name"), c);
-                
-                c = new GridBagConstraints();
+		
+		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
@@ -114,8 +129,8 @@ public class AddEditItem extends View {
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.price = new HintField("Price"), c);
-                
-                c = new GridBagConstraints();
+		
+		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
@@ -128,15 +143,15 @@ public class AddEditItem extends View {
 		c.gridy = y;
 		c.anchor = GridBagConstraints.CENTER;
 		this.add(this.stock = new HintField("aomunt"), c);
-                
-                c = new GridBagConstraints();
+		
+		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
 		c.gridy = y++;
 		c.anchor = GridBagConstraints.EAST;
 		this.add(this.UOM = new HintField("UOM"), c);
-                
-                c = new GridBagConstraints();
+		
+		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.weighty = 1;
 		c.gridx = x++;
@@ -153,14 +168,6 @@ public class AddEditItem extends View {
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.description = new JTextArea(), c);
 		this.description.setBorder(new EtchedBorder());
-        }
-        
-	/**
-	 * This view needs to be saved.
-	 */
-	@Override
-	public boolean needsSave() {
-		return true;
 	}
 	
 	/**
@@ -168,10 +175,4 @@ public class AddEditItem extends View {
 	 */
 	@Override
 	public void save() {}
-	
-	/**
-	 * Discards any modifications.
-	 */
-	@Override
-	public void cancel() {}
 }
