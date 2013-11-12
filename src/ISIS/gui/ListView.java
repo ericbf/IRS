@@ -8,6 +8,7 @@ import ISIS.session.Session;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.PreparedStatement;
@@ -276,10 +277,22 @@ public abstract class ListView<E extends Record> extends View {
 	private void populateTable() {
 		this.table.removeAll();
 		this.keys.clear();
+        this.tableModel.rowColors = new ArrayList<>(this.records.size());
 		this.tableModel.setRowCount(0);
 		for (E i : this.records) {
+            this.tableModel.rowColors.add(IRSTableModel.defaultColor);
 			this.tableModel.addRow(i);
 		}
+        for(int i = 0; i < this.table.getColumnCount(); ++i) {
+            this.table.getColumn(this.table.getColumnName(i)).setCellRenderer(new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    c.setBackground(ListView.this.tableModel.rowColors.get(row));
+                    return c;
+                }
+            });
+        }
 	}
 	
 	/**

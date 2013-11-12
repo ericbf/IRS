@@ -131,6 +131,12 @@ public class ListCustomers extends ListView<Customer> {
 						array[col] = customer.getPrimaryAddress().getZIP();
 					}
 					col++;
+
+                    // check if customer is active, if not change color of row.
+                    if(!customer.isActive()) {
+                        this.setColorAt(this.getRowCount() - 1, Color.gray);
+                    }
+
 					// don't add row until we successfully retrieve data.
 					super.addRow(array);
 					// don't add customer key to list until we know adding is a
