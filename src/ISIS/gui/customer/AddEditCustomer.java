@@ -1,27 +1,15 @@
 package ISIS.gui.customer;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.sql.SQLException;
-
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.border.EtchedBorder;
-
 import ISIS.customer.Customer;
-import ISIS.gui.CloseCanceledException;
-import ISIS.gui.ConfirmCloseDialog;
-import ISIS.gui.ErrorLogger;
-import ISIS.gui.HintField;
-import ISIS.gui.SplitPane;
-import ISIS.gui.View;
+import ISIS.gui.*;
 import ISIS.misc.Address;
 import ISIS.misc.Phone;
 import ISIS.transaction.Transaction;
+
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import java.awt.*;
+import java.sql.SQLException;
 
 /**
  * View for adding and editing customers.
@@ -219,22 +207,7 @@ public class AddEditCustomer extends View {
 		}
 		this.customer.save();
 	}
-	
-	@Override
-	public void close() throws CloseCanceledException {
-		// TODO: check if is modified
-		if ((new ConfirmCloseDialog().show(this.splitPane))) {
-			try {
-				this.save();
-			} catch (SQLException e) {
-				ErrorLogger.error(e, "Failed to save. Canceling close.", true,
-						true);
-				throw new CloseCanceledException();
-			}
-		} else {
-			// do nothing
-		}
-	}
+
 	
 	/**
 	 * Discards any modifications.
