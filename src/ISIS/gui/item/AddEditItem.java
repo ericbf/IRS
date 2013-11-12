@@ -13,8 +13,8 @@ public class AddEditItem extends View {
 	 * Public constructor: returns new instance of add/edit item view.
 	 */
 	public AddEditItem(SplitPane splitPane) {
-        super(splitPane);
-    }
+		super(splitPane);
+	}
 	
 	/**
 	 * This view needs to be saved.

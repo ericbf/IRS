@@ -13,8 +13,8 @@ public class AddEditTransaction extends View {
 	 * Public constructor: returns an instance of the add/edit transaction view.
 	 */
 	public AddEditTransaction(SplitPane splitPane) {
-        super(splitPane);
-    }
+		super(splitPane);
+	}
 	
 	/**
 	 * The transaction needs to be saved.

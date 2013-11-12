@@ -1,10 +1,10 @@
 package ISIS.session;
 
+import java.sql.SQLException;
+
 import ISIS.database.DB;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
-
-import java.sql.SQLException;
 
 /**
  * Various information and methods that is associated with a session. This

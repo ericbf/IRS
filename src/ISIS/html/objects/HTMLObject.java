@@ -9,7 +9,8 @@ import ISIS.html.StringBuilder;
 
 public class HTMLObject {
 	protected enum Type {
-		TABLE, TABLE_ROW, TABLE_CELL, TABLE_HEADER, DIVISION, ITALICS, BOLD, BREAK, QUOTE, PARAGRAPH, SEPARATOR
+		TABLE, TABLE_ROW, TABLE_CELL, TABLE_HEADER, DIVISION, ITALICS, BOLD,
+		BREAK, QUOTE, PARAGRAPH, SEPARATOR
 	};
 	
 	private static final Map<Type, String>	types		= new HashMap<>();

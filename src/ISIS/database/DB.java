@@ -21,7 +21,8 @@ public final class DB {
 	/* Fields omitted */
 	
 	public static enum TableName {
-		transaction_item, transaction_, customer_address, customer_billing, customer_phone, item, phone, customer, setting, billing, user, address
+		transaction_item, transaction_, customer_address, customer_billing,
+		customer_phone, item, phone, customer, setting, billing, user, address
 	}
 	
 	private static int	timeout	= 100;
