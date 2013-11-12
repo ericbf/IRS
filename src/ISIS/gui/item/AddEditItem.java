@@ -1,18 +1,14 @@
 package ISIS.gui.item;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.sql.SQLException;
-
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.border.EtchedBorder;
-
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.gui.View;
 import ISIS.item.Item;
+
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import java.awt.*;
+import java.sql.SQLException;
 
 /**
  * View for adding and editing items.
@@ -142,7 +138,7 @@ public class AddEditItem extends View {
 		c.gridx = x;
 		c.gridy = y;
 		c.anchor = GridBagConstraints.CENTER;
-		this.add(this.stock = new HintField("aomunt"), c);
+		this.add(this.stock = new HintField("amount"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 1;

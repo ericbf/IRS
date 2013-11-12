@@ -290,7 +290,9 @@ public abstract class ListView<E extends Record> extends View {
                 @Override
                 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                     Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                    c.setBackground(ListView.this.tableModel.rowColors.get(row));
+                    if(!isSelected || hasFocus) {
+                        c.setBackground(ListView.this.tableModel.rowColors.get(row));
+                    }
                     return c;
                 }
             });
