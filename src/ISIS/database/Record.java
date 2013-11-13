@@ -116,13 +116,11 @@ public abstract class Record {
 				}
 			} catch (SQLException e) {
 				ErrorLogger.error(e, "Failed to retrieve field", true, true);
-				throw new UninitializedFieldException(); // Treat it as if the
-															// field wasn't
-															// initialized since
-															// we can't get it.
+				throw new UninitializedFieldException();
+				// Treat it as if the field wasn't initialized since we can't
+				// get it.
 			}
 		}
-		
 		return value;
 	}
 	
