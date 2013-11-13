@@ -1,11 +1,5 @@
 package ISIS.database;
 
-import ISIS.database.DB.TableName;
-import ISIS.gui.ErrorLogger;
-import ISIS.misc.Dates;
-import ISIS.session.Session;
-import ISIS.user.User;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +7,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import ISIS.database.DB.TableName;
+import ISIS.gui.ErrorLogger;
+import ISIS.misc.Dates;
+import ISIS.session.Session;
+import ISIS.user.User;
 
 /**
  * Base class for all record classes.
@@ -96,29 +96,34 @@ public abstract class Record {
 	 */
 	public final Object getFieldValue(String key) {
 		Object value;
-        if(this.fields.containsKey(key)) {
-            value = this.fields.get(key).getValue();
-        } else {
-            try{
-                // check that there is a pkey (will throw
-                // UninitializedFieldException otherwise)
-                if (key.equals("pkey")) {
-                    throw new RecordNotFoundException();
-                }
-                this.getFieldValue("pkey");
-
-                this.fetch();
-                if(this.fields.containsKey(key)) {
-                    value = this.fields.get(key).getValue();
-                } else {
-                    throw new RecordNotFoundException("Record does not contain the requested key.");
-                }
-            } catch (SQLException e) {
-                ErrorLogger.error(e, "Failed to retrieve field", true, true);
-                throw new UninitializedFieldException(); // Treat it as if the field wasn't initialized since we can't get it.
-            }
-        }
-
+		if (this.fields.containsKey(key)) {
+			value = this.fields.get(key).getValue();
+		} else {
+			try {
+				// check that there is a pkey (will throw
+				// UninitializedFieldException otherwise)
+				if (key.equals("pkey")) {
+					throw new RecordNotFoundException();
+				}
+				this.getFieldValue("pkey");
+				
+				this.fetch();
+				if (this.fields.containsKey(key)) {
+					value = this.fields.get(key).getValue();
+				} else {
+					// return null;
+					throw new RecordNotFoundException(
+							"Record does not contain the requested key.");
+				}
+			} catch (SQLException e) {
+				ErrorLogger.error(e, "Failed to retrieve field", true, true);
+				throw new UninitializedFieldException(); // Treat it as if the
+															// field wasn't
+															// initialized since
+															// we can't get it.
+			}
+		}
+		
 		return value;
 	}
 	
@@ -141,12 +146,15 @@ public abstract class Record {
 	}
 	
 	public final boolean isActive() {
-        try{
-            int active = (Integer) this.getFieldValue("active");
-            return active == 1;
-        } catch (RecordNotFoundException e) {
-            return true;  // if it doesn't have an active field, treat it as active.
-        }
+		// return this.getFieldValue("active") == null || ((int)
+		// this.getFieldValue("active")) == 1;
+		try {
+			int active = (Integer) this.getFieldValue("active");
+			return active == 1;
+		} catch (RecordNotFoundException e) {
+			return true;
+			// true if no active field.
+		}
 	}
 	
 	public final boolean isChanged(Record comparedTo) {
