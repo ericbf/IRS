@@ -72,6 +72,7 @@ public class AddEditItem extends AddEditView {
 		DecimalFormat df = new DecimalFormat();
 		df.setMaximumFractionDigits(2);
 		// TODO: VALIDATION
+		if (this.isAnyFieldDifferentFromDefault()) return null;
 		try {
 			price = new BigDecimal(this.price.getText());
 		} catch (NumberFormatException e) {
@@ -122,8 +123,12 @@ public class AddEditItem extends AddEditView {
 	 */
 	@Override
 	public Boolean isAnyFieldDifferentFromDefault() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.active.isSelected() && this.SKU.getText().isEmpty()
+				&& this.name.getText().isEmpty()
+				&& this.description.getText().isEmpty()
+				&& this.price.getText().isEmpty()
+				&& this.stock.getText().isEmpty()
+				&& this.UOM.getText().isEmpty();
 	}
 	
 	/**
