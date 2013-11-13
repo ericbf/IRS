@@ -26,13 +26,17 @@ public abstract class AddEditView extends View {
 	public final boolean needsSave() {
 		return true;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#save()
 	 */
 	@Override
 	public final void save() throws SQLException {
-		this.getCurrentRecord().save();
+        try {
+		    this.getCurrentRecord().save();
+        } catch (BadInputException e) {
+            ErrorLogger.error(e, "", false, true);
+        }
 	}
 }

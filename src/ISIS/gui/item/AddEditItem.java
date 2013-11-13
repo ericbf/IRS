@@ -2,6 +2,7 @@ package ISIS.gui.item;
 
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
+import ISIS.gui.BadInputException;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
@@ -62,15 +63,31 @@ public class AddEditItem extends AddEditView {
 	 * @see ISIS.gui.View#getCurrentRecord()
 	 */
 	@Override
-	public Record getCurrentRecord() {
+	public Record getCurrentRecord() throws BadInputException {
 		BigDecimal price, onhand, reorder, cost;
 		DecimalFormat df = new DecimalFormat();
 		df.setMaximumFractionDigits(2);
         //TODO: VALIDATION
-		price = new BigDecimal(this.price.getText());
-		onhand = new BigDecimal(this.stock.getText());
-		reorder = new BigDecimal("0.0"); // TODO: fix me
-		cost = new BigDecimal("0.0"); // TODO: fix me
+        try {
+		    price = new BigDecimal(this.price.getText());
+        } catch (NumberFormatException e) {
+            throw new BadInputException("Bad input for price (\"" + this.price.getText() + "\"); must be a number.");
+        }
+        try {
+		    onhand = new BigDecimal(this.stock.getText());
+        } catch (NumberFormatException e) {
+            throw new BadInputException("Bad input for onhand quantity (\"" + this.price.getText() + "; must be a number.");
+        }
+        try {
+		    reorder = new BigDecimal("0.0"); // TODO: fix me
+        } catch(NumberFormatException e) {
+            throw new BadInputException("Bad input for reorder quantity (\"" + this.price.getText() + "; must be a number.");
+        }
+        try {
+		    cost = new BigDecimal("0.0"); // TODO: fix me
+        } catch (NumberFormatException e) {
+            throw new BadInputException("Bad input for cost (\"" + this.price.getText() + "; must be a number.");
+        }
 		if (this.item == null) {
 			
 			this.item = new Item(this.name.getText(), this.SKU.getText(),

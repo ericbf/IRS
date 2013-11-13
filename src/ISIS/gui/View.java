@@ -1,11 +1,10 @@
 package ISIS.gui;
 
-import java.sql.SQLException;
-
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import ISIS.database.Record;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.sql.SQLException;
 
 /**
  * Abstract class for all views.
@@ -42,20 +41,27 @@ public abstract class View extends JPanel {
 	 */
 	public void close() throws CloseCanceledException {
 		// Need the null check for views who don't own a record
-		if (this.needsSave() && this.getCurrentRecord() != null
-				&& this.getCurrentRecord().isChanged()) {
-			if ((new ConfirmCloseDialog().show(this.splitPane))) {
-				try {
-					this.save();
-				} catch (SQLException e) {
-					ErrorLogger.error(e, "Failed to save. Canceling close.",
-							true, true);
-					throw new CloseCanceledException();
-				}
-			} else {
-				// do nothing
-			}
-		}
+        if(!this.needsSave()) {
+            return;
+        }
+        Record record = null;
+        try {
+            this.getCurrentRecord();
+        } catch (BadInputException e) {
+            ErrorLogger.error(e, "", false, true);
+            throw new CloseCanceledException();
+        }
+        if ((new ConfirmCloseDialog().show(this.splitPane))) {
+            try {
+                this.save();
+            } catch (SQLException e) {
+                ErrorLogger.error(e, "Failed to save. Canceling close.",
+                        true, true);
+                throw new CloseCanceledException();
+            }
+        } else {
+            // do nothing
+        }
 	}
 	
 	/**
@@ -64,7 +70,7 @@ public abstract class View extends JPanel {
 	 * 
 	 * @return
 	 */
-	public abstract Record getCurrentRecord();
+	public abstract Record getCurrentRecord() throws BadInputException;
 	
 	/**
 	 * Returns the split pane in which this view is contained.
