@@ -1,21 +1,17 @@
 package ISIS.customer;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import ISIS.database.DB;
+import ISIS.database.*;
 import ISIS.database.DB.TableName;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.database.RecordSaveException;
-import ISIS.database.UninitializedFieldException;
 import ISIS.gui.ErrorLogger;
 import ISIS.misc.Address;
 import ISIS.misc.Phone;
 import ISIS.misc.Picture;
 import ISIS.session.Session;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A Customer is the entity that intends to purchase products from the client. A
@@ -79,7 +75,7 @@ public class Customer extends Record {
 		this.setFieldValue("email", email);
 		this.setFieldValue("note", note);
 		this.setFieldValue("password", password);
-		this.setFieldValue("active", active);
+		this.setActive(active);
 	}
 	
 	/**
