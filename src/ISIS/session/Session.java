@@ -1,13 +1,13 @@
 package ISIS.session;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import ISIS.database.DB;
 import ISIS.gui.TableUpdateListener;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Various information and methods that is associated with a session. This
@@ -18,7 +18,7 @@ public class Session {
 	private static Session													session			= null;
 	private static DB														db				= null;
 	private User															user;
-	private static HashMap<DB.TableName, ArrayList<TableUpdateListener>>	tableListeners	= new HashMap<>();
+	private static HashMap<DB.TableName, ArrayList<TableUpdateListener>>	tableListeners	= new HashMap<DB.TableName, ArrayList<TableUpdateListener>>();
 	
 	private Session(User user) {
 		this.user = user;
@@ -95,7 +95,7 @@ public class Session {
 		if (Session.tableListeners.containsKey(tableName)) {
 			Session.tableListeners.get(tableName).add(listener);
 		} else {
-			ArrayList<TableUpdateListener> listeners = new ArrayList<>();
+			ArrayList<TableUpdateListener> listeners = new ArrayList<TableUpdateListener>();
 			listeners.add(listener);
 			Session.tableListeners.put(tableName, listeners);
 		}

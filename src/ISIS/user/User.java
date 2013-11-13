@@ -1,14 +1,5 @@
 package ISIS.user;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-
 import ISIS.database.DB;
 import ISIS.database.DB.TableName;
 import ISIS.database.Field;
@@ -17,6 +8,15 @@ import ISIS.database.RecordNotFoundException;
 import ISIS.gui.ErrorLogger;
 import ISIS.misc.Picture;
 import ISIS.session.Session;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
 /**
  * The class representing the person who is employed by the client and is using
@@ -161,7 +161,7 @@ public final class User extends Record {
 	 * Gets the User's active status.
 	 */
 	public boolean getActive() {
-		return ((int) this.getFieldValue("active") == 1);
+		return ((Integer) this.getFieldValue("active") == 1);
 	}
 	
 	/**

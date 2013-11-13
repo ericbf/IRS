@@ -1,8 +1,8 @@
 package ISIS.html;
 
-import java.util.ArrayList;
-
 import ISIS.html.objects.HTMLObject;
+
+import java.util.ArrayList;
 
 public class HTMLBuilder {
 	private final ArrayList<JSScript>	scripts;
@@ -13,9 +13,9 @@ public class HTMLBuilder {
 	
 	public HTMLBuilder(String title) {
 		setTitle(title);
-		scripts = new ArrayList<>();
-		styles = new ArrayList<>();
-		objects = new ArrayList<>();
+		scripts = new ArrayList<JSScript>();
+		styles = new ArrayList<CSSStyle>();
+		objects = new ArrayList<HTMLObject>();
 	}
 	
 	public void add(CSSStyle style) {

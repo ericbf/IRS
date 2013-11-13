@@ -1,21 +1,17 @@
 package ISIS.customer;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import ISIS.database.DB;
+import ISIS.database.*;
 import ISIS.database.DB.TableName;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.database.RecordSaveException;
-import ISIS.database.UninitializedFieldException;
 import ISIS.gui.ErrorLogger;
 import ISIS.misc.Address;
 import ISIS.misc.Phone;
 import ISIS.misc.Picture;
 import ISIS.session.Session;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A Customer is the entity that intends to purchase products from the client. A
@@ -45,10 +41,10 @@ public class Customer extends Record {
 	
 	boolean						addressesInitialized	= false,
 			numbersInitialized = false;
-	private ArrayList<Address>	addresses				= new ArrayList<>();
-	private ArrayList<Address>	addressesToRemove		= new ArrayList<>();
-	private ArrayList<Phone>	numbers					= new ArrayList<>();
-	private ArrayList<Phone>	numbersToRemove			= new ArrayList<>();
+	private ArrayList<Address>	addresses				= new ArrayList<Address>();
+	private ArrayList<Address>	addressesToRemove		= new ArrayList<Address>();
+	private ArrayList<Phone>	numbers					= new ArrayList<Phone>();
+	private ArrayList<Phone>	numbersToRemove			= new ArrayList<Phone>();
 	
 	public Customer(HashMap<String, Field> map) {
 		super(map);

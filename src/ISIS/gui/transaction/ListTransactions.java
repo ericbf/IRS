@@ -1,13 +1,5 @@
 package ISIS.gui.transaction;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
@@ -15,6 +7,11 @@ import ISIS.gui.IRSTableModel;
 import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.transaction.Transaction;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * List of transactions. Allows you to query and act on transactions.
@@ -111,6 +108,6 @@ public class ListTransactions extends ListView<Transaction> {
 	protected ArrayList<Transaction> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
 		// TODO Auto-generated method stub
-		return new ArrayList<>();
+		return new ArrayList<Transaction>();
 	}
 }

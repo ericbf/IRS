@@ -1,16 +1,16 @@
 package ISIS.misc;
 
+import ISIS.database.DB.TableName;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.gui.ErrorLogger;
+
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
-import ISIS.database.DB.TableName;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.gui.ErrorLogger;
 
 /**
  * General purpose class for representing billing information.
@@ -90,7 +90,7 @@ public class Billing extends Record {
 	 */
 	public Address getAddress() throws SQLException {
 		if (this.address == null) {
-			return new Address((int) this.getFieldValue("address"), false);
+			return new Address((Integer) this.getFieldValue("address"), false);
 		} else {
 			return this.address;
 		}

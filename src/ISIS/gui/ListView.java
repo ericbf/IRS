@@ -28,7 +28,7 @@ public abstract class ListView<E extends Record> extends View {
 	protected String[]				buttonNames				= { "Add", "Edit",
 			"Toggle Active", "View", "Generate Nonfinal Invoice(s)",
 			"Close and Generate Invoice"					};
-	protected ArrayList<Integer>	keys					= new ArrayList<>();
+	protected ArrayList<Integer>	keys					= new ArrayList<Integer>();
 	protected int					selected;
 	private String					lastSearchFieldValue	= " ";
 	
@@ -300,7 +300,7 @@ public abstract class ListView<E extends Record> extends View {
 	private void populateTable() {
 		this.table.removeAll();
 		this.keys.clear();
-		this.tableModel.rowColors = new ArrayList<>(this.records.size());
+		this.tableModel.rowColors = new ArrayList<Color>(this.records.size());
 		this.tableModel.setRowCount(0);
 		for (E i : this.records) {
 			this.tableModel.rowColors.add(IRSTableModel.DEFAULT_COLOR);

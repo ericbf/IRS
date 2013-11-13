@@ -8,7 +8,7 @@ public class CSSStyle {
 	
 	public CSSStyle(String designator) {
 		this.designator = designator;
-		attributes = new ArrayList<>();
+		attributes = new ArrayList<String>();
 	}
 	
 	public CSSStyle addAttribute(String key, String value) {

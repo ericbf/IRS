@@ -1,5 +1,11 @@
 package ISIS.database;
 
+import ISIS.database.DB.TableName;
+import ISIS.gui.ErrorLogger;
+import ISIS.misc.Dates;
+import ISIS.session.Session;
+import ISIS.user.User;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,12 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import ISIS.database.DB.TableName;
-import ISIS.gui.ErrorLogger;
-import ISIS.misc.Dates;
-import ISIS.session.Session;
-import ISIS.user.User;
 
 /**
  * Base class for all record classes.
@@ -42,7 +42,7 @@ public abstract class Record {
 	 * Base initializer for a Record.
 	 */
 	protected Record() {
-		this.fields = new HashMap<>();
+		this.fields = new HashMap<String, Field>();
 	}
 	
 	/**
@@ -128,7 +128,7 @@ public abstract class Record {
 	 * Gets the primary key associated with this record.
 	 */
 	public final int getPkey() throws UninitializedFieldException {
-		return (int) this.getFieldValue("pkey");
+		return (Integer) this.getFieldValue("pkey");
 	}
 	
 	protected abstract TableName getTableName();
@@ -145,7 +145,7 @@ public abstract class Record {
 	public final boolean isActive() {
 		try {
 			return this.getFieldValue("active") == null
-					|| ((int) this.getFieldValue("active")) == 1;
+					|| ((Integer) this.getFieldValue("active")) == 1;
 		} catch (NonexistentFieldException e) {
 			return true;
 			// true if no active field.
@@ -203,7 +203,7 @@ public abstract class Record {
 		 * Get a list of columns that have been changed. Should be all columns
 		 * if it's a new record.
 		 */
-		ArrayList<String> columns = new ArrayList<>(this.fields.size());
+		ArrayList<String> columns = new ArrayList<String>(this.fields.size());
 		for (Map.Entry<String, Field> entry : this.fields.entrySet()) {
 			if (entry.getValue().getWasChanged()) {
 				columns.add(entry.getKey());

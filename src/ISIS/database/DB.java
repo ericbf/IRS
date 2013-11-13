@@ -24,9 +24,9 @@ public final class DB {
 	public static ArrayList<HashMap<String, Field>> mapResultSet(ResultSet rs)
 			throws SQLException {
 		ResultSetMetaData md = rs.getMetaData();
-		ArrayList<HashMap<String, Field>> rows = new ArrayList<>();
+		ArrayList<HashMap<String, Field>> rows = new ArrayList<HashMap<String, Field>>();
 		while (rs.next()) {
-			HashMap<String, Field> row = new HashMap<>(md.getColumnCount());
+			HashMap<String, Field> row = new HashMap<String, Field>(md.getColumnCount());
 			for (int i = 1; i <= md.getColumnCount(); ++i) {
 				Field field = new Field();
 				field.initField(rs.getObject(i));

@@ -1,16 +1,5 @@
 package ISIS.gui.item;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
@@ -19,6 +8,14 @@ import ISIS.gui.IRSTableModel;
 import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * List of items. Allows you to query and act on items.
@@ -152,7 +149,7 @@ public class ListItems extends ListView<Item> {
 	@Override
 	protected ArrayList<Item> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
-		ArrayList<Item> items = new ArrayList<>(results.size());
+		ArrayList<Item> items = new ArrayList<Item>(results.size());
 		for (HashMap<String, Field> result : results) {
 			items.add(new Item(result));
 		}

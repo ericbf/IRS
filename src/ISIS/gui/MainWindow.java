@@ -28,8 +28,13 @@ public class MainWindow extends JFrame {
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+		} catch (ClassNotFoundException e) {
+            ErrorLogger.error(e, "Couldn't set look and feel.", false, false);
+        } catch (InstantiationException e) {
+            ErrorLogger.error(e, "Couldn't set look and feel.", false, false);
+        } catch (IllegalAccessException e) {
+            ErrorLogger.error(e, "Couldn't set look and feel.", false, false);
+        } catch(UnsupportedLookAndFeelException e) {
 			ErrorLogger.error(e, "Couldn't set look and feel.", false, false);
 		}
 		
@@ -83,7 +88,9 @@ public class MainWindow extends JFrame {
 				ErrorLogger.error("Could not find janet.", true, true);
 			}
 			
-		} catch (SQLException | RecordNotFoundException ex) {
+		} catch (SQLException ex) {
+            ErrorLogger.error(ex, "something went wrong lel", true, true);
+        } catch(RecordNotFoundException ex) {
 			ErrorLogger.error(ex, "something went wrong lel", true, true);
 		}
 		SwingUtilities.invokeLater(new Runnable() {

@@ -1,11 +1,11 @@
 package ISIS.html.objects;
 
+import ISIS.html.StringBuilder;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import ISIS.html.StringBuilder;
 
 public class HTMLObject {
 	protected enum Type {
@@ -13,7 +13,7 @@ public class HTMLObject {
 		BREAK, QUOTE, PARAGRAPH, SEPARATOR
 	};
 	
-	private static final Map<Type, String>	types		= new HashMap<>();
+	private static final Map<Type, String>	types		= new HashMap<Type, String>();
 	static {
 		types.put(Type.TABLE, "table");
 		types.put(Type.TABLE_ROW, "tr");
@@ -49,7 +49,7 @@ public class HTMLObject {
 	protected HTMLObject(Type type) {
 		this.type = types.get(type);
 		container = isContainer(type);
-		objects = new ArrayList<>();
+		objects = new ArrayList<HTMLObject>();
 	}
 	
 	protected HTMLObject add(HTMLObject object) {

@@ -1,17 +1,11 @@
 package ISIS.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 
 /**
  *
@@ -34,7 +28,7 @@ public final class SplitPane extends JPanel {
 	
 	SplitPane() {
 		super(new BorderLayout());
-		this.stack = new ArrayList<>();
+		this.stack = new ArrayList<View>();
 		this.stackPointer = 0;
 		this.add(this.splitPane = new JSplitPane());
 		this.setOpaque(false);
