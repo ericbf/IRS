@@ -27,8 +27,6 @@ public class ListItems extends ListView<Item> {
 	private static final long	serialVersionUID	= 1L;
 	private JButton				editButton;
 	
-	/* Fields omitted */
-	
 	/**
 	 * Constructs new Customer list view.
 	 */

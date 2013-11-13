@@ -284,7 +284,23 @@ public abstract class ListView<E extends Record> extends View {
 		this.doFillTable();
 	}
 	
+	/**
+	 * This type of view doesn't own a record.
+	 */
+	@Override
+	public Record getCurrentRecord() {
+		return null;
+	}
+	
 	protected abstract DB.TableName getTableName();
+	
+	/**
+	 * This type of view doesn't own a record.
+	 */
+	@Override
+	public Record getTemporaryRecord() {
+		return null;
+	}
 	
 	protected abstract ArrayList<E> mapResults(
 			ArrayList<HashMap<String, Field>> results);

@@ -1,5 +1,6 @@
 package ISIS.gui.customer;
 
+import ISIS.database.Record;
 import ISIS.gui.SplitPane;
 import ISIS.gui.View;
 
@@ -17,6 +18,32 @@ public class AddEditTransaction extends View {
 	}
 	
 	/**
+	 * Discards any modifications.
+	 */
+	@Override
+	public void cancel() {}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.View#getCurrentRecord()
+	 */
+	@Override
+	public Record getCurrentRecord() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.View#getTemporaryRecord()
+	 */
+	@Override
+	public Record getTemporaryRecord() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/**
 	 * The transaction needs to be saved.
 	 */
 	@Override
@@ -29,10 +56,4 @@ public class AddEditTransaction extends View {
 	 */
 	@Override
 	public void save() {}
-	
-	/**
-	 * Discards any modifications.
-	 */
-	@Override
-	public void cancel() {}
 }

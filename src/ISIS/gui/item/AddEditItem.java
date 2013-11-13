@@ -1,14 +1,19 @@
 package ISIS.gui.item;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.sql.SQLException;
+
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.border.EtchedBorder;
+
+import ISIS.database.Record;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.gui.View;
 import ISIS.item.Item;
-
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import java.awt.*;
-import java.sql.SQLException;
 
 /**
  * View for adding and editing items.
@@ -53,6 +58,26 @@ public class AddEditItem extends View {
 	 */
 	@Override
 	public void cancel() {}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.View#getCurrentRecord()
+	 */
+	@Override
+	public Record getCurrentRecord() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.View#getTemporaryRecord()
+	 */
+	@Override
+	public Record getTemporaryRecord() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	/**
 	 * This view needs to be saved.

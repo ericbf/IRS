@@ -13,6 +13,8 @@ import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 
 import ISIS.customer.Customer;
+import ISIS.database.Record;
+import ISIS.database.UninitializedFieldException;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.gui.View;
@@ -59,6 +61,78 @@ public class AddEditCustomer extends View {
 		this.email.setText(this.customer.getEmail());
 		this.note.setText(this.customer.getNote());
 		this.deactivateFields();
+	}
+	
+	/**
+	 * add the lists to the right hand side of the view.
+	 * 
+	 * @param desiredX
+	 *            The desired x position in the grid.
+	 * @param currentY
+	 *            The current y position in the grid.
+	 */
+	@SuppressWarnings("unused")
+	private void addLists(int desiredX, int currentY) {
+		JPanel rightSide = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = desiredX;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.gridheight = currentY;
+		this.add(rightSide, c);
+	}
+	
+	/**
+	 * Discards any modifications.
+	 */
+	@Override
+	public void cancel() {}
+	
+	/**
+	 * Disables fields that can no longer be changed.
+	 */
+	private void deactivateFields() {
+		this.fname.setEditable(false);
+		this.lname.setEditable(false);
+		this.fname.setForeground(Color.gray);
+		this.lname.setForeground(Color.gray);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.View#getCurrentRecord()
+	 */
+	@Override
+	public Record getCurrentRecord() {
+		return this.customer;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.View#getTemporaryRecord()
+	 */
+	@Override
+	public Record getTemporaryRecord() {
+		Customer temp;
+		try {
+			temp = new Customer(this.customer.getPkey(), true);
+		} catch (UninitializedFieldException | SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		temp.setActive(this.active.isSelected());
+		temp.setEmail(this.email.getText());
+		temp.setPassword(this.password.getText());
+		temp.setNote(this.note.getText());
+		return temp;
+	}
+	
+	/**
+	 * This view needs to be saved.
+	 */
+	@Override
+	public boolean needsSave() {
+		return true;
 	}
 	
 	/**
@@ -161,43 +235,6 @@ public class AddEditCustomer extends View {
 	}
 	
 	/**
-	 * add the lists to the right hand side of the view.
-	 * 
-	 * @param desiredX
-	 *            The desired x position in the grid.
-	 * @param currentY
-	 *            The current y position in the grid.
-	 */
-	@SuppressWarnings("unused")
-	private void addLists(int desiredX, int currentY) {
-		JPanel rightSide = new JPanel(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = desiredX;
-		c.gridy = 0;
-		c.weightx = 1;
-		c.gridheight = currentY;
-		this.add(rightSide, c);
-	}
-	
-	/**
-	 * Disables fields that can no longer be changed.
-	 */
-	private void deactivateFields() {
-		this.fname.setEditable(false);
-		this.lname.setEditable(false);
-		this.fname.setForeground(Color.gray);
-		this.lname.setForeground(Color.gray);
-	}
-	
-	/**
-	 * This view needs to be saved.
-	 */
-	@Override
-	public boolean needsSave() {
-		return true;
-	}
-	
-	/**
 	 * Saves the customer.
 	 */
 	@Override
@@ -216,10 +253,4 @@ public class AddEditCustomer extends View {
 		}
 		this.customer.save();
 	}
-	
-	/**
-	 * Discards any modifications.
-	 */
-	@Override
-	public void cancel() {}
 }

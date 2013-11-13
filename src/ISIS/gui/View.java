@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import ISIS.database.Record;
+
 /**
  * Abstract class for all views.
  */
@@ -29,16 +31,42 @@ public abstract class View extends JPanel {
 	}
 	
 	/**
-	 * Returns whether or not this view is in a split pane.
+	 * A method for canceling the implemented view. This method must be
+	 * implemented.
+	 */
+	public abstract void cancel();
+	
+	/**
+	 * Overridden for windows where cleanup is necessary, but save and cancel do
+	 * not apply.
+	 */
+	public void close() throws CloseCanceledException {
+		if (this.needsSave()
+				&& (this.getCurrentRecord() == null
+						|| this.getTemporaryRecord() == null || this
+						.getCurrentRecord()
+						.isChanged(this.getTemporaryRecord()))) {
+			if ((new ConfirmCloseDialog().show(this.splitPane))) {
+				try {
+					this.save();
+				} catch (SQLException e) {
+					ErrorLogger.error(e, "Failed to save. Canceling close.",
+							true, true);
+					throw new CloseCanceledException();
+				}
+			} else {
+				// do nothing
+			}
+		}
+	}
+	
+	/**
+	 * Return the record for this view if it has one, or null if it doesn't have
+	 * one.
 	 * 
 	 * @return
 	 */
-	protected final boolean inSplitPane() {
-		if (this.splitPane != null) {
-			return true;
-		}
-		return false;
-	}
+	public abstract Record getCurrentRecord();
 	
 	/**
 	 * Returns the split pane in which this view is contained.
@@ -53,6 +81,27 @@ public abstract class View extends JPanel {
 	}
 	
 	/**
+	 * Return a version of the record that has been updated as per the changes
+	 * physically made in the view. If this view doesn't own a record, return
+	 * null.
+	 * 
+	 * @return
+	 */
+	public abstract Record getTemporaryRecord();
+	
+	/**
+	 * Returns whether or not this view is in a split pane.
+	 * 
+	 * @return
+	 */
+	protected final boolean inSplitPane() {
+		if (this.splitPane != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Returns whether this view needs to be saved. This method must be
 	 * implemented.
 	 */
@@ -63,30 +112,4 @@ public abstract class View extends JPanel {
 	 * must be implemented.
 	 */
 	public abstract void save() throws SQLException;
-	
-	/**
-	 * A method for canceling the implemented view. This method must be
-	 * implemented.
-	 */
-	public abstract void cancel();
-	
-	/**
-	 * Overridden for windows where cleanup is necessary, but save and cancel do
-	 * not apply.
-	 */
-	public void close() throws CloseCanceledException {
-		if (this.needsSave()) {
-			if ((new ConfirmCloseDialog().show(this.splitPane))) {
-				try {
-					this.save();
-				} catch (SQLException e) {
-					ErrorLogger.error(e, "Failed to save. Canceling close.",
-							true, true);
-					throw new CloseCanceledException();
-				}
-			} else {
-				// do nothing
-			}
-		}
-	}
 }

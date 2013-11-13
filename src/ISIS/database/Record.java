@@ -144,6 +144,16 @@ public abstract class Record {
 				|| ((int) this.getFieldValue("active")) == 1;
 	}
 	
+	public final boolean isChanged(Record comparedTo) {
+		for (Map.Entry<String, Field> entry : this.fields.entrySet()) {
+			String key = entry.getKey();
+			if (!this.fields.get(key).getValue()
+					.equals(comparedTo.fields.get(key).getValue()))
+				return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * Called after saving the record; override it if it is necessary in your
 	 * subclass.
