@@ -35,23 +35,6 @@ public class MainWindow extends JFrame {
 		
 		Session.getDB(); // opens the db
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				MainWindow frame = new MainWindow();
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.pack();
-				frame.setMinimumSize(new Dimension(800, 400));
-				frame.setVisible(true);
-			}
-		});
-		
-		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Session.getDB().close();
-			}
-		}, "Shutdown-thread"));
 		try {
 			Session.baseSession();
 		} catch (SQLException ex) {
@@ -103,6 +86,23 @@ public class MainWindow extends JFrame {
 		} catch (SQLException | RecordNotFoundException ex) {
 			ErrorLogger.error(ex, "something went wrong lel", true, true);
 		}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				MainWindow frame = new MainWindow();
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.pack();
+				frame.setMinimumSize(new Dimension(800, 400));
+				frame.setVisible(true);
+			}
+		});
+		
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Session.getDB().close();
+			}
+		}, "Shutdown-thread"));
 	}
 	
 	private static void sampledata() throws SQLException {
