@@ -32,16 +32,7 @@ public class AddEditTransaction extends View {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see ISIS.gui.View#getTemporaryRecord()
-	 */
-	@Override
-	public Record getTemporaryRecord() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 	/*
 	 * (non-Javadoc)
