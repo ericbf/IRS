@@ -42,6 +42,9 @@ public class ListCustomers extends ListView<Customer> {
 		JButton addButton = new JButton(this.buttonNames[buttonNameSel++]);
 		this.editButton = new JButton(this.buttonNames[buttonNameSel++]);
 		JButton activeButton = new JButton(this.buttonNames[buttonNameSel++]);
+		// JToggleButton activeButton = new JToggleButton(
+		// this.buttonNames[buttonNameSel++]);
+		// Use this button to show or hide inactive records??
 		
 		addButton.addActionListener(new ActionListener() {
 			@Override
