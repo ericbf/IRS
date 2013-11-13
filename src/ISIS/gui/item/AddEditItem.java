@@ -1,21 +1,17 @@
 package ISIS.gui.item;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.text.DecimalFormat;
-
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.border.EtchedBorder;
-
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
+
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import java.awt.*;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 /**
  * View for adding and editing items.
@@ -70,6 +66,7 @@ public class AddEditItem extends AddEditView {
 		BigDecimal price, onhand, reorder, cost;
 		DecimalFormat df = new DecimalFormat();
 		df.setMaximumFractionDigits(2);
+        //TODO: VALIDATION
 		price = new BigDecimal(this.price.getText());
 		onhand = new BigDecimal(this.stock.getText());
 		reorder = new BigDecimal("0.0"); // TODO: fix me

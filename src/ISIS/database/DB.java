@@ -1,16 +1,10 @@
 package ISIS.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import ISIS.gui.ErrorLogger;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import ISIS.gui.ErrorLogger;
 
 /**
  * Manages third party relational database software used to manage and organize
@@ -214,18 +208,16 @@ public final class DB {
 					+ junction
 					+ "_insert_before BEFORE INSERT ON "
 					+ junction
-					+ " "
-					+ "BEGIN\nDELETE FROM customer_search WHERE docid=new.customer;\nEND;");
+					+ " BEGIN\nDELETE FROM customer_search WHERE content=new.customer;\nEND;");
 			this.executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_"
-					+ junction + "_insert_after AFTER INSERT ON " + junction
-					+ " " + "BEGIN\n" + customer_search_insert + "new"
+					+ junction + "_insert_after AFTER INSERT ON " + junction +
+					" BEGIN\n" + customer_search_insert + "new"
 					+ ".customer;" + "\nEND;");
 			this.executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_"
 					+ junction
 					+ "_update_before BEFORE UPDATE ON "
 					+ junction
-					+ " "
-					+ "BEGIN\nDELETE FROM customer_search WHERE docid=old.customer;\nEND;\n");
+					+ " BEGIN\nDELETE FROM customer_search WHERE content=old.customer;\nEND;\n");
 			this.executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_"
 					+ junction + "_update_after AFTER UPDATE ON " + junction
 					+ " BEGIN\n" + customer_search_insert
@@ -234,8 +226,7 @@ public final class DB {
 					+ junction
 					+ "_delete_before BEFORE DELETE ON "
 					+ junction
-					+ " "
-					+ "BEGIN\nDELETE FROM customer_search WHERE docid=old.customer;\nEND;");
+					+ " BEGIN\nDELETE FROM customer_search WHERE content=old.customer;\nEND;");
 			this.executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_"
 					+ junction + "_delete_after AFTER DELETE ON " + junction
 					+ " " + "BEGIN\n" + customer_search_insert
@@ -262,12 +253,12 @@ public final class DB {
 		this.executeUpdate("CREATE TRIGGER IF NOT EXISTS item_search_insert AFTER INSERT ON item BEGIN\n"
 				+ item_search_insert + "new.rowid; END;");
 		this.executeUpdate("CREATE TRIGGER IF NOT EXISTS item_search_update_before BEFORE UPDATE ON item BEGIN\n"
-				+ "DELETE FROM " + "item_search WHERE pkey=old.pkey;\nEND;\n");
+				+ "DELETE FROM " + "item_search WHERE content=old.pkey;\nEND;\n");
 		this.executeUpdate("CREATE TRIGGER IF NOT EXISTS item_search_update_after AFTER UPDATE ON item BEGIN\n"
 				+ item_search_insert + "new.rowid;\nEND;\n");
 		this.executeUpdate("CREATE TRIGGER IF NOT EXISTS item_search_delete BEFORE DELETE ON item BEGIN\n"
 				+ "  DELETE FROM "
-				+ "item_search WHERE pkey=old.pkey;\n"
+				+ "item_search WHERE content=old.pkey;\n"
 				+ "END;\n");
 		
 		// transaction
