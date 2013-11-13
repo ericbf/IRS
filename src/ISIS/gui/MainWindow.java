@@ -44,7 +44,7 @@ public class MainWindow extends JFrame {
 		try {
 			if (!User.userExists("jmichhead")) {
 				sampledata();
-				User testUser = new User("jsammich", true, "sammichmonger",
+				User testUser = new User("jmichhead", true, "sammichmonger",
 						"Janet", "michhead", "This is a note.");
 				testUser.save();
 				Session.endCurrentSession();
@@ -70,7 +70,7 @@ public class MainWindow extends JFrame {
 				System.out.println("Janet already exists");
 			}
 			try {
-				Session.startNewSession("jsammich", "sammichmonger");
+				Session.startNewSession("jmichhead", "sammichmonger");
 			} catch (AuthenticationException e) {
 				System.err.println("failed");
 			}
