@@ -41,6 +41,7 @@ public abstract class View extends JPanel {
 	 * not apply.
 	 */
 	public void close() throws CloseCanceledException {
+		// Need the null check for views who don't own a record
 		if (this.needsSave() && this.getCurrentRecord() != null
 				&& this.getCurrentRecord().isChanged()) {
 			if ((new ConfirmCloseDialog().show(this.splitPane))) {
