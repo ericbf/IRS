@@ -1,5 +1,17 @@
 package ISIS.gui.customer;
 
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.sql.SQLException;
+
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.border.EtchedBorder;
+
 import ISIS.customer.Customer;
 import ISIS.database.Record;
 import ISIS.gui.HintField;
@@ -8,11 +20,6 @@ import ISIS.gui.View;
 import ISIS.misc.Address;
 import ISIS.misc.Phone;
 import ISIS.transaction.Transaction;
-
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import java.awt.*;
-import java.sql.SQLException;
 
 /**
  * View for adding and editing customers.
@@ -96,18 +103,19 @@ public class AddEditCustomer extends View {
 	 */
 	@Override
 	public Record getCurrentRecord() {
-        if (this.customer == null) {
-            this.customer = new Customer(this.fname.getText(),
-                                         this.lname.getText(), this.email.getText(),
-                                         this.note.getText(), this.password.getText(),
-                                         this.active.isSelected());
-
-        } else {
-            this.customer.setActive(this.active.isSelected());
-            this.customer.setEmail(this.email.getText());
-            this.customer.setPassword(this.password.getText());
-            this.customer.setNote(this.note.getText());
-        }
+		if (this.customer == null) {
+			if (!this.isAnyFieldDifferentFromDefault()) return null;
+			this.customer = new Customer(this.fname.getText(),
+					this.lname.getText(), this.email.getText(),
+					this.note.getText(), this.password.getText(),
+					this.active.isSelected());
+			
+		} else {
+			this.customer.setActive(this.active.isSelected());
+			this.customer.setEmail(this.email.getText());
+			this.customer.setPassword(this.password.getText());
+			this.customer.setNote(this.note.getText());
+		}
 		return this.customer;
 	}
 	

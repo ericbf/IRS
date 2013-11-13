@@ -41,9 +41,8 @@ public abstract class View extends JPanel {
 	 * not apply.
 	 */
 	public void close() throws CloseCanceledException {
-		if (this.needsSave() && this.getCurrentRecord().isChanged()
-				&& this.isAnyFieldDifferentFromDefault() != null
-				&& this.isAnyFieldDifferentFromDefault()) {
+		if (this.needsSave() && this.getCurrentRecord() != null
+				&& this.getCurrentRecord().isChanged()) {
 			if ((new ConfirmCloseDialog().show(this.splitPane))) {
 				try {
 					this.save();
