@@ -169,6 +169,7 @@ public class Item extends Record {
 	 * 
 	 * @return
 	 */
+	@Override
 	public boolean isActive() {
 		return ((Integer) this.getFieldValue("active")) == 1;
 	}
