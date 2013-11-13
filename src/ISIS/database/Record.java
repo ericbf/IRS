@@ -149,12 +149,11 @@ public abstract class Record {
         }
 	}
 	
-	public final boolean isChanged(Record comparedTo) {
-		for (Map.Entry<String, Field> entry : this.fields.entrySet()) {
-			String key = entry.getKey();
-			if (!this.fields.get(key).getValue()
-					.equals(comparedTo.fields.get(key).getValue()))
-				return true;
+	public final boolean isChanged() {
+		for (Field field : this.fields.values()) {
+			if(field.getWasChanged()) {
+                return true;
+            }
 		}
 		return false;
 	}
@@ -270,7 +269,10 @@ public abstract class Record {
 		}
 		// postsave
 		this.postSave();
-		
+
+        for(Field field : this.fields.values()) {
+            field.save();  // sets the field back to not being modified.
+        }
 		Session.updateTable(this.getTableName(), this.getPkey());
 	}
 	

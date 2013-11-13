@@ -1,11 +1,10 @@
 package ISIS.gui;
 
-import java.sql.SQLException;
-
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import ISIS.database.Record;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.sql.SQLException;
 
 /**
  * Abstract class for all views.
@@ -41,14 +40,7 @@ public abstract class View extends JPanel {
 	 * not apply.
 	 */
 	public void close() throws CloseCanceledException {
-		if (this.needsSave()
-				&& (this.getCurrentRecord() == null
-						&& (this.isAnyFieldDifferentFromDefault() != null && this
-								.isAnyFieldDifferentFromDefault()) || (this
-						.getCurrentRecord() != null
-						&& this.getTemporaryRecord() != null && this
-						.getCurrentRecord()
-						.isChanged(this.getTemporaryRecord())))) {
+		if (this.needsSave() && this.getCurrentRecord().isChanged()) {
 			if ((new ConfirmCloseDialog().show(this.splitPane))) {
 				try {
 					this.save();
@@ -82,15 +74,6 @@ public abstract class View extends JPanel {
 		}
 		return this.splitPane;
 	}
-	
-	/**
-	 * Return a version of the record that has been updated as per the changes
-	 * physically made in the view. If this view doesn't own a record, return
-	 * null.
-	 * 
-	 * @return
-	 */
-	public abstract Record getTemporaryRecord();
 	
 	/**
 	 * Returns whether or not this view is in a split pane.

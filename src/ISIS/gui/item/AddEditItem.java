@@ -1,19 +1,17 @@
 package ISIS.gui.item;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.sql.SQLException;
-
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.border.EtchedBorder;
-
 import ISIS.database.Record;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.gui.View;
 import ISIS.item.Item;
+
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import java.awt.*;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 /**
  * View for adding and editing items.
@@ -65,18 +63,29 @@ public class AddEditItem extends View {
 	 */
 	@Override
 	public Record getCurrentRecord() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see ISIS.gui.View#getTemporaryRecord()
-	 */
-	@Override
-	public Record getTemporaryRecord() {
-		// TODO Auto-generated method stub
-		return null;
+        BigDecimal price, onhand, reorder, cost;
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        price = new BigDecimal(this.price.getText());
+        onhand = new BigDecimal(this.stock.getText());
+        reorder = new BigDecimal("0.0"); //TODO: fix me
+        cost = new BigDecimal("0.0"); //TODO: fix me
+        if (this.item == null) {
+
+            this.item = new Item(this.name.getText(), this.SKU.getText(), this.description.getText(), price, onhand, reorder,
+                                 this.UOM.getText(), cost, this.active.isSelected());
+
+        } else {
+            this.item.setName(this.name.getText());
+            this.item.setDescription(this.description.getText());
+            this.item.setPrice(price);
+            this.item.setOnHandQty(onhand);
+            this.item.setReorderQty(reorder);
+            this.item.setCost(cost);
+            // TODO: disable UOM, SKU fields if editing (we don't allow that to be changed)
+            this.item.setActive(this.active.isSelected());
+        }
+        return this.item;
 	}
 	
 	/*
@@ -205,5 +214,7 @@ public class AddEditItem extends View {
 	 * Saves the item.
 	 */
 	@Override
-	public void save() {}
+	public void save() throws SQLException {
+        this.getCurrentRecord().save();
+    }
 }
