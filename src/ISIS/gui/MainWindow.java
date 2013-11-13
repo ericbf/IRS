@@ -42,10 +42,10 @@ public class MainWindow extends JFrame {
 		}
 		
 		try {
-			if (!User.userExists("jdickhead")) {
+			if (!User.userExists("jmichhead")) {
 				sampledata();
 				User testUser = new User("jsammich", true, "sammichmonger",
-						"Janet", "Dickhead", "This is a note.");
+						"Janet", "michhead", "This is a note.");
 				testUser.save();
 				Session.endCurrentSession();
 				System.out.println("OK!");
