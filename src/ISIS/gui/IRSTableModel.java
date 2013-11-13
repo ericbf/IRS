@@ -14,7 +14,7 @@ public abstract class IRSTableModel extends DefaultTableModel {
 	private static final long	serialVersionUID	= 1L;
 	public static final Color	DEFAULT_COLOR		= new Color(255, 255, 255,
 															0);
-	public static final Color	INACTIVE_COLOR		= new Color(220, 220, 220);
+	public static final Color	INACTIVE_COLOR		= new Color(240, 200, 200);
 	
 	String[]					columnTitles;
 	ArrayList<Color>			rowColors;
