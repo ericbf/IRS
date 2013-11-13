@@ -1,5 +1,16 @@
 package ISIS.gui.customer;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+
 import ISIS.customer.Customer;
 import ISIS.database.DB;
 import ISIS.database.Field;
@@ -10,22 +21,12 @@ import ISIS.gui.ListView;
 import ISIS.gui.SplitPane;
 import ISIS.misc.Phone;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 /**
  * List of customers. Allows you to query and act on customers.
  */
 public class ListCustomers extends ListView<Customer> {
 	private static final long	serialVersionUID	= 1L;
 	private JButton				editButton;
-	
-	/* Fields omitted */
 	
 	/**
 	 * Constructs new Customer list view.
@@ -45,9 +46,6 @@ public class ListCustomers extends ListView<Customer> {
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// ListCustomers.this.splitPane.push(new AddEditCustomer(
-				// ListCustomers.this.splitPane),
-				// SplitPane.LayoutType.HORIZONTAL);
 				ListCustomers.this.splitPane.push(new AddEditCustomer(
 						ListCustomers.this.splitPane),
 						SplitPane.LayoutType.HORIZONTAL, ListCustomers.this);
@@ -69,9 +67,6 @@ public class ListCustomers extends ListView<Customer> {
 				int pkey = ListCustomers.this.keys.get(selected);
 				
 				try {
-					// ListCustomers.this.splitPane.push(new AddEditCustomer(
-					// ListCustomers.this.splitPane, pkey),
-					// SplitPane.LayoutType.HORIZONTAL);
 					ListCustomers.this.splitPane
 							.push(new AddEditCustomer(
 									ListCustomers.this.splitPane, pkey),
@@ -131,12 +126,7 @@ public class ListCustomers extends ListView<Customer> {
 						array[col] = customer.getPrimaryAddress().getZIP();
 					}
 					col++;
-
-                    // check if customer is active, if not change color of row.
-                    if(!customer.isActive()) {
-                        this.setColorAt(this.getRowCount() - 1, Color.gray);
-                    }
-
+					
 					// don't add row until we successfully retrieve data.
 					super.addRow(array);
 					// don't add customer key to list until we know adding is a

@@ -139,6 +139,11 @@ public abstract class Record {
 		this.fields = fields;
 	}
 	
+	public boolean isActive() {
+		return this.getFieldValue("active") == null
+				|| ((int) this.getFieldValue("active")) == 1;
+	}
+	
 	/**
 	 * Called after saving the record; override it if it is necessary in your
 	 * subclass.

@@ -1,20 +1,33 @@
 package ISIS.gui;
 
-import ISIS.database.DB;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.session.Session;
-
-import javax.swing.*;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.DefaultFocusTraversalPolicy;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.table.DefaultTableCellRenderer;
+
+import ISIS.database.DB;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.session.Session;
 
 /**
  * Abstract class for views that consist of a list that can be searched.
@@ -34,14 +47,14 @@ public abstract class ListView<E extends Record> extends View {
 	
 	public ListView(SplitPane splitPane) {
 		super(splitPane);
-        Session.watchTable(this.getTableName(), new TableUpdateListener() {
-            private static final long	serialVersionUID	= 1L;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ListView.this.doFillTable();
-            }
-        });
+		Session.watchTable(this.getTableName(), new TableUpdateListener() {
+			private static final long	serialVersionUID	= 1L;
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ListView.this.doFillTable();
+			}
+		});
 		this.table = new JTable();
 		this.selected = -1;
 		this.searchField = new HintField("Enter query to search...");
@@ -52,14 +65,13 @@ public abstract class ListView<E extends Record> extends View {
 			}
 		});
 		this.searchField.addKeyListener(new KeyListener() {
-			private final int	DOWN	= 40, UP = 38;
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
 				boolean meta = (e.getModifiers() & ActionEvent.META_MASK) == ActionEvent.META_MASK
 						|| (e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK;
 				switch (e.getKeyCode()) {
-					case DOWN:
+					case KeyEvent.VK_DOWN:
 						if (ListView.this.table.getRowCount() > 0) {
 							int downSel = ListView.this.table.getSelectedRow();
 							if (meta) {
@@ -80,7 +92,7 @@ public abstract class ListView<E extends Record> extends View {
 						if ((sel = ListView.this.table.getSelectedRow()) != -1)
 							ListView.this.selected = sel;
 						break;
-					case UP:
+					case KeyEvent.VK_UP:
 						if (ListView.this.table.getRowCount() > 0) {
 							int upSel = ListView.this.table.getSelectedRow();
 							if (meta) {
@@ -129,14 +141,13 @@ public abstract class ListView<E extends Record> extends View {
 			}
 		});
 		this.table.addKeyListener(new KeyListener() {
-			private final int	DOWN	= 40, UP = 38;
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
 				boolean meta = (e.getModifiers() & ActionEvent.META_MASK) == ActionEvent.META_MASK
 						|| (e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK;
 				switch (e.getKeyCode()) {
-					case DOWN:
+					case KeyEvent.VK_DOWN:
 						if (ListView.this.table.getRowCount() > 0) {
 							if (meta) {
 								int rowCount = ListView.this.table
@@ -152,7 +163,7 @@ public abstract class ListView<E extends Record> extends View {
 						if ((sel = ListView.this.table.getSelectedRow()) != -1)
 							ListView.this.selected = sel;
 						break;
-					case UP:
+					case KeyEvent.VK_UP:
 						if (ListView.this.table.getRowCount() > 0) {
 							if (meta) {
 								ListView.this.table.setRowSelectionInterval(0,
@@ -198,6 +209,16 @@ public abstract class ListView<E extends Record> extends View {
 			@Override
 			public void mouseReleased(MouseEvent e) {}
 		});
+		this.table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
+		this.table.getActionMap().put("Enter", new AbstractAction() {
+			private static final long	serialVersionUID	= 1L;
+			
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				ListView.this.actionHandlerActionForSearchField();
+			}
+		});
 		this.setFocusCycleRoot(true);
 		this.setOpaque(false);
 		this.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
@@ -220,49 +241,49 @@ public abstract class ListView<E extends Record> extends View {
 		throw new UnsupportedOperationException("Not supported.");
 	}
 	
+	private final void doFillTable() {
+		String searchFieldText = this.searchField.getText();
+		try {
+			PreparedStatement stmt;
+			if (searchFieldText.length() >= 1) {
+				String search = searchFieldText + " ";
+				// remove leading whitespace
+				search = search.replaceFirst("^\\s+", "");
+				// replaces whitespace with wildcards then a space.
+				search = search.replaceAll("\\s+", "* ");
+				// these aren't indexed anyway, so...
+				search = search.replaceAll("([\\(\\)])", "");
+				search = search.replaceAll("\\\"", ""); // TODO: actually fix
+				String sql = "SELECT i.* FROM (SELECT docid AS row FROM "
+						+ this.getTableName() + "_search WHERE "
+						+ this.getTableName() + "_search MATCH ?) "
+						+ "LEFT JOIN " + this.getTableName()
+						+ " AS i ON row=i.pkey";
+				stmt = Session.getDB().prepareStatement(sql);
+				stmt.setString(1, search);
+			} else {
+				String sqlQuery = "SELECT i.* from " + this.getTableName()
+						+ " AS i";
+				stmt = Session.getDB().prepareStatement(sqlQuery);
+			}
+			ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt
+					.executeQuery());
+			this.records = this.mapResults(results);
+			this.populateTable();
+		} catch (SQLException e) {
+			ErrorLogger.error(e, "Error populating item table.", true, true);
+		}
+	}
+	
 	protected final void fillTable() {
 		String searchFieldText = this.searchField.getText();
 		if (searchFieldText.equals(this.lastSearchFieldValue)) {
 			return;
 		}
 		this.lastSearchFieldValue = searchFieldText;
-        this.doFillTable();
+		this.doFillTable();
 	}
-
-    private final void doFillTable() {
-        String searchFieldText = this.searchField.getText();
-        try {
-            PreparedStatement stmt;
-            if (searchFieldText.length() >= 1) {
-                String search = searchFieldText + " ";
-                // remove leading whitespace
-                search = search.replaceFirst("^\\s+", "");
-                // replaces whitespace with wildcards then a space.
-                search = search.replaceAll("\\s+", "* ");
-                // these aren't indexed anyway, so...
-                search = search.replaceAll("([\\(\\)])", "");
-                search = search.replaceAll("\\\"", ""); // TODO: actually fix
-                String sql = "SELECT i.* FROM (SELECT docid AS row FROM "
-                        + this.getTableName() + "_search WHERE "
-                        + this.getTableName() + "_search MATCH ?) "
-                        + "LEFT JOIN " + this.getTableName()
-                        + " AS i ON row=i.pkey";
-                stmt = Session.getDB().prepareStatement(sql);
-                stmt.setString(1, search);
-            } else {
-                String sqlQuery = "SELECT i.* from " + this.getTableName()
-                        + " AS i";
-                stmt = Session.getDB().prepareStatement(sqlQuery);
-            }
-            ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt
-                                                                                .executeQuery());
-            this.records = this.mapResults(results);
-            this.populateTable();
-        } catch (SQLException e) {
-            ErrorLogger.error(e, "Error populating item table.", true, true);
-        }
-    }
-
+	
 	protected abstract DB.TableName getTableName();
 	
 	protected abstract ArrayList<E> mapResults(
@@ -279,24 +300,40 @@ public abstract class ListView<E extends Record> extends View {
 	private void populateTable() {
 		this.table.removeAll();
 		this.keys.clear();
-        this.tableModel.rowColors = new ArrayList<>(this.records.size());
+		this.tableModel.rowColors = new ArrayList<>(this.records.size());
 		this.tableModel.setRowCount(0);
 		for (E i : this.records) {
-            this.tableModel.rowColors.add(IRSTableModel.defaultColor);
-            this.tableModel.addRow(i);
+			this.tableModel.rowColors.add(IRSTableModel.DEFAULT_COLOR);
+			// this.tableModel.rowColors.add(null);
+			this.tableModel.addRow(i);
+			if (!i.isActive()) {
+				this.tableModel.setColorAt(
+						this.tableModel.rowColors.size() - 1,
+						IRSTableModel.INACTIVE_COLOR);
+			}
 		}
-        for(int i = 0; i < this.table.getColumnCount(); ++i) {
-            this.table.getColumn(this.table.getColumnName(i)).setCellRenderer(new DefaultTableCellRenderer() {
-                @Override
-                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                    if(!isSelected || hasFocus) {
-                        c.setBackground(ListView.this.tableModel.rowColors.get(row));
-                    }
-                    return c;
-                }
-            });
-        }
+		for (int i = 0; i < this.table.getColumnCount(); ++i) {
+			this.table.getColumn(this.table.getColumnName(i)).setCellRenderer(
+					new DefaultTableCellRenderer() {
+						private static final long	serialVersionUID	= 1L;
+						
+						@Override
+						public Component getTableCellRendererComponent(
+								JTable table, Object value, boolean isSelected,
+								boolean hasFocus, int row, int column) {
+							Component c = super.getTableCellRendererComponent(
+									table, value, isSelected, hasFocus, row,
+									column);
+							if (isSelected) {
+								c.setBackground(table.getSelectionBackground());
+							} else {
+								c.setBackground(ListView.this.tableModel.rowColors
+										.get(row));
+							}
+							return c;
+						}
+					});
+		}
 	}
 	
 	/**

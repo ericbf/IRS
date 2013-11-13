@@ -254,13 +254,6 @@ public class Customer extends Record {
 		return Customer.hasDates_;
 	}
 	
-	/**
-	 * Gets the active status of the Customer.
-	 */
-	public boolean isActive() {
-		return ((Integer) this.getFieldValue("active")) == 1;
-	}
-	
 	@Override
 	protected void postSave() throws SQLException {
 		// delete removed numbers
