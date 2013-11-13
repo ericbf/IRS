@@ -156,9 +156,9 @@ public abstract class Record {
 	
 	public final boolean isChanged() {
 		for (Field field : this.fields.values()) {
-			if(field.getWasChanged()) {
-                return true;
-            }
+			if (field.getWasChanged()) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -274,18 +274,11 @@ public abstract class Record {
 		}
 		// postsave
 		this.postSave();
-<<<<<<< HEAD
 		
-		for(Field field : this.fields.values()) {
-            field.save();  // sets the field back to not being modified.
-        }
+		for (Field field : this.fields.values()) {
+			field.save(); // sets the field back to not being modified.
+		}
 		
-=======
-
-        for(Field field : this.fields.values()) {
-            field.save();  // sets the field back to not being modified.
-        }
->>>>>>> 8da03321f4c2e3a56b71c7107261b6239897ad39
 		Session.updateTable(this.getTableName(), this.getPkey());
 	}
 	
