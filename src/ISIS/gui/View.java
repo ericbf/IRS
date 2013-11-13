@@ -43,9 +43,11 @@ public abstract class View extends JPanel {
 	public void close() throws CloseCanceledException {
 		if (this.needsSave()
 				&& (this.getCurrentRecord() == null
-						|| this.getTemporaryRecord() == null || this
-						.getCurrentRecord()
-						.isChanged(this.getTemporaryRecord()))) {
+						&& this.getTemporaryRecord() == null || this
+						.getCurrentRecord() != null
+						&& this.getTemporaryRecord() != null
+						&& this.getCurrentRecord().isChanged(
+								this.getTemporaryRecord()))) {
 			if ((new ConfirmCloseDialog().show(this.splitPane))) {
 				try {
 					this.save();

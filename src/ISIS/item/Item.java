@@ -165,16 +165,6 @@ public class Item extends Record {
 	}
 	
 	/**
-	 * Returns the database record's active field
-	 * 
-	 * @return
-	 */
-	@Override
-	public boolean isActive() {
-		return ((Integer) this.getFieldValue("active")) == 1;
-	}
-	
-	/**
 	 * Checks if this record is the latest version of the associated item.
 	 */
 	public boolean isLatestVersion() {

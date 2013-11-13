@@ -139,7 +139,7 @@ public abstract class Record {
 		this.fields = fields;
 	}
 	
-	public boolean isActive() {
+	public final boolean isActive() {
 		return this.getFieldValue("active") == null
 				|| ((int) this.getFieldValue("active")) == 1;
 	}
