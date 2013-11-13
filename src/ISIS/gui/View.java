@@ -1,10 +1,11 @@
 package ISIS.gui;
 
-import ISIS.database.Record;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.sql.SQLException;
+
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import ISIS.database.Record;
 
 /**
  * Abstract class for all views.
@@ -41,27 +42,28 @@ public abstract class View extends JPanel {
 	 */
 	public void close() throws CloseCanceledException {
 		// Need the null check for views who don't own a record
-        if(!this.needsSave()) {
-            return;
-        }
-        Record record = null;
-        try {
-            this.getCurrentRecord();
-        } catch (BadInputException e) {
-            ErrorLogger.error(e, "", false, true);
-            throw new CloseCanceledException();
-        }
-        if ((new ConfirmCloseDialog().show(this.splitPane))) {
-            try {
-                this.save();
-            } catch (SQLException e) {
-                ErrorLogger.error(e, "Failed to save. Canceling close.",
-                        true, true);
-                throw new CloseCanceledException();
-            }
-        } else {
-            // do nothing
-        }
+		if (!this.needsSave()) {
+			return;
+		}
+		Record record = null;
+		try {
+			record = this.getCurrentRecord();
+		} catch (BadInputException e) {
+			ErrorLogger.error(e, "", false, true);
+			throw new CloseCanceledException();
+		}
+		if (record != null && record.isChanged())
+			if ((new ConfirmCloseDialog().show(this.splitPane))) {
+				try {
+					this.save();
+				} catch (SQLException e) {
+					ErrorLogger.error(e, "Failed to save. Canceling close.",
+							true, true);
+					throw new CloseCanceledException();
+				}
+			} else {
+				// do nothing
+		}
 	}
 	
 	/**
