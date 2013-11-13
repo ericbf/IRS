@@ -41,7 +41,9 @@ public class ListCustomers extends ListView<Customer> {
 		int buttonNameSel = 0;
 		JButton addButton = new JButton(this.buttonNames[buttonNameSel++]);
 		this.editButton = new JButton(this.buttonNames[buttonNameSel++]);
-		JButton activeButton = new JButton(this.buttonNames[buttonNameSel++]);
+		// JButton activeButton = new
+		// JButton(this.buttonNames[buttonNameSel++]);
+		// TODO: toggle button
 		// JToggleButton activeButton = new JToggleButton(
 		// this.buttonNames[buttonNameSel++]);
 		// Use this button to show or hide inactive records??
@@ -95,10 +97,11 @@ public class ListCustomers extends ListView<Customer> {
 		c.gridx = x++;
 		this.add(this.editButton, c);
 		
-		c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
-		c.gridx = x++;
-		this.add(activeButton, c);
+		// c = new GridBagConstraints();
+		// c.fill = GridBagConstraints.BOTH;
+		// c.gridx = x++;
+		// this.add(activeButton, c);
+		// TODO: toggle button
 		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;

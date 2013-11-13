@@ -38,7 +38,9 @@ public class ListItems extends ListView<Item> {
 		int buttonNameSel = 0;
 		JButton addButton = new JButton(this.buttonNames[buttonNameSel++]);
 		this.editButton = new JButton(this.buttonNames[buttonNameSel++]);
-		JButton activeButton = new JButton(this.buttonNames[buttonNameSel++]);
+		// JButton activeButton = new
+		// JButton(this.buttonNames[buttonNameSel++]);
+		// TODO: toggle button
 		
 		addButton.addActionListener(new ActionListener() {
 			@Override
@@ -94,10 +96,11 @@ public class ListItems extends ListView<Item> {
 		c.gridx = x++;
 		this.add(this.editButton, c);
 		
-		c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
-		c.gridx = x++;
-		this.add(activeButton, c);
+		// c = new GridBagConstraints();
+		// c.fill = GridBagConstraints.BOTH;
+		// c.gridx = x++;
+		// this.add(activeButton, c);
+		// TODO: toggle button
 		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;

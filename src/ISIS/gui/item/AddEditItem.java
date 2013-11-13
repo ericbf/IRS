@@ -1,18 +1,22 @@
 package ISIS.gui.item;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.border.EtchedBorder;
+
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
 import ISIS.gui.BadInputException;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
-
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import java.awt.*;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.text.DecimalFormat;
 
 /**
  * View for adding and editing items.
@@ -67,27 +71,31 @@ public class AddEditItem extends AddEditView {
 		BigDecimal price, onhand, reorder, cost;
 		DecimalFormat df = new DecimalFormat();
 		df.setMaximumFractionDigits(2);
-        //TODO: VALIDATION
-        try {
-		    price = new BigDecimal(this.price.getText());
-        } catch (NumberFormatException e) {
-            throw new BadInputException("Bad input for price (\"" + this.price.getText() + "\"); must be a number.");
-        }
-        try {
-		    onhand = new BigDecimal(this.stock.getText());
-        } catch (NumberFormatException e) {
-            throw new BadInputException("Bad input for onhand quantity (\"" + this.price.getText() + "; must be a number.");
-        }
-        try {
-		    reorder = new BigDecimal("0.0"); // TODO: fix me
-        } catch(NumberFormatException e) {
-            throw new BadInputException("Bad input for reorder quantity (\"" + this.price.getText() + "; must be a number.");
-        }
-        try {
-		    cost = new BigDecimal("0.0"); // TODO: fix me
-        } catch (NumberFormatException e) {
-            throw new BadInputException("Bad input for cost (\"" + this.price.getText() + "; must be a number.");
-        }
+		// TODO: VALIDATION
+		try {
+			price = new BigDecimal(this.price.getText());
+		} catch (NumberFormatException e) {
+			throw new BadInputException("Bad input for price (\""
+					+ this.price.getText() + "\"); must be a number.");
+		}
+		try {
+			onhand = new BigDecimal(this.stock.getText());
+		} catch (NumberFormatException e) {
+			throw new BadInputException("Bad input for onhand quantity (\""
+					+ this.price.getText() + "; must be a number.");
+		}
+		try {
+			reorder = new BigDecimal("0.0"); // TODO: fix me
+		} catch (NumberFormatException e) {
+			throw new BadInputException("Bad input for reorder quantity (\""
+					+ this.price.getText() + "; must be a number.");
+		}
+		try {
+			cost = new BigDecimal("0.0"); // TODO: fix me
+		} catch (NumberFormatException e) {
+			throw new BadInputException("Bad input for cost (\""
+					+ this.price.getText() + "; must be a number.");
+		}
 		if (this.item == null) {
 			
 			this.item = new Item(this.name.getText(), this.SKU.getText(),
@@ -137,6 +145,7 @@ public class AddEditItem extends AddEditView {
 		c.weightx = 1;
 		c.gridx = x--;
 		c.gridy = y++;
+		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.SKU = new HintField("SKU"), c);
 		
@@ -151,6 +160,7 @@ public class AddEditItem extends AddEditView {
 		c.weightx = 1;
 		c.gridx = x--;
 		c.gridy = y++;
+		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.active = new JCheckBox("", true), c);
 		
@@ -165,6 +175,7 @@ public class AddEditItem extends AddEditView {
 		c.weightx = 1;
 		c.gridx = x--;
 		c.gridy = y++;
+		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.name = new HintField("Name"), c);
 		
@@ -179,6 +190,7 @@ public class AddEditItem extends AddEditView {
 		c.weightx = 1;
 		c.gridx = x--;
 		c.gridy = y++;
+		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.price = new HintField("Price"), c);
 		
@@ -193,14 +205,14 @@ public class AddEditItem extends AddEditView {
 		c.weightx = 1;
 		c.gridx = x;
 		c.gridy = y;
-		c.anchor = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.BOTH;
 		this.add(this.stock = new HintField("amount"), c);
 		
 		c = new GridBagConstraints();
-		c.weightx = 1;
-		c.gridx = x--;
+		c.weightx = .3;
+		c.gridx = x-- + 1;
 		c.gridy = y++;
-		c.anchor = GridBagConstraints.EAST;
+		c.fill = GridBagConstraints.BOTH;
 		this.add(this.UOM = new HintField("UOM"), c);
 		
 		c = new GridBagConstraints();
@@ -217,6 +229,7 @@ public class AddEditItem extends AddEditView {
 		c.weighty = 1;
 		c.gridx = x--;
 		c.gridy = y++;
+		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.description = new JTextArea(), c);
 		this.description.setBorder(new EtchedBorder());
