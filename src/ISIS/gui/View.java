@@ -1,10 +1,11 @@
 package ISIS.gui;
 
-import ISIS.database.Record;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.sql.SQLException;
+
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import ISIS.database.Record;
 
 /**
  * Abstract class for all views.
@@ -40,7 +41,9 @@ public abstract class View extends JPanel {
 	 * not apply.
 	 */
 	public void close() throws CloseCanceledException {
-		if (this.needsSave() && this.getCurrentRecord().isChanged()) {
+		if (this.needsSave() && this.getCurrentRecord().isChanged()
+				&& this.isAnyFieldDifferentFromDefault() != null
+				&& this.isAnyFieldDifferentFromDefault()) {
 			if ((new ConfirmCloseDialog().show(this.splitPane))) {
 				try {
 					this.save();
