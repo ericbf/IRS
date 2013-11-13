@@ -1,33 +1,20 @@
 package ISIS.gui;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.DefaultFocusTraversalPolicy;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.JTable;
-import javax.swing.KeyStroke;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import javax.swing.table.DefaultTableCellRenderer;
-
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.session.Session;
+
+import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Abstract class for views that consist of a list that can be searched.
@@ -254,7 +241,7 @@ public abstract class ListView<E extends Record> extends View {
 				// these aren't indexed anyway, so...
 				search = search.replaceAll("([\\(\\)])", "");
 				search = search.replaceAll("\\\"", ""); // TODO: actually fix
-				String sql = "SELECT i.* FROM (SELECT docid AS row FROM "
+				String sql = "SELECT i.* FROM (SELECT content AS row FROM "
 						+ this.getTableName() + "_search WHERE "
 						+ this.getTableName() + "_search MATCH ?) "
 						+ "LEFT JOIN " + this.getTableName()
