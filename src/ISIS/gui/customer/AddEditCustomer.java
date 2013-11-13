@@ -14,9 +14,9 @@ import javax.swing.border.EtchedBorder;
 
 import ISIS.customer.Customer;
 import ISIS.database.Record;
+import ISIS.gui.AddEditView;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
-import ISIS.gui.View;
 import ISIS.misc.Address;
 import ISIS.misc.Phone;
 import ISIS.transaction.Transaction;
@@ -24,7 +24,7 @@ import ISIS.transaction.Transaction;
 /**
  * View for adding and editing customers.
  */
-public class AddEditCustomer extends View {
+public class AddEditCustomer extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
 	JCheckBox					active;
 	HintField					password, fname, lname, email;
@@ -131,14 +131,6 @@ public class AddEditCustomer extends View {
 	}
 	
 	/**
-	 * This view needs to be saved.
-	 */
-	@Override
-	public boolean needsSave() {
-		return true;
-	}
-	
-	/**
 	 * Draws all necessary components on the window.
 	 */
 	private void populateElements() {
@@ -236,13 +228,4 @@ public class AddEditCustomer extends View {
 		
 		// this.addLists(2, y);
 	}
-	
-	/**
-	 * Saves the customer.
-	 */
-	@Override
-	public void save() throws SQLException {
-		this.getCurrentRecord().save();
-	}
-	
 }

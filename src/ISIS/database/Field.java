@@ -54,8 +54,8 @@ public final class Field {
 	public Boolean getWasChanged() {
 		return this.changed;
 	}
-
-    void save() {
-        this.changed = false;
-    }
+	
+	void save() {
+		this.changed = false;
+	}
 }

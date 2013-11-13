@@ -59,8 +59,8 @@ public abstract class View extends JPanel {
 	}
 	
 	/**
-	 * Return the record for this view if it has one, or null if it doesn't have
-	 * one.
+	 * Return the record for this view if it has one, filling in the changed
+	 * fields in the view, or null if the view doesn't have one.
 	 * 
 	 * @return
 	 */
@@ -73,7 +73,7 @@ public abstract class View extends JPanel {
 	 */
 	protected final SplitPane getSplitPane() {
 		if (!this.inSplitPane()) {
-			throw new UnsupportedOperationException("Not supported.");
+			throw new UnsupportedOperationException("Not in SplitPane.");
 		}
 		return this.splitPane;
 	}

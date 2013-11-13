@@ -115,6 +115,7 @@ public class ListItems extends ListView<Item> {
 				int i = 0;
 				
 				array[i++] = item.getSKU();
+				array[i++] = item.getName();
 				array[i++] = item.getPrice();
 				array[i++] = item.getOnHandQty();
 				array[i++] = item.getUOM();
@@ -123,7 +124,7 @@ public class ListItems extends ListView<Item> {
 				ListItems.this.keys.add(item.getPkey());
 			}
 		});
-		this.tableModel.setColumnTitles("SKU", "price", "qty", "UOM");
+		this.tableModel.setColumnTitles("SKU", "name", "price", "qty", "UOM");
 		this.fillTable();
 		
 		c = new GridBagConstraints();

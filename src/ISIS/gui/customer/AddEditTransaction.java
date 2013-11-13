@@ -1,14 +1,16 @@
 package ISIS.gui.customer;
 
 import ISIS.database.Record;
+import ISIS.gui.AddEditView;
 import ISIS.gui.SplitPane;
-import ISIS.gui.View;
+import ISIS.transaction.Transaction;
 
 /**
  * View for adding a transaction.
  */
-public class AddEditTransaction extends View {
+public class AddEditTransaction extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
+	Transaction					transaction;
 	
 	/**
 	 * Public constructor: returns an instance of the add/edit transaction view.
@@ -30,9 +32,8 @@ public class AddEditTransaction extends View {
 	@Override
 	public Record getCurrentRecord() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.transaction;
 	}
-
 	
 	/*
 	 * (non-Javadoc)
@@ -43,18 +44,4 @@ public class AddEditTransaction extends View {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	/**
-	 * The transaction needs to be saved.
-	 */
-	@Override
-	public boolean needsSave() {
-		return true;
-	}
-	
-	/**
-	 * This saves the transaction.
-	 */
-	@Override
-	public void save() {}
 }

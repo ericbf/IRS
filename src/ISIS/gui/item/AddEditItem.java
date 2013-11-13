@@ -1,22 +1,26 @@
 package ISIS.gui.item;
 
-import ISIS.database.Record;
-import ISIS.gui.HintField;
-import ISIS.gui.SplitPane;
-import ISIS.gui.View;
-import ISIS.item.Item;
-
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.border.EtchedBorder;
+
+import ISIS.database.Record;
+import ISIS.gui.AddEditView;
+import ISIS.gui.HintField;
+import ISIS.gui.SplitPane;
+import ISIS.item.Item;
+
 /**
  * View for adding and editing items.
  */
-public class AddEditItem extends View {
+public class AddEditItem extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
 	private JCheckBox			active;
 	private HintField			SKU, name, price, stock, UOM;
@@ -63,29 +67,31 @@ public class AddEditItem extends View {
 	 */
 	@Override
 	public Record getCurrentRecord() {
-        BigDecimal price, onhand, reorder, cost;
-        DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(2);
-        price = new BigDecimal(this.price.getText());
-        onhand = new BigDecimal(this.stock.getText());
-        reorder = new BigDecimal("0.0"); //TODO: fix me
-        cost = new BigDecimal("0.0"); //TODO: fix me
-        if (this.item == null) {
-
-            this.item = new Item(this.name.getText(), this.SKU.getText(), this.description.getText(), price, onhand, reorder,
-                                 this.UOM.getText(), cost, this.active.isSelected());
-
-        } else {
-            this.item.setName(this.name.getText());
-            this.item.setDescription(this.description.getText());
-            this.item.setPrice(price);
-            this.item.setOnHandQty(onhand);
-            this.item.setReorderQty(reorder);
-            this.item.setCost(cost);
-            // TODO: disable UOM, SKU fields if editing (we don't allow that to be changed)
-            this.item.setActive(this.active.isSelected());
-        }
-        return this.item;
+		BigDecimal price, onhand, reorder, cost;
+		DecimalFormat df = new DecimalFormat();
+		df.setMaximumFractionDigits(2);
+		price = new BigDecimal(this.price.getText());
+		onhand = new BigDecimal(this.stock.getText());
+		reorder = new BigDecimal("0.0"); // TODO: fix me
+		cost = new BigDecimal("0.0"); // TODO: fix me
+		if (this.item == null) {
+			
+			this.item = new Item(this.name.getText(), this.SKU.getText(),
+					this.description.getText(), price, onhand, reorder,
+					this.UOM.getText(), cost, this.active.isSelected());
+			
+		} else {
+			this.item.setName(this.name.getText());
+			this.item.setDescription(this.description.getText());
+			this.item.setPrice(price);
+			this.item.setOnHandQty(onhand);
+			this.item.setReorderQty(reorder);
+			this.item.setCost(cost);
+			// TODO: disable UOM, SKU fields if editing (we don't allow that to
+			// be changed)
+			this.item.setActive(this.active.isSelected());
+		}
+		return this.item;
 	}
 	
 	/*
@@ -96,14 +102,6 @@ public class AddEditItem extends View {
 	public Boolean isAnyFieldDifferentFromDefault() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	
-	/**
-	 * This view needs to be saved.
-	 */
-	@Override
-	public boolean needsSave() {
-		return true;
 	}
 	
 	/**
@@ -209,12 +207,4 @@ public class AddEditItem extends View {
 		this.add(this.description = new JTextArea(), c);
 		this.description.setBorder(new EtchedBorder());
 	}
-	
-	/**
-	 * Saves the item.
-	 */
-	@Override
-	public void save() throws SQLException {
-        this.getCurrentRecord().save();
-    }
 }
