@@ -111,8 +111,7 @@ public abstract class Record {
 				if (this.fields.containsKey(key)) {
 					value = this.fields.get(key).getValue();
 				} else {
-					// return null;
-					throw new RecordNotFoundException(
+					throw new NonexistentFieldException(
 							"Record does not contain the requested key.");
 				}
 			} catch (SQLException e) {
@@ -146,12 +145,10 @@ public abstract class Record {
 	}
 	
 	public final boolean isActive() {
-		// return this.getFieldValue("active") == null || ((int)
-		// this.getFieldValue("active")) == 1;
 		try {
-			int active = (Integer) this.getFieldValue("active");
-			return active == 1;
-		} catch (RecordNotFoundException e) {
+			return this.getFieldValue("active") == null
+					|| ((int) this.getFieldValue("active")) == 1;
+		} catch (NonexistentFieldException e) {
 			return true;
 			// true if no active field.
 		}
