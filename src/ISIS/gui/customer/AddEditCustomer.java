@@ -13,7 +13,6 @@ import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 
 import ISIS.customer.Customer;
-import ISIS.database.DB.TableName;
 import ISIS.database.Record;
 import ISIS.database.UninitializedFieldException;
 import ISIS.gui.HintField;
@@ -114,22 +113,6 @@ public class AddEditCustomer extends View {
 	 */
 	@Override
 	public Record getTemporaryRecord() {
-		if (this.customer == null) {
-			if (this.active.isSelected() && this.email.getText().isEmpty()
-					&& this.password.getText().isEmpty()
-					&& this.note.getText().isEmpty()) return new Record() {
-				@Override
-				protected TableName getTableName() {
-					return null;
-				}
-				
-				@Override
-				protected boolean hasDates() {
-					return false;
-				}
-			};
-			else return null;
-		}
 		Customer temp;
 		try {
 			temp = new Customer(this.customer.getPkey(), true);
@@ -142,6 +125,17 @@ public class AddEditCustomer extends View {
 		temp.setPassword(this.password.getText());
 		temp.setNote(this.note.getText());
 		return temp;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.View#isAnyFieldsDifferentFromDefault()
+	 */
+	@Override
+	public Boolean isAnyFieldDifferentFromDefault() {
+		return !(this.active.isSelected() && this.email.getText().isEmpty()
+				&& this.password.getText().isEmpty() && this.note.getText()
+				.isEmpty());
 	}
 	
 	/**
@@ -270,4 +264,5 @@ public class AddEditCustomer extends View {
 		}
 		this.customer.save();
 	}
+	
 }

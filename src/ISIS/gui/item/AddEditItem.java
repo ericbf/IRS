@@ -79,6 +79,16 @@ public class AddEditItem extends View {
 		return null;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
+	 */
+	@Override
+	public Boolean isAnyFieldDifferentFromDefault() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	/**
 	 * This view needs to be saved.
 	 */

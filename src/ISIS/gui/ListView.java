@@ -302,6 +302,11 @@ public abstract class ListView<E extends Record> extends View {
 		return null;
 	}
 	
+	@Override
+	public Boolean isAnyFieldDifferentFromDefault() {
+		return null;
+	}
+	
 	protected abstract ArrayList<E> mapResults(
 			ArrayList<HashMap<String, Field>> results);
 	

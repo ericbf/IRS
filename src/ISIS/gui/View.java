@@ -43,11 +43,12 @@ public abstract class View extends JPanel {
 	public void close() throws CloseCanceledException {
 		if (this.needsSave()
 				&& (this.getCurrentRecord() == null
-						&& this.getTemporaryRecord() == null || this
+						&& (this.isAnyFieldDifferentFromDefault() != null && this
+								.isAnyFieldDifferentFromDefault()) || (this
 						.getCurrentRecord() != null
-						&& this.getTemporaryRecord() != null
-						&& this.getCurrentRecord().isChanged(
-								this.getTemporaryRecord()))) {
+						&& this.getTemporaryRecord() != null && this
+						.getCurrentRecord()
+						.isChanged(this.getTemporaryRecord())))) {
 			if ((new ConfirmCloseDialog().show(this.splitPane))) {
 				try {
 					this.save();
@@ -102,6 +103,16 @@ public abstract class View extends JPanel {
 		}
 		return false;
 	}
+	
+	/**
+	 * If this view owns a record, whether the fields available different from
+	 * the default values. Use this to check if new records (using the add
+	 * button) have any data in them. Return null if this view doesn't own a
+	 * record.
+	 * 
+	 * @return
+	 */
+	public abstract Boolean isAnyFieldDifferentFromDefault();
 	
 	/**
 	 * Returns whether this view needs to be saved. This method must be

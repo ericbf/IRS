@@ -43,6 +43,16 @@ public class AddEditTransaction extends View {
 		return null;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
+	 */
+	@Override
+	public Boolean isAnyFieldDifferentFromDefault() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	/**
 	 * The transaction needs to be saved.
 	 */
