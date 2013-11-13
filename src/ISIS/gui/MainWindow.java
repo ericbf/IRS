@@ -1,15 +1,5 @@
 package ISIS.gui;
 
-import java.awt.Dimension;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import ISIS.customer.Customer;
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.ListCustomers;
@@ -21,6 +11,11 @@ import ISIS.misc.Phone;
 import ISIS.session.Session;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
+
+import javax.swing.*;
+import java.awt.*;
+import java.math.BigDecimal;
+import java.sql.SQLException;
 
 /**
  * Class for main window. No public methods available.
@@ -66,7 +61,7 @@ public class MainWindow extends JFrame {
 		try {
 			if (!User.userExists("jdickhead")) {
 				sampledata();
-				User testUser = new User("jdickhead", true, "penismonger",
+				User testUser = new User("jsammich", true, "sammichmonger",
 						"Janet", "Dickhead", "This is a note.");
 				testUser.save();
 				Session.endCurrentSession();
@@ -75,9 +70,9 @@ public class MainWindow extends JFrame {
 				System.out.println("Got janet.");
 				System.out.println("Active: " + janet.getActive());
 				System.out.println("Password correct: "
-						+ janet.checkPassword("penismonger"));
+						+ janet.checkPassword("sammichmonger"));
 				System.out.println("Password incorrect: "
-						+ !janet.checkPassword("penismongerz"));
+						+ !janet.checkPassword("sammichmongerz"));
 				System.out.println("ID: " + janet.getEmployeeID());
 				System.out.println("Fname: " + janet.getFirstName()
 						+ "\nLname: " + janet.getLastName());
@@ -92,7 +87,7 @@ public class MainWindow extends JFrame {
 				System.out.println("Janet already exists");
 			}
 			try {
-				Session.startNewSession("jdickhead", "penismonger");
+				Session.startNewSession("jsammich", "sammichmonger");
 			} catch (AuthenticationException e) {
 				System.err.println("failed");
 			}
@@ -111,7 +106,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	private static void sampledata() throws SQLException {
-		Customer customer = new Customer("Joe", "Doe", "sammich@penis.info",
+		Customer customer = new Customer("Joe", "Doe", "sammich@sammich.info",
 				"This is a note.", "this is a password?", true);
 		customer.addPhoneNum(new Phone("404040404", false, Phone.PhoneType.HOME));
 		customer.addPhoneNum(new Phone("987654321", false, Phone.PhoneType.HOME));
@@ -130,7 +125,7 @@ public class MainWindow extends JFrame {
 		customer.addAddress(new Address(true, true, "mars", "aliens", "9001",
 				"state", "city", "county", "this is pretty unique huh"));
 		customer.save();
-		Item item = new Item("new item", "12345", "penises", new BigDecimal(
+		Item item = new Item("new item", "12345", "sammiches", new BigDecimal(
 				1234.5), new BigDecimal(1234.5), new BigDecimal(1234.5), "LBS",
 				new BigDecimal(1234.5), true);
 		item.save();
