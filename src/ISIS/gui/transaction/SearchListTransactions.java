@@ -4,7 +4,7 @@ import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.IRSTableModel;
-import ISIS.gui.ListView;
+import ISIS.gui.SearchListView;
 import ISIS.gui.SplitPane;
 import ISIS.transaction.Transaction;
 
@@ -16,7 +16,7 @@ import java.util.HashMap;
 /**
  * List of transactions. Allows you to query and act on transactions.
  */
-public class ListTransactions extends ListView<Transaction> {
+public class SearchListTransactions extends SearchListView<Transaction> {
 	private static final long	serialVersionUID	= 1L;
 	private JButton				viewButton;
 	
@@ -25,7 +25,7 @@ public class ListTransactions extends ListView<Transaction> {
 	/**
 	 * Constructs new Transaction list view.
 	 */
-	public ListTransactions(SplitPane splitPane) {
+	public SearchListTransactions(SplitPane splitPane) {
 		super(splitPane);
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
@@ -83,7 +83,7 @@ public class ListTransactions extends ListView<Transaction> {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see ISIS.gui.ListView#actionHandlerActionForSearchField()
+	 * @see ISIS.gui.SearchListView#actionHandlerActionForSearchField()
 	 */
 	@Override
 	protected void actionHandlerActionForSearchField() {
@@ -93,7 +93,7 @@ public class ListTransactions extends ListView<Transaction> {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see ISIS.gui.ListView#tableName()
+	 * @see ISIS.gui.SearchListView#tableName()
 	 */
 	@Override
 	protected DB.TableName getTableName() {
@@ -102,7 +102,7 @@ public class ListTransactions extends ListView<Transaction> {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see ISIS.gui.ListView#mapResults(java.util.ArrayList)
+	 * @see ISIS.gui.SearchListView#mapResults(java.util.ArrayList)
 	 */
 	@Override
 	protected ArrayList<Transaction> mapResults(

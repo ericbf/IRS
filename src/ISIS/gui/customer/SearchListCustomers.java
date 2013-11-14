@@ -6,7 +6,7 @@ import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.ErrorLogger;
 import ISIS.gui.IRSTableModel;
-import ISIS.gui.ListView;
+import ISIS.gui.SearchListView;
 import ISIS.gui.SplitPane;
 import ISIS.misc.Phone;
 
@@ -21,7 +21,7 @@ import java.util.HashMap;
 /**
  * List of customers. Allows you to query and act on customers.
  */
-public class ListCustomers extends ListView<Customer> {
+public class SearchListCustomers extends SearchListView<Customer> {
 	private static final long	serialVersionUID	= 1L;
 	private JButton				editButton;
 	
@@ -30,7 +30,7 @@ public class ListCustomers extends ListView<Customer> {
 	 * 
 	 * @throws SQLException
 	 */
-	public ListCustomers(SplitPane splitPane) {
+	public SearchListCustomers(SplitPane splitPane) {
 		super(splitPane);
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
@@ -48,32 +48,32 @@ public class ListCustomers extends ListView<Customer> {
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ListCustomers.this.splitPane.push(new AddEditCustomer(
-						ListCustomers.this.splitPane),
-						SplitPane.LayoutType.HORIZONTAL, ListCustomers.this);
+				SearchListCustomers.this.splitPane.push(new AddEditCustomer(
+						SearchListCustomers.this.splitPane),
+						SplitPane.LayoutType.HORIZONTAL, SearchListCustomers.this);
 			}
 		});
 		
 		this.editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int selected = ListCustomers.this.table.getSelectedRow();
+				int selected = SearchListCustomers.this.table.getSelectedRow();
 				
 				if (selected == -1) {
-					selected = ListCustomers.this.selected;
+					selected = SearchListCustomers.this.selected;
 					if (selected == -1) return;
-					ListCustomers.this.table.setRowSelectionInterval(selected,
+					SearchListCustomers.this.table.setRowSelectionInterval(selected,
 							selected);
 				}
 				
-				int pkey = ListCustomers.this.keys.get(selected);
+				int pkey = SearchListCustomers.this.keys.get(selected);
 				
 				try {
-					ListCustomers.this.splitPane
+					SearchListCustomers.this.splitPane
 							.push(new AddEditCustomer(
-									ListCustomers.this.splitPane, pkey),
+									SearchListCustomers.this.splitPane, pkey),
 									SplitPane.LayoutType.HORIZONTAL,
-									ListCustomers.this);
+									SearchListCustomers.this);
 				} catch (SQLException ex) {
 					ErrorLogger.error(ex,
 							"Failed to open the customer record.", true, true);
@@ -134,7 +134,7 @@ public class ListCustomers extends ListView<Customer> {
 					super.addRow(array);
 					// don't add customer key to list until we know adding is a
 					// success.
-					ListCustomers.this.keys.add(customer.getPkey());
+					SearchListCustomers.this.keys.add(customer.getPkey());
 				} catch (SQLException e) {
 					ErrorLogger
 							.error(e, "Failed to display a row.", true, true);
@@ -162,7 +162,7 @@ public class ListCustomers extends ListView<Customer> {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see ISIS.gui.ListView#tableName()
+	 * @see ISIS.gui.SearchListView#tableName()
 	 */
 	@Override
 	protected DB.TableName getTableName() {
@@ -171,7 +171,7 @@ public class ListCustomers extends ListView<Customer> {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see ISIS.gui.ListView#mapResults(java.util.ArrayList)
+	 * @see ISIS.gui.SearchListView#mapResults(java.util.ArrayList)
 	 */
 	@Override
 	protected ArrayList<Customer> mapResults(

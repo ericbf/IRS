@@ -19,7 +19,7 @@ import java.util.HashMap;
 /**
  * Abstract class for views that consist of a list that can be searched.
  */
-public abstract class ListView<E extends Record> extends View {
+public abstract class SearchListView<E extends Record> extends View {
 	private static final long		serialVersionUID		= 1L;
 	protected JTable				table;
 	protected HintField				searchField;
@@ -32,14 +32,14 @@ public abstract class ListView<E extends Record> extends View {
 	protected int					selected;
 	private String					lastSearchFieldValue	= " ";
 	
-	public ListView(SplitPane splitPane) {
+	public SearchListView(SplitPane splitPane) {
 		super(splitPane);
 		Session.watchTable(this.getTableName(), new TableUpdateListener() {
 			private static final long	serialVersionUID	= 1L;
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ListView.this.doFillTable();
+				SearchListView.this.doFillTable();
 			}
 		});
 		this.table = new JTable();
@@ -49,7 +49,7 @@ public abstract class ListView<E extends Record> extends View {
 		this.searchField.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e) {
-				ListView.this.fillTable();
+				SearchListView.this.fillTable();
 			}
 		});
 		this.searchField.addKeyListener(new KeyListener() {
@@ -60,45 +60,45 @@ public abstract class ListView<E extends Record> extends View {
 						|| (e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK;
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_DOWN:
-						if (ListView.this.table.getRowCount() > 0) {
-							int downSel = ListView.this.table.getSelectedRow();
+						if (SearchListView.this.table.getRowCount() > 0) {
+							int downSel = SearchListView.this.table.getSelectedRow();
 							if (meta) {
-								downSel = ListView.this.table.getRowCount() - 1;
-								ListView.this.table.setRowSelectionInterval(
+								downSel = SearchListView.this.table.getRowCount() - 1;
+								SearchListView.this.table.setRowSelectionInterval(
 										downSel, downSel);
 							} else if (downSel != -1) {
-								downSel += downSel + 1 < ListView.this.table
+								downSel += downSel + 1 < SearchListView.this.table
 										.getRowCount() ? 1 : 0;
-								ListView.this.table.setRowSelectionInterval(
+								SearchListView.this.table.setRowSelectionInterval(
 										downSel, downSel);
 							} else {
-								ListView.this.table.setRowSelectionInterval(0,
+								SearchListView.this.table.setRowSelectionInterval(0,
 										0);
 							}
 						}
 						int sel;
-						if ((sel = ListView.this.table.getSelectedRow()) != -1)
-							ListView.this.selected = sel;
+						if ((sel = SearchListView.this.table.getSelectedRow()) != -1)
+							SearchListView.this.selected = sel;
 						break;
 					case KeyEvent.VK_UP:
-						if (ListView.this.table.getRowCount() > 0) {
-							int upSel = ListView.this.table.getSelectedRow();
+						if (SearchListView.this.table.getRowCount() > 0) {
+							int upSel = SearchListView.this.table.getSelectedRow();
 							if (meta) {
-								ListView.this.table.setRowSelectionInterval(0,
+								SearchListView.this.table.setRowSelectionInterval(0,
 										0);
 							} else if (upSel != -1) {
 								upSel -= upSel > 0 ? 1 : 0;
-								ListView.this.table.setRowSelectionInterval(
+								SearchListView.this.table.setRowSelectionInterval(
 										upSel, upSel);
 							} else {
-								upSel = ListView.this.table.getRowCount() - 1;
-								ListView.this.table.setRowSelectionInterval(
+								upSel = SearchListView.this.table.getRowCount() - 1;
+								SearchListView.this.table.setRowSelectionInterval(
 										upSel, upSel);
 							}
 						}
 						int selPasser;
-						if ((selPasser = ListView.this.table.getSelectedRow()) != -1)
-							ListView.this.selected = selPasser;
+						if ((selPasser = SearchListView.this.table.getSelectedRow()) != -1)
+							SearchListView.this.selected = selPasser;
 						break;
 				}
 			}
@@ -113,19 +113,19 @@ public abstract class ListView<E extends Record> extends View {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ListView.this.actionHandlerActionForSearchField();
+				SearchListView.this.actionHandlerActionForSearchField();
 			}
 		});
 		this.searchField.addFocusListener(new FocusListener() {
 			
 			@Override
 			public void focusGained(FocusEvent e) {
-				ListView.this.table.setFocusable(false);
+				SearchListView.this.table.setFocusable(false);
 			}
 			
 			@Override
 			public void focusLost(FocusEvent e) {
-				ListView.this.table.setFocusable(true);
+				SearchListView.this.table.setFocusable(true);
 			}
 		});
 		this.table.addKeyListener(new KeyListener() {
@@ -136,36 +136,36 @@ public abstract class ListView<E extends Record> extends View {
 						|| (e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK;
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_DOWN:
-						if (ListView.this.table.getRowCount() > 0) {
+						if (SearchListView.this.table.getRowCount() > 0) {
 							if (meta) {
-								int rowCount = ListView.this.table
+								int rowCount = SearchListView.this.table
 										.getRowCount() - 1;
-								ListView.this.table.setRowSelectionInterval(
+								SearchListView.this.table.setRowSelectionInterval(
 										rowCount, rowCount);
-							} else if (ListView.this.table.getSelectedRow() == -1) {
-								ListView.this.table.setRowSelectionInterval(0,
+							} else if (SearchListView.this.table.getSelectedRow() == -1) {
+								SearchListView.this.table.setRowSelectionInterval(0,
 										0);
 							}
 						}
 						int sel;
-						if ((sel = ListView.this.table.getSelectedRow()) != -1)
-							ListView.this.selected = sel;
+						if ((sel = SearchListView.this.table.getSelectedRow()) != -1)
+							SearchListView.this.selected = sel;
 						break;
 					case KeyEvent.VK_UP:
-						if (ListView.this.table.getRowCount() > 0) {
+						if (SearchListView.this.table.getRowCount() > 0) {
 							if (meta) {
-								ListView.this.table.setRowSelectionInterval(0,
+								SearchListView.this.table.setRowSelectionInterval(0,
 										0);
-							} else if (ListView.this.table.getSelectedRow() == -1) {
-								int rowCount = ListView.this.table
+							} else if (SearchListView.this.table.getSelectedRow() == -1) {
+								int rowCount = SearchListView.this.table
 										.getRowCount() - 1;
-								ListView.this.table.setRowSelectionInterval(
+								SearchListView.this.table.setRowSelectionInterval(
 										rowCount, rowCount);
 							}
 						}
 						int selPasser;
-						if ((selPasser = ListView.this.table.getSelectedRow()) != -1)
-							ListView.this.selected = selPasser;
+						if ((selPasser = SearchListView.this.table.getSelectedRow()) != -1)
+							SearchListView.this.selected = selPasser;
 						break;
 				}
 			}
@@ -181,8 +181,8 @@ public abstract class ListView<E extends Record> extends View {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int sel;
-				if ((sel = ListView.this.table.getSelectedRow()) != -1)
-					ListView.this.selected = sel;
+				if ((sel = SearchListView.this.table.getSelectedRow()) != -1)
+					SearchListView.this.selected = sel;
 			}
 			
 			@Override
@@ -204,7 +204,7 @@ public abstract class ListView<E extends Record> extends View {
 			
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				ListView.this.actionHandlerActionForSearchField();
+				SearchListView.this.actionHandlerActionForSearchField();
 			}
 		});
 		this.setFocusCycleRoot(true);
@@ -214,7 +214,7 @@ public abstract class ListView<E extends Record> extends View {
 			
 			@Override
 			public Component getFirstComponent(Container aContainer) {
-				return ListView.this.searchField;
+				return SearchListView.this.searchField;
 			}
 		});
 	}
@@ -328,7 +328,7 @@ public abstract class ListView<E extends Record> extends View {
 							if (isSelected) {
 								c.setBackground(table.getSelectionBackground());
 							} else {
-								c.setBackground(ListView.this.tableModel.rowColors
+								c.setBackground(SearchListView.this.tableModel.rowColors
 										.get(row));
 							}
 							return c;

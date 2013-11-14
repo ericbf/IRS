@@ -2,9 +2,9 @@ package ISIS.gui;
 
 import ISIS.customer.Customer;
 import ISIS.database.RecordNotFoundException;
-import ISIS.gui.customer.ListCustomers;
-import ISIS.gui.item.ListItems;
-import ISIS.gui.transaction.ListTransactions;
+import ISIS.gui.customer.SearchListCustomers;
+import ISIS.gui.item.SearchListItems;
+import ISIS.gui.transaction.SearchListTransactions;
 import ISIS.item.Item;
 import ISIS.misc.Address;
 import ISIS.misc.Phone;
@@ -153,21 +153,21 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		super("IRS");
 		this.inventoryPane = new SplitPane();
-		this.inventoryPane.push(new ListItems(this.inventoryPane),
+		this.inventoryPane.push(new SearchListItems(this.inventoryPane),
 				SplitPane.LayoutType.HORIZONTAL, null);
-		// this.inventoryPane.push(new ListItems(this.inventoryPane),
+		// this.inventoryPane.push(new SearchListItems(this.inventoryPane),
 		// SplitPane.LayoutType.HORIZONTAL);
 		
 		this.customerPane = new SplitPane();
-		this.customerPane.push(new ListCustomers(this.customerPane),
+		this.customerPane.push(new SearchListCustomers(this.customerPane),
 				SplitPane.LayoutType.HORIZONTAL, null);
-		// this.customerPane.push(new ListCustomers(this.customerPane),
+		// this.customerPane.push(new SearchListCustomers(this.customerPane),
 		// SplitPane.LayoutType.HORIZONTAL);
 		
 		this.transactionPane = new SplitPane();
-		this.transactionPane.push(new ListTransactions(this.transactionPane),
+		this.transactionPane.push(new SearchListTransactions(this.transactionPane),
 				SplitPane.LayoutType.HORIZONTAL, null);
-		// this.transactionPane.push(new ListTransactions(this.transactionPane),
+		// this.transactionPane.push(new SearchListTransactions(this.transactionPane),
 		// SplitPane.LayoutType.HORIZONTAL);
 		
 		// this.reportPane = new SplitPane();
