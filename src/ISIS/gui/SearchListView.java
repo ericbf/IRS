@@ -8,7 +8,6 @@ import ISIS.session.Session;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.PreparedStatement;
@@ -19,31 +18,18 @@ import java.util.HashMap;
 /**
  * Abstract class for views that consist of a list that can be searched.
  */
-public abstract class SearchListView<E extends Record> extends View {
+public abstract class SearchListView<E extends Record> extends ListView<E> {
 	private static final long		serialVersionUID		= 1L;
-	protected JTable				table;
 	protected HintField				searchField;
-	protected ArrayList<E>			records;
-	protected IRSTableModel			tableModel;
 	protected String[]				buttonNames				= { "Add", "Edit",
 			"Toggle Active", "View", "Generate Nonfinal Invoice(s)",
 			"Close and Generate Invoice"					};
-	protected ArrayList<Integer>	keys					= new ArrayList<Integer>();
 	protected int					selected;
 	private String					lastSearchFieldValue	= " ";
 	
 	public SearchListView(SplitPane splitPane) {
-		super(splitPane);
-		Session.watchTable(this.getTableName(), new TableUpdateListener() {
-			private static final long	serialVersionUID	= 1L;
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SearchListView.this.doFillTable();
-			}
-		});
-		this.table = new JTable();
-		this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		super(splitPane, false);
+
 		this.selected = -1;
 		this.searchField = new HintField("Enter query to search...");
 		this.searchField.addCaretListener(new CaretListener() {
@@ -207,8 +193,6 @@ public abstract class SearchListView<E extends Record> extends View {
 				SearchListView.this.actionHandlerActionForSearchField();
 			}
 		});
-		this.setFocusCycleRoot(true);
-		this.setOpaque(false);
 		this.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
 			private static final long	serialVersionUID	= 1L;
 			
@@ -221,15 +205,7 @@ public abstract class SearchListView<E extends Record> extends View {
 	
 	protected abstract void actionHandlerActionForSearchField();
 	
-	/**
-	 * Cancel is not supported.
-	 */
-	@Override
-	public void cancel() {
-		throw new UnsupportedOperationException("Not supported.");
-	}
-	
-	private final void doFillTable() {
+	protected final void doFillTable() {
 		String searchFieldText = this.searchField.getText();
 		try {
 			PreparedStatement stmt;
@@ -272,82 +248,4 @@ public abstract class SearchListView<E extends Record> extends View {
 		this.doFillTable();
 	}
 	
-	/**
-	 * This type of view doesn't own a record.
-	 */
-	@Override
-	public Record getCurrentRecord() {
-		return null;
-	}
-	
-	protected abstract DB.TableName getTableName();
-	
-	@Override
-	public Boolean isAnyFieldDifferentFromDefault() {
-		return null;
-	}
-	
-	protected abstract ArrayList<E> mapResults(
-			ArrayList<HashMap<String, Field>> results);
-	
-	/**
-	 * This type of view needs not be saved.
-	 */
-	@Override
-	public boolean needsSave() {
-		return false;
-	}
-	
-	private void populateTable() {
-		this.table.removeAll();
-		this.keys.clear();
-		this.tableModel.rowColors = new ArrayList<Color>(this.records.size());
-		this.tableModel.setRowCount(0);
-		for (E i : this.records) {
-			this.tableModel.rowColors.add(IRSTableModel.DEFAULT_COLOR);
-			// this.tableModel.rowColors.add(null);
-			this.tableModel.addRow(i);
-			if (!i.isActive()) {
-				this.tableModel.setColorAt(
-						this.tableModel.rowColors.size() - 1,
-						IRSTableModel.INACTIVE_COLOR);
-			}
-		}
-		for (int i = 0; i < this.table.getColumnCount(); ++i) {
-			this.table.getColumn(this.table.getColumnName(i)).setCellRenderer(
-					new DefaultTableCellRenderer() {
-						private static final long	serialVersionUID	= 1L;
-						
-						@Override
-						public Component getTableCellRendererComponent(
-								JTable table, Object value, boolean isSelected,
-								boolean hasFocus, int row, int column) {
-							Component c = super.getTableCellRendererComponent(
-									table, value, isSelected, hasFocus, row,
-									column);
-							if (isSelected) {
-								c.setBackground(table.getSelectionBackground());
-							} else {
-								c.setBackground(SearchListView.this.tableModel.rowColors
-										.get(row));
-							}
-							return c;
-						}
-					});
-		}
-	}
-	
-	/**
-	 * Save is not supported.
-	 */
-	@Override
-	public void save() throws SQLException {
-		throw new UnsupportedOperationException("Not supported.");
-	}
-	
-	protected void setTableModel(IRSTableModel model) {
-		this.tableModel = model;
-		this.table.setModel(model);
-		this.table.setFocusable(false);
-	}
 }
