@@ -43,6 +43,7 @@ public abstract class ListView<E extends Record> extends View {
 			}
 		});
 		this.table = new JTable();
+		this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.selected = -1;
 		this.searchField = new HintField("Enter query to search...");
 		this.searchField.addCaretListener(new CaretListener() {
