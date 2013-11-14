@@ -2,14 +2,19 @@ package ISIS.gui.item;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
+import javax.swing.text.PlainDocument;
 
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
@@ -24,7 +29,8 @@ import ISIS.item.Item;
 public class AddEditItem extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
 	private JCheckBox			active;
-	private HintField			SKU, name, price, stock, UOM, cost, reorder;
+	private HintField			SKU, name, UOM;
+	private JTextField			price, stock, cost, reorder;
 	private Item				item;
 	private JTextArea			description;
 	
@@ -51,11 +57,14 @@ public class AddEditItem extends AddEditView {
 		this.SKU.setText(this.item.getSKU());
 		this.name.setText(this.item.getName());
 		this.price.setText(this.item.getPrice().toString());
-                this.cost.setText(this.item.getCost().toString());
-                this.reorder.setText(this.item.getReorderQuantity().toString());
+		this.cost.setText(this.item.getCost().toString());
+		this.reorder.setText(this.item.getReorderQuantity().toString());
 		this.stock.setText(this.item.getOnHandQty().toString());
 		this.UOM.setText(this.item.getUOM());
 		this.description.setText(this.item.getDescription());
+		
+		this.SKU.setEditable(false);
+		this.UOM.setEditable(false);
 	}
 	
 	/**
@@ -70,37 +79,14 @@ public class AddEditItem extends AddEditView {
 	 */
 	@Override
 	public Record getCurrentRecord() throws BadInputException {
-		BigDecimal price, onhand, reorder, cost;
+		BigDecimal price = new BigDecimal(this.price.getText());
+		BigDecimal onhand = new BigDecimal(this.stock.getText());
+		BigDecimal reorder = new BigDecimal(this.reorder.getText());
+		BigDecimal cost = new BigDecimal(this.cost.getText());
 		DecimalFormat df = new DecimalFormat();
 		df.setMaximumFractionDigits(2);
-		// TODO: VALIDATION
 		if (this.isAnyFieldDifferentFromDefault()) return null;
-		try {
-			price = new BigDecimal(this.price.getText());
-		} catch (NumberFormatException e) {
-			throw new BadInputException("Bad input for price (\""
-					+ this.price.getText() + "\"); must be a number.");
-		}
-		try {
-			onhand = new BigDecimal(this.stock.getText());
-		} catch (NumberFormatException e) {
-			throw new BadInputException("Bad input for onhand quantity (\""
-					+ this.price.getText() + "; must be a number.");
-		}
-		try {
-			reorder = new BigDecimal(this.reorder.getText()); // TODO: fix me
-		} catch (NumberFormatException e) {
-			throw new BadInputException("Bad input for reorder quantity (\""
-					+ this.price.getText() + "; must be a number.");
-		}
-		try {
-			cost = new BigDecimal(this.cost.getText()); // TODO: fix me
-		} catch (NumberFormatException e) {
-			throw new BadInputException("Bad input for cost (\""
-					+ this.price.getText() + "; must be a number.");
-		}
 		if (this.item == null) {
-			
 			this.item = new Item(this.name.getText(), this.SKU.getText(),
 					this.description.getText(), price, onhand, reorder,
 					this.UOM.getText(), cost, this.active.isSelected());
@@ -112,8 +98,6 @@ public class AddEditItem extends AddEditView {
 			this.item.setOnHandQty(onhand);
 			this.item.setReorderQty(reorder);
 			this.item.setCost(cost);
-			// TODO: disable UOM, SKU fields if editing (we don't allow that to
-			// be changed)
 			this.item.setActive(this.active.isSelected());
 		}
 		return this.item;
@@ -125,12 +109,17 @@ public class AddEditItem extends AddEditView {
 	 */
 	@Override
 	public Boolean isAnyFieldDifferentFromDefault() {
-		return this.active.isSelected() && this.SKU.getText().isEmpty()
-				&& this.name.getText().isEmpty()
-				&& this.description.getText().isEmpty()
-				&& this.price.getText().isEmpty()
-				&& this.stock.getText().isEmpty()
-				&& this.UOM.getText().isEmpty();
+		boolean out = true;
+		out &= this.active.isSelected();
+		out &= this.SKU.getText().isEmpty();
+		out &= this.name.getText().isEmpty();
+		out &= this.description.getText().isEmpty();
+		out &= this.UOM.getText().isEmpty();
+		out &= this.price.getText().equals("0.0");
+		out &= this.stock.getText().equals("0.0");
+		out &= this.cost.getText().equals("0.0");
+		out &= this.reorder.getText().equals("0.0");
+		return out;
 	}
 	
 	/**
@@ -139,6 +128,7 @@ public class AddEditItem extends AddEditView {
 	private void populateElements() {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
+		ArrayList<JTextField> constrainedFields = new ArrayList<>();
 		int x = 0, y = 0;
 		
 		c = new GridBagConstraints();
@@ -199,9 +189,11 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.price = new HintField("Price"), c);
+		this.add(this.price = new JTextField(), c);
+		constrainedFields.add(this.price);
+		this.price.setToolTipText("Price");
 		
-                c = new GridBagConstraints();
+		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
@@ -214,9 +206,11 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.cost = new HintField("cost"), c);
-                
-                c = new GridBagConstraints();
+		this.add(this.cost = new JTextField(), c);
+		constrainedFields.add(this.cost);
+		this.cost.setToolTipText("Cost");
+		
+		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
@@ -229,8 +223,10 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.reorder = new HintField("reorder"), c);
-                
+		this.add(this.reorder = new JTextField(), c);
+		constrainedFields.add(this.reorder);
+		this.reorder.setToolTipText("Quantity before reordering");
+		
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
@@ -243,7 +239,9 @@ public class AddEditItem extends AddEditView {
 		c.gridx = x;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.stock = new HintField("amount"), c);
+		this.add(this.stock = new JTextField(), c);
+		constrainedFields.add(this.stock);
+		this.stock.setToolTipText("On-hand quantity");
 		
 		c = new GridBagConstraints();
 		c.weightx = .3;
@@ -270,5 +268,26 @@ public class AddEditItem extends AddEditView {
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.description = new JTextArea(), c);
 		this.description.setBorder(new EtchedBorder());
+		
+		for (final JTextField field : constrainedFields) {
+			((PlainDocument) field.getDocument())
+					.setDocumentFilter(numberFilter);
+			field.setText("0.0");
+			field.addFocusListener(new FocusListener() {
+				
+				@Override
+				public void focusGained(FocusEvent e) {
+					field.selectAll();
+				}
+				
+				@Override
+				public void focusLost(FocusEvent e) {
+					if (field.getText().isEmpty()) field.setText("0.0");
+					if (field.getText().matches("([1-9][0-9]*)?[0-9]\\."))
+						field.setText(field.getText() + "0");
+					field.setCaretPosition(0);
+				}
+			});
+		}
 	}
 }
