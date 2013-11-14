@@ -3,6 +3,7 @@
  */
 package ISIS.gui;
 
+import java.awt.Color;
 import java.sql.SQLException;
 
 import javax.swing.text.AttributeSet;
@@ -19,7 +20,7 @@ public abstract class AddEditView extends View {
 	static {
 		numberFilter = new DocumentFilter() {
 			private boolean check(String str) {
-				return str.matches("([1-9][0-9]*)?[0-9](\\.[0-9]?[0-9]?)?");
+				return str.matches("([1-9][0-9]*)?[0-9]?(\\.[0-9]?[0-9]?)?");
 			}
 			
 			@Override
@@ -68,6 +69,18 @@ public abstract class AddEditView extends View {
 	 */
 	public AddEditView(SplitPane splitPane) {
 		super(splitPane);
+	}
+	
+	/**
+	 * Used to disable any unchangeable fields
+	 * 
+	 * @param fields
+	 */
+	protected final void disableFields(HintField... fields) {
+		for (HintField field : fields) {
+			field.setEditable(false);
+			field.setForeground(Color.gray);
+		}
 	}
 	
 	/*

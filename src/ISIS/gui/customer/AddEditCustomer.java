@@ -1,6 +1,5 @@
 package ISIS.gui.customer;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.sql.SQLException;
@@ -59,7 +58,7 @@ public class AddEditCustomer extends AddEditView {
 		this.lname.setText(this.customer.getLastName());
 		this.email.setText(this.customer.getEmail());
 		this.note.setText(this.customer.getNote());
-		this.deactivateFields();
+		this.disableFields(this.fname, this.lname);
 	}
 	
 	/**
@@ -86,16 +85,6 @@ public class AddEditCustomer extends AddEditView {
 	 */
 	@Override
 	public void cancel() {}
-	
-	/**
-	 * Disables fields that can no longer be changed.
-	 */
-	private void deactivateFields() {
-		this.fname.setEditable(false);
-		this.lname.setEditable(false);
-		this.fname.setForeground(Color.gray);
-		this.lname.setForeground(Color.gray);
-	}
 	
 	/*
 	 * (non-Javadoc)

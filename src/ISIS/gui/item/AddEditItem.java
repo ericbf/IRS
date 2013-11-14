@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.PlainDocument;
 
@@ -28,8 +27,7 @@ import ISIS.item.Item;
 public class AddEditItem extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
 	private JCheckBox			active;
-	private HintField			SKU, name, UOM;
-	private JTextField			price, stock, cost, reorder;
+	private HintField			SKU, name, UOM, price, stock, cost, reorder;
 	private Item				item;
 	private JTextArea			description;
 	
@@ -61,9 +59,7 @@ public class AddEditItem extends AddEditView {
 		this.stock.setText(this.item.getOnHandQty().toString());
 		this.UOM.setText(this.item.getUOM());
 		this.description.setText(this.item.getDescription());
-		
-		this.SKU.setEditable(false);
-		this.UOM.setEditable(false);
+		this.disableFields(this.SKU, this.UOM);
 	}
 	
 	/**
@@ -112,10 +108,10 @@ public class AddEditItem extends AddEditView {
 		same &= this.name.getText().isEmpty();
 		same &= this.description.getText().isEmpty();
 		same &= this.UOM.getText().isEmpty();
-		same &= this.price.getText().equals("0.0");
-		same &= this.stock.getText().equals("0.0");
-		same &= this.cost.getText().equals("0.0");
-		same &= this.reorder.getText().equals("0.0");
+		same &= this.price.getText().equals("0.00");
+		same &= this.stock.getText().equals("0.00");
+		same &= this.cost.getText().equals("0.00");
+		same &= this.reorder.getText().equals("0.00");
 		return !same;
 	}
 	
@@ -125,7 +121,7 @@ public class AddEditItem extends AddEditView {
 	private void populateElements() {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
-		ArrayList<JTextField> constrainedFields = new ArrayList<>();
+		ArrayList<HintField> constrainedFields = new ArrayList<>();
 		int x = 0, y = 0;
 		
 		c = new GridBagConstraints();
@@ -186,9 +182,10 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.price = new JTextField(), c);
+		this.add(this.price = new HintField(null, "0.00"), c);
 		constrainedFields.add(this.price);
 		this.price.setToolTipText("Price");
+		this.price.setHintEnabled(false);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -203,9 +200,10 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.cost = new JTextField(), c);
+		this.add(this.cost = new HintField(null, "0.00"), c);
 		constrainedFields.add(this.cost);
 		this.cost.setToolTipText("Cost");
+		this.cost.setHintEnabled(false);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -220,9 +218,10 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.reorder = new JTextField(), c);
+		this.add(this.reorder = new HintField(null, "0.00"), c);
 		constrainedFields.add(this.reorder);
 		this.reorder.setToolTipText("Quantity before reordering");
+		this.reorder.setHintEnabled(false);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -236,9 +235,10 @@ public class AddEditItem extends AddEditView {
 		c.gridx = x;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.stock = new JTextField(), c);
+		this.add(this.stock = new HintField(null, "0.00"), c);
 		constrainedFields.add(this.stock);
 		this.stock.setToolTipText("On-hand quantity");
+		this.stock.setHintEnabled(false);
 		
 		c = new GridBagConstraints();
 		c.weightx = .3;
@@ -266,21 +266,22 @@ public class AddEditItem extends AddEditView {
 		this.add(this.description = new JTextArea(), c);
 		this.description.setBorder(new EtchedBorder());
 		
-		for (final JTextField field : constrainedFields) {
+		for (final HintField field : constrainedFields) {
 			((PlainDocument) field.getDocument())
 					.setDocumentFilter(numberFilter);
-			field.setText("0.0");
 			field.addFocusListener(new FocusListener() {
 				
 				@Override
-				public void focusGained(FocusEvent e) {
-					field.selectAll();
-				}
+				public void focusGained(FocusEvent e) {}
 				
 				@Override
 				public void focusLost(FocusEvent e) {
-					if (field.getText().isEmpty()) field.setText("0.0");
-					if (field.getText().matches("([1-9][0-9]*)?[0-9]\\."))
+					if (field.getText().isEmpty()) field.setText("0.00");
+					if (field.getText().matches("[0-9]*\\."))
+						field.setText(field.getText() + "0");
+					if (field.getText().matches("\\.[0-9]*"))
+						field.setText("0" + field.getText());
+					if (field.getText().matches("[0-9]*\\.[0-9]"))
 						field.setText(field.getText() + "0");
 					field.setCaretPosition(0);
 				}
