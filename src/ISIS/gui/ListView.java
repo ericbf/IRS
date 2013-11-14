@@ -23,6 +23,8 @@ public abstract class ListView<E extends Record> extends View {
 
     public ListView(SplitPane splitPane, boolean multiSelect) {
         super(splitPane);
+
+        //watch the DB table associated with this list for changes.
         Session.watchTable(this.getTableName(), new TableUpdateListener() {
             private static final long serialVersionUID = 1L;
 
@@ -31,6 +33,8 @@ public abstract class ListView<E extends Record> extends View {
                 ListView.this.doFillTable();
             }
         });
+
+        // add the table.
         this.table = new JTable();
         this.table.setSelectionMode(multiSelect ? ListSelectionModel.MULTIPLE_INTERVAL_SELECTION : ListSelectionModel.SINGLE_SELECTION);
         this.table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
@@ -56,10 +60,13 @@ public abstract class ListView<E extends Record> extends View {
         return null;
     }
 
+    // Do any pre-population of records, then call doFillTable (supposedly).
     protected abstract void fillTable();
 
+    // Populate records in the instance.
     protected abstract void doFillTable();
 
+    // DB table the data is coming from.
     protected abstract DB.TableName getTableName();
 
     @Override
@@ -67,6 +74,7 @@ public abstract class ListView<E extends Record> extends View {
         return null;
     }
 
+    // Helper method. Map results of query to an arraylist of records.
     protected abstract ArrayList<E> mapResults(
             ArrayList<HashMap<String, Field>> results);
 
@@ -125,7 +133,8 @@ public abstract class ListView<E extends Record> extends View {
         throw new UnsupportedOperationException("Not supported.");
     }
 
-    protected void setTableModel(IRSTableModel model) {
+    // Sets the table's model.
+    protected final void setTableModel(IRSTableModel model) {
         this.tableModel = model;
         this.table.setModel(model);
         this.table.setFocusable(false);
