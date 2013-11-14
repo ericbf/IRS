@@ -6,7 +6,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
@@ -83,9 +82,7 @@ public class AddEditItem extends AddEditView {
 		BigDecimal onhand = new BigDecimal(this.stock.getText());
 		BigDecimal reorder = new BigDecimal(this.reorder.getText());
 		BigDecimal cost = new BigDecimal(this.cost.getText());
-		DecimalFormat df = new DecimalFormat();
-		df.setMaximumFractionDigits(2);
-		if (this.isAnyFieldDifferentFromDefault()) return null;
+		if (!this.isAnyFieldDifferentFromDefault()) return null;
 		if (this.item == null) {
 			this.item = new Item(this.name.getText(), this.SKU.getText(),
 					this.description.getText(), price, onhand, reorder,
@@ -109,17 +106,17 @@ public class AddEditItem extends AddEditView {
 	 */
 	@Override
 	public Boolean isAnyFieldDifferentFromDefault() {
-		boolean out = true;
-		out &= this.active.isSelected();
-		out &= this.SKU.getText().isEmpty();
-		out &= this.name.getText().isEmpty();
-		out &= this.description.getText().isEmpty();
-		out &= this.UOM.getText().isEmpty();
-		out &= this.price.getText().equals("0.0");
-		out &= this.stock.getText().equals("0.0");
-		out &= this.cost.getText().equals("0.0");
-		out &= this.reorder.getText().equals("0.0");
-		return out;
+		boolean same = true;
+		same &= this.active.isSelected();
+		same &= this.SKU.getText().isEmpty();
+		same &= this.name.getText().isEmpty();
+		same &= this.description.getText().isEmpty();
+		same &= this.UOM.getText().isEmpty();
+		same &= this.price.getText().equals("0.0");
+		same &= this.stock.getText().equals("0.0");
+		same &= this.cost.getText().equals("0.0");
+		same &= this.reorder.getText().equals("0.0");
+		return !same;
 	}
 	
 	/**
