@@ -24,7 +24,7 @@ import ISIS.item.Item;
 public class AddEditItem extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
 	private JCheckBox			active;
-	private HintField			SKU, name, price, stock, UOM;
+	private HintField			SKU, name, price, stock, UOM, cost, reorder;
 	private Item				item;
 	private JTextArea			description;
 	
@@ -51,6 +51,8 @@ public class AddEditItem extends AddEditView {
 		this.SKU.setText(this.item.getSKU());
 		this.name.setText(this.item.getName());
 		this.price.setText(this.item.getPrice().toString());
+                this.cost.setText(this.item.getCost().toString());
+                this.reorder.setText(this.item.getReorderQuantity().toString());
 		this.stock.setText(this.item.getOnHandQty().toString());
 		this.UOM.setText(this.item.getUOM());
 		this.description.setText(this.item.getDescription());
@@ -86,13 +88,13 @@ public class AddEditItem extends AddEditView {
 					+ this.price.getText() + "; must be a number.");
 		}
 		try {
-			reorder = new BigDecimal("0.0"); // TODO: fix me
+			reorder = new BigDecimal(this.reorder.getText()); // TODO: fix me
 		} catch (NumberFormatException e) {
 			throw new BadInputException("Bad input for reorder quantity (\""
 					+ this.price.getText() + "; must be a number.");
 		}
 		try {
-			cost = new BigDecimal("0.0"); // TODO: fix me
+			cost = new BigDecimal(this.cost.getText()); // TODO: fix me
 		} catch (NumberFormatException e) {
 			throw new BadInputException("Bad input for cost (\""
 					+ this.price.getText() + "; must be a number.");
@@ -199,6 +201,36 @@ public class AddEditItem extends AddEditView {
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.price = new HintField("Price"), c);
 		
+                c = new GridBagConstraints();
+		c.weightx = 0;
+		c.gridx = x++;
+		c.gridy = y;
+		c.fill = GridBagConstraints.BOTH;
+		this.add(new JLabel("Cost"), c);
+		
+		c = new GridBagConstraints();
+		c.weightx = 1;
+		c.gridx = x--;
+		c.gridy = y++;
+		c.gridwidth = 2;
+		c.fill = GridBagConstraints.BOTH;
+		this.add(this.cost = new HintField("cost"), c);
+                
+                c = new GridBagConstraints();
+		c.weightx = 0;
+		c.gridx = x++;
+		c.gridy = y;
+		c.fill = GridBagConstraints.BOTH;
+		this.add(new JLabel("Reorder"), c);
+		
+		c = new GridBagConstraints();
+		c.weightx = 1;
+		c.gridx = x--;
+		c.gridy = y++;
+		c.gridwidth = 2;
+		c.fill = GridBagConstraints.BOTH;
+		this.add(this.reorder = new HintField("reorder"), c);
+                
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
