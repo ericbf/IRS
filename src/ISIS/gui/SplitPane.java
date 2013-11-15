@@ -202,6 +202,9 @@ public final class SplitPane extends JPanel {
 	public final void push(View view, LayoutType layout, View pusher) {
 		if (pusher != null) {
 			int origin = this.stack.indexOf(pusher);
+            if (origin == -1) {
+                throw new RuntimeException("WAT. This should never happen.");  // pusher.. didn't exist.
+            }
 			if (origin < this.stackPointer) {
 				try {
 					this.popAllAbovePointer();

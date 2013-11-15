@@ -235,7 +235,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 			this.records = this.mapResults(results);
 			this.populateTable();
 		} catch (SQLException e) {
-			ErrorLogger.error(e, "Error populating item table.", true, true);
+			ErrorLogger.error(e, "Error populating list.", true, true);
 		}
 	}
 	

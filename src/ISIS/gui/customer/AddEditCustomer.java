@@ -1,24 +1,19 @@
 package ISIS.gui.customer;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.sql.SQLException;
-
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.border.EtchedBorder;
-
 import ISIS.customer.Customer;
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
+import ISIS.gui.address.ListAddress;
 import ISIS.misc.Address;
 import ISIS.misc.Phone;
 import ISIS.transaction.Transaction;
+
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import java.awt.*;
+import java.sql.SQLException;
 
 /**
  * View for adding and editing customers.
@@ -49,9 +44,9 @@ public class AddEditCustomer extends AddEditView {
 	 */
 	public AddEditCustomer(SplitPane splitPane, int pkey) throws SQLException {
 		super(splitPane);
-		this.populateElements();
 		this.customer = new Customer(pkey, true);
-		
+		this.populateElements();
+
 		this.active.setSelected(this.customer.isActive());
 		this.password.setText(this.customer.getPassword());
 		this.fname.setText(this.customer.getFirstName());
@@ -71,13 +66,30 @@ public class AddEditCustomer extends AddEditView {
 	 */
 	@SuppressWarnings("unused")
 	private void addLists(int desiredX, int currentY) {
+        if (this.customer == null) {
+            // if the customer hasn't been saved, we can't do this as things are now
+            // TODO: FIX
+           return;
+        }
 		JPanel rightSide = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        int y = 0;
 		c.gridx = desiredX;
-		c.gridy = 0;
-		c.weightx = 1;
+		c.gridy = y++;
+        c.weightx = 1;
+        c.weighty = 1;
 		c.gridheight = currentY;
 		this.add(rightSide, c);
+
+        int x = 0;
+        c = new GridBagConstraints();
+        c.gridy = y = 0;
+        c.gridx = x;
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = 1;
+        rightSide.add(new ListAddress(this.splitPane, this, this.customer.getPkey(), false), c);
 	}
 	
 	/**
@@ -215,6 +227,6 @@ public class AddEditCustomer extends AddEditView {
 		this.add(this.note = new JTextArea(), c);
 		this.note.setBorder(new EtchedBorder());
 		
-		// this.addLists(2, y);
+		this.addLists(2, y);
 	}
 }
