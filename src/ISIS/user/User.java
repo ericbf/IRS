@@ -1,14 +1,5 @@
 package ISIS.user;
 
-import ISIS.database.DB;
-import ISIS.database.DB.TableName;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.database.RecordNotFoundException;
-import ISIS.gui.ErrorLogger;
-import ISIS.misc.Picture;
-import ISIS.session.Session;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -17,6 +8,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+import ISIS.database.DB;
+import ISIS.database.DB.TableName;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.database.RecordNotFoundException;
+import ISIS.gui.ErrorLogger;
+import ISIS.misc.Picture;
+import ISIS.session.Session;
 
 /**
  * The class representing the person who is employed by the client and is using

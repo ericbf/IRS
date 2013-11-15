@@ -1,8 +1,8 @@
 package ISIS.html;
 
-import ISIS.html.objects.HTMLObject;
-
 import java.util.ArrayList;
+
+import ISIS.html.objects.HTMLObject;
 
 public class HTMLBuilder {
 	private final ArrayList<JSScript>	scripts;

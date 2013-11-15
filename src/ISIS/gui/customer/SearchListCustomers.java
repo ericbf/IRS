@@ -1,5 +1,16 @@
 package ISIS.gui.customer;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+
 import ISIS.customer.Customer;
 import ISIS.database.DB;
 import ISIS.database.Field;
@@ -9,14 +20,6 @@ import ISIS.gui.IRSTableModel;
 import ISIS.gui.SearchListView;
 import ISIS.gui.SplitPane;
 import ISIS.misc.Phone;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * List of customers. Allows you to query and act on customers.
@@ -50,7 +53,8 @@ public class SearchListCustomers extends SearchListView<Customer> {
 			public void actionPerformed(ActionEvent e) {
 				SearchListCustomers.this.splitPane.push(new AddEditCustomer(
 						SearchListCustomers.this.splitPane),
-						SplitPane.LayoutType.HORIZONTAL, SearchListCustomers.this);
+						SplitPane.LayoutType.HORIZONTAL,
+						SearchListCustomers.this);
 			}
 		});
 		
@@ -62,18 +66,18 @@ public class SearchListCustomers extends SearchListView<Customer> {
 				if (selected == -1) {
 					selected = SearchListCustomers.this.selected;
 					if (selected == -1) return;
-					SearchListCustomers.this.table.setRowSelectionInterval(selected,
-							selected);
+					SearchListCustomers.this.table.setRowSelectionInterval(
+							selected, selected);
 				}
 				
 				int pkey = SearchListCustomers.this.keys.get(selected);
 				
 				try {
-					SearchListCustomers.this.splitPane
-							.push(new AddEditCustomer(
+					SearchListCustomers.this.splitPane.push(
+							new AddEditCustomer(
 									SearchListCustomers.this.splitPane, pkey),
-									SplitPane.LayoutType.HORIZONTAL,
-									SearchListCustomers.this);
+							SplitPane.LayoutType.HORIZONTAL,
+							SearchListCustomers.this);
 				} catch (SQLException ex) {
 					ErrorLogger.error(ex,
 							"Failed to open the customer record.", true, true);

@@ -1,11 +1,11 @@
 package ISIS.html.objects;
 
-import ISIS.html.StringBuilder;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import ISIS.html.StringBuilder;
 
 public class HTMLObject {
 	protected enum Type {

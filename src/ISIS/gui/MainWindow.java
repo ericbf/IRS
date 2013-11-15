@@ -1,5 +1,15 @@
 package ISIS.gui;
 
+import java.awt.Dimension;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import ISIS.customer.Customer;
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.SearchListCustomers;
@@ -11,11 +21,6 @@ import ISIS.misc.Phone;
 import ISIS.session.Session;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
-
-import javax.swing.*;
-import java.awt.*;
-import java.math.BigDecimal;
-import java.sql.SQLException;
 
 /**
  * Class for main window. No public methods available.
@@ -29,12 +34,12 @@ public class MainWindow extends JFrame {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
-            ErrorLogger.error(e, "Couldn't set look and feel.", false, false);
-        } catch (InstantiationException e) {
-            ErrorLogger.error(e, "Couldn't set look and feel.", false, false);
-        } catch (IllegalAccessException e) {
-            ErrorLogger.error(e, "Couldn't set look and feel.", false, false);
-        } catch(UnsupportedLookAndFeelException e) {
+			ErrorLogger.error(e, "Couldn't set look and feel.", false, false);
+		} catch (InstantiationException e) {
+			ErrorLogger.error(e, "Couldn't set look and feel.", false, false);
+		} catch (IllegalAccessException e) {
+			ErrorLogger.error(e, "Couldn't set look and feel.", false, false);
+		} catch (UnsupportedLookAndFeelException e) {
 			ErrorLogger.error(e, "Couldn't set look and feel.", false, false);
 		}
 		
@@ -89,8 +94,8 @@ public class MainWindow extends JFrame {
 			}
 			
 		} catch (SQLException ex) {
-            ErrorLogger.error(ex, "something went wrong lel", true, true);
-        } catch(RecordNotFoundException ex) {
+			ErrorLogger.error(ex, "something went wrong lel", true, true);
+		} catch (RecordNotFoundException ex) {
 			ErrorLogger.error(ex, "something went wrong lel", true, true);
 		}
 		SwingUtilities.invokeLater(new Runnable() {
@@ -165,9 +170,10 @@ public class MainWindow extends JFrame {
 		// SplitPane.LayoutType.HORIZONTAL);
 		
 		this.transactionPane = new SplitPane();
-		this.transactionPane.push(new SearchListTransactions(this.transactionPane),
-				SplitPane.LayoutType.HORIZONTAL, null);
-		// this.transactionPane.push(new SearchListTransactions(this.transactionPane),
+		this.transactionPane.push(new SearchListTransactions(
+				this.transactionPane), SplitPane.LayoutType.HORIZONTAL, null);
+		// this.transactionPane.push(new
+		// SearchListTransactions(this.transactionPane),
 		// SplitPane.LayoutType.HORIZONTAL);
 		
 		// this.reportPane = new SplitPane();

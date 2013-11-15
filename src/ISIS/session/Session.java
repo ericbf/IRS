@@ -1,13 +1,13 @@
 package ISIS.session;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import ISIS.database.DB;
 import ISIS.gui.TableUpdateListener;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Various information and methods that is associated with a session. This

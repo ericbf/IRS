@@ -1,11 +1,17 @@
 package ISIS.gui;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 /**
  *
@@ -23,6 +29,7 @@ public final class SplitPane extends JPanel {
 	ArrayList<View>				stack;
 	private int					stackPointer;
 	private JSplitPane			splitPane;
+	private double				dividerLocationRatio;
 	
 	JPanel						buttons;
 	
@@ -40,6 +47,7 @@ public final class SplitPane extends JPanel {
 		buttonLayout.columnWidths = new int[] { 0, 94, 94, 94, 94 };
 		this.buttons.setOpaque(false);
 		this.add(this.buttons, BorderLayout.NORTH);
+		this.dividerLocationRatio = 0.5;
 	}
 	
 	/**
@@ -142,13 +150,15 @@ public final class SplitPane extends JPanel {
 	 * @post hiddenViews() == true
 	 */
 	public final void backward() {
+		this.dividerLocationRatio = ((double) this.splitPane
+				.getDividerLocation()) / this.getWidth();
 		if (this.stackPointer == 1) {
 			this.setLeftComponent(this.stack.get(--this.stackPointer));
 			this.setRightComponent(null);
 		} else {
 			this.setLeftComponent(this.stack.get(--this.stackPointer - 1));
 			this.setRightComponent(this.stack.get(this.stackPointer));
-			this.splitPane.setDividerLocation(this.getWidth() / 2);
+			this.splitPane.setDividerLocation(this.dividerLocationRatio);
 		}
 		this.addButtons();
 		this.validate();
@@ -161,9 +171,12 @@ public final class SplitPane extends JPanel {
 	 * @post previousViews() == true
 	 */
 	protected final void forward() {
+		if (this.stackPointer > 0)
+			this.dividerLocationRatio = ((double) this.splitPane
+					.getDividerLocation()) / this.getWidth();
 		this.setRightComponent(this.stack.get(++this.stackPointer));
 		this.setLeftComponent(this.stack.get(this.stackPointer - 1));
-		this.splitPane.setDividerLocation(this.getWidth() / 2);
+		this.splitPane.setDividerLocation(this.dividerLocationRatio);
 		this.addButtons();
 	}
 	
@@ -202,9 +215,10 @@ public final class SplitPane extends JPanel {
 	public final void push(View view, LayoutType layout, View pusher) {
 		if (pusher != null) {
 			int origin = this.stack.indexOf(pusher);
-            if (origin == -1) {
-                throw new RuntimeException("WAT. This should never happen.");  // pusher.. didn't exist.
-            }
+			if (origin == -1) {
+				// pusher.. didn't.. exist..
+				throw new RuntimeException("WAT. This should never happen.");
+			}
 			if (origin < this.stackPointer) {
 				try {
 					this.popAllAbovePointer();

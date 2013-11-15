@@ -6,6 +6,7 @@ package ISIS.gui;
 import java.awt.Color;
 import java.sql.SQLException;
 
+import javax.swing.border.EmptyBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -63,12 +64,14 @@ public abstract class AddEditView extends View {
 			}
 		};
 	}
+	protected boolean					wasSavedOrAlreadySetUp;
 	
 	/**
 	 * Link to super
 	 */
 	public AddEditView(SplitPane splitPane) {
 		super(splitPane);
+		this.setBorder(new EmptyBorder(4, 0, 10, 5));
 	}
 	
 	/**
@@ -77,11 +80,18 @@ public abstract class AddEditView extends View {
 	 * @param fields
 	 */
 	protected final void disableFields(HintField... fields) {
+		this.wasSavedOrAlreadySetUp = true;
 		for (HintField field : fields) {
 			field.setEditable(false);
 			field.setForeground(Color.gray);
 		}
 	}
+	
+	/**
+	 * Use this to activate the necessary fields after the first save. Override
+	 * to give action.
+	 */
+	protected void doSaveRecordAction() {}
 	
 	/*
 	 * (non-Javadoc)
@@ -90,7 +100,7 @@ public abstract class AddEditView extends View {
 	@Override
 	public final boolean needsSave() {
 		return true;
-	}
+	};
 	
 	/*
 	 * (non-Javadoc)
@@ -102,6 +112,10 @@ public abstract class AddEditView extends View {
 			if (this.isAnyFieldDifferentFromDefault() != null
 					&& this.isAnyFieldDifferentFromDefault())
 				this.getCurrentRecord().save();
+			if (!this.wasSavedOrAlreadySetUp) {
+				this.doSaveRecordAction();
+				this.wasSavedOrAlreadySetUp = true;
+			}
 		} catch (BadInputException e) {
 			ErrorLogger.error(e, "", false, true);
 		}

@@ -1,17 +1,17 @@
 package ISIS.gui;
 
-import ISIS.database.Record;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.sql.SQLException;
+
+import javax.swing.JPanel;
+
+import ISIS.database.Record;
 
 /**
  * Abstract class for all views.
  */
 public abstract class View extends JPanel {
 	private static final long	serialVersionUID	= 1L;
-	protected final SplitPane			splitPane;
+	protected final SplitPane	splitPane;
 	
 	/**
 	 * Base constructor for views not in a split pane.
@@ -26,7 +26,6 @@ public abstract class View extends JPanel {
 	public View(SplitPane splitPane) {
 		this.splitPane = splitPane;
 		this.setOpaque(false);
-		this.setBorder(new EmptyBorder(4, 0, 10, 5));
 	}
 	
 	/**

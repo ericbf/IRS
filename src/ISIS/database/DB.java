@@ -1,10 +1,16 @@
 package ISIS.database;
 
-import ISIS.gui.ErrorLogger;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import ISIS.gui.ErrorLogger;
 
 /**
  * Manages third party relational database software used to manage and organize
@@ -26,7 +32,8 @@ public final class DB {
 		ResultSetMetaData md = rs.getMetaData();
 		ArrayList<HashMap<String, Field>> rows = new ArrayList<HashMap<String, Field>>();
 		while (rs.next()) {
-			HashMap<String, Field> row = new HashMap<String, Field>(md.getColumnCount());
+			HashMap<String, Field> row = new HashMap<String, Field>(
+					md.getColumnCount());
 			for (int i = 1; i <= md.getColumnCount(); ++i) {
 				Field field = new Field();
 				field.initField(rs.getObject(i));
@@ -210,8 +217,8 @@ public final class DB {
 					+ junction
 					+ " BEGIN\nDELETE FROM customer_search WHERE content=new.customer;\nEND;");
 			this.executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_"
-					+ junction + "_insert_after AFTER INSERT ON " + junction +
-					" BEGIN\n" + customer_search_insert + "new"
+					+ junction + "_insert_after AFTER INSERT ON " + junction
+					+ " BEGIN\n" + customer_search_insert + "new"
 					+ ".customer;" + "\nEND;");
 			this.executeUpdate("CREATE TRIGGER IF NOT EXISTS customer_search_"
 					+ junction
@@ -253,7 +260,8 @@ public final class DB {
 		this.executeUpdate("CREATE TRIGGER IF NOT EXISTS item_search_insert AFTER INSERT ON item BEGIN\n"
 				+ item_search_insert + "new.rowid; END;");
 		this.executeUpdate("CREATE TRIGGER IF NOT EXISTS item_search_update_before BEFORE UPDATE ON item BEGIN\n"
-				+ "DELETE FROM " + "item_search WHERE content=old.pkey;\nEND;\n");
+				+ "DELETE FROM "
+				+ "item_search WHERE content=old.pkey;\nEND;\n");
 		this.executeUpdate("CREATE TRIGGER IF NOT EXISTS item_search_update_after AFTER UPDATE ON item BEGIN\n"
 				+ item_search_insert + "new.rowid;\nEND;\n");
 		this.executeUpdate("CREATE TRIGGER IF NOT EXISTS item_search_delete BEFORE DELETE ON item BEGIN\n"

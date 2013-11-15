@@ -1,19 +1,29 @@
 package ISIS.gui.customer;
 
+import java.awt.CardLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.border.EtchedBorder;
+
 import ISIS.customer.Customer;
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
 import ISIS.gui.HintField;
+import ISIS.gui.SimpleListView;
 import ISIS.gui.SplitPane;
 import ISIS.gui.address.ListAddress;
-import ISIS.misc.Address;
-import ISIS.misc.Phone;
-import ISIS.transaction.Transaction;
-
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import java.awt.*;
-import java.sql.SQLException;
 
 /**
  * View for adding and editing customers.
@@ -23,10 +33,14 @@ public class AddEditCustomer extends AddEditView {
 	JCheckBox					active;
 	HintField					password, fname, lname, email;
 	JTextArea					note;
-	JList<Transaction>			transactions;
-	JList<Address>				addresses;
-	JList<Phone>				phones;
+	// JList<Transaction> transactions;
+	// JList<Address> addresses;
+	// JList<Phone> phones;
 	Customer					customer;
+	JPanel						otherListsContainer;
+	CardLayout					otherListsCardLayout;
+	JButton						addresses, transactions, phones;
+	ArrayList<JButton>			cardLayoutViewButtons;
 	
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
@@ -34,7 +48,6 @@ public class AddEditCustomer extends AddEditView {
 	public AddEditCustomer(SplitPane splitPane) {
 		super(splitPane);
 		this.populateElements();
-		this.customer = null;
 	}
 	
 	/**
@@ -46,50 +59,13 @@ public class AddEditCustomer extends AddEditView {
 		super(splitPane);
 		this.customer = new Customer(pkey, true);
 		this.populateElements();
-
+		
 		this.active.setSelected(this.customer.isActive());
 		this.password.setText(this.customer.getPassword());
 		this.fname.setText(this.customer.getFirstName());
 		this.lname.setText(this.customer.getLastName());
 		this.email.setText(this.customer.getEmail());
 		this.note.setText(this.customer.getNote());
-		this.disableFields(this.fname, this.lname);
-	}
-	
-	/**
-	 * add the lists to the right hand side of the view.
-	 * 
-	 * @param desiredX
-	 *            The desired x position in the grid.
-	 * @param currentY
-	 *            The current y position in the grid.
-	 */
-	@SuppressWarnings("unused")
-	private void addLists(int desiredX, int currentY) {
-        if (this.customer == null) {
-            // if the customer hasn't been saved, we can't do this as things are now
-            // TODO: FIX
-           return;
-        }
-		JPanel rightSide = new JPanel(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        int y = 0;
-		c.gridx = desiredX;
-		c.gridy = y++;
-        c.weightx = 1;
-        c.weighty = 1;
-		c.gridheight = currentY;
-		this.add(rightSide, c);
-
-        int x = 0;
-        c = new GridBagConstraints();
-        c.gridy = y = 0;
-        c.gridx = x;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.weighty = 1;
-        rightSide.add(new ListAddress(this.splitPane, this, this.customer.getPkey(), false), c);
 	}
 	
 	/**
@@ -97,6 +73,71 @@ public class AddEditCustomer extends AddEditView {
 	 */
 	@Override
 	public void cancel() {}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.AddEditView#newWasSaved()
+	 */
+	@Override
+	protected void doSaveRecordAction() {
+		if (this.customer != null && !this.wasSavedOrAlreadySetUp) {
+			@SuppressWarnings("rawtypes")
+			SimpleListView l;
+			
+			l = new ListAddress(this.splitPane, this, this.customer.getPkey(),
+					false);
+			this.otherListsContainer.add(l);
+			this.otherListsCardLayout.addLayoutComponent(l, "addresses");
+			this.addresses.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AddEditCustomer.this.otherListsCardLayout.show(
+							AddEditCustomer.this.otherListsContainer,
+							"addresses");
+				}
+			});
+			
+			// l = new ListTransactions(this.splitPane, this,
+			// this.customer.getPkey(), false);
+			// this.otherListsContainer.add(l);
+			// this.otherListsCardLayout.addLayoutComponent(l, "transactions");
+			// this.transactions.addActionListener(new ActionListener() {
+			// @Override
+			// public void actionPerformed(ActionEvent e) {
+			// AddEditCustomer.this.otherListsCardLayout.show(
+			// AddEditCustomer.this.otherListsContainer,
+			// "transactions");
+			// }
+			// });
+			// // TODO: add other view here
+			//
+			// l = new ListPhones(this.splitPane, this, this.customer.getPkey(),
+			// false);
+			// this.otherListsContainer.add(l);
+			// this.otherListsCardLayout.addLayoutComponent(l, "phones");
+			// this.transactions.addActionListener(new ActionListener() {
+			// @Override
+			// public void actionPerformed(ActionEvent e) {
+			// AddEditCustomer.this.otherListsCardLayout.show(
+			// AddEditCustomer.this.otherListsContainer,
+			// "phones");
+			// }
+			// });
+			// // TODO: add other view here
+			
+			this.disableFields(this.lname, this.fname);
+			for (JButton b : this.cardLayoutViewButtons) {
+				b.setEnabled(true);
+				b.setToolTipText(null);
+			}
+		} else if (this.customer == null) {
+			for (JButton b : this.cardLayoutViewButtons) {
+				b.setEnabled(false);
+				b.setToolTipText("Save this record to access this area");
+			}
+		}
+		
+	}
 	
 	/*
 	 * (non-Javadoc)
@@ -137,6 +178,7 @@ public class AddEditCustomer extends AddEditView {
 	private void populateElements() {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
+		this.cardLayoutViewButtons = new ArrayList<>();
 		int x = 0, y = 0;
 		
 		c = new GridBagConstraints();
@@ -227,6 +269,50 @@ public class AddEditCustomer extends AddEditView {
 		this.add(this.note = new JTextArea(), c);
 		this.note.setBorder(new EtchedBorder());
 		
-		this.addLists(2, y);
+		int depth = y;
+		
+		c = new GridBagConstraints();
+		c.gridx = x = 2;
+		c.gridy = y = 0;
+		// c.weightx = .25;
+		c.fill = GridBagConstraints.BOTH;
+		this.add(this.addresses = new JButton("Addresses"), c);
+		this.cardLayoutViewButtons.add(this.addresses);
+		
+		c = new GridBagConstraints();
+		c.gridx = ++x;
+		c.gridy = y;
+		// c.weightx = .25;
+		c.fill = GridBagConstraints.BOTH;
+		this.add(this.transactions = new JButton("Transactions"), c);
+		this.cardLayoutViewButtons.add(this.transactions);
+		
+		c = new GridBagConstraints();
+		c.gridx = ++x;
+		c.gridy = y;
+		// c.weightx = .25;
+		c.fill = GridBagConstraints.BOTH;
+		this.add(this.phones = new JButton("Phones"), c);
+		this.cardLayoutViewButtons.add(this.phones);
+		
+		c = new GridBagConstraints();
+		c.gridheight = depth;
+		c.gridwidth = x - 1;
+		// c.weightx = .5;
+		c.weighty = 1;
+		c.gridx = 2;
+		c.gridy = ++y;
+		c.fill = GridBagConstraints.BOTH;
+		this.add(this.otherListsContainer = new JPanel(
+				this.otherListsCardLayout = new CardLayout()), c);
+		this.otherListsContainer.setOpaque(false);
+		this.otherListsContainer.setPreferredSize(new Dimension(this
+				.getPreferredSize().width / 2, this.getPreferredSize().height));
+		
+		for (JButton b : this.cardLayoutViewButtons) {
+			b.setFont(new Font("Small", Font.PLAIN, 11));
+		}
+		
+		this.doSaveRecordAction();
 	}
 }

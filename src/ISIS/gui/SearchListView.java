@@ -1,35 +1,49 @@
 package ISIS.gui;
 
-import ISIS.database.DB;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.session.Session;
-
-import javax.swing.*;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.DefaultFocusTraversalPolicy;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+
+import ISIS.database.DB;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.session.Session;
+
 /**
  * Abstract class for views that consist of a list that can be searched.
  */
 public abstract class SearchListView<E extends Record> extends ListView<E> {
-	private static final long		serialVersionUID		= 1L;
-	protected HintField				searchField;
-	protected String[]				buttonNames				= { "Add", "Edit",
+	private static final long	serialVersionUID		= 1L;
+	protected HintField			searchField;
+	protected String[]			buttonNames				= { "Add", "Edit",
 			"Toggle Active", "View", "Generate Nonfinal Invoice(s)",
-			"Close and Generate Invoice"					};
-	protected int					selected;
-	private String					lastSearchFieldValue	= " ";
+			"Close and Generate Invoice"				};
+	protected int				selected;
+	private String				lastSearchFieldValue	= " ";
 	
 	public SearchListView(SplitPane splitPane) {
 		super(splitPane, false);
-
+		this.setBorder(new EmptyBorder(4, 0, 10, 5));
+		
 		this.selected = -1;
 		this.searchField = new HintField("Enter query to search...");
 		this.searchField.addCaretListener(new CaretListener() {
@@ -47,19 +61,23 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_DOWN:
 						if (SearchListView.this.table.getRowCount() > 0) {
-							int downSel = SearchListView.this.table.getSelectedRow();
+							int downSel = SearchListView.this.table
+									.getSelectedRow();
 							if (meta) {
-								downSel = SearchListView.this.table.getRowCount() - 1;
-								SearchListView.this.table.setRowSelectionInterval(
-										downSel, downSel);
+								downSel = SearchListView.this.table
+										.getRowCount() - 1;
+								SearchListView.this.table
+										.setRowSelectionInterval(downSel,
+												downSel);
 							} else if (downSel != -1) {
 								downSel += downSel + 1 < SearchListView.this.table
 										.getRowCount() ? 1 : 0;
-								SearchListView.this.table.setRowSelectionInterval(
-										downSel, downSel);
+								SearchListView.this.table
+										.setRowSelectionInterval(downSel,
+												downSel);
 							} else {
-								SearchListView.this.table.setRowSelectionInterval(0,
-										0);
+								SearchListView.this.table
+										.setRowSelectionInterval(0, 0);
 							}
 						}
 						int sel;
@@ -68,22 +86,24 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 						break;
 					case KeyEvent.VK_UP:
 						if (SearchListView.this.table.getRowCount() > 0) {
-							int upSel = SearchListView.this.table.getSelectedRow();
+							int upSel = SearchListView.this.table
+									.getSelectedRow();
 							if (meta) {
-								SearchListView.this.table.setRowSelectionInterval(0,
-										0);
+								SearchListView.this.table
+										.setRowSelectionInterval(0, 0);
 							} else if (upSel != -1) {
 								upSel -= upSel > 0 ? 1 : 0;
-								SearchListView.this.table.setRowSelectionInterval(
-										upSel, upSel);
+								SearchListView.this.table
+										.setRowSelectionInterval(upSel, upSel);
 							} else {
 								upSel = SearchListView.this.table.getRowCount() - 1;
-								SearchListView.this.table.setRowSelectionInterval(
-										upSel, upSel);
+								SearchListView.this.table
+										.setRowSelectionInterval(upSel, upSel);
 							}
 						}
 						int selPasser;
-						if ((selPasser = SearchListView.this.table.getSelectedRow()) != -1)
+						if ((selPasser = SearchListView.this.table
+								.getSelectedRow()) != -1)
 							SearchListView.this.selected = selPasser;
 						break;
 				}
@@ -126,11 +146,13 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 							if (meta) {
 								int rowCount = SearchListView.this.table
 										.getRowCount() - 1;
-								SearchListView.this.table.setRowSelectionInterval(
-										rowCount, rowCount);
-							} else if (SearchListView.this.table.getSelectedRow() == -1) {
-								SearchListView.this.table.setRowSelectionInterval(0,
-										0);
+								SearchListView.this.table
+										.setRowSelectionInterval(rowCount,
+												rowCount);
+							} else if (SearchListView.this.table
+									.getSelectedRow() == -1) {
+								SearchListView.this.table
+										.setRowSelectionInterval(0, 0);
 							}
 						}
 						int sel;
@@ -140,17 +162,20 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 					case KeyEvent.VK_UP:
 						if (SearchListView.this.table.getRowCount() > 0) {
 							if (meta) {
-								SearchListView.this.table.setRowSelectionInterval(0,
-										0);
-							} else if (SearchListView.this.table.getSelectedRow() == -1) {
+								SearchListView.this.table
+										.setRowSelectionInterval(0, 0);
+							} else if (SearchListView.this.table
+									.getSelectedRow() == -1) {
 								int rowCount = SearchListView.this.table
 										.getRowCount() - 1;
-								SearchListView.this.table.setRowSelectionInterval(
-										rowCount, rowCount);
+								SearchListView.this.table
+										.setRowSelectionInterval(rowCount,
+												rowCount);
 							}
 						}
 						int selPasser;
-						if ((selPasser = SearchListView.this.table.getSelectedRow()) != -1)
+						if ((selPasser = SearchListView.this.table
+								.getSelectedRow()) != -1)
 							SearchListView.this.selected = selPasser;
 						break;
 				}
@@ -205,6 +230,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 	
 	protected abstract void actionHandlerActionForSearchField();
 	
+	@Override
 	protected final void doFillTable() {
 		String searchFieldText = this.searchField.getText();
 		try {
@@ -239,6 +265,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 		}
 	}
 	
+	@Override
 	protected final void fillTable() {
 		String searchFieldText = this.searchField.getText();
 		if (searchFieldText.equals(this.lastSearchFieldValue)) {
