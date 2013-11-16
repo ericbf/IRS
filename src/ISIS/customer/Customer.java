@@ -42,8 +42,10 @@ public class Customer extends Record {
 	boolean						addressesInitialized	= false,
 			numbersInitialized = false;
 	private ArrayList<Address>	addresses				= new ArrayList<Address>();
+	private ArrayList<Address>	addressesToSave				= new ArrayList<Address>();
 	private ArrayList<Address>	addressesToRemove		= new ArrayList<Address>();
 	private ArrayList<Phone>	numbers					= new ArrayList<Phone>();
+	private ArrayList<Phone>	numbersToSave					= new ArrayList<Phone>();
 	private ArrayList<Phone>	numbersToRemove			= new ArrayList<Phone>();
 	
 	public Customer(HashMap<String, Field> map) {
@@ -83,6 +85,7 @@ public class Customer extends Record {
 	 */
 	public void addAddress(Address address) {
 		this.addresses.add(address);
+        this.addressesToSave.add(address);
 	}
 	
 	/**
@@ -93,6 +96,7 @@ public class Customer extends Record {
 	 */
 	public void addPhoneNum(Phone phone) {
 		this.numbers.add(phone);
+        this.numbersToSave.add(phone);
 	}
 	
 	/**
@@ -124,6 +128,7 @@ public class Customer extends Record {
 			for (HashMap<String, Field> result : results) {
 				this.addresses.add(new Address(result));
 			}
+            this.addressesInitialized = true;
 			return this.addresses;
 		} catch (SQLException e) {
 			ErrorLogger.error(e, "Failed to retrieve addresses.", true, true);
@@ -265,6 +270,7 @@ public class Customer extends Record {
 				}
 				stmt.setInt(i, this.getPkey());
 				stmt.executeUpdate();
+                numbersToRemove.clear();
 			} catch (SQLException e) {
 				ErrorLogger.error(e, "Could not remove phone numbers.", true,
 						true);
@@ -273,25 +279,26 @@ public class Customer extends Record {
 		}
 		
 		// save any new phone numbers
-		if (this.numbers.size() > 0) {
+		if (this.numbersToSave.size() > 0) {
 			try {
 				String sql = "INSERT INTO customer_phone (customer, phone) VALUES "
-						+ DB.preparedArgsBuilder(this.numbers.size(), "(?, ?)");
+						+ DB.preparedArgsBuilder(this.numbersToSave.size(), "(?, ?)");
 				PreparedStatement stmt = Session.getDB().prepareStatement(sql);
 				int i = 1;
-				while (i < ((this.numbers.size()) * 2 + 1)) {
+				while (i < ((this.numbersToSave.size()) * 2 + 1)) {
 					stmt.setInt(i++, this.getPkey());
 					try {
-						this.numbers.get(i / 2 - 1).save();
+						this.numbersToSave.get(i / 2 - 1).save();
 					} catch (SQLException e) {
 						ErrorLogger.error(e, "Saving a phone number failed.",
 								true, true);
 						throw e;
 					}
-					stmt.setInt(i++, this.numbers.get(i / 2 - 1).getPkey());
+					stmt.setInt(i++, this.numbersToSave.get(i / 2 - 1).getPkey());
 				}
 				stmt.executeUpdate();
                 Session.updateTable(TableName.customer_phone, null);
+                numbersToSave.clear();
 			} catch (SQLException e) {
 				ErrorLogger.error(e, "Could not save phone numbers.", true,
 						true);
@@ -312,6 +319,7 @@ public class Customer extends Record {
 				}
 				stmt.setInt(i, this.getPkey());
 				stmt.executeUpdate();
+                addressesToRemove.clear();
 			} catch (SQLException e) {
 				ErrorLogger.error(e, "Could not remove addresses.", true, true);
 				throw e;
@@ -319,26 +327,27 @@ public class Customer extends Record {
 		}
 
 		// save any new addresses
-		if (this.addresses.size() > 0) {
+		if (this.addressesToSave.size() > 0) {
 			try {
 				String sql = "INSERT INTO customer_address (customer, address) VALUES "
-						+ DB.preparedArgsBuilder(this.addresses.size(),
+						+ DB.preparedArgsBuilder(this.addressesToSave.size(),
 								"(?, ?)");
 				PreparedStatement stmt = Session.getDB().prepareStatement(sql);
 				int i = 1;
-				while (i < ((this.addresses.size()) * 2 + 1)) {
+				while (i < ((this.addressesToSave.size()) * 2 + 1)) {
 					stmt.setInt(i++, this.getPkey());
 					try {
-						this.addresses.get(i / 2 - 1).save();
+						this.addressesToSave.get(i / 2 - 1).save();
 					} catch (SQLException e) {
 						ErrorLogger.error(e, "Saving an address failed.", true,
 								true);
 						throw e;
 					}
-					stmt.setInt(i++, this.addresses.get(i / 2 - 1).getPkey());
+					stmt.setInt(i++, this.addressesToSave.get(i / 2 - 1).getPkey());
 				}
 				stmt.executeUpdate();
                 Session.updateTable(TableName.customer_address, null);
+                addressesToSave.clear();
 			} catch (SQLException e) {
 				ErrorLogger.error(e, "Could not save addresses.", true, true);
 				throw e;
@@ -353,12 +362,20 @@ public class Customer extends Record {
 	 * @post getAddresses().contains(address) == false
 	 */
 	public void removeAddress(Address address) {
+        if(!this.addressesInitialized) {
+            try {
+                this.getAddresses();
+            } catch(SQLException e) {
+                ErrorLogger.error(e, "Failed to populate addresses", true, true);
+                return;
+            }
+        }
 		if (this.addresses.contains(address)) {
 			this.addresses.remove(address);
 			try { // check if address is stored, if not don't add it to the list
 					// to be removed from db
 				address.getPkey(); // throws uninit'd field
-				this.addresses.add(address);
+				this.addressesToRemove.add(address);
 			} catch (UninitializedFieldException e) {}
 		} else {
 			throw new RecordSaveException(

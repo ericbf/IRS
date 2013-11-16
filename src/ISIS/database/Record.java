@@ -5,6 +5,7 @@ import ISIS.gui.ErrorLogger;
 import ISIS.misc.Dates;
 import ISIS.session.Session;
 import ISIS.user.User;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,6 +58,14 @@ public abstract class Record {
 					"Record has no primary key... Faulty join?");
 		}
 	}
+
+    public boolean equals(Object compareTo) {
+        if(compareTo instanceof Record) {
+            return this.getPkey() == ((Record) compareTo).getPkey();
+        } else {
+            throw new NotImplementedException();
+        }
+    }
 	
 	/**
 	 * Fetches the record in the database associated with getPkey(), using the
