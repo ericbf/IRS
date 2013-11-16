@@ -19,7 +19,6 @@ import ISIS.gui.IRSTableModel;
 import ISIS.gui.SimpleListView;
 import ISIS.gui.SplitPane;
 import ISIS.gui.View;
-import ISIS.gui.customer.AddEditTransaction;
 import ISIS.misc.Phone;
 
 /**
@@ -39,15 +38,15 @@ public class ListPhone extends SimpleListView<Phone> {
 			
 			@Override
 			public void addRow(Record record) {
-				Phone transaction = (Phone) record;
+				Phone phone = (Phone) record;
 				Object[] array = new Object[this.getColumnCount()];
 				int i = 0;
 				
-				array[i++] = transaction.getType();
-				array[i++] = transaction.getNumber();
+				array[i++] = phone.getType();
+				array[i++] = phone.getNumber();
 				
 				super.addRow(array);
-				ListPhone.this.keys.add(transaction.getPkey());
+				ListPhone.this.keys.add(phone.getPkey());
 			}
 		});
 		this.tableModel.setColumnTitles("Type", "Number");
@@ -65,10 +64,11 @@ public class ListPhone extends SimpleListView<Phone> {
 			addButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ListPhone.this.splitPane.push(new AddEditTransaction(
-							ListPhone.this.splitPane),
-							SplitPane.LayoutType.HORIZONTAL,
-							ListPhone.this.pusher);
+					// ListPhone.this.splitPane.push(new AddEditPhone(
+					// ListPhone.this.splitPane),
+					// SplitPane.LayoutType.HORIZONTAL,
+					// ListPhone.this.pusher);
+					// TODO: AddEditPhone
 				}
 			});
 			c = new GridBagConstraints();
@@ -94,8 +94,8 @@ public class ListPhone extends SimpleListView<Phone> {
 	
 	@Override
 	protected DB.TableName getTableName() {
-		return DB.TableName.customer_address; // only customers should have an
-												// address list
+		return DB.TableName.customer_phone;
+		// only customers should have a phone list
 	}
 	
 	@Override

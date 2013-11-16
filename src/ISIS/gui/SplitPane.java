@@ -29,7 +29,7 @@ public final class SplitPane extends JPanel {
 	ArrayList<View>				stack;
 	private int					stackPointer;
 	private JSplitPane			splitPane;
-	private double				dividerLocationRatio;
+	private double				dividerRatio;
 	
 	JPanel						buttons;
 	
@@ -41,13 +41,14 @@ public final class SplitPane extends JPanel {
 		this.setOpaque(false);
 		this.splitPane.setOpaque(false);
 		this.splitPane.setBorder(null);
+		this.splitPane.setResizeWeight(.5);
 		this.defaultDividerSize = 9;
 		GridBagLayout buttonLayout;
 		this.buttons = new JPanel(buttonLayout = new GridBagLayout());
 		buttonLayout.columnWidths = new int[] { 0, 94, 94, 94, 94 };
 		this.buttons.setOpaque(false);
 		this.add(this.buttons, BorderLayout.NORTH);
-		this.dividerLocationRatio = 0.5;
+		this.dividerRatio = 0.5;
 	}
 	
 	/**
@@ -121,8 +122,6 @@ public final class SplitPane extends JPanel {
 				public void actionPerformed(ActionEvent e) {
 					try {
 						SplitPane.this.popAllAbovePointer();
-						// SplitPane.this.stack.get(
-						// SplitPane.this.stackPointer - 1).cancel();
 						SplitPane.this.pop();
 					} catch (CloseCanceledException e1) {
 						return;
@@ -150,20 +149,15 @@ public final class SplitPane extends JPanel {
 	 * @post hiddenViews() == true
 	 */
 	public final void backward() {
-		this.dividerLocationRatio = ((double) this.splitPane
-				.getDividerLocation()) / this.getWidth();
+		this.dividerRatio = this.moverRatioCalculator(this.splitPane
+				.getDividerLocation());
 		if (this.stackPointer == 1) {
 			this.setLeftComponent(this.stack.get(--this.stackPointer));
 			this.setRightComponent(null);
 		} else {
 			this.setLeftComponent(this.stack.get(--this.stackPointer - 1));
 			this.setRightComponent(this.stack.get(this.stackPointer));
-			// Try to set the divider to the same location as before, but no
-			// less than the left component's minimum width
-			this.splitPane.setDividerLocation(Math.max(
-					(this.splitPane.getLeftComponent().getMinimumSize().width)
-							/ (2.0 * this.getWidth()),
-					this.dividerLocationRatio));
+			this.moveDivider();
 		}
 		this.addButtons();
 		this.validate();
@@ -177,17 +171,28 @@ public final class SplitPane extends JPanel {
 	 */
 	protected final void forward() {
 		if (this.stackPointer > 0)
-			this.dividerLocationRatio = ((double) this.splitPane
-					.getDividerLocation()) / this.getWidth();
+			this.dividerRatio = this.moverRatioCalculator(this.splitPane
+					.getDividerLocation());
 		this.setRightComponent(this.stack.get(++this.stackPointer));
 		this.setLeftComponent(this.stack.get(this.stackPointer - 1));
-		// Try to set the divider to the same location as before, but no less
-		// than the left component's minimum width
-		this.splitPane
-				.setDividerLocation(Math.max((this.splitPane.getLeftComponent()
-						.getMinimumSize().width) / ((double) this.getWidth()),
-						this.dividerLocationRatio));
+		this.moveDivider();
 		this.addButtons();
+	}
+	
+	/**
+	 * Try to set the divider to the same location as before, but no less than
+	 * the left component's minimum width
+	 */
+	private final void moveDivider() {
+		double minSizeRatio = this.moverRatioCalculator(this.splitPane
+				.getLeftComponent().getMinimumSize().width);
+		double newRatio = Math.max(minSizeRatio, this.dividerRatio);
+		this.splitPane.setDividerLocation((int) (newRatio * this.splitPane
+				.getWidth()));
+	}
+	
+	private final double moverRatioCalculator(double d) {
+		return d / this.splitPane.getWidth();
 	}
 	
 	/**
@@ -271,20 +276,6 @@ public final class SplitPane extends JPanel {
 		} else this.splitPane.setLeftComponent(null);
 	}
 	
-	// /**
-	// * Wraps the component in a JScrollPane and sets its settings
-	// *
-	// * @param comp
-	// * @return
-	// */
-	// private JScrollPane getWrappedComponent(Component comp) {
-	// JScrollPane sp = new JScrollPane(comp);
-	// sp.setOpaque(false);
-	// sp.getViewport().setOpaque(false);
-	// sp.setBorder(new EmptyBorder(4, 0, 10, 5));
-	// return sp;
-	// }
-	
 	/**
 	 * When setting this SplitPane to single view mode, hide the divider line,
 	 * else set it to the default size
@@ -300,60 +291,4 @@ public final class SplitPane extends JPanel {
 		}
 		
 	}
-	
-	// /**
-	// * Completely removes a closed view from the stack. DO NOT call it with
-	// * false.
-	// *
-	// * @pre views.size() > 0 == true
-	// */
-	// public final void pop(View popper) {
-	// int origin = this.stack.indexOf(popper);
-	// if (origin < this.stack.size() - 1) {
-	// this.stackPointer = this.stack.size(); // move to the last view in
-	// // the stack
-	// for (int i = this.stack.size() - 1; i > origin; --i) {
-	// try {
-	// // move to the view we're closing
-	// this.setRightComponent(this.stack.get(this.stack.size() - 1));
-	// this.setLeftComponent(this.stack.get(this.stack.size() - 2));
-	// this.stack.get(i).close();
-	// this.stack.remove(i);
-	// this.stackPointer--;
-	// } catch (CloseCanceledException e) {
-	// return; // close canceled; stop here.
-	// }
-	// }
-	// if (this.stack.size() > 1) {
-	// this.setRightComponent(this.stack.get(this.stack.size() - 1));
-	// this.setLeftComponent(this.stack.get(this.stack.size() - 2));
-	// } else if (this.stack.size() == 1) {
-	// this.setLeftComponent(this.stack.get(0));
-	// this.setRightComponent(null);
-	// } else {
-	// throw new RuntimeException("Popped the entire stack!");
-	// }
-	// return;
-	// }
-	// if (origin == this.stack.size() - 1) {
-	// try {
-	// this.stack.get(origin).close();
-	// } catch (CloseCanceledException e) {
-	// // the pop was cancelled
-	// return;
-	// }
-	// }
-	// this.stack.remove(this.stack.size() - 1);
-	// this.stackPointer--;
-	// if (this.stack.size() > 1) {
-	// this.setRightComponent(this.stack.get(this.stack.size() - 1));
-	// this.setLeftComponent(this.stack.get(this.stack.size() - 2));
-	// } else if (this.stack.size() == 1) {
-	// this.setLeftComponent(this.stack.get(0));
-	// this.setRightComponent(null);
-	// } else {
-	// throw new RuntimeException("Popped the entire stack!");
-	// }
-	// this.addButtons();
-	// }
 }

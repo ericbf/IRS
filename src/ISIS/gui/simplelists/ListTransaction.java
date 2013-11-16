@@ -94,8 +94,7 @@ public class ListTransaction extends SimpleListView<Transaction> {
 	
 	@Override
 	protected DB.TableName getTableName() {
-		return DB.TableName.customer_address; // only customers should have an
-												// address list
+		return DB.TableName.transaction_;
 	}
 	
 	@Override

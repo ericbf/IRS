@@ -12,6 +12,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.border.EtchedBorder;
@@ -44,6 +45,7 @@ public class AddEditCustomer extends AddEditView {
 	CardLayout					otherListsCardLayout;
 	JToggleButton				addresses, transactions, phones;
 	ArrayList<JToggleButton>	cardLayoutViewButtons;
+	static double				dividerRatio		= 0;
 	
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
@@ -170,7 +172,27 @@ public class AddEditCustomer extends AddEditView {
 	 * Draws all necessary components on the window.
 	 */
 	private void populateElements() {
-		this.setLayout(new GridBagLayout());
+		this.setLayout(new BorderLayout());
+		JSplitPane split = new JSplitPane() {
+			private static final long	serialVersionUID	= 1L;
+			
+			@Override
+			public void doLayout() {
+				this.setDividerLocation((int) (this.getWidth() * (dividerRatio == 0 ? .55
+						: dividerRatio)));
+				super.doLayout();
+			}
+			
+			@Override
+			public void setDividerLocation(int location) {
+				dividerRatio = location / (double) this.getWidth();
+				super.setDividerLocation(location);
+			}
+		};
+		split.setOpaque(false);
+		split.setBorder(null);
+		JPanel main = new JPanel(new GridBagLayout());
+		main.setOpaque(false);
 		GridBagConstraints c;
 		this.cardLayoutViewButtons = new ArrayList<>();
 		int x = 0, y = 0;
@@ -180,70 +202,70 @@ public class AddEditCustomer extends AddEditView {
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(new JLabel("Active"), c);
+		main.add(new JLabel("Active"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.active = new JCheckBox("", true), c);
+		main.add(this.active = new JCheckBox("", true), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(new JLabel("Password"), c);
+		main.add(new JLabel("Password"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.password = new HintField("Password"), c);
+		main.add(this.password = new HintField("Password"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(new JLabel("First name"), c);
+		main.add(new JLabel("First name"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.fname = new HintField("First Name"), c);
+		main.add(this.fname = new HintField("First Name"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(new JLabel("Last name"), c);
+		main.add(new JLabel("Last name"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.lname = new HintField("Last Name"), c);
+		main.add(this.lname = new HintField("Last Name"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(new JLabel("Email"), c);
+		main.add(new JLabel("Email"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.email = new HintField("Email"), c);
+		main.add(this.email = new HintField("Email"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -252,7 +274,7 @@ public class AddEditCustomer extends AddEditView {
 		c.gridy = y;
 		c.anchor = GridBagConstraints.NORTH;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		this.add(new JLabel("Note"), c);
+		main.add(new JLabel("Note"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 1;
@@ -260,8 +282,10 @@ public class AddEditCustomer extends AddEditView {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.note = new JTextArea(), c);
+		main.add(this.note = new JTextArea(), c);
 		this.note.setBorder(new EtchedBorder());
+		
+		split.setLeftComponent(main);
 		
 		JPanel otherArea = new JPanel(new BorderLayout());
 		otherArea.setOpaque(false);
@@ -288,13 +312,10 @@ public class AddEditCustomer extends AddEditView {
 				BorderLayout.CENTER);
 		this.otherListsContainer.setOpaque(false);
 		
-		c = new GridBagConstraints();
-		c.gridx = x = 2;
-		c.gridy = y = 0;
-		c.weightx = 0.8;
-		c.gridheight = y;
-		c.fill = GridBagConstraints.BOTH;
-		this.add(otherArea, c);
+		split.setRightComponent(otherArea);
+		split.setResizeWeight(.5);
+		
+		this.add(split, BorderLayout.CENTER);
 		
 		ButtonGroup group = new ButtonGroup();
 		for (JToggleButton b : this.cardLayoutViewButtons) {
@@ -304,4 +325,145 @@ public class AddEditCustomer extends AddEditView {
 		
 		this.doSaveRecordAction();
 	}
+	//
+	// /**
+	// * Draws all necessary components on the window.
+	// */
+	// private void populateElements() {
+	// this.setLayout(new GridBagLayout());
+	// GridBagConstraints c;
+	// this.cardLayoutViewButtons = new ArrayList<>();
+	// int x = 0, y = 0;
+	//
+	// c = new GridBagConstraints();
+	// c.weightx = 0;
+	// c.gridx = x++;
+	// c.gridy = y;
+	// c.fill = GridBagConstraints.BOTH;
+	// this.add(new JLabel("Active"), c);
+	//
+	// c = new GridBagConstraints();
+	// c.weightx = 1;
+	// c.gridx = x--;
+	// c.gridy = y++;
+	// c.fill = GridBagConstraints.BOTH;
+	// this.add(this.active = new JCheckBox("", true), c);
+	//
+	// c = new GridBagConstraints();
+	// c.weightx = 0;
+	// c.gridx = x++;
+	// c.gridy = y;
+	// c.fill = GridBagConstraints.BOTH;
+	// this.add(new JLabel("Password"), c);
+	//
+	// c = new GridBagConstraints();
+	// c.weightx = 1;
+	// c.gridx = x--;
+	// c.gridy = y++;
+	// c.fill = GridBagConstraints.BOTH;
+	// this.add(this.password = new HintField("Password"), c);
+	//
+	// c = new GridBagConstraints();
+	// c.weightx = 0;
+	// c.gridx = x++;
+	// c.gridy = y;
+	// c.fill = GridBagConstraints.BOTH;
+	// this.add(new JLabel("First name"), c);
+	//
+	// c = new GridBagConstraints();
+	// c.weightx = 1;
+	// c.gridx = x--;
+	// c.gridy = y++;
+	// c.fill = GridBagConstraints.BOTH;
+	// this.add(this.fname = new HintField("First Name"), c);
+	//
+	// c = new GridBagConstraints();
+	// c.weightx = 0;
+	// c.gridx = x++;
+	// c.gridy = y;
+	// c.fill = GridBagConstraints.BOTH;
+	// this.add(new JLabel("Last name"), c);
+	//
+	// c = new GridBagConstraints();
+	// c.weightx = 1;
+	// c.gridx = x--;
+	// c.gridy = y++;
+	// c.fill = GridBagConstraints.BOTH;
+	// this.add(this.lname = new HintField("Last Name"), c);
+	//
+	// c = new GridBagConstraints();
+	// c.weightx = 0;
+	// c.gridx = x++;
+	// c.gridy = y;
+	// c.fill = GridBagConstraints.BOTH;
+	// this.add(new JLabel("Email"), c);
+	//
+	// c = new GridBagConstraints();
+	// c.weightx = 1;
+	// c.gridx = x--;
+	// c.gridy = y++;
+	// c.fill = GridBagConstraints.BOTH;
+	// this.add(this.email = new HintField("Email"), c);
+	//
+	// c = new GridBagConstraints();
+	// c.weightx = 0;
+	// c.weighty = 1;
+	// c.gridx = x++;
+	// c.gridy = y;
+	// c.anchor = GridBagConstraints.NORTH;
+	// c.fill = GridBagConstraints.HORIZONTAL;
+	// this.add(new JLabel("Note"), c);
+	//
+	// c = new GridBagConstraints();
+	// c.weightx = 1;
+	// c.weighty = 1;
+	// c.gridx = x--;
+	// c.gridy = y++;
+	// c.fill = GridBagConstraints.BOTH;
+	// this.add(this.note = new JTextArea(), c);
+	// this.note.setBorder(new EtchedBorder());
+	//
+	// JPanel otherArea = new JPanel(new BorderLayout());
+	// otherArea.setOpaque(false);
+	// JPanel buttonHolder = new JPanel(new WrapLayout());
+	// buttonHolder.setOpaque(false);
+	//
+	// // Add buttons for the cards (Other lists)
+	// buttonHolder.add(this.addresses = new JToggleButton("Addresses"), c);
+	// buttonHolder.add(this.transactions = new JToggleButton("Transactions"),
+	// c);
+	// buttonHolder.add(this.phones = new JToggleButton("Phones"), c);
+	//
+	// // Add buttons to the buttons ArrayList
+	// this.cardLayoutViewButtons.add(this.addresses);
+	// this.cardLayoutViewButtons.add(this.transactions);
+	// this.cardLayoutViewButtons.add(this.phones);
+	//
+	// // Add the button holder at the top of the right section
+	// otherArea.add(buttonHolder, BorderLayout.NORTH);
+	//
+	// // Add the JPanel(card layout) to the right section center
+	// otherArea.add(this.otherListsContainer = new JPanel(
+	// this.otherListsCardLayout = new CardLayout()),
+	// BorderLayout.CENTER);
+	// this.otherListsContainer.setOpaque(false);
+	//
+	// c = new GridBagConstraints();
+	// c.fill = GridBagConstraints.BOTH;
+	// c.weightx = .6;
+	// c.weighty = 1;
+	// c.gridheight = y;
+	// c.gridx = 2;
+	// c.gridy = 0;
+	// this.add(otherArea, c);
+	//
+	// ButtonGroup group = new ButtonGroup();
+	// for (JToggleButton b : this.cardLayoutViewButtons) {
+	// b.setFont(new Font("Small", Font.PLAIN, 11));
+	// group.add(b);
+	// }
+	//
+	// this.doSaveRecordAction();
+	// }
+	
 }
