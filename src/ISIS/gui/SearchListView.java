@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -192,8 +190,12 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int sel;
-				if ((sel = SearchListView.this.table.getSelectedRow()) != -1)
+				if ((sel = SearchListView.this.table.getSelectedRow()) != -1) {
 					SearchListView.this.selected = sel;
+					if (e.getClickCount() == 2) {
+						SearchListView.this.actionHandlerActionForSearchField();
+					}
+				}
 			}
 			
 			@Override
@@ -208,8 +210,6 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 			@Override
 			public void mouseReleased(MouseEvent e) {}
 		});
-		this.table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
 		this.table.getActionMap().put("Enter", new AbstractAction() {
 			private static final long	serialVersionUID	= 1L;
 			
