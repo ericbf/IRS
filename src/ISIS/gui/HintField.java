@@ -26,13 +26,17 @@ public class HintField extends JTextField {
 		this("");
 	}
 	
+	public HintField(String hint) {
+		this(hint, "");
+	}
+	
 	public HintField(String hint, String initialText) {
 		super();
 		super.setText(initialText.isEmpty() ? hint : initialText);
 		this.hint = hint;
 		this.showingHint = initialText.isEmpty();
 		this.hintEnabled = true;
-		this.selectAll = true;
+		// this.selectAll = true;
 		this.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "none");
 		this.getInputMap().put(KeyStroke.getKeyStroke("UP"), "none");
 		this.getInputMap().put(
@@ -72,12 +76,6 @@ public class HintField extends JTextField {
 			private HintField	me			= HintField.this;
 			
 			@Override
-			public void keyTyped(KeyEvent e) {}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {}
-			
-			@Override
 			public void keyPressed(KeyEvent e) {
 				boolean meta = (e.getModifiers() & ActionEvent.META_MASK) == ActionEvent.META_MASK
 						|| (e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK;
@@ -94,11 +92,19 @@ public class HintField extends JTextField {
 						break;
 				}
 			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {}
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
 		});
 	}
 	
-	public HintField(String hint) {
-		this(hint, "");
+	@Override
+	public String getText() {
+		if (this.showingHint) return "";
+		else return super.getText();
 	}
 	
 	public HintField setHintEnabled(boolean b) {
@@ -118,11 +124,5 @@ public class HintField extends JTextField {
 				&& !this.isFocusOwner()) {
 			HintField.super.setText(HintField.this.hint);
 		}
-	}
-	
-	@Override
-	public String getText() {
-		if (this.showingHint) return "";
-		else return super.getText();
 	}
 }

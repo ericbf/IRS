@@ -1,28 +1,29 @@
 package ISIS.gui.customer;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JToggleButton;
 import javax.swing.border.EtchedBorder;
 
 import ISIS.customer.Customer;
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
 import ISIS.gui.HintField;
+import ISIS.gui.ListButtonListener;
 import ISIS.gui.SimpleListView;
 import ISIS.gui.SplitPane;
+import ISIS.gui.WrapLayout;
 import ISIS.gui.address.ListAddress;
 
 /**
@@ -39,8 +40,8 @@ public class AddEditCustomer extends AddEditView {
 	Customer					customer;
 	JPanel						otherListsContainer;
 	CardLayout					otherListsCardLayout;
-	JButton						addresses, transactions, phones;
-	ArrayList<JButton>			cardLayoutViewButtons;
+	JToggleButton				addresses, transactions, phones;
+	ArrayList<JToggleButton>	cardLayoutViewButtons;
 	
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
@@ -81,62 +82,37 @@ public class AddEditCustomer extends AddEditView {
 	@Override
 	protected void doSaveRecordAction() {
 		if (this.customer != null && !this.wasSavedOrAlreadySetUp) {
+			this.wasSavedOrAlreadySetUp = true;
+			
 			@SuppressWarnings("rawtypes")
 			SimpleListView l;
 			
-			l = new ListAddress(this.splitPane, this, this.customer.getPkey(),
-					false);
-			this.otherListsContainer.add(l);
+			// Add the other lists to the JPanel and register with the layout
+			this.otherListsContainer.add(l = new ListAddress(this.splitPane,
+					this, this.customer.getPkey(), false));
 			this.otherListsCardLayout.addLayoutComponent(l, "addresses");
-			this.addresses.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					AddEditCustomer.this.otherListsCardLayout.show(
-							AddEditCustomer.this.otherListsContainer,
-							"addresses");
-				}
-			});
 			
-			// l = new ListTransactions(this.splitPane, this,
-			// this.customer.getPkey(), false);
-			// this.otherListsContainer.add(l);
-			// this.otherListsCardLayout.addLayoutComponent(l, "transactions");
-			// this.transactions.addActionListener(new ActionListener() {
-			// @Override
-			// public void actionPerformed(ActionEvent e) {
-			// AddEditCustomer.this.otherListsCardLayout.show(
-			// AddEditCustomer.this.otherListsContainer,
-			// "transactions");
-			// }
-			// });
-			// // TODO: add other view here
-			//
-			// l = new ListPhones(this.splitPane, this, this.customer.getPkey(),
-			// false);
-			// this.otherListsContainer.add(l);
-			// this.otherListsCardLayout.addLayoutComponent(l, "phones");
-			// this.transactions.addActionListener(new ActionListener() {
-			// @Override
-			// public void actionPerformed(ActionEvent e) {
-			// AddEditCustomer.this.otherListsCardLayout.show(
-			// AddEditCustomer.this.otherListsContainer,
-			// "phones");
-			// }
-			// });
-			// // TODO: add other view here
+			// Add action listeners to the buttons
+			this.addresses.addActionListener(new ListButtonListener(
+					this.otherListsCardLayout, this.otherListsContainer,
+					"addresses"));
 			
+			// Disable the uneditable fields
 			this.disableFields(this.lname, this.fname);
-			for (JButton b : this.cardLayoutViewButtons) {
+			
+			// Enable buttons to select a list, reset tooltip
+			for (JToggleButton b : this.cardLayoutViewButtons) {
 				b.setEnabled(true);
 				b.setToolTipText(null);
 			}
+			this.cardLayoutViewButtons.get(0).setSelected(true);
 		} else if (this.customer == null) {
-			for (JButton b : this.cardLayoutViewButtons) {
+			// Disable buttons to select a list if the record isn't yet saved
+			for (JToggleButton b : this.cardLayoutViewButtons) {
 				b.setEnabled(false);
 				b.setToolTipText("Save this record to access this area");
 			}
 		}
-		
 	}
 	
 	/*
@@ -269,48 +245,43 @@ public class AddEditCustomer extends AddEditView {
 		this.add(this.note = new JTextArea(), c);
 		this.note.setBorder(new EtchedBorder());
 		
-		int depth = y;
+		JPanel otherArea = new JPanel(new BorderLayout());
+		otherArea.setOpaque(false);
+		JPanel buttonHolder = new JPanel(new WrapLayout());
+		buttonHolder.setOpaque(false);
+		
+		// Add buttons for the cards (Other lists)
+		buttonHolder.add(this.addresses = new JToggleButton("Addresses"), c);
+		buttonHolder.add(this.transactions = new JToggleButton("Transactions"),
+				c);
+		buttonHolder.add(this.phones = new JToggleButton("Phones"), c);
+		
+		// Add buttons to the buttons ArrayList
+		this.cardLayoutViewButtons.add(this.addresses);
+		this.cardLayoutViewButtons.add(this.transactions);
+		this.cardLayoutViewButtons.add(this.phones);
+		
+		// Add the button holder at the top of the right section
+		otherArea.add(buttonHolder, BorderLayout.NORTH);
+		
+		// Add the JPanel(card layout) to the right section center
+		otherArea.add(this.otherListsContainer = new JPanel(
+				this.otherListsCardLayout = new CardLayout()),
+				BorderLayout.CENTER);
+		this.otherListsContainer.setOpaque(false);
 		
 		c = new GridBagConstraints();
 		c.gridx = x = 2;
 		c.gridy = y = 0;
-		// c.weightx = .25;
+		c.weightx = 0.8;
+		c.gridheight = y;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.addresses = new JButton("Addresses"), c);
-		this.cardLayoutViewButtons.add(this.addresses);
+		this.add(otherArea, c);
 		
-		c = new GridBagConstraints();
-		c.gridx = ++x;
-		c.gridy = y;
-		// c.weightx = .25;
-		c.fill = GridBagConstraints.BOTH;
-		this.add(this.transactions = new JButton("Transactions"), c);
-		this.cardLayoutViewButtons.add(this.transactions);
-		
-		c = new GridBagConstraints();
-		c.gridx = ++x;
-		c.gridy = y;
-		// c.weightx = .25;
-		c.fill = GridBagConstraints.BOTH;
-		this.add(this.phones = new JButton("Phones"), c);
-		this.cardLayoutViewButtons.add(this.phones);
-		
-		c = new GridBagConstraints();
-		c.gridheight = depth;
-		c.gridwidth = x - 1;
-		// c.weightx = .5;
-		c.weighty = 1;
-		c.gridx = 2;
-		c.gridy = ++y;
-		c.fill = GridBagConstraints.BOTH;
-		this.add(this.otherListsContainer = new JPanel(
-				this.otherListsCardLayout = new CardLayout()), c);
-		this.otherListsContainer.setOpaque(false);
-		this.otherListsContainer.setPreferredSize(new Dimension(this
-				.getPreferredSize().width / 2, this.getPreferredSize().height));
-		
-		for (JButton b : this.cardLayoutViewButtons) {
+		ButtonGroup group = new ButtonGroup();
+		for (JToggleButton b : this.cardLayoutViewButtons) {
 			b.setFont(new Font("Small", Font.PLAIN, 11));
+			group.add(b);
 		}
 		
 		this.doSaveRecordAction();

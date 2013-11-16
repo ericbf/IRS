@@ -158,7 +158,12 @@ public final class SplitPane extends JPanel {
 		} else {
 			this.setLeftComponent(this.stack.get(--this.stackPointer - 1));
 			this.setRightComponent(this.stack.get(this.stackPointer));
-			this.splitPane.setDividerLocation(this.dividerLocationRatio);
+			// Try to set the divider to the same location as before, but no
+			// less than the left component's minimum width
+			this.splitPane.setDividerLocation(Math.max(
+					(this.splitPane.getLeftComponent().getMinimumSize().width)
+							/ (2.0 * this.getWidth()),
+					this.dividerLocationRatio));
 		}
 		this.addButtons();
 		this.validate();
@@ -176,7 +181,12 @@ public final class SplitPane extends JPanel {
 					.getDividerLocation()) / this.getWidth();
 		this.setRightComponent(this.stack.get(++this.stackPointer));
 		this.setLeftComponent(this.stack.get(this.stackPointer - 1));
-		this.splitPane.setDividerLocation(this.dividerLocationRatio);
+		// Try to set the divider to the same location as before, but no less
+		// than the left component's minimum width
+		this.splitPane
+				.setDividerLocation(Math.max((this.splitPane.getLeftComponent()
+						.getMinimumSize().width) / ((double) this.getWidth()),
+						this.dividerLocationRatio));
 		this.addButtons();
 	}
 	

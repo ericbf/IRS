@@ -16,6 +16,7 @@ import javax.swing.text.DocumentFilter;
  * @author eric
  */
 public abstract class AddEditView extends View {
+	
 	private static final long			serialVersionUID	= 1L;
 	public static final DocumentFilter	numberFilter;
 	static {
