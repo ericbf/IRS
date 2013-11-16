@@ -16,7 +16,7 @@ public class AddEditAddress extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
 	private Address				address;
     private HintField title, city, state, county, country, st_address, zip;
-    private Customer customer = null;
+    private final Customer customer;
     private JCheckBox			active;
 
     public AddEditAddress(SplitPane splitPane, Customer customer) {
@@ -31,9 +31,10 @@ public class AddEditAddress extends AddEditView {
      *
      * @wbp.parser.constructor
      */
-    public AddEditAddress(SplitPane splitPane, int pkey) throws SQLException {
+    public AddEditAddress(SplitPane splitPane, Customer customer, int pkey) throws SQLException {
         super(splitPane);
         this.address = new Address(pkey, true);
+        this.customer = customer;
         this.populateElements();
 
         this.active.setSelected(this.address.getActive());

@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class ListAddress extends SimpleListView<Address> {
 	private static final long	serialVersionUID	= 1L;
     private final Customer customer;
-	
+
 	public ListAddress(SplitPane splitPane, View pusher, Customer customer, Integer key,
 			boolean selectMode) {
 		super(splitPane, pusher, false, "SELECT a.* FROM address AS a left "
@@ -98,8 +98,37 @@ public class ListAddress extends SimpleListView<Address> {
 			c.gridx = x = 0;
 			c.weightx = 1;
 			this.add(deleteButton, c);
+            JButton viewButton = new JButton("View");
+			viewButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+                    int selected = ListAddress.this.table.getSelectedRow();
+                    if (selected == -1) {
+                        return;
+                    }
+
+                    int pkey = ListAddress.this.keys.get(selected);
+                    try {
+                        ListAddress.this.splitPane.push(new AddEditAddress(
+                                ListAddress.this.splitPane, ListAddress.this.customer, pkey),
+                                                        SplitPane.LayoutType.HORIZONTAL,
+                                                        ListAddress.this.pusher);
+                        ListAddress.this.customer.save();
+                    } catch (SQLException ex) {
+                        ErrorLogger.error(ex, "Failed to delete address record.", true, true);
+                    }
+                    ListAddress.this.fillTable();
+				}
+			});
+			c = new GridBagConstraints();
+			c.fill = GridBagConstraints.BOTH;
+			c.gridy = ++y;
+			c.gridwidth = x;
+			c.gridx = x = 0;
+			c.weightx = 1;
+			this.add(viewButton, c);
 		}
-		
+
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridy = ++y;
@@ -108,15 +137,15 @@ public class ListAddress extends SimpleListView<Address> {
 		c.weighty = 1;
 		c.weightx = 1;
 		this.add(new JScrollPane(this.table), c);
-		
+
 		this.fillTable();
 	}
-	
+
 	@Override
 	protected DB.TableName getTableName() {
 		return DB.TableName.customer_address;
 	}
-	
+
 	@Override
 	protected ArrayList<Address> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
