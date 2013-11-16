@@ -1,4 +1,7 @@
-package ISIS.gui.address;
+/**
+ * 
+ */
+package ISIS.gui.simplelists;
 
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
@@ -16,55 +19,56 @@ import ISIS.gui.IRSTableModel;
 import ISIS.gui.SimpleListView;
 import ISIS.gui.SplitPane;
 import ISIS.gui.View;
-import ISIS.misc.Address;
+import ISIS.gui.customer.AddEditTransaction;
+import ISIS.transaction.Transaction;
 
 /**
  * This should NEVER be pushed, only embedded.
  */
-public class ListAddress extends SimpleListView<Address> {
+public class ListTransaction extends SimpleListView<Transaction> {
 	private static final long	serialVersionUID	= 1L;
 	
-	public ListAddress(SplitPane splitPane, View pusher, Integer key,
+	public ListTransaction(SplitPane splitPane, View pusher, Integer key,
 			boolean selectMode) {
-		super(splitPane, pusher, false, "SELECT a.* FROM address AS a left "
-				+ "join customer_address AS ca ON a.pkey=ca.address WHERE "
-				+ "ca.customer=?", key);
+		super(splitPane, pusher, false, "SELECT t.* FROM transaction_ AS t "
+				+ "LEFT JOIN customer AS c ON t.customer=c.pkey AND c.pkey=?",
+				key);
 		
 		this.setTableModel(new IRSTableModel() {
 			private static final long	serialVersionUID	= 1L;
 			
 			@Override
 			public void addRow(Record record) {
-				Address address = (Address) record;
+				Transaction transaction = (Transaction) record;
 				Object[] array = new Object[this.getColumnCount()];
 				int i = 0;
 				
-				array[i++] = address.getTitle();
-				array[i++] = address.getStreetAddress(); // TODO: flesh this out
+				array[i++] = transaction.getDates().getModDate();
+				array[i++] = transaction.getStatus();
 				
 				super.addRow(array);
-				ListAddress.this.keys.add(address.getPkey());
+				ListTransaction.this.keys.add(transaction.getPkey());
 			}
 		});
-		this.tableModel.setColumnTitles("Title", "Address");
+		this.tableModel.setColumnTitles("Date", "Status");
 		
 		int x = 0;
 		int y = 0;
 		GridBagConstraints c = new GridBagConstraints();
 		
-		if (selectMode) { // we're selecting an address.
+		if (selectMode) { // we're selecting a transaction.
 			@SuppressWarnings("unused")
 			JButton select;
 			// TODO: THIS
-		} else { // we're adding/removing addresses.
+		} else { // we're adding/removing transactions.
 			JButton addButton = new JButton("Add");
 			addButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ListAddress.this.splitPane.push(new AddEditAddress(
-							ListAddress.this.splitPane),
+					ListTransaction.this.splitPane.push(new AddEditTransaction(
+							ListTransaction.this.splitPane),
 							SplitPane.LayoutType.HORIZONTAL,
-							ListAddress.this.pusher);
+							ListTransaction.this.pusher);
 				}
 			});
 			c = new GridBagConstraints();
@@ -95,11 +99,12 @@ public class ListAddress extends SimpleListView<Address> {
 	}
 	
 	@Override
-	protected ArrayList<Address> mapResults(
+	protected ArrayList<Transaction> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
-		ArrayList<Address> addresses = new ArrayList<Address>(results.size());
+		ArrayList<Transaction> addresses = new ArrayList<Transaction>(
+				results.size());
 		for (HashMap<String, Field> result : results) {
-			addresses.add(new Address(result));
+			addresses.add(new Transaction(result));
 		}
 		return addresses;
 	}

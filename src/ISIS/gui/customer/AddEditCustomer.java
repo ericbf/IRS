@@ -24,7 +24,9 @@ import ISIS.gui.ListButtonListener;
 import ISIS.gui.SimpleListView;
 import ISIS.gui.SplitPane;
 import ISIS.gui.WrapLayout;
-import ISIS.gui.address.ListAddress;
+import ISIS.gui.simplelists.ListAddress;
+import ISIS.gui.simplelists.ListPhone;
+import ISIS.gui.simplelists.ListTransaction;
 
 /**
  * View for adding and editing customers.
@@ -91,11 +93,27 @@ public class AddEditCustomer extends AddEditView {
 			this.otherListsContainer.add(l = new ListAddress(this.splitPane,
 					this, this.customer.getPkey(), false));
 			this.otherListsCardLayout.addLayoutComponent(l, "addresses");
+			// next
+			this.otherListsContainer.add(l = new ListTransaction(
+					this.splitPane, this, this.customer.getPkey(), false));
+			this.otherListsCardLayout.addLayoutComponent(l, "transactions");
+			// next
+			this.otherListsContainer.add(l = new ListPhone(this.splitPane,
+					this, this.customer.getPkey(), false));
+			this.otherListsCardLayout.addLayoutComponent(l, "phones");
 			
 			// Add action listeners to the buttons
 			this.addresses.addActionListener(new ListButtonListener(
 					this.otherListsCardLayout, this.otherListsContainer,
 					"addresses"));
+			// next
+			this.transactions.addActionListener(new ListButtonListener(
+					this.otherListsCardLayout, this.otherListsContainer,
+					"transactions"));
+			// next
+			this.phones.addActionListener(new ListButtonListener(
+					this.otherListsCardLayout, this.otherListsContainer,
+					"phones"));
 			
 			// Disable the uneditable fields
 			this.disableFields(this.lname, this.fname);
