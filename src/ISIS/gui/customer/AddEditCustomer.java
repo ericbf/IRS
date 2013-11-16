@@ -178,14 +178,15 @@ public class AddEditCustomer extends AddEditView {
 			
 			@Override
 			public void doLayout() {
-				this.setDividerLocation((int) (this.getWidth() * (dividerRatio == 0 ? .55
-						: dividerRatio)));
+				this.setDividerLocation((int) (this.getWidth() * (AddEditCustomer.dividerRatio == 0 ? .55
+						: AddEditCustomer.dividerRatio)));
 				super.doLayout();
 			}
 			
 			@Override
 			public void setDividerLocation(int location) {
-				dividerRatio = location / (double) this.getWidth();
+				AddEditCustomer.dividerRatio = location
+						/ (double) this.getWidth();
 				super.setDividerLocation(location);
 			}
 		};

@@ -37,7 +37,18 @@ public final class SplitPane extends JPanel {
 		super(new BorderLayout());
 		this.stack = new ArrayList<View>();
 		this.stackPointer = 0;
-		this.add(this.splitPane = new JSplitPane());
+		this.add(this.splitPane = new JSplitPane() {
+			private static final long	serialVersionUID	= 1L;
+			
+			@Override
+			public void setDividerLocation(int location) {
+				if (SplitPane.this.stackPointer > 0) {
+					SplitPane.dividerRatio = SplitPane.this
+							.moverRatioCalculator(location);
+				}
+				super.setDividerLocation(location);
+			}
+		});
 		this.setOpaque(false);
 		this.splitPane.setOpaque(false);
 		this.splitPane.setBorder(null);
@@ -160,7 +171,6 @@ public final class SplitPane extends JPanel {
 			this.moveDivider();
 		}
 		this.addButtons();
-		this.validate();
 	}
 	
 	/**
