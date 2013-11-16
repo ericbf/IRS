@@ -29,7 +29,7 @@ public final class SplitPane extends JPanel {
 	ArrayList<View>				stack;
 	private int					stackPointer;
 	private JSplitPane			splitPane;
-	private double				dividerRatio;
+	private static double		dividerRatio;
 	
 	JPanel						buttons;
 	
@@ -48,7 +48,7 @@ public final class SplitPane extends JPanel {
 		buttonLayout.columnWidths = new int[] { 0, 94, 94, 94, 94 };
 		this.buttons.setOpaque(false);
 		this.add(this.buttons, BorderLayout.NORTH);
-		this.dividerRatio = 0.5;
+		SplitPane.dividerRatio = 0.5;
 	}
 	
 	/**
@@ -149,7 +149,7 @@ public final class SplitPane extends JPanel {
 	 * @post hiddenViews() == true
 	 */
 	public final void backward() {
-		this.dividerRatio = this.moverRatioCalculator(this.splitPane
+		SplitPane.dividerRatio = this.moverRatioCalculator(this.splitPane
 				.getDividerLocation());
 		if (this.stackPointer == 1) {
 			this.setLeftComponent(this.stack.get(--this.stackPointer));
@@ -171,7 +171,7 @@ public final class SplitPane extends JPanel {
 	 */
 	protected final void forward() {
 		if (this.stackPointer > 0)
-			this.dividerRatio = this.moverRatioCalculator(this.splitPane
+			SplitPane.dividerRatio = this.moverRatioCalculator(this.splitPane
 					.getDividerLocation());
 		this.setRightComponent(this.stack.get(++this.stackPointer));
 		this.setLeftComponent(this.stack.get(this.stackPointer - 1));
@@ -186,7 +186,7 @@ public final class SplitPane extends JPanel {
 	private final void moveDivider() {
 		double minSizeRatio = this.moverRatioCalculator(this.splitPane
 				.getLeftComponent().getMinimumSize().width);
-		double newRatio = Math.max(minSizeRatio, this.dividerRatio);
+		double newRatio = Math.max(minSizeRatio, SplitPane.dividerRatio);
 		this.splitPane.setDividerLocation((int) (newRatio * this.splitPane
 				.getWidth()));
 	}

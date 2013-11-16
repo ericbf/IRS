@@ -1,6 +1,5 @@
 package ISIS.gui.customer;
 
-<<<<<<< HEAD
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Font;
@@ -18,20 +17,17 @@ import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.border.EtchedBorder;
 
-=======
->>>>>>> c8b6ffad944ebd373bb8d533171e4072ed04160b
 import ISIS.customer.Customer;
 import ISIS.database.Record;
-import ISIS.gui.*;
+import ISIS.gui.AddEditView;
+import ISIS.gui.HintField;
+import ISIS.gui.ListButtonListener;
+import ISIS.gui.SimpleListView;
+import ISIS.gui.SplitPane;
+import ISIS.gui.WrapLayout;
 import ISIS.gui.simplelists.ListAddress;
 import ISIS.gui.simplelists.ListPhone;
 import ISIS.gui.simplelists.ListTransaction;
-
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import java.awt.*;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * View for adding and editing customers.
