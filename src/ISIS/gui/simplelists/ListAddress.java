@@ -1,14 +1,6 @@
 package ISIS.gui.simplelists;
 
-import java.awt.GridBagConstraints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
+import ISIS.customer.Customer;
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
@@ -19,13 +11,20 @@ import ISIS.gui.View;
 import ISIS.gui.address.AddEditAddress;
 import ISIS.misc.Address;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * This should NEVER be pushed, only embedded.
  */
 public class ListAddress extends SimpleListView<Address> {
 	private static final long	serialVersionUID	= 1L;
 	
-	public ListAddress(SplitPane splitPane, View pusher, Integer key,
+	public ListAddress(SplitPane splitPane, View pusher, final Customer customer, Integer key,
 			boolean selectMode) {
 		super(splitPane, pusher, false, "SELECT a.* FROM address AS a left "
 				+ "join customer_address AS ca ON a.pkey=ca.address WHERE "
@@ -63,7 +62,7 @@ public class ListAddress extends SimpleListView<Address> {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					ListAddress.this.splitPane.push(new AddEditAddress(
-							ListAddress.this.splitPane),
+							ListAddress.this.splitPane, customer),
 							SplitPane.LayoutType.HORIZONTAL,
 							ListAddress.this.pusher);
 				}
@@ -91,8 +90,7 @@ public class ListAddress extends SimpleListView<Address> {
 	
 	@Override
 	protected DB.TableName getTableName() {
-		return DB.TableName.customer_address; // only customers should have an
-												// address list
+		return DB.TableName.customer_address;
 	}
 	
 	@Override

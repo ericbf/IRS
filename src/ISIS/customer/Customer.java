@@ -1,21 +1,17 @@
 package ISIS.customer;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import ISIS.database.DB;
+import ISIS.database.*;
 import ISIS.database.DB.TableName;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.database.RecordSaveException;
-import ISIS.database.UninitializedFieldException;
 import ISIS.gui.ErrorLogger;
 import ISIS.misc.Address;
 import ISIS.misc.Phone;
 import ISIS.misc.Picture;
 import ISIS.session.Session;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A Customer is the entity that intends to purchase products from the client. A
@@ -295,13 +291,14 @@ public class Customer extends Record {
 					stmt.setInt(i++, this.numbers.get(i / 2 - 1).getPkey());
 				}
 				stmt.executeUpdate();
+                Session.updateTable(TableName.customer_phone, null);
 			} catch (SQLException e) {
 				ErrorLogger.error(e, "Could not save phone numbers.", true,
 						true);
 				throw e;
 			}
 		}
-		
+
 		// delete removed addresses
 		if (this.addressesToRemove.size() > 0) {
 			String sql = "DELETE FROM customer_address WHERE address IN ("
@@ -320,7 +317,7 @@ public class Customer extends Record {
 				throw e;
 			}
 		}
-		
+
 		// save any new addresses
 		if (this.addresses.size() > 0) {
 			try {
@@ -341,6 +338,7 @@ public class Customer extends Record {
 					stmt.setInt(i++, this.addresses.get(i / 2 - 1).getPkey());
 				}
 				stmt.executeUpdate();
+                Session.updateTable(TableName.customer_address, null);
 			} catch (SQLException e) {
 				ErrorLogger.error(e, "Could not save addresses.", true, true);
 				throw e;

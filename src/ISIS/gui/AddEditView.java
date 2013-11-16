@@ -3,14 +3,13 @@
  */
 package ISIS.gui;
 
-import java.awt.Color;
-import java.sql.SQLException;
-
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
+import java.awt.*;
+import java.sql.SQLException;
 
 /**
  * @author eric
@@ -108,7 +107,7 @@ public abstract class AddEditView extends View {
 	 * @see ISIS.gui.View#save()
 	 */
 	@Override
-	public final void save() throws SQLException {
+	public void save() throws SQLException {
 		try {
 			if (this.isAnyFieldDifferentFromDefault() != null
 					&& this.isAnyFieldDifferentFromDefault())

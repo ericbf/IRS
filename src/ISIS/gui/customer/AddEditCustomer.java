@@ -1,5 +1,6 @@
 package ISIS.gui.customer;
 
+<<<<<<< HEAD
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Font;
@@ -17,17 +18,20 @@ import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.border.EtchedBorder;
 
+=======
+>>>>>>> c8b6ffad944ebd373bb8d533171e4072ed04160b
 import ISIS.customer.Customer;
 import ISIS.database.Record;
-import ISIS.gui.AddEditView;
-import ISIS.gui.HintField;
-import ISIS.gui.ListButtonListener;
-import ISIS.gui.SimpleListView;
-import ISIS.gui.SplitPane;
-import ISIS.gui.WrapLayout;
+import ISIS.gui.*;
 import ISIS.gui.simplelists.ListAddress;
 import ISIS.gui.simplelists.ListPhone;
 import ISIS.gui.simplelists.ListTransaction;
+
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import java.awt.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * View for adding and editing customers.
@@ -93,7 +97,7 @@ public class AddEditCustomer extends AddEditView {
 			
 			// Add the other lists to the JPanel and register with the layout
 			this.otherListsContainer.add(l = new ListAddress(this.splitPane,
-					this, this.customer.getPkey(), false));
+					this, this.customer, this.customer.getPkey(), false));
 			this.otherListsCardLayout.addLayoutComponent(l, "addresses");
 			// next
 			this.otherListsContainer.add(l = new ListTransaction(
