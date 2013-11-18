@@ -109,11 +109,11 @@ public abstract class Record {
 			value = this.fields.get(key).getValue();
 		} else {
 			try {
+				if (key.equals("pkey")) {
+					throw new UninitializedFieldException();
+				}
 				// check that there is a pkey (will throw
 				// UninitializedFieldException otherwise)
-				if (key.equals("pkey")) {
-					throw new RecordNotFoundException();
-				}
 				this.getFieldValue("pkey");
 				
 				this.fetch();
