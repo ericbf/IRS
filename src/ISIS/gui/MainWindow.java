@@ -14,7 +14,10 @@ import ISIS.user.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.sql.SQLException;
 
 /**
@@ -93,17 +96,41 @@ public class MainWindow extends JFrame {
 		} catch (RecordNotFoundException ex) {
 			ErrorLogger.error(ex, "something went wrong lel", true, true);
 		}
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				MainWindow frame = new MainWindow();
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.pack();
-				frame.setMinimumSize(new Dimension(800, 400));
-				frame.setVisible(true);
-			}
-		});
-		
+        final JDialog splash = new JDialog();
+
+        URL loading_URL = MainWindow.class.getClassLoader().getResource("ISIS/misc/Loading.gif");
+        Splash splashPanel = new Splash(loading_URL);
+        splash.setContentPane(splashPanel);
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        splash.setSize((int)(splashPanel.image.getWidth(splashPanel)), (int) (splashPanel.image.getHeight(splashPanel)));
+        splash.setLocation((int) (dimension.getWidth() - splash.getWidth()) / 2, (int) (dimension.getHeight() - splash.getHeight()) / 2);
+        splash.setUndecorated(true);
+        splash.setAlwaysOnTop(true);
+        splash.setVisible(true);
+        Timer dispose = new Timer(4000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                splash.setVisible(false);
+                splash.dispose();
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainWindow frame = new MainWindow();
+                                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                                frame.pack();
+                                frame.setMinimumSize(new Dimension(800, 400));
+                                frame.setVisible(true);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        dispose.setRepeats(false);
+        dispose.start();
+
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			@Override
 			public void run() {
