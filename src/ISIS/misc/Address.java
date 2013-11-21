@@ -94,13 +94,6 @@ public class Address extends Record {
 	}
 	
 	/**
-	 * Gets the record's title.
-	 */
-	public String getTitle() {
-		return (String) this.getFieldValue("title");
-	}
-	
-	/**
 	 * Gets the state.
 	 */
 	public String getState() {
@@ -117,6 +110,13 @@ public class Address extends Record {
 	@Override
 	protected TableName getTableName() {
 		return Address.tableName;
+	}
+	
+	/**
+	 * Gets the record's title.
+	 */
+	public String getTitle() {
+		return (String) this.getFieldValue("title");
 	}
 	
 	/**

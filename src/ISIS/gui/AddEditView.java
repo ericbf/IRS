@@ -35,8 +35,9 @@ public abstract class AddEditView extends View {
 				sb.append(doc.getText(0, doc.getLength()));
 				sb.insert(offset, string);
 				
-				if (this.check(sb.toString()))
+				if (this.check(sb.toString())) {
 					super.insertString(fb, offset, string, attr);
+				}
 			}
 			
 			@Override
@@ -47,8 +48,9 @@ public abstract class AddEditView extends View {
 				sb.append(doc.getText(0, doc.getLength()));
 				sb.delete(offset, offset + length);
 				
-				if (this.check(sb.toString()) || sb.toString().isEmpty())
+				if (this.check(sb.toString()) || sb.toString().isEmpty()) {
 					super.remove(fb, offset, length);
+				}
 			}
 			
 			@Override
@@ -60,8 +62,9 @@ public abstract class AddEditView extends View {
 				sb.append(doc.getText(0, doc.getLength()));
 				sb.replace(offset, offset + length, text);
 				
-				if (this.check(sb.toString()))
+				if (this.check(sb.toString())) {
 					super.replace(fb, offset, length, text, attrs);
+				}
 			}
 		};
 	}
@@ -110,8 +113,9 @@ public abstract class AddEditView extends View {
 	@Override
 	public void save() throws SQLException {
 		if (this.isAnyFieldDifferentFromDefault() != null
-				&& this.isAnyFieldDifferentFromDefault())
+				&& this.isAnyFieldDifferentFromDefault()) {
 			this.getCurrentRecord().save();
+		}
 		if (!this.wasSavedOrAlreadySetUp) {
 			this.doSaveRecordAction();
 			this.wasSavedOrAlreadySetUp = true;

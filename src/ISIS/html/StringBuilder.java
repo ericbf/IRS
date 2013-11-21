@@ -16,14 +16,16 @@ public class StringBuilder {
 	}
 	
 	public void closeBlock() {
-		if (tabs == 0)
+		if (tabs == 0) {
 			throw new RangeException((short) 1, "Tabs can't be negative");
+		}
 		tabs--;
 	}
 	
 	public StringBuilder indents() {
-		for (int i = 0; i < tabs; i++)
+		for (int i = 0; i < tabs; i++) {
 			b.append("\t");
+		}
 		return this;
 	}
 	

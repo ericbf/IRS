@@ -1,12 +1,5 @@
 package ISIS.database;
 
-import ISIS.database.DB.TableName;
-import ISIS.gui.ErrorLogger;
-import ISIS.misc.Dates;
-import ISIS.session.Session;
-import ISIS.user.User;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +7,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import ISIS.database.DB.TableName;
+import ISIS.gui.ErrorLogger;
+import ISIS.misc.Dates;
+import ISIS.session.Session;
+import ISIS.user.User;
 
 /**
  * Base class for all record classes.
@@ -58,14 +58,15 @@ public abstract class Record {
 					"Record has no primary key... Faulty join?");
 		}
 	}
-
-    public boolean equals(Object compareTo) {
-        if(compareTo instanceof Record) {
-            return this.getPkey() == ((Record) compareTo).getPkey();
-        } else {
-            throw new NotImplementedException();
-        }
-    }
+	
+	@Override
+	public boolean equals(Object compareTo) {
+		if (compareTo instanceof Record) {
+			return this.getPkey() == ((Record) compareTo).getPkey();
+		} else {
+			throw new NotImplementedException();
+		}
+	}
 	
 	/**
 	 * Fetches the record in the database associated with getPkey(), using the
@@ -252,7 +253,7 @@ public abstract class Record {
 		} else { // Existing record
 			// Nothing was changed, so no need to save.
 			if (columns.isEmpty()) {
-                this.postSave();
+				this.postSave();
 				return;
 			}
 			// generate sql--something like UPDATE tab SET col1=?, col2=? WHERE

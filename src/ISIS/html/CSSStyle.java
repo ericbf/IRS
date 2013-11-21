@@ -13,9 +13,10 @@ public class CSSStyle {
 	
 	public CSSStyle addAttribute(String key, String value) {
 		if (key == null || value == null || key.trim().isEmpty()
-				|| value.trim().isEmpty())
+				|| value.trim().isEmpty()) {
 			throw new NullPointerException(
 					"Neither the key nor the value can be empty or only whitespace.");
+		}
 		this.attributes.add(key + ":" + value);
 		return this;
 	}
@@ -27,8 +28,9 @@ public class CSSStyle {
 		int size;
 		if ((size = this.attributes.size()) > 0) {
 			b.append(this.attributes.get(0) + (size > 1 ? "" : " "));
-			for (int i = 1; i < size; i++)
+			for (int i = 1; i < size; i++) {
 				b.append("; " + this.attributes.get(i) + " ");
+			}
 		}
 		b.append("}");
 		return b.toString();

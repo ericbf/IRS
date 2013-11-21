@@ -26,8 +26,9 @@ public class Table extends HTMLObjectContainer<Table> {
 	
 	public Table addRow() {
 		Row r = new Row();
-		for (int i = 0; i < this.columns; i++)
+		for (int i = 0; i < this.columns; i++) {
 			r.add(new Cell());
+		}
 		this.rows++;
 		return super.add(r);
 	}
@@ -62,26 +63,30 @@ public class Table extends HTMLObjectContainer<Table> {
 	}
 	
 	public Table setHeaderColumn(int column) {
-		for (HTMLObject<?> c : this.objects)
+		for (HTMLObject<?> c : this.objects) {
 			((Cell) c.objects.get(column)).setHeader();
+		}
 		return this;
 	}
 	
 	public Table setHeaderRow(int row) {
-		for (HTMLObject<?> r : this.objects.get(row).objects)
+		for (HTMLObject<?> r : this.objects.get(row).objects) {
 			((Cell) r).setHeader();
+		}
 		return this;
 	}
 	
 	public Table unsetHeaderColumn(int column) {
-		for (HTMLObject<?> c : this.objects)
+		for (HTMLObject<?> c : this.objects) {
 			((Cell) c.objects.get(column)).unsetHeader();
+		}
 		return this;
 	}
 	
 	public Table unsetHeaderRow(int row) {
-		for (HTMLObject<?> r : this.objects.get(row).objects)
+		for (HTMLObject<?> r : this.objects.get(row).objects) {
 			((Cell) r).unsetHeader();
+		}
 		return this;
 	}
 }

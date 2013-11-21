@@ -106,8 +106,9 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	}
 	
 	public String build() throws HTMLFormatException {
-		if (this.title.isEmpty())
+		if (this.title.isEmpty()) {
 			throw new HTMLFormatException("HTML title cannot be empty.");
+		}
 		StringBuilder out = new StringBuilder();
 		out.ln("<!DOCTYPE html>");
 		out.ln("<html>");
@@ -145,9 +146,11 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 			out.ln("<body>");
 			out.startBlock();
 			{
-				if (!this.objects.isEmpty())
-					for (HTMLObject<?> o : this.objects)
+				if (!this.objects.isEmpty()) {
+					for (HTMLObject<?> o : this.objects) {
 						out.ln(o.build());
+					}
+				}
 			}
 			out.closeBlock();
 			out.ln("</body>");
@@ -178,8 +181,11 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	 * @return
 	 */
 	public CSSStyle getStyle(String designator) {
-		for (CSSStyle s : this.styles)
-			if (designator.equals(s.getDesignator())) return s;
+		for (CSSStyle s : this.styles) {
+			if (designator.equals(s.getDesignator())) {
+				return s;
+			}
+		}
 		return null;
 	}
 	

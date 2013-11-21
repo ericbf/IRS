@@ -123,9 +123,10 @@ public class ReportView extends View {
 		d.setDirectory(Session.getCurrentSession().getSetting("report_dir")
 				.toString());
 		d.setVisible(true);
-		if (d.getDirectory() != null)
+		if (d.getDirectory() != null) {
 			Session.getCurrentSession().setSetting("report_dir",
 					d.getDirectory());
+		}
 		try {
 			FileOutputStream fos = new FileOutputStream(d.getDirectory()
 					+ d.getFile());

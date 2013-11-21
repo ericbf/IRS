@@ -1,18 +1,23 @@
 package ISIS.gui;
 
-import ISIS.database.DB;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.session.Session;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.swing.JComponent;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
+
+import ISIS.database.DB;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.session.Session;
 
 public abstract class ListView<E extends Record> extends View {
 	private static final long		serialVersionUID	= 1L;
@@ -41,7 +46,7 @@ public abstract class ListView<E extends Record> extends View {
 						: ListSelectionModel.SINGLE_SELECTION);
 		this.table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
 				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
-        this.table.setAutoCreateRowSorter(true);
+		this.table.setAutoCreateRowSorter(true);
 		this.setFocusCycleRoot(true);
 		this.setOpaque(false);
 	}
@@ -54,6 +59,12 @@ public abstract class ListView<E extends Record> extends View {
 		throw new UnsupportedOperationException("Not supported.");
 	}
 	
+	// Populate records in the instance.
+	protected abstract void doFillTable();
+	
+	// Do any pre-population of records, then call doFillTable (supposedly).
+	protected abstract void fillTable();
+	
 	/**
 	 * This type of view doesn't own a record.
 	 */
@@ -61,12 +72,6 @@ public abstract class ListView<E extends Record> extends View {
 	public Record getCurrentRecord() {
 		return null;
 	}
-	
-	// Do any pre-population of records, then call doFillTable (supposedly).
-	protected abstract void fillTable();
-	
-	// Populate records in the instance.
-	protected abstract void doFillTable();
 	
 	// DB table the data is coming from.
 	protected abstract DB.TableName getTableName();

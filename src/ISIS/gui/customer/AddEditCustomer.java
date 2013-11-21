@@ -142,7 +142,9 @@ public class AddEditCustomer extends AddEditView {
 	@Override
 	public Record getCurrentRecord() {
 		if (this.customer == null) {
-			if (!this.isAnyFieldDifferentFromDefault()) return null;
+			if (!this.isAnyFieldDifferentFromDefault()) {
+				return null;
+			}
 			this.customer = new Customer(this.fname.getText(),
 					this.lname.getText(), this.email.getText(),
 					this.note.getText(), this.password.getText(),

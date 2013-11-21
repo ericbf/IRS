@@ -47,7 +47,7 @@ public abstract class View extends JPanel {
 		Record record = this.getCurrentRecord();
 		// Need the null check for views who don't own a record
 		if (record != null && record.isChanged() || this instanceof ReportView
-				&& this.isAnyFieldDifferentFromDefault())
+				&& this.isAnyFieldDifferentFromDefault()) {
 			if ((new ConfirmCloseDialog().show(this.splitPane))) {
 				try {
 					this.save();
@@ -58,6 +58,7 @@ public abstract class View extends JPanel {
 				}
 			} else {
 				// do nothing
+			}
 		}
 	}
 	

@@ -77,7 +77,9 @@ public class AddEditItem extends AddEditView {
 		BigDecimal onhand = new BigDecimal(this.stock.getText());
 		BigDecimal reorder = new BigDecimal(this.reorder.getText());
 		BigDecimal cost = new BigDecimal(this.cost.getText());
-		if (!this.isAnyFieldDifferentFromDefault()) return null;
+		if (!this.isAnyFieldDifferentFromDefault()) {
+			return null;
+		}
 		if (this.item == null) {
 			this.item = new Item(this.name.getText(), this.SKU.getText(),
 					this.description.getText(), price, onhand, reorder,
@@ -275,13 +277,18 @@ public class AddEditItem extends AddEditView {
 				
 				@Override
 				public void focusLost(FocusEvent e) {
-					if (field.getText().isEmpty()) field.setText("0.00");
-					if (field.getText().matches("[0-9]*\\."))
+					if (field.getText().isEmpty()) {
+						field.setText("0.00");
+					}
+					if (field.getText().matches("[0-9]*\\.")) {
 						field.setText(field.getText() + "0");
-					if (field.getText().matches("\\.[0-9]*"))
+					}
+					if (field.getText().matches("\\.[0-9]*")) {
 						field.setText("0" + field.getText());
-					if (field.getText().matches("[0-9]*\\.[0-9]"))
+					}
+					if (field.getText().matches("[0-9]*\\.[0-9]")) {
 						field.setText(field.getText() + "0");
+					}
 					field.setCaretPosition(0);
 				}
 			});

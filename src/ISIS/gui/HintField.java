@@ -54,20 +54,25 @@ public class HintField extends JTextField {
 		this.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent fe) {
-				if (HintField.this.selectAll) HintField.this.selectAll();
-				if (HintField.this.showingHint && HintField.this.hintEnabled)
+				if (HintField.this.selectAll) {
+					HintField.this.selectAll();
+				}
+				if (HintField.this.showingHint && HintField.this.hintEnabled) {
 					HintField.super.setText("");
+				}
 				HintField.this.showingHint = false;
 			}
 			
 			@Override
 			public void focusLost(FocusEvent fe) {
-				if (HintField.this.selectAll)
+				if (HintField.this.selectAll) {
 					HintField.this.setCaretPosition(0);
+				}
 				if (HintField.this.getText().isEmpty()) {
 					HintField.this.showingHint = true;
-					if (HintField.this.hintEnabled)
+					if (HintField.this.hintEnabled) {
 						HintField.super.setText(HintField.this.hint);
+					}
 				}
 			}
 		});
@@ -87,7 +92,9 @@ public class HintField extends JTextField {
 								this.me.setText(this.me.getText().substring(
 										caretPosition));
 								this.me.setCaretPosition(0);
-							} else this.me.setText("");
+							} else {
+								this.me.setText("");
+							}
 						}
 						break;
 				}
@@ -103,8 +110,11 @@ public class HintField extends JTextField {
 	
 	@Override
 	public String getText() {
-		if (this.showingHint) return "";
-		else return super.getText();
+		if (this.showingHint) {
+			return "";
+		} else {
+			return super.getText();
+		}
 	}
 	
 	public HintField setHintEnabled(boolean b) {

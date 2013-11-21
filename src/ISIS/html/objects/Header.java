@@ -15,8 +15,9 @@ public class Header extends HTMLTextContainer<Header> {
 	public Header(int level) {
 		super(Type.HEADER);
 		
-		if (level < 1)
+		if (level < 1) {
 			throw new IndexOutOfBoundsException("Level can't be below 1");
+		}
 		this.level = level;
 	}
 	

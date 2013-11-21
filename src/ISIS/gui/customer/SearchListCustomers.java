@@ -65,7 +65,9 @@ public class SearchListCustomers extends SearchListView<Customer> {
 				
 				if (selected == -1) {
 					selected = SearchListCustomers.this.selected;
-					if (selected == -1) return;
+					if (selected == -1) {
+						return;
+					}
 					SearchListCustomers.this.table.setRowSelectionInterval(
 							selected, selected);
 				}

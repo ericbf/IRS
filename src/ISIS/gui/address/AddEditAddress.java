@@ -63,7 +63,9 @@ public class AddEditAddress extends AddEditView {
 	 */
 	@Override
 	public Record getCurrentRecord() {
-		if (!this.isAnyFieldDifferentFromDefault()) return null;
+		if (!this.isAnyFieldDifferentFromDefault()) {
+			return null;
+		}
 		if (this.address == null) {
 			this.address = new Address(this.active.isSelected(), false,
 					this.country.getText(), this.title.getText(),

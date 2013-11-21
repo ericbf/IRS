@@ -180,9 +180,10 @@ public final class SplitPane extends JPanel {
 	 * @post previousViews() == true
 	 */
 	protected final void forward() {
-		if (this.stackPointer > 0)
+		if (this.stackPointer > 0) {
 			SplitPane.dividerRatio = this.moverRatioCalculator(this.splitPane
 					.getDividerLocation());
+		}
 		this.setRightComponent(this.stack.get(++this.stackPointer));
 		this.setLeftComponent(this.stack.get(this.stackPointer - 1));
 		this.moveDivider();
@@ -214,8 +215,9 @@ public final class SplitPane extends JPanel {
 	 */
 	public final void pop() throws CloseCanceledException {
 		int diff = this.stack.size() - this.stackPointer - 1;
-		for (int i = 0; i < diff; i++)
+		for (int i = 0; i < diff; i++) {
 			this.forward();
+		}
 		this.stack.get(this.stack.size() - 1).close();
 		this.stack.remove(this.stack.size() - 1);
 		if (this.stackPointer == this.stack.size()) {
@@ -228,8 +230,9 @@ public final class SplitPane extends JPanel {
 	}
 	
 	public final void popAllAbovePointer() throws CloseCanceledException {
-		for (int i = this.stack.size(); i > this.stackPointer + 1; i--)
+		for (int i = this.stack.size(); i > this.stackPointer + 1; i--) {
 			this.pop();
+		}
 	}
 	
 	/**
@@ -265,7 +268,9 @@ public final class SplitPane extends JPanel {
 		}
 		if (layout.equals(LayoutType.VERTICAL)) {
 			this.splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		} else this.splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		} else {
+			this.splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		}
 		if (this.stack.isEmpty()) {
 			this.setLeftComponent(view);
 			this.setRightComponent(null);
@@ -283,7 +288,9 @@ public final class SplitPane extends JPanel {
 		if (comp != null) {
 			// this.splitPane.setLeftComponent(this.getWrappedComponent(comp));
 			this.splitPane.setLeftComponent(comp);
-		} else this.splitPane.setLeftComponent(null);
+		} else {
+			this.splitPane.setLeftComponent(null);
+		}
 	}
 	
 	/**

@@ -78,8 +78,9 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 							}
 						}
 						int sel;
-						if ((sel = SearchListView.this.table.getSelectedRow()) != -1)
+						if ((sel = SearchListView.this.table.getSelectedRow()) != -1) {
 							SearchListView.this.selected = sel;
+						}
 						break;
 					case KeyEvent.VK_UP:
 						if (SearchListView.this.table.getRowCount() > 0) {
@@ -100,8 +101,9 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 						}
 						int selPasser;
 						if ((selPasser = SearchListView.this.table
-								.getSelectedRow()) != -1)
+								.getSelectedRow()) != -1) {
 							SearchListView.this.selected = selPasser;
+						}
 						break;
 				}
 			}
@@ -153,8 +155,9 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 							}
 						}
 						int sel;
-						if ((sel = SearchListView.this.table.getSelectedRow()) != -1)
+						if ((sel = SearchListView.this.table.getSelectedRow()) != -1) {
 							SearchListView.this.selected = sel;
+						}
 						break;
 					case KeyEvent.VK_UP:
 						if (SearchListView.this.table.getRowCount() > 0) {
@@ -172,8 +175,9 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 						}
 						int selPasser;
 						if ((selPasser = SearchListView.this.table
-								.getSelectedRow()) != -1)
+								.getSelectedRow()) != -1) {
 							SearchListView.this.selected = selPasser;
+						}
 						break;
 				}
 			}

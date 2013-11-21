@@ -12,11 +12,39 @@ public final class Field {
 	public Field() {}
 	
 	/**
+	 * Gets the field.
+	 */
+	public Object getValue() {
+		if (!this.initialized) {
+			throw new UninitializedFieldException();
+		}
+		return field;
+	}
+	
+	/**
+	 * Checks if this field was changed in a record class.
+	 */
+	public Boolean getWasChanged() {
+		return this.changed;
+	}
+	
+	/**
+	 * Checks if this record was initialized.
+	 */
+	public Boolean getWasInitialized() {
+		return this.initialized;
+	}
+	
+	/**
 	 * For when value is retrieved from database.
 	 */
 	public void initField(Object value) {
 		initialized = true;
 		this.field = value;
+	}
+	
+	void save() {
+		this.changed = false;
 	}
 	
 	/**
@@ -29,33 +57,5 @@ public final class Field {
 		this.initialized = true;
 		this.field = value;
 		this.changed = true;
-	}
-	
-	/**
-	 * Gets the field.
-	 */
-	public Object getValue() {
-		if (!this.initialized) {
-			throw new UninitializedFieldException();
-		}
-		return field;
-	}
-	
-	/**
-	 * Checks if this record was initialized.
-	 */
-	public Boolean getWasInitialized() {
-		return this.initialized;
-	}
-	
-	/**
-	 * Checks if this field was changed in a record class.
-	 */
-	public Boolean getWasChanged() {
-		return this.changed;
-	}
-	
-	void save() {
-		this.changed = false;
 	}
 }

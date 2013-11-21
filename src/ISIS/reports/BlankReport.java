@@ -48,10 +48,14 @@ public class BlankReport extends Report {
 		for (int row = 1; row < t.getRowCount(); row++) {
 			t.get(0, row).add(BlankReport.names[row - 1]);
 			int description;
-			if (row - 1 == 0) while ((description = rand
-					.nextInt(BlankReport.descriptions.length)) > 5)
-				;
-			else description = rand.nextInt(BlankReport.descriptions.length);
+			if (row - 1 == 0) {
+				while ((description = rand
+						.nextInt(BlankReport.descriptions.length)) > 5) {
+					;
+				}
+			} else {
+				description = rand.nextInt(BlankReport.descriptions.length);
+			}
 			t.get(1, row).add(BlankReport.descriptions[description]);
 		}
 		

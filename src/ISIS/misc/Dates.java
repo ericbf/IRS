@@ -22,16 +22,6 @@ public class Dates {
 	private boolean	dateChanged	= false;	// means the date needs to be saved
 											
 	/**
-	 * Public constructor. Meant to populate a date from the database.
-	 */
-	public Dates(Date createdDate, User createdBy, Date modDate, User modUser) {
-		this.createDate = createdDate;
-		this.createUser = createdBy;
-		this.modDate = modDate;
-		this.modUser = modUser;
-	}
-	
-	/**
 	 * Public constructor. Convenience method that uses the current time and
 	 * logged in user.
 	 */
@@ -44,27 +34,13 @@ public class Dates {
 	}
 	
 	/**
-	 * Sets the modification date to now, and the modification user to the user
-	 * currently logged in.
+	 * Public constructor. Meant to populate a date from the database.
 	 */
-	public void modify() {
-		this.modDate = new Date();
-		this.modUser = Session.getCurrentSession().getUser();
-		this.dateChanged = true;
-	}
-	
-	/**
-	 * Checks whether the date needs to be saved.
-	 */
-	public boolean modified() {
-		return this.dateChanged;
-	}
-	
-	/**
-	 * Gets the creation date of the object referencing this instance.
-	 */
-	public Date getCreatedDate() {
-		return this.createDate;
+	public Dates(Date createdDate, User createdBy, Date modDate, User modUser) {
+		this.createDate = createdDate;
+		this.createUser = createdBy;
+		this.modDate = modDate;
+		this.modUser = modUser;
 	}
 	
 	/**
@@ -75,10 +51,10 @@ public class Dates {
 	}
 	
 	/**
-	 * Gets the modification date of the object referencing this instance.
+	 * Gets the creation date of the object referencing this instance.
 	 */
-	public Date getModDate() {
-		return this.modDate;
+	public Date getCreatedDate() {
+		return this.createDate;
 	}
 	
 	/**
@@ -86,5 +62,29 @@ public class Dates {
 	 */
 	public User getModBy() {
 		return this.modUser;
+	}
+	
+	/**
+	 * Gets the modification date of the object referencing this instance.
+	 */
+	public Date getModDate() {
+		return this.modDate;
+	}
+	
+	/**
+	 * Checks whether the date needs to be saved.
+	 */
+	public boolean modified() {
+		return this.dateChanged;
+	}
+	
+	/**
+	 * Sets the modification date to now, and the modification user to the user
+	 * currently logged in.
+	 */
+	public void modify() {
+		this.modDate = new Date();
+		this.modUser = Session.getCurrentSession().getUser();
+		this.dateChanged = true;
 	}
 }

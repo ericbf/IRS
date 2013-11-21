@@ -91,9 +91,10 @@ public class HTMLObject<E> {
 	
 	protected HTMLObject(String text) {
 		this.type = Type.PLAIN_TEXT;
-		if (text == null || text.isEmpty())
+		if (text == null || text.isEmpty()) {
 			throw new NullPointerException(
 					"This HTML object cannot be empty of text: " + this.type);
+		}
 		this.text = text;
 		this.container = false;
 		this.objects = null;
@@ -114,20 +115,26 @@ public class HTMLObject<E> {
 	
 	public E addAttribute(String key, String value) {
 		if (key == null || value == null || key.trim().isEmpty()
-				|| value.trim().isEmpty())
+				|| value.trim().isEmpty()) {
 			throw new NullPointerException(
 					"Neither the key nor the value can be empty or only whitespace.");
-		if (this.attributes.isEmpty()) this.attributes = key + "=\"" + value
-				+ "\"";
-		else this.attributes += " " + key + "=\"" + value + "\"";
+		}
+		if (this.attributes.isEmpty()) {
+			this.attributes = key + "=\"" + value + "\"";
+		} else {
+			this.attributes += " " + key + "=\"" + value + "\"";
+		}
 		@SuppressWarnings("unchecked")
 		E e = (E) this;
 		return e;
 	}
 	
 	public E addClass(String HTMLclass) {
-		if (this.HTMLclass.isEmpty()) this.HTMLclass = HTMLclass;
-		else this.HTMLclass += String.format(" %s", HTMLclass);
+		if (this.HTMLclass.isEmpty()) {
+			this.HTMLclass = HTMLclass;
+		} else {
+			this.HTMLclass += String.format(" %s", HTMLclass);
+		}
 		@SuppressWarnings("unchecked")
 		E e = (E) this;
 		return e;
@@ -140,21 +147,28 @@ public class HTMLObject<E> {
 			b.startBlock();
 			if (this instanceof Cell) {
 				int i = 0;
-				if (i < this.objects.size())
+				if (i < this.objects.size()) {
 					b.indents().append(
 							this.objects.get(i++).build()
 									+ (this.objects.size() == 1 ? "\n" : ""));
-				for (; i < this.objects.size() - 1; i++)
+				}
+				for (; i < this.objects.size() - 1; i++) {
 					b.append(this.objects.get(i).build());
-				if (i < this.objects.size())
+				}
+				if (i < this.objects.size()) {
 					b.append(this.objects.get(i).build() + "\n");
-			} else for (HTMLObject<?> o : this.objects)
-				b.ln(o.build());
+				}
+			} else {
+				for (HTMLObject<?> o : this.objects) {
+					b.ln(o.build());
+				}
+			}
 			b.closeBlock();
 			b.ln("</" + this + ">");
 		} else {
-			if (this.type == Type.PLAIN_TEXT) b.append(this.text);
-			else {
+			if (this.type == Type.PLAIN_TEXT) {
+				b.append(this.text);
+			} else {
 				if (!(this instanceof HTMLTextContainer)) {
 					b.ln("<" + this.openTag() + "/>");
 				} else {
