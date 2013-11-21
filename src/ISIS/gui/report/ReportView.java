@@ -3,7 +3,6 @@ package ISIS.gui.report;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 import javax.swing.JScrollPane;
 
@@ -11,6 +10,7 @@ import org.xhtmlrenderer.simple.XHTMLPanel;
 
 import ISIS.database.Record;
 import ISIS.gui.BadInputException;
+import ISIS.gui.ErrorLogger;
 import ISIS.gui.SplitPane;
 import ISIS.gui.View;
 import ISIS.html.HTMLFormatException;
@@ -35,11 +35,13 @@ public class ReportView extends View {
 		try {
 			p.setDocument(new ByteArrayInputStream(report.getBuilder().build()
 					.getBytes("UTF-8")), "");
-		} catch (HTMLFormatException | IOException e) {
-			// TODO Auto-generated catch block
+		} catch (HTMLFormatException e) {
+			ErrorLogger.error(
+					"Malformatted HTML, fix the <class extends Report>", true,
+					true);
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			ErrorLogger.error("Error setting HTML to view", true, true);
 			e.printStackTrace();
 		}
 		

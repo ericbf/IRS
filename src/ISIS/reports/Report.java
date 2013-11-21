@@ -15,7 +15,7 @@ public abstract class Report {
 		this.b = HTMLBuilder.getReportTemplate(title);
 	}
 	
-	public HTMLBuilder getBuilder() {
+	public final HTMLBuilder getBuilder() {
 		return this.b;
 	}
 }
