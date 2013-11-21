@@ -19,7 +19,6 @@ import ISIS.gui.SplitPane;
 import ISIS.gui.View;
 import ISIS.html.HTMLFormatException;
 import ISIS.reports.Report;
-import ISIS.session.Session;
 
 import com.lowagie.text.DocumentException;
 
@@ -31,10 +30,11 @@ public class ReportView extends View {
 	boolean						isSaved;
 	private String				html;
 	Report						report;
-	static {
-		Session.getCurrentSession().setDefaultSetting("report_dir",
-				System.getProperty("user.home"));
-	}
+	
+	// static {
+	// Session.getCurrentSession().setDefaultSetting("report_dir",
+	// System.getProperty("user.home"));
+	// }
 	
 	/**
 	 * Public constructor.
@@ -118,15 +118,15 @@ public class ReportView extends View {
 				FileDialog.SAVE);
 		d.setLocationRelativeTo(this);
 		d.setFile(this.report.getTitle() + ".pdf");
-		System.out.println(Session.getCurrentSession().getSetting("report_dir")
-				.toString());
-		d.setDirectory(Session.getCurrentSession().getSetting("report_dir")
-				.toString());
+		// System.out.println(Session.getCurrentSession().getSetting("report_dir")
+		// .toString());
+		// d.setDirectory(Session.getCurrentSession().getSetting("report_dir")
+		// .toString());
 		d.setVisible(true);
-		if (d.getDirectory() != null) {
-			Session.getCurrentSession().setSetting("report_dir",
-					d.getDirectory());
-		}
+		// if (d.getDirectory() != null) {
+		// Session.getCurrentSession().setSetting("report_dir",
+		// d.getDirectory());
+		// }
 		try {
 			FileOutputStream fos = new FileOutputStream(d.getDirectory()
 					+ d.getFile());
