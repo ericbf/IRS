@@ -8,7 +8,7 @@ public class CSSStyle {
 	
 	public CSSStyle(String designator) {
 		this.designator = designator;
-		attributes = new ArrayList<String>();
+		this.attributes = new ArrayList<String>();
 	}
 	
 	public CSSStyle addAttribute(String key, String value) {
@@ -16,21 +16,30 @@ public class CSSStyle {
 				|| value.trim().isEmpty())
 			throw new NullPointerException(
 					"Neither the key nor the value can be empty or only whitespace.");
-		attributes.add(key + ": " + value + ";");
+		this.attributes.add(key + ":" + value);
 		return this;
 	}
 	
 	public String build() {
 		StringBuilder b = new StringBuilder();
-		b.append(designator);
+		b.append(this.designator);
 		b.append(" { ");
-		for (String s : attributes)
-			b.append(s + " ");
+		int size;
+		if ((size = this.attributes.size()) > 0) {
+			b.append(this.attributes.get(0) + (size > 1 ? "" : " "));
+			for (int i = 1; i < size; i++)
+				b.append("; " + this.attributes.get(i) + " ");
+		}
 		b.append("}");
 		return b.toString();
 	}
 	
 	public String getDesignator() {
-		return designator;
+		return this.designator;
+	}
+	
+	public CSSStyle pasteAttributes(String str) {
+		this.attributes.add(str);
+		return this;
 	}
 }

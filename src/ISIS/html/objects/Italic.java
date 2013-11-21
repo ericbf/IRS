@@ -1,8 +1,8 @@
 package ISIS.html.objects;
 
-public class Italics extends HTMLTextContainer {
+public class Italic extends HTMLTextContainer<Italic> {
 	
-	public Italics() {
+	public Italic() {
 		super(Type.ITALICS);
 		// TODO Auto-generated constructor stub
 	}

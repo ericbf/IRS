@@ -14,26 +14,16 @@ public abstract class Report {
 	}
 	
 	/**
-	 * Sets the report's main CSS stylesheet.
-	 */
-	protected final void setStyles(String stylesheet) {}
-	
-	/**
-	 * Sets the report's secondary stylesheet (user styles).
-	 */
-	protected final void setSecondaryStyles(String id, String class_,
-			String stylesheet) {}
-	
-	/**
-	 * Appends a table to the report.
-	 */
-	public void appendTable(String id, String class_, Table table) {}
-	
-	/**
 	 * Appends a heading to the report.
 	 */
 	public void appendHeading(String id, String class_,
 			HeadingType headingType, String headingContents) {}
+	
+	/**
+	 * Appends HTML to the report. Caveat: XSS attacks are possible if input is
+	 * not sanitized.
+	 */
+	protected final void appendHTML(String html) {}
 	
 	/**
 	 * Appends a paragraph to the report.
@@ -49,15 +39,20 @@ public abstract class Report {
 	}
 	
 	/**
-	 * Appends HTML to the report. Caveat: XSS attacks are possible if input is
-	 * not sanitized.
-	 */
-	protected final void appendHTML(String html) {}
-	
-	/**
 	 * Exports the report as a HTML string.
 	 */
 	protected final String export() {
 		return null;
 	}
+	
+	/**
+	 * Sets the report's secondary stylesheet (user styles).
+	 */
+	protected final void setSecondaryStyles(String id, String class_,
+			String stylesheet) {}
+	
+	/**
+	 * Sets the report's main CSS stylesheet.
+	 */
+	protected final void setStyles(String stylesheet) {}
 }

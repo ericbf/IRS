@@ -1,6 +1,7 @@
 package ISIS.html.objects;
 
-public class Cell extends HTMLTextContainer {
+public class Cell extends HTMLTextContainer<Cell> implements
+		HTMLContainObjects<Cell> {
 	protected final static Cell	cell	= null;
 	protected final static Cell	header	= null;
 	
@@ -9,18 +10,31 @@ public class Cell extends HTMLTextContainer {
 		// TODO Auto-generated constructor stub
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.html.objects.HTMLContainObjects#add(ISIS.html.objects.Division)
+	 */
 	@Override
-	public Cell add(HTMLObject object) {
-		return (Cell) super.add(object);
+	public Cell add(Division division) {
+		return super.add(division);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.html.objects.HTMLContainObjects#add(ISIS.html.objects.Table)
+	 */
+	@Override
+	public Cell add(Table table) {
+		return super.add(table);
 	}
 	
 	public Cell setHeader() {
-		type = "th";
+		this.type = Type.TABLE_HEADER;
 		return this;
 	}
 	
 	public Cell unsetHeader() {
-		type = "td";
+		this.type = Type.TABLE_CELL;
 		return this;
 	}
 }
