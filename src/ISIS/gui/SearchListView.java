@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.AbstractAction;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
@@ -40,7 +39,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 	
 	public SearchListView(SplitPane splitPane) {
 		super(splitPane, false);
-		this.setBorder(new EmptyBorder(4, 0, 10, 5));
+		this.setPadding();
 		
 		this.selected = -1;
 		this.searchField = new HintField("Enter query to search...");

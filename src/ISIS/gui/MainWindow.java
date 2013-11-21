@@ -21,6 +21,7 @@ import ISIS.customer.Customer;
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.SearchListCustomers;
 import ISIS.gui.item.SearchListItems;
+import ISIS.gui.report.ReportSelectorView;
 import ISIS.gui.transaction.SearchListTransactions;
 import ISIS.item.Item;
 import ISIS.misc.Address;
@@ -185,7 +186,7 @@ public class MainWindow extends JFrame {
 	
 	private SplitPane	inventoryPane;
 	
-	// private SplitPane reportPane;
+	private SplitPane	reportPane;
 	
 	private SplitPane	customerPane;
 	
@@ -196,25 +197,18 @@ public class MainWindow extends JFrame {
 		this.inventoryPane = new SplitPane();
 		this.inventoryPane.push(new SearchListItems(this.inventoryPane),
 				SplitPane.LayoutType.HORIZONTAL, null);
-		// this.inventoryPane.push(new SearchListItems(this.inventoryPane),
-		// SplitPane.LayoutType.HORIZONTAL);
 		
 		this.customerPane = new SplitPane();
 		this.customerPane.push(new SearchListCustomers(this.customerPane),
 				SplitPane.LayoutType.HORIZONTAL, null);
-		// this.customerPane.push(new SearchListCustomers(this.customerPane),
-		// SplitPane.LayoutType.HORIZONTAL);
 		
 		this.transactionPane = new SplitPane();
 		this.transactionPane.push(new SearchListTransactions(
 				this.transactionPane), SplitPane.LayoutType.HORIZONTAL, null);
-		// this.transactionPane.push(new
-		// SearchListTransactions(this.transactionPane),
-		// SplitPane.LayoutType.HORIZONTAL);
 		
-		// this.reportPane = new SplitPane();
-		// this.reportPane.push(new ReportSelectorView(this.reportPane),
-		// SplitPane.LayoutType.HORIZONTAL);
+		this.reportPane = new SplitPane();
+		this.reportPane.push(new ReportSelectorView(this.reportPane),
+				SplitPane.LayoutType.HORIZONTAL, null);
 		
 		// new BorderLayout()
 		JTabbedPane tabs = new JTabbedPane(SwingConstants.LEFT);
@@ -222,6 +216,7 @@ public class MainWindow extends JFrame {
 		tabs.add("Customers", this.customerPane);
 		tabs.add("Inventory", this.inventoryPane);
 		tabs.add("Transactions", this.transactionPane);
+		tabs.add("Reports", this.reportPane);
 		this.setContentPane(tabs);
 	}
 }

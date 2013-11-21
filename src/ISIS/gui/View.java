@@ -3,6 +3,7 @@ package ISIS.gui;
 import java.sql.SQLException;
 
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import ISIS.database.Record;
 
@@ -117,4 +118,8 @@ public abstract class View extends JPanel {
 	 * must be implemented.
 	 */
 	public abstract void save() throws SQLException;
+	
+	protected void setPadding() {
+		this.setBorder(new EmptyBorder(4, 0, 10, 5));
+	}
 }
