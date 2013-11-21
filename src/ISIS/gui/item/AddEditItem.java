@@ -16,7 +16,6 @@ import javax.swing.text.PlainDocument;
 
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
-import ISIS.gui.BadInputException;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
@@ -73,7 +72,7 @@ public class AddEditItem extends AddEditView {
 	 * @see ISIS.gui.View#getCurrentRecord()
 	 */
 	@Override
-	public Record getCurrentRecord() throws BadInputException {
+	public Record getCurrentRecord() {
 		BigDecimal price = new BigDecimal(this.price.getText());
 		BigDecimal onhand = new BigDecimal(this.stock.getText());
 		BigDecimal reorder = new BigDecimal(this.reorder.getText());
@@ -268,7 +267,7 @@ public class AddEditItem extends AddEditView {
 		
 		for (final HintField field : constrainedFields) {
 			((PlainDocument) field.getDocument())
-					.setDocumentFilter(numberFilter);
+					.setDocumentFilter(AddEditView.numberFilter);
 			field.addFocusListener(new FocusListener() {
 				
 				@Override

@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ISIS.database.Record;
+import ISIS.gui.report.ReportView;
 
 /**
  * Abstract class for all views.
@@ -40,18 +41,13 @@ public abstract class View extends JPanel {
 	 * not apply.
 	 */
 	public void close() throws CloseCanceledException {
-		// Need the null check for views who don't own a record
 		if (!this.needsSave()) {
 			return;
 		}
-		Record record = null;
-		try {
-			record = this.getCurrentRecord();
-		} catch (BadInputException e) {
-			ErrorLogger.error(e, "", false, true);
-			throw new CloseCanceledException();
-		}
-		if (record != null && record.isChanged())
+		Record record = this.getCurrentRecord();
+		// Need the null check for views who don't own a record
+		if (record != null && record.isChanged() || this instanceof ReportView
+				&& this.isAnyFieldDifferentFromDefault())
 			if ((new ConfirmCloseDialog().show(this.splitPane))) {
 				try {
 					this.save();
@@ -71,7 +67,7 @@ public abstract class View extends JPanel {
 	 * 
 	 * @return
 	 */
-	public abstract Record getCurrentRecord() throws BadInputException;
+	public abstract Record getCurrentRecord();
 	
 	/**
 	 * Returns the split pane in which this view is contained.

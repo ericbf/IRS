@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 
 import ISIS.database.Record;
-import ISIS.gui.BadInputException;
 import ISIS.gui.SplitPane;
 import ISIS.gui.SplitPane.LayoutType;
 import ISIS.gui.View;
@@ -75,7 +74,7 @@ public class ReportSelectorView extends View {
 	 * @see ISIS.gui.View#getCurrentRecord()
 	 */
 	@Override
-	public Record getCurrentRecord() throws BadInputException {
+	public Record getCurrentRecord() {
 		// TODO Auto-generated method stub
 		return null;
 	}

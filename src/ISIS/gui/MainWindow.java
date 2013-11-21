@@ -121,7 +121,7 @@ public class MainWindow extends JFrame {
 		splash.setUndecorated(true);
 		splash.setAlwaysOnTop(true);
 		splash.setVisible(true);
-		Timer dispose = new Timer(4000, new ActionListener() {
+		Timer dispose = new Timer(2000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				splash.setVisible(false);
@@ -210,7 +210,6 @@ public class MainWindow extends JFrame {
 		this.reportPane.push(new ReportSelectorView(this.reportPane),
 				SplitPane.LayoutType.HORIZONTAL, null);
 		
-		// new BorderLayout()
 		JTabbedPane tabs = new JTabbedPane(SwingConstants.LEFT);
 		tabs.setFocusable(false);
 		tabs.add("Customers", this.customerPane);

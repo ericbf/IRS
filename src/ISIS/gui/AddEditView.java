@@ -3,13 +3,14 @@
  */
 package ISIS.gui;
 
+import java.awt.Color;
+import java.sql.SQLException;
+
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
-import java.awt.*;
-import java.sql.SQLException;
 
 /**
  * @author eric
@@ -108,16 +109,12 @@ public abstract class AddEditView extends View {
 	 */
 	@Override
 	public void save() throws SQLException {
-		try {
-			if (this.isAnyFieldDifferentFromDefault() != null
-					&& this.isAnyFieldDifferentFromDefault())
-				this.getCurrentRecord().save();
-			if (!this.wasSavedOrAlreadySetUp) {
-				this.doSaveRecordAction();
-				this.wasSavedOrAlreadySetUp = true;
-			}
-		} catch (BadInputException e) {
-			ErrorLogger.error(e, "", false, true);
+		if (this.isAnyFieldDifferentFromDefault() != null
+				&& this.isAnyFieldDifferentFromDefault())
+			this.getCurrentRecord().save();
+		if (!this.wasSavedOrAlreadySetUp) {
+			this.doSaveRecordAction();
+			this.wasSavedOrAlreadySetUp = true;
 		}
 	}
 }

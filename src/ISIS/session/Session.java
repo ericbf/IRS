@@ -1,10 +1,12 @@
 package ISIS.session;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import ISIS.database.DB;
+import ISIS.gui.ErrorLogger;
 import ISIS.gui.TableUpdateListener;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
@@ -15,37 +17,22 @@ import ISIS.user.User;
  */
 public class Session {
 	
-	private static Session													session			= null;
-	private static DB														db				= null;
-	private User															user;
-	private static HashMap<DB.TableName, ArrayList<TableUpdateListener>>	tableListeners	= new HashMap<DB.TableName, ArrayList<TableUpdateListener>>();
+	private static Session	session	= null;
+	private static DB		db		= null;
 	
-	private Session(User user) {
-		this.user = user;
+	/**
+	 * Only for initialization of program.
+	 */
+	public static void baseSession() throws SQLException {
+		// login as base user
+		Session.session = new Session(new User(1, false));
 	}
 	
-	public User getUser() {
-		return user;
-	}
-	
 	/**
-	 * Sets a setting for the Session's user, under the given key.
+	 * Gets the current session.
 	 */
-	public void setSetting(String key, Object value) {}
-	
-	/**
-	 * Sets a default setting that is used for Users that have not set the
-	 * setting.
-	 */
-	public static void setDefaultSetting(String key, Object value) {}
-	
-	/**
-	 * Retrieves a setting for this user. If there is no instance of the given
-	 * setting for this Session's user, it checks if there is a default setting.
-	 * If there is no default setting, it returns null.
-	 */
-	public Object getSetting(String key) {
-		return null;
+	public static Session getCurrentSession() {
+		return Session.session;
 	}
 	
 	/**
@@ -53,7 +40,7 @@ public class Session {
 	 */
 	public static void startNewSession(String username, String password)
 			throws SQLException, AuthenticationException {
-		if (session != null) {
+		if (Session.session != null) {
 			endCurrentSession();
 		}
 		
@@ -62,43 +49,7 @@ public class Session {
 			throw new AuthenticationException("User is not active.",
 					AuthenticationException.exceptionType.ACTIVE);
 		}
-		session = new Session(user);
-	}
-	
-	/**
-	 * Only for initialization of program.
-	 */
-	public static void baseSession() throws SQLException {
-		// login as base user
-		session = new Session(new User(1, false));
-	}
-	
-	/**
-	 * Ends the current session.
-	 */
-	public static void endCurrentSession() {
-		session = null;
-	}
-	
-	/**
-	 * Gets the current session.
-	 */
-	public static Session getCurrentSession() {
-		return session;
-	}
-	
-	/**
-	 * Watch a database table for updates.
-	 */
-	public static void watchTable(DB.TableName tableName,
-			TableUpdateListener listener) {
-		if (Session.tableListeners.containsKey(tableName)) {
-			Session.tableListeners.get(tableName).add(listener);
-		} else {
-			ArrayList<TableUpdateListener> listeners = new ArrayList<TableUpdateListener>();
-			listeners.add(listener);
-			Session.tableListeners.put(tableName, listeners);
-		}
+		Session.session = new Session(user);
 	}
 	
 	/**
@@ -117,6 +68,17 @@ public class Session {
 		}
 	}
 	
+	private User															user;
+	
+	private static HashMap<DB.TableName, ArrayList<TableUpdateListener>>	tableListeners	= new HashMap<DB.TableName, ArrayList<TableUpdateListener>>();
+	
+	/**
+	 * Ends the current session.
+	 */
+	public static void endCurrentSession() {
+		Session.session = null;
+	}
+	
 	/**
 	 * Gets a reference to the database.
 	 */
@@ -126,6 +88,113 @@ public class Session {
 			return Session.db;
 		} else {
 			return Session.db;
+		}
+	}
+	
+	/**
+	 * Watch a database table for updates.
+	 */
+	public static void watchTable(DB.TableName tableName,
+			TableUpdateListener listener) {
+		if (Session.tableListeners.containsKey(tableName)) {
+			Session.tableListeners.get(tableName).add(listener);
+		} else {
+			ArrayList<TableUpdateListener> listeners = new ArrayList<TableUpdateListener>();
+			listeners.add(listener);
+			Session.tableListeners.put(tableName, listeners);
+		}
+	}
+	
+	private Session(User user) {
+		this.user = user;
+	}
+	
+	/**
+	 * Retrieves a setting for this user. If there is no instance of the given
+	 * setting for this Session's user, it checks if there is a default setting.
+	 * If there is no default setting, it returns null.
+	 * 
+	 * @param key
+	 * @return The setting as an Object, or null if not found
+	 */
+	public Object getSetting(String key) {
+		try {
+			PreparedStatement s = Session.db
+					.prepareStatement("SELECT * FROM setting WHERE key=\""
+							+ key + "\" AND user=?");
+			s.setInt(1, this.user.getEmployeeID());
+			// There should only be one
+			try {
+				return DB.mapResultSet(s.executeQuery()).get(0).get("value")
+						.getValue();
+			} catch (NullPointerException e) {
+				return null;
+			}
+		} catch (SQLException e) {
+			ErrorLogger.error(e, "Failed to get setting", true, true);
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public User getUser() {
+		return this.user;
+	}
+	
+	/**
+	 * Sets a default setting that is used for Users that have not set the
+	 * setting.
+	 */
+	public void setDefaultSetting(String key, Object value) {
+		try {
+			PreparedStatement s = Session.db
+					.prepareStatement("INSERT OR IGNORE INTO setting (key, value, user) VALUES (\""
+							+ key + "\",\"" + value + "\",?)");
+			s.setInt(1, this.user.getEmployeeID());
+			s.execute();
+		} catch (SQLException e) {
+			ErrorLogger.error(e, "Failed to set default setting", true, true);
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Sets a setting for the Session's user, under the given key. If the passed
+	 * value is null, the setting is removed from the database
+	 * 
+	 * @param key
+	 * @param value
+	 *            If null, deletes the setting
+	 */
+	public void setSetting(String key, Object value) {
+		if (this.getSetting(key) == null) {
+			this.setDefaultSetting(key, value);
+		} else if (value == null) {
+			try {
+				PreparedStatement s = Session.db
+						.prepareStatement("DELETE FROM setting WHERE key="
+								+ key + "\" AND user=?");
+				s.setInt(1, this.user.getEmployeeID());
+				s.execute();
+			} catch (SQLException e) {
+				ErrorLogger.error(e, "Failed to delete setting", true, true);
+				e.printStackTrace();
+			}
+		} else {
+			
+			try {
+				PreparedStatement s = Session.db
+						.prepareStatement("UPDATE OR IGNORE setting SET value=\""
+								+ value
+								+ "\" WHERE key=\""
+								+ key
+								+ "\" AND user=?");
+				s.setInt(1, this.user.getEmployeeID());
+				s.execute();
+			} catch (SQLException e) {
+				ErrorLogger.error(e, "Failed to set setting", true, true);
+				e.printStackTrace();
+			}
 		}
 	}
 }

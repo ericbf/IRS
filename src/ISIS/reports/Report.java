@@ -9,13 +9,22 @@ import ISIS.html.HTMLBuilder;
  * @author michaelm
  */
 public abstract class Report {
-	HTMLBuilder	b;
+	protected HTMLBuilder	b;
+	protected String		title;
 	
 	protected Report(String title) {
 		this.b = HTMLBuilder.getReportTemplate(title);
+		this.title = title;
+		this.populateBuilder();
 	}
 	
 	public final HTMLBuilder getBuilder() {
 		return this.b;
 	}
+	
+	public final String getTitle() {
+		return this.title;
+	}
+	
+	public abstract void populateBuilder();
 }

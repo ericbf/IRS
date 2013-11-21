@@ -290,7 +290,7 @@ public final class DB {
 	 */
 	public boolean isOpen() {
 		try {
-			return this.connection.isValid(timeout);
+			return this.connection.isValid(DB.timeout);
 		} catch (SQLException ex) {
 			ErrorLogger.error(ex.getLocalizedMessage(), false, false);
 			return false;
@@ -304,7 +304,7 @@ public final class DB {
 	 */
 	public PreparedStatement prepareStatement(String sql) throws SQLException {
 		return this.connection.prepareStatement(sql,
-				PreparedStatement.RETURN_GENERATED_KEYS);
+				Statement.RETURN_GENERATED_KEYS);
 	}
 	
 	/**
