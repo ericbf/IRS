@@ -114,6 +114,9 @@ public class ReportView extends View {
 		d.setLocationRelativeTo(this);
 		d.setFile(this.report.getTitle() + ".pdf");
 		d.setVisible(true);
+		if (d.getDirectory() == null || d.getFile() == null) {
+			return;
+		}
 		try {
 			FileOutputStream fos = new FileOutputStream(d.getDirectory()
 					+ d.getFile());
