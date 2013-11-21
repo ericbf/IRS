@@ -30,9 +30,8 @@ build.xml
 *.war
 *.ear
 
-#Misc files
+#Misc library files
 flyingsaucer-R8/*
-nullnull
 
 #Include libraries and et cetera
 !sqlite-jdbc-3.7.15-M1.jar
