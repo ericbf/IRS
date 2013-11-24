@@ -102,7 +102,7 @@ public abstract class View extends JPanel {
 	 * 
 	 * @return
 	 */
-	public abstract Boolean isAnyFieldDifferentFromDefault();
+	public abstract boolean isAnyFieldDifferentFromDefault();
 	
 	/**
 	 * Returns whether this view needs to be saved. This method must be

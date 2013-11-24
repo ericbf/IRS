@@ -88,16 +88,15 @@ public class AddEditAddress extends AddEditView {
 	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
 	 */
 	@Override
-	public Boolean isAnyFieldDifferentFromDefault() {
-		boolean same = true;
-		same &= this.active.isSelected();
-		same &= this.country.getText().isEmpty();
-		same &= this.title.getText().isEmpty();
-		same &= this.zip.getText().isEmpty();
-		same &= this.state.getText().isEmpty();
-		same &= this.city.getText().isEmpty();
-		same &= this.county.getText().isEmpty();
-		same &= this.st_address.getText().isEmpty();
+	public boolean isAnyFieldDifferentFromDefault() {
+		boolean same = this.active.isSelected()
+				&& this.country.getText().isEmpty()
+				&& this.title.getText().isEmpty()
+				&& this.zip.getText().isEmpty()
+				&& this.state.getText().isEmpty()
+				&& this.city.getText().isEmpty()
+				&& this.county.getText().isEmpty()
+				&& this.st_address.getText().isEmpty();
 		return !same;
 	}
 	

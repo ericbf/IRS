@@ -77,8 +77,8 @@ public abstract class ListView<E extends Record> extends View {
 	protected abstract DB.TableName getTableName();
 	
 	@Override
-	public Boolean isAnyFieldDifferentFromDefault() {
-		return null;
+	public boolean isAnyFieldDifferentFromDefault() {
+		return false;
 	}
 	
 	// Helper method. Map results of query to an arraylist of records.

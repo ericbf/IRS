@@ -85,7 +85,7 @@ public class ReportView extends View {
 	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
 	 */
 	@Override
-	public Boolean isAnyFieldDifferentFromDefault() {
+	public boolean isAnyFieldDifferentFromDefault() {
 		return !this.isSaved;
 	}
 	

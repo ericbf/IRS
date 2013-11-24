@@ -1,15 +1,26 @@
 package ISIS.gui.customer;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
+
 import ISIS.customer.Customer;
 import ISIS.gui.*;
 import ISIS.gui.simplelists.ListAddress;
 import ISIS.gui.simplelists.ListTransactionLineItem;
 import ISIS.transaction.Transaction;
-
-import javax.swing.*;
-import java.awt.*;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * View for adding and editing customers.
@@ -140,8 +151,8 @@ public class AddEditTransaction extends AddEditView {
      * @see ISIS.gui.View#isAnyFieldsDifferentFromDefault()
      */
     @Override
-    public Boolean isAnyFieldDifferentFromDefault() {
-        return null;
+    public boolean isAnyFieldDifferentFromDefault() {
+        return true;
         //TODO: This
         //        return !(this.active.isSelected() && this.email.getText().isEmpty()
         //                && this.password.getText().isEmpty() && this.note.getText()

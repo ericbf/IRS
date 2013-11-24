@@ -112,8 +112,7 @@ public abstract class AddEditView extends View {
 	 */
 	@Override
 	public void save() throws SQLException {
-		if (this.isAnyFieldDifferentFromDefault() != null
-				&& this.isAnyFieldDifferentFromDefault()) {
+		if (this.isAnyFieldDifferentFromDefault()) {
 			this.getCurrentRecord().save();
 		}
 		if (!this.wasSavedOrAlreadySetUp) {
