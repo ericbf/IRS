@@ -1,11 +1,5 @@
 package ISIS.transaction;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import ISIS.customer.Customer;
 import ISIS.database.DB;
 import ISIS.database.DB.TableName;
@@ -17,6 +11,12 @@ import ISIS.item.Item;
 import ISIS.misc.Address;
 import ISIS.misc.Billing;
 import ISIS.session.Session;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A Transaction is the exchange of goods, legal tender, or rendering of
@@ -221,9 +221,12 @@ public class Transaction extends Record {
 	 * associated with it. If the transaction is not associated with a return,
 	 * an empty list is returned.
 	 */
-	public ArrayList<Transaction> getRelatedTransactions() {
-		return null;
-	}
+	public Transaction getParentTransaction() throws SQLException {
+        if (this.getFieldValue("parent_transaction") == null) {
+            return null;
+        }
+        return new Transaction((Integer)this.getFieldValue("parent_transaction"), false);
+    }
 	
 	/**
 	 * Gets status associated with this transaction.
