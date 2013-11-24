@@ -84,9 +84,9 @@ public class ReportSelectorView extends View {
 	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
 	 */
 	@Override
-	public Boolean isAnyFieldDifferentFromDefault() {
+	public boolean isAnyFieldDifferentFromDefault() {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 	
 	/*

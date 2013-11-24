@@ -102,17 +102,15 @@ public class AddEditItem extends AddEditView {
 	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
 	 */
 	@Override
-	public Boolean isAnyFieldDifferentFromDefault() {
-		boolean same = true;
-		same &= this.active.isSelected();
-		same &= this.SKU.getText().isEmpty();
-		same &= this.name.getText().isEmpty();
-		same &= this.description.getText().isEmpty();
-		same &= this.UOM.getText().isEmpty();
-		same &= this.price.getText().equals("0.00");
-		same &= this.stock.getText().equals("0.00");
-		same &= this.cost.getText().equals("0.00");
-		same &= this.reorder.getText().equals("0.00");
+	public boolean isAnyFieldDifferentFromDefault() {
+		boolean same = this.active.isSelected() && this.SKU.getText().isEmpty()
+				&& this.name.getText().isEmpty()
+				&& this.description.getText().isEmpty()
+				&& this.UOM.getText().isEmpty()
+				&& this.price.getText().equals("0.00")
+				&& this.stock.getText().equals("0.00")
+				&& this.cost.getText().equals("0.00")
+				&& this.reorder.getText().equals("0.00");
 		return !same;
 	}
 	

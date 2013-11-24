@@ -1,17 +1,33 @@
 package ISIS.gui.customer;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JToggleButton;
+import javax.swing.border.EtchedBorder;
+
 import ISIS.customer.Customer;
 import ISIS.database.Record;
-import ISIS.gui.*;
+import ISIS.gui.AddEditView;
+import ISIS.gui.HintField;
+import ISIS.gui.ListButtonListener;
+import ISIS.gui.SimpleListView;
+import ISIS.gui.SplitPane;
+import ISIS.gui.WrapLayout;
 import ISIS.gui.simplelists.ListAddress;
 import ISIS.gui.simplelists.ListPhone;
 import ISIS.gui.simplelists.ListTransaction;
-
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import java.awt.*;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * View for adding and editing customers.
@@ -148,10 +164,12 @@ public class AddEditCustomer extends AddEditView {
 	 * @see ISIS.gui.View#isAnyFieldsDifferentFromDefault()
 	 */
 	@Override
-	public Boolean isAnyFieldDifferentFromDefault() {
-		return !(this.active.isSelected() && this.email.getText().isEmpty()
-				&& this.password.getText().isEmpty() && this.note.getText()
-				.isEmpty());
+	public boolean isAnyFieldDifferentFromDefault() {
+		boolean same = this.active.isSelected()
+				&& this.email.getText().isEmpty()
+				&& this.password.getText().isEmpty()
+				&& this.note.getText().isEmpty();
+		return !same;
 	}
 	
 	/**
