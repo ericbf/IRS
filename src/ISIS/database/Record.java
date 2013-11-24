@@ -1,5 +1,12 @@
 package ISIS.database;
 
+import ISIS.database.DB.TableName;
+import ISIS.gui.ErrorLogger;
+import ISIS.misc.Dates;
+import ISIS.session.Session;
+import ISIS.user.User;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,13 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import ISIS.database.DB.TableName;
-import ISIS.gui.ErrorLogger;
-import ISIS.misc.Dates;
-import ISIS.session.Session;
-import ISIS.user.User;
 
 /**
  * Base class for all record classes.
@@ -85,8 +85,11 @@ public abstract class Record {
 	/**
 	 * Gets the dates object associated with the record.
 	 */
-	public final Dates getDates() {
+	public final Dates getDates() throws SQLException {
 		if (this.hasDates()) {
+            if(this.dates == null) {
+                this.readDates();
+            }
 			return this.dates;
 		} else {
 			throw new UnsupportedOperationException();
