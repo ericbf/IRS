@@ -51,7 +51,7 @@ public class Transaction extends Record {
 	 * The static boolean that tells whether this type of record has the
 	 * mod_date, creation_date, and et cetera of some records.
 	 */
-	public static boolean					hasDates_			= false;
+	public static boolean					hasDates_			= true;
 	
 	Customer								customer			= null;
 	Billing									billing				= null;
@@ -71,6 +71,8 @@ public class Transaction extends Record {
 		this.setFieldValue("customer", customer.getPkey());
 		this.setFieldValue("status", TransactionStatus.ACTIVE);
 		this.setFieldValue("modified", 0);
+        this.setStatus(TransactionStatus.ACTIVE);
+        this.setFieldValue("type", "normal");
 	}
 	
 	public Transaction(HashMap<String, Field> map) {

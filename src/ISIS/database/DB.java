@@ -1,16 +1,10 @@
 package ISIS.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import ISIS.gui.ErrorLogger;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import ISIS.gui.ErrorLogger;
 
 /**
  * Manages third party relational database software used to manage and organize
@@ -274,7 +268,7 @@ public final class DB {
 				+ "customer INT REFERENCES customer(pkey), "
 				+ "type VARCHAR(20) NOT NULL, modified BOOLEAN NOT NULL, "
 				+ "parent_transaction INT REFERENCES transaction_"
-				+ "(pkey), address INT REFERENCES address(pkey), billing INT REFERENCES billing(pkey))");
+				+ "(pkey), address INT REFERENCES address(pkey), billing INT REFERENCES billing(pkey), "+datesSql+")");
 		// transaction-item
 		this.executeUpdate("CREATE TABLE IF NOT EXISTS transaction_item (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, "
 				+ "item INT REFERENCES item(pkey) NOT NULL, price VARCHAR(30) NOT NULL, adjustment VARCHAR(30) NOT NULL, description TEXT, "

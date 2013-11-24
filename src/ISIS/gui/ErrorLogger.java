@@ -1,18 +1,17 @@
 package ISIS.gui;
 
+import javax.swing.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.JOptionPane;
 
 /**
  * 
  */
 public class ErrorLogger {
 	
-	private static boolean	debug	= false;
+	private static boolean	debug	= true;
 	
 	public static void error(Exception e, String error, boolean severe,
 			boolean show) {

@@ -7,10 +7,7 @@ import ISIS.customer.Customer;
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
-import ISIS.gui.IRSTableModel;
-import ISIS.gui.SimpleListView;
-import ISIS.gui.SplitPane;
-import ISIS.gui.View;
+import ISIS.gui.*;
 import ISIS.gui.customer.AddEditTransaction;
 import ISIS.transaction.Transaction;
 
@@ -18,6 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,8 +42,11 @@ public class ListTransaction extends SimpleListView<Transaction> {
 				Transaction transaction = (Transaction) record;
 				Object[] array = new Object[this.getColumnCount()];
 				int i = 0;
-				
-				array[i++] = transaction.getDates().getModDate();
+				try {
+				    array[i++] = transaction.getDates().getModDate();
+                } catch(SQLException e) {
+                    ErrorLogger.error(e, "Failed to fetch transaction's date.", true, true);
+                }
 				array[i++] = transaction.getStatus();
 				
 				super.addRow(array);
@@ -81,7 +82,7 @@ public class ListTransaction extends SimpleListView<Transaction> {
 			c.weightx = 1;
 			this.add(addButton, c);
 		}
-		
+
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridy = ++y;
