@@ -13,6 +13,7 @@ import ISIS.html.objects.Division;
 import ISIS.html.objects.Paragraph;
 import ISIS.html.objects.Table;
 import ISIS.transaction.Transaction;
+import ISIS.transaction.Transaction.TransactionStatus;
 import ISIS.transaction.TransactionLineItem;
 
 /**
@@ -36,7 +37,7 @@ public class Invoice extends Report {
 	 */
 	@Override
 	public void populateBuilder() {
-		if (this.transaction.getStatus().equals("Open")) {
+		if (this.transaction.getStatus() == TransactionStatus.ACTIVE) {
 			this.b.add(new CSSStyle("@font-face")
 					.pasteAttributes("font-family:'Vollkorn'; "
 							+ "font-style: normal; "
