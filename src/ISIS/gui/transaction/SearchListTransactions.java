@@ -2,6 +2,9 @@ package ISIS.gui.transaction;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,9 +14,14 @@ import javax.swing.JScrollPane;
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
+import ISIS.gui.ErrorLogger;
 import ISIS.gui.IRSTableModel;
 import ISIS.gui.SearchListView;
 import ISIS.gui.SplitPane;
+import ISIS.gui.SplitPane.LayoutType;
+import ISIS.gui.customer.AddEditTransaction;
+import ISIS.gui.report.ReportView;
+import ISIS.reports.Invoice;
 import ISIS.transaction.Transaction;
 
 /**
@@ -35,8 +43,52 @@ public class SearchListTransactions extends SearchListView<Transaction> {
 		
 		int buttonNameSel = 3;
 		this.viewButton = new JButton(this.buttonNames[buttonNameSel++]);
+		this.viewButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selected;
+				if ((selected = SearchListTransactions.this.table
+						.getSelectedRow()) != -1) {
+					try {
+						SearchListTransactions.this.splitPane.push(
+								new AddEditTransaction(
+										SearchListTransactions.this.splitPane,
+										SearchListTransactions.this.keys
+												.get(selected)),
+								LayoutType.HORIZONTAL,
+								SearchListTransactions.this);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
 		JButton generateButton = new JButton(this.buttonNames[buttonNameSel++]);
-		
+		generateButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selected;
+				if ((selected = SearchListTransactions.this.table
+						.getSelectedRow()) != -1) {
+					try {
+						SearchListTransactions.this.splitPane.push(
+								new ReportView(new Invoice(new Transaction(
+										SearchListTransactions.this.keys
+												.get(selected), true)),
+										SearchListTransactions.this.splitPane),
+								LayoutType.HORIZONTAL,
+								SearchListTransactions.this);
+					} catch (SQLException e1) {
+						ErrorLogger.error("Could not fetch transaction", false,
+								true);
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
 		int x = 0, y = 0;
 		
 		c = new GridBagConstraints();
@@ -73,7 +125,6 @@ public class SearchListTransactions extends SearchListView<Transaction> {
 		});
 		this.tableModel.setColumnTitles("customer", "other", "headers", "date",
 				"status");
-		// this.fillTable();
 		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -82,6 +133,8 @@ public class SearchListTransactions extends SearchListView<Transaction> {
 		c.gridx = x = 0;
 		c.weighty = 1;
 		this.add(new JScrollPane(this.table), c);
+		
+		// this.fillTable();
 	}
 	
 	/*
@@ -90,8 +143,7 @@ public class SearchListTransactions extends SearchListView<Transaction> {
 	 */
 	@Override
 	protected void actionHandlerActionForSearchField() {
-		// TODO Auto-generated method stub
-		
+		this.viewButton.doClick();
 	}
 	
 	/*

@@ -25,6 +25,7 @@ public class BlankReport extends Report {
 	 */
 	public BlankReport() {
 		super("Blank Report");
+		this.populateBuilder();
 	}
 	
 	/*

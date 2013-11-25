@@ -15,7 +15,6 @@ public abstract class Report {
 	protected Report(String title) {
 		this.b = HTMLBuilder.getReportTemplate(title);
 		this.title = title;
-		this.populateBuilder();
 	}
 	
 	public final HTMLBuilder getBuilder() {
@@ -26,5 +25,8 @@ public abstract class Report {
 		return this.title;
 	}
 	
-	public abstract void populateBuilder();
+	/**
+	 * Suggested way to populate the builder
+	 */
+	public void populateBuilder() {}
 }

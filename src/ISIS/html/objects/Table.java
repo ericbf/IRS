@@ -16,21 +16,23 @@ public class Table extends HTMLObjectContainer<Table> {
 		}
 	}
 	
-	public Table addColumn() {
+	public Cell[] addColumn() {
 		for (HTMLObject<?> r : this.objects) {
 			((Row) r).add(new Cell());
 		}
-		this.columns++;
-		return this;
+		return this.getColumn(this.columns++);
 	}
 	
-	public Table addRow() {
+	/**
+	 * @return The added row
+	 */
+	public Cell[] addRow() {
 		Row r = new Row();
 		for (int i = 0; i < this.columns; i++) {
 			r.add(new Cell());
 		}
-		this.rows++;
-		return super.add(r);
+		super.add(r);
+		return this.getRow(this.rows++);
 	}
 	
 	public Cell get(int column, int row) {
