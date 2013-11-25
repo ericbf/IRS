@@ -36,10 +36,8 @@ public class AddEditTransaction extends AddEditView {
 	private static final long			serialVersionUID	= 1L;
 	JCheckBox							returnTransaction;
 	final JComboBox<TransactionStatus>	status				= new JComboBox<>(
-																	new TransactionStatus[] {
-			TransactionStatus.ACTIVE, TransactionStatus.BILLED,
-			TransactionStatus.UNDER_REVIEW, TransactionStatus.CLOSED,
-			TransactionStatus.ABORTED								});
+																	TransactionStatus
+																			.values());
 	HintField							address, billing, total;
 	Transaction							transaction;
 	Customer							customer;
@@ -65,7 +63,7 @@ public class AddEditTransaction extends AddEditView {
 		}
 		this.populateElements();
 		
-		this.status.setSelectedItem("status2");
+		this.status.setSelectedItem(this.transaction.getStatus());
 	}
 	
 	/**
