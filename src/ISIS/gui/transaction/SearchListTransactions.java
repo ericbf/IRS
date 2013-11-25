@@ -1,5 +1,16 @@
 package ISIS.gui.transaction;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
@@ -12,14 +23,6 @@ import ISIS.gui.customer.AddEditTransaction;
 import ISIS.gui.report.ReportViewer;
 import ISIS.reports.Invoice;
 import ISIS.transaction.Transaction;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * List of transactions. Allows you to query and act on transactions.
@@ -103,7 +106,8 @@ public class SearchListTransactions extends SearchListView<Transaction> {
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = x++;
 		c.weightx = 1;
-//		this.add(this.searchField, c); // No search implemented (nor is there really anything to serach on...)
+		// this.add(this.searchField, c); // No search implemented (nor is there
+		// really anything to serach on...)
 		
 		this.setTableModel(new IRSTableModel() {
 			private static final long	serialVersionUID	= 1L;
@@ -113,17 +117,21 @@ public class SearchListTransactions extends SearchListView<Transaction> {
 				Transaction transaction = (Transaction) record;
 				Object[] array = new Object[this.getColumnCount()];
 				int i = 0;
-
+				
 				array[i++] = transaction.getPkey();
-                try {
-				array[i++] = transaction.getCustomer().getFirstName() + " " + transaction.getCustomer().getLastName();
-				array[i++] = transaction.getDates().getModDate();
-				array[i++] = transaction.getDates().getCreatedDate();
-                } catch (SQLException e) {
-                    ErrorLogger.error(e, "Failed to fetch data about a transaction.", true, true);
-                }
-                array[i++] = transaction.getStatus();
-
+				SearchListTransactions.this.keys.add(transaction.getPkey());
+				try {
+					array[i++] = transaction.getCustomer().getFirstName() + " "
+							+ transaction.getCustomer().getLastName();
+					array[i++] = transaction.getDates().getModDate();
+					array[i++] = transaction.getDates().getCreatedDate();
+				} catch (SQLException e) {
+					ErrorLogger.error(e,
+							"Failed to fetch data about a transaction.", true,
+							true);
+				}
+				array[i++] = transaction.getStatus();
+				
 				super.addRow(array);
 			}
 		});
@@ -135,21 +143,12 @@ public class SearchListTransactions extends SearchListView<Transaction> {
 		c.gridy = ++y;
 		c.gridwidth = x;
 		c.gridx = x = 0;
-        c.weightx = 1;
+		c.weightx = 1;
 		c.weighty = 1;
 		this.add(new JScrollPane(this.table), c);
-        this.searchField.setText("");
+		this.searchField.setText("");
 		
-		// this.fillTable();
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see ISIS.gui.SearchListView#actionHandlerActionForSearchField()
-	 */
-	@Override
-	protected void tableItemAction() {
-		this.viewButton.doClick();
+		this.fillTable();
 	}
 	
 	/*
@@ -168,10 +167,20 @@ public class SearchListTransactions extends SearchListView<Transaction> {
 	@Override
 	protected ArrayList<Transaction> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
-		ArrayList<Transaction> records = new ArrayList <Transaction>(results.size());
-        for(HashMap<String, Field> result : results) {
-            records.add(new Transaction(result));
-        }
-        return records;
+		ArrayList<Transaction> records = new ArrayList<Transaction>(
+				results.size());
+		for (HashMap<String, Field> result : results) {
+			records.add(new Transaction(result));
+		}
+		return records;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.SearchListView#actionHandlerActionForSearchField()
+	 */
+	@Override
+	protected void tableItemAction() {
+		this.viewButton.doClick();
 	}
 }

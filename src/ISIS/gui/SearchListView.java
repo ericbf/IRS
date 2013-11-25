@@ -1,18 +1,26 @@
 package ISIS.gui;
 
-import ISIS.database.DB;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.session.Session;
-
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.DefaultFocusTraversalPolicy;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+
+import ISIS.database.DB;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.session.Session;
 
 /**
  * Abstract class for views that consist of a list that can be searched.
@@ -21,7 +29,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 	private static final long	serialVersionUID		= 1L;
 	protected HintField			searchField;
 	protected String[]			buttonNames				= { "Add", "Edit",
-			"Toggle Active", "View", "Generate Nonfinal Invoice(s)",
+			"Toggle Active", "View", "Generate Invoice",
 			"Close and Generate Invoice"				};
 	private String				lastSearchFieldValue	= " ";
 	
@@ -130,13 +138,6 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 			}
 		});
 	}
-
-    /**
-     * The string returned by this method will be appended to the where clause.
-     */
-    protected String getConditions() {
-        return "1";
-    }
 	
 	@Override
 	protected final void doFillTable() {
@@ -181,6 +182,13 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 		}
 		this.lastSearchFieldValue = searchFieldText;
 		this.doFillTable();
+	}
+	
+	/**
+	 * The string returned by this method will be appended to the where clause.
+	 */
+	protected String getConditions() {
+		return "1";
 	}
 	
 }
