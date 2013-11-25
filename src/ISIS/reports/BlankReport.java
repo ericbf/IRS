@@ -16,10 +16,9 @@ public class BlankReport extends Report {
 			"J.P.", "Sirang"					};
 	private static final String	descriptions[]	= { "Beautiful", "Magnificent",
 			"Stud", "Cool", "Hot", "Sexy", "Loser", "Stupid", "Lame",
-			"Annoying", "Undesirable", "Hateful", "Rude", "Ignorant", "Mean",
-			"Impolite", "Vulgar", "Evil", "Cruel", "Insolent", "Graceless",
-			"Dirty", "Indelicate", "Nasty", "Harmful", "Bad", "Catastrophic",
-			"Ruinous"							};
+			"Annoying", "Undesirable", "Hateful", "Rude", "Ignorant",
+			"Impolite", "Graceless", "Dirty", "Indelicate", "Nasty", "Harmful",
+			"Bad", "Catastrophic", "Ruinous"	};
 	
 	/**
 	 * @param title
