@@ -123,9 +123,6 @@ public class SearchListItems extends SearchListView<Item> {
 			@Override
 			public void addRow(Record record) {
 				Item item = (Item) record;
-				if (!((Item) record).isLatestVersion()) {
-					return;
-				}
 				Object[] array = new Object[this.getColumnCount()];
 				int i = 0;
 				
@@ -150,6 +147,11 @@ public class SearchListItems extends SearchListView<Item> {
 		c.weighty = 1;
 		this.add(new JScrollPane(this.table), c);
 	}
+    
+    @Override
+    protected String getConditions() {
+        return "latest=1";
+    }
 	
 	@Override
 	protected void tableItemAction() {
