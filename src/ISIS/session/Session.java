@@ -17,6 +17,8 @@ import ISIS.user.User;
  */
 public class Session {
 	
+	public enum Setting {}
+	
 	private static Session	session	= null;
 	private static DB		db		= null;
 	
@@ -117,7 +119,7 @@ public class Session {
 	 * @param key
 	 * @return The setting as an Object, or null if not found
 	 */
-	public Object getSetting(String key) {
+	public Object getSetting(Setting key) {
 		try {
 			PreparedStatement s = Session.db
 					.prepareStatement("SELECT * FROM setting WHERE key=\""
@@ -145,7 +147,7 @@ public class Session {
 	 * Sets a default setting that is used for Users that have not set the
 	 * setting.
 	 */
-	public void setDefaultSetting(String key, Object value) {
+	public void setDefaultSetting(Setting key, Object value) {
 		try {
 			PreparedStatement s = Session.db
 					.prepareStatement("INSERT OR IGNORE INTO setting (key, value, user) VALUES (\""
@@ -160,13 +162,14 @@ public class Session {
 	
 	/**
 	 * Sets a setting for the Session's user, under the given key. If the passed
-	 * value is null, the setting is removed from the database
+	 * value is null, the setting is removed from the database. If the setting
+	 * is not set, the setting is added.
 	 * 
 	 * @param key
 	 * @param value
 	 *            If null, deletes the setting
 	 */
-	public void setSetting(String key, Object value) {
+	public void setSetting(Setting key, Object value) {
 		if (this.getSetting(key) == null) {
 			this.setDefaultSetting(key, value);
 		} else if (value == null) {
