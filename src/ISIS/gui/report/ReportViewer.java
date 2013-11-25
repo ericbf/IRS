@@ -25,16 +25,15 @@ import com.lowagie.text.DocumentException;
 /**
  * Abstract class for the report GUIs.
  */
-public class ReportView extends View {
+public class ReportViewer extends View {
 	private static final long	serialVersionUID	= 1L;
-	boolean						isSaved;
 	private String				html;
 	Report						report;
 	
 	/**
 	 * Public constructor.
 	 */
-	public ReportView(Report report, SplitPane splitPane) {
+	public ReportViewer(Report report, SplitPane splitPane) {
 		super(splitPane);
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
@@ -86,7 +85,7 @@ public class ReportView extends View {
 	 */
 	@Override
 	public boolean isAnyFieldDifferentFromDefault() {
-		return !this.isSaved;
+		return false;
 	}
 	
 	/**
@@ -102,8 +101,6 @@ public class ReportView extends View {
 	 */
 	@Override
 	public void save() {
-		this.isSaved = true;
-		
 		ITextRenderer renderer = new ITextRenderer();
 		renderer.setDocumentFromString(this.html);
 		

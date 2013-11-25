@@ -20,7 +20,7 @@ import ISIS.gui.SearchListView;
 import ISIS.gui.SplitPane;
 import ISIS.gui.SplitPane.LayoutType;
 import ISIS.gui.customer.AddEditTransaction;
-import ISIS.gui.report.ReportView;
+import ISIS.gui.report.ReportViewer;
 import ISIS.reports.Invoice;
 import ISIS.transaction.Transaction;
 
@@ -75,7 +75,7 @@ public class SearchListTransactions extends SearchListView<Transaction> {
 						.getSelectedRow()) != -1) {
 					try {
 						SearchListTransactions.this.splitPane.push(
-								new ReportView(new Invoice(new Transaction(
+								new ReportViewer(new Invoice(new Transaction(
 										SearchListTransactions.this.keys
 												.get(selected), true)),
 										SearchListTransactions.this.splitPane),

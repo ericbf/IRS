@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ISIS.database.Record;
-import ISIS.gui.report.ReportView;
+import ISIS.gui.report.ReportViewer;
 
 /**
  * Abstract class for all views.
@@ -46,7 +46,7 @@ public abstract class View extends JPanel {
 		}
 		Record record = this.getCurrentRecord();
 		// Need the null check for views who don't own a record
-		if (record != null && record.isChanged() || this instanceof ReportView
+		if (record != null && record.isChanged() || this instanceof ReportViewer
 				&& this.isAnyFieldDifferentFromDefault()) {
 			if ((new ConfirmCloseDialog().show(this.splitPane))) {
 				try {

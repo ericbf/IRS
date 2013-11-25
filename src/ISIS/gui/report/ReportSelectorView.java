@@ -52,7 +52,7 @@ public class ReportSelectorView extends View {
 		this.add(new JButton2("Test").addActionListenero(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ReportSelectorView.this.splitPane.push(new ReportView(
+				ReportSelectorView.this.splitPane.push(new ReportViewer(
 						new BlankReport(), ReportSelectorView.this.splitPane),
 						LayoutType.HORIZONTAL, ReportSelectorView.this);
 			}

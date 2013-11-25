@@ -1,5 +1,22 @@
 package ISIS.gui;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.sql.SQLException;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import ISIS.customer.Customer;
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.SearchListCustomers;
@@ -12,14 +29,6 @@ import ISIS.misc.Phone;
 import ISIS.session.Session;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.sql.SQLException;
 
 /**
  * Class for main window. No public methods available.
@@ -112,7 +121,7 @@ public class MainWindow extends JFrame {
 		splash.setUndecorated(true);
 		splash.setAlwaysOnTop(true);
 		splash.setVisible(true);
-		Timer dispose = new Timer(0, new ActionListener() {
+		Timer dispose = new Timer(500, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				splash.setVisible(false);
