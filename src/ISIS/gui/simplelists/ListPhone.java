@@ -107,4 +107,14 @@ public class ListPhone extends SimpleListView<Phone> {
 		}
 		return addresses;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.ListView#tableItemAction()
+	 */
+	@Override
+	protected void tableItemAction() {
+		// TODO Auto-generated method stub
+		
+	}
 }

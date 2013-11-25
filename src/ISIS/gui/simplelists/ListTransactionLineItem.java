@@ -27,6 +27,7 @@ public class ListTransactionLineItem extends
 		SimpleListView<TransactionLineItem> {
 	private static final long	serialVersionUID	= 1L;
 	Transaction					transaction;
+	JButton						edit;
 	
 	public ListTransactionLineItem(SplitPane splitPane, View pusher,
 			Transaction transaction) {
@@ -63,7 +64,7 @@ public class ListTransactionLineItem extends
 		GridBagConstraints c;
 		
 		JButton remove;
-		JButton edit;
+		this.edit = new JButton();
 		// TODO: THIS
 		
 		c = new GridBagConstraints();
@@ -92,5 +93,14 @@ public class ListTransactionLineItem extends
 			ti.add(new TransactionLineItem(result));
 		}
 		return ti;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.ListView#tableItemAction()
+	 */
+	@Override
+	protected void tableItemAction() {
+		this.edit.doClick();
 	}
 }

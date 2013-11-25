@@ -152,7 +152,7 @@ public class SearchListItems extends SearchListView<Item> {
 	}
 	
 	@Override
-	protected void actionHandlerActionForSearchField() {
+	protected void tableItemAction() {
 		this.editButton.doClick();
 	}
 	

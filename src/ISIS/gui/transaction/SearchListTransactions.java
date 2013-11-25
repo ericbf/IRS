@@ -142,7 +142,7 @@ public class SearchListTransactions extends SearchListView<Transaction> {
 	 * @see ISIS.gui.SearchListView#actionHandlerActionForSearchField()
 	 */
 	@Override
-	protected void actionHandlerActionForSearchField() {
+	protected void tableItemAction() {
 		this.viewButton.doClick();
 	}
 	

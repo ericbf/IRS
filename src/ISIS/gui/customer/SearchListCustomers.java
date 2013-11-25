@@ -162,7 +162,7 @@ public class SearchListCustomers extends SearchListView<Customer> {
 	}
 	
 	@Override
-	protected void actionHandlerActionForSearchField() {
+	protected void tableItemAction() {
 		this.editButton.doClick();
 	}
 	

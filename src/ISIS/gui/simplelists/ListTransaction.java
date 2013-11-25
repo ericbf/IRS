@@ -3,36 +3,43 @@
  */
 package ISIS.gui.simplelists;
 
-import ISIS.customer.Customer;
-import ISIS.database.DB;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.gui.*;
-import ISIS.gui.customer.AddEditTransaction;
-import ISIS.transaction.Transaction;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+
+import ISIS.customer.Customer;
+import ISIS.database.DB;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.gui.ErrorLogger;
+import ISIS.gui.IRSTableModel;
+import ISIS.gui.SimpleListView;
+import ISIS.gui.SplitPane;
+import ISIS.gui.SplitPane.LayoutType;
+import ISIS.gui.View;
+import ISIS.gui.customer.AddEditTransaction;
+import ISIS.transaction.Transaction;
+
 /**
  * This should NEVER be pushed, only embedded.
  */
 public class ListTransaction extends SimpleListView<Transaction> {
 	private static final long	serialVersionUID	= 1L;
-    Customer customer;
+	Customer					customer;
 	
 	public ListTransaction(SplitPane splitPane, View pusher, Customer customer,
 			boolean selectMode) {
 		super(splitPane, pusher, false, "SELECT t.* FROM transaction_ AS t "
 				+ "LEFT JOIN customer AS c ON t.customer=c.pkey AND c.pkey=?",
 				customer.getPkey());
-
-        this.customer = customer;
+		
+		this.customer = customer;
 		
 		this.setTableModel(new IRSTableModel() {
 			private static final long	serialVersionUID	= 1L;
@@ -43,10 +50,11 @@ public class ListTransaction extends SimpleListView<Transaction> {
 				Object[] array = new Object[this.getColumnCount()];
 				int i = 0;
 				try {
-				    array[i++] = transaction.getDates().getModDate();
-                } catch(SQLException e) {
-                    ErrorLogger.error(e, "Failed to fetch transaction's date.", true, true);
-                }
+					array[i++] = transaction.getDates().getModDate();
+				} catch (SQLException e) {
+					ErrorLogger.error(e, "Failed to fetch transaction's date.",
+							true, true);
+				}
 				array[i++] = transaction.getStatus();
 				
 				super.addRow(array);
@@ -69,7 +77,8 @@ public class ListTransaction extends SimpleListView<Transaction> {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					ListTransaction.this.splitPane.push(new AddEditTransaction(
-							ListTransaction.this.splitPane, ListTransaction.this.customer),
+							ListTransaction.this.splitPane,
+							ListTransaction.this.customer),
 							SplitPane.LayoutType.HORIZONTAL,
 							ListTransaction.this.pusher);
 				}
@@ -82,7 +91,7 @@ public class ListTransaction extends SimpleListView<Transaction> {
 			c.weightx = 1;
 			this.add(addButton, c);
 		}
-
+		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridy = ++y;
@@ -109,5 +118,21 @@ public class ListTransaction extends SimpleListView<Transaction> {
 			addresses.add(new Transaction(result));
 		}
 		return addresses;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.ListView#tableItemAction()
+	 */
+	@Override
+	protected void tableItemAction() {
+		try {
+			this.splitPane.push(new AddEditTransaction(this.splitPane,
+					this.keys.get(this.selected)), LayoutType.HORIZONTAL,
+					this.pusher);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

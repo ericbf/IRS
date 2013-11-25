@@ -1,5 +1,11 @@
 package ISIS.transaction;
 
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import ISIS.customer.Customer;
 import ISIS.database.DB;
 import ISIS.database.DB.TableName;
@@ -11,12 +17,6 @@ import ISIS.item.Item;
 import ISIS.misc.Address;
 import ISIS.misc.Billing;
 import ISIS.session.Session;
-
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * A Transaction is the exchange of goods, legal tender, or rendering of
@@ -71,8 +71,8 @@ public class Transaction extends Record {
 		this.setFieldValue("customer", customer.getPkey());
 		this.setFieldValue("status", TransactionStatus.ACTIVE);
 		this.setFieldValue("modified", 0);
-        this.setStatus(TransactionStatus.ACTIVE);
-        this.setFieldValue("type", "normal");
+		this.setStatus(TransactionStatus.ACTIVE);
+		this.setFieldValue("type", "normal");
 	}
 	
 	public Transaction(HashMap<String, Field> map) {
@@ -90,6 +90,8 @@ public class Transaction extends Record {
 		if (populate) {
 			this.fetch();
 		}
+		
+		this.customer = this.getCustomer();
 	}
 	
 	/**
@@ -224,11 +226,12 @@ public class Transaction extends Record {
 	 * an empty list is returned.
 	 */
 	public Transaction getParentTransaction() throws SQLException {
-        if (this.getFieldValue("parent_transaction") == null) {
-            return null;
-        }
-        return new Transaction((Integer)this.getFieldValue("parent_transaction"), false);
-    }
+		if (this.getFieldValue("parent_transaction") == null) {
+			return null;
+		}
+		return new Transaction(
+				(Integer) this.getFieldValue("parent_transaction"), false);
+	}
 	
 	/**
 	 * Gets status associated with this transaction.

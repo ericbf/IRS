@@ -4,10 +4,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
@@ -25,6 +29,7 @@ public abstract class ListView<E extends Record> extends View {
 	protected ArrayList<E>			records;
 	protected IRSTableModel			tableModel;
 	protected ArrayList<Integer>	keys				= new ArrayList<Integer>();
+	protected int					selected;
 	
 	public ListView(SplitPane splitPane, boolean multiSelect) {
 		super(splitPane);
@@ -46,6 +51,91 @@ public abstract class ListView<E extends Record> extends View {
 						: ListSelectionModel.SINGLE_SELECTION);
 		this.table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
 				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
+		this.table.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				boolean meta = (e.getModifiers() & ActionEvent.META_MASK) == ActionEvent.META_MASK
+						|| (e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK;
+				switch (e.getKeyCode()) {
+					case KeyEvent.VK_DOWN:
+						if (ListView.this.table.getRowCount() > 0) {
+							if (meta) {
+								int rowCount = ListView.this.table
+										.getRowCount() - 1;
+								ListView.this.table.setRowSelectionInterval(
+										rowCount, rowCount);
+							} else if (ListView.this.table.getSelectedRow() == -1) {
+								ListView.this.table.setRowSelectionInterval(0,
+										0);
+							}
+						}
+						int sel;
+						if ((sel = ListView.this.table.getSelectedRow()) != -1) {
+							ListView.this.selected = sel;
+						}
+						break;
+					case KeyEvent.VK_UP:
+						if (ListView.this.table.getRowCount() > 0) {
+							if (meta) {
+								ListView.this.table.setRowSelectionInterval(0,
+										0);
+							} else if (ListView.this.table.getSelectedRow() == -1) {
+								int rowCount = ListView.this.table
+										.getRowCount() - 1;
+								ListView.this.table.setRowSelectionInterval(
+										rowCount, rowCount);
+							}
+						}
+						int selPasser;
+						if ((selPasser = ListView.this.table.getSelectedRow()) != -1) {
+							ListView.this.selected = selPasser;
+						}
+						break;
+				}
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {}
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
+		});
+		this.table.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int sel;
+				if ((sel = ListView.this.table.getSelectedRow()) != -1) {
+					ListView.this.selected = sel;
+					if (e.getClickCount() == 2) {
+						ListView.this.tableItemAction();
+					}
+				}
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+		});
+		this.table.getActionMap().put("Enter", new AbstractAction() {
+			private static final long	serialVersionUID	= 1L;
+			
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				ListView.this.selected = ListView.this.table.getSelectedRow();
+				ListView.this.tableItemAction();
+			}
+		});
+		
 		this.table.setAutoCreateRowSorter(true);
 		this.setFocusCycleRoot(true);
 		this.setOpaque(false);
@@ -146,4 +236,6 @@ public abstract class ListView<E extends Record> extends View {
 		this.table.setModel(model);
 		this.table.setFocusable(false);
 	}
+	
+	protected abstract void tableItemAction();
 }

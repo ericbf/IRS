@@ -28,6 +28,7 @@ import ISIS.misc.Address;
 public class ListAddress extends SimpleListView<Address> {
 	private static final long	serialVersionUID	= 1L;
 	private final Customer		customer;
+	private JButton				viewButton;
 	
 	public ListAddress(SplitPane splitPane, View pusher, Customer customer,
 			Integer key, boolean selectMode) {
@@ -108,8 +109,8 @@ public class ListAddress extends SimpleListView<Address> {
 			c.gridx = x = 0;
 			c.weightx = 1;
 			this.add(deleteButton, c);
-			JButton viewButton = new JButton("View");
-			viewButton.addActionListener(new ActionListener() {
+			this.viewButton = new JButton("View");
+			this.viewButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					int selected = ListAddress.this.table.getSelectedRow();
@@ -138,7 +139,7 @@ public class ListAddress extends SimpleListView<Address> {
 			c.gridwidth = x;
 			c.gridx = x = 0;
 			c.weightx = 1;
-			this.add(viewButton, c);
+			this.add(this.viewButton, c);
 		}
 		
 		c = new GridBagConstraints();
@@ -166,5 +167,14 @@ public class ListAddress extends SimpleListView<Address> {
 			addresses.add(new Address(result));
 		}
 		return addresses;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ISIS.gui.ListView#tableItemAction()
+	 */
+	@Override
+	protected void tableItemAction() {
+		this.viewButton.doClick();
 	}
 }

@@ -9,14 +9,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.AbstractAction;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
@@ -34,7 +31,6 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 	protected String[]			buttonNames				= { "Add", "Edit",
 			"Toggle Active", "View", "Generate Nonfinal Invoice(s)",
 			"Close and Generate Invoice"				};
-	protected int				selected;
 	private String				lastSearchFieldValue	= " ";
 	
 	public SearchListView(SplitPane splitPane) {
@@ -118,7 +114,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SearchListView.this.actionHandlerActionForSearchField();
+				SearchListView.this.tableItemAction();
 			}
 		});
 		this.searchField.addFocusListener(new FocusListener() {
@@ -133,94 +129,6 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 				SearchListView.this.table.setFocusable(true);
 			}
 		});
-		this.table.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				boolean meta = (e.getModifiers() & ActionEvent.META_MASK) == ActionEvent.META_MASK
-						|| (e.getModifiers() & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK;
-				switch (e.getKeyCode()) {
-					case KeyEvent.VK_DOWN:
-						if (SearchListView.this.table.getRowCount() > 0) {
-							if (meta) {
-								int rowCount = SearchListView.this.table
-										.getRowCount() - 1;
-								SearchListView.this.table
-										.setRowSelectionInterval(rowCount,
-												rowCount);
-							} else if (SearchListView.this.table
-									.getSelectedRow() == -1) {
-								SearchListView.this.table
-										.setRowSelectionInterval(0, 0);
-							}
-						}
-						int sel;
-						if ((sel = SearchListView.this.table.getSelectedRow()) != -1) {
-							SearchListView.this.selected = sel;
-						}
-						break;
-					case KeyEvent.VK_UP:
-						if (SearchListView.this.table.getRowCount() > 0) {
-							if (meta) {
-								SearchListView.this.table
-										.setRowSelectionInterval(0, 0);
-							} else if (SearchListView.this.table
-									.getSelectedRow() == -1) {
-								int rowCount = SearchListView.this.table
-										.getRowCount() - 1;
-								SearchListView.this.table
-										.setRowSelectionInterval(rowCount,
-												rowCount);
-							}
-						}
-						int selPasser;
-						if ((selPasser = SearchListView.this.table
-								.getSelectedRow()) != -1) {
-							SearchListView.this.selected = selPasser;
-						}
-						break;
-				}
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {}
-			
-			@Override
-			public void keyTyped(KeyEvent e) {}
-		});
-		this.table.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int sel;
-				if ((sel = SearchListView.this.table.getSelectedRow()) != -1) {
-					SearchListView.this.selected = sel;
-					if (e.getClickCount() == 2) {
-						SearchListView.this.actionHandlerActionForSearchField();
-					}
-				}
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-		});
-		this.table.getActionMap().put("Enter", new AbstractAction() {
-			private static final long	serialVersionUID	= 1L;
-			
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				SearchListView.this.actionHandlerActionForSearchField();
-			}
-		});
 		this.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
 			private static final long	serialVersionUID	= 1L;
 			
@@ -230,8 +138,6 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 			}
 		});
 	}
-	
-	protected abstract void actionHandlerActionForSearchField();
 	
 	@Override
 	protected final void doFillTable() {
