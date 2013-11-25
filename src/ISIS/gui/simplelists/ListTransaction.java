@@ -24,6 +24,8 @@ import ISIS.gui.SplitPane;
 import ISIS.gui.SplitPane.LayoutType;
 import ISIS.gui.View;
 import ISIS.gui.customer.AddEditTransaction;
+import ISIS.gui.report.ReportViewer;
+import ISIS.reports.Invoice;
 import ISIS.transaction.Transaction;
 
 /**
@@ -90,6 +92,39 @@ public class ListTransaction extends SimpleListView<Transaction> {
 			c.gridx = x = 0;
 			c.weightx = 1;
 			this.add(addButton, c);
+			
+			JButton invoiceButton = new JButton("Invoice");
+			invoiceButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (ListTransaction.this.selected != -1
+							|| (ListTransaction.this.selected = ListTransaction.this.table
+									.getSelectedRow()) != -1) {
+						try {
+							ListTransaction.this.splitPane.push(
+									new ReportViewer(
+											new Invoice(
+													new Transaction(
+															ListTransaction.this.keys
+																	.get(ListTransaction.this.selected),
+															true)),
+											ListTransaction.this.splitPane),
+									SplitPane.LayoutType.HORIZONTAL,
+									ListTransaction.this.pusher);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				}
+			});
+			c = new GridBagConstraints();
+			c.fill = GridBagConstraints.BOTH;
+			c.gridy = ++y;
+			c.gridwidth = x;
+			c.gridx = x = 0;
+			c.weightx = 1;
+			this.add(invoiceButton, c);
 		}
 		
 		c = new GridBagConstraints();

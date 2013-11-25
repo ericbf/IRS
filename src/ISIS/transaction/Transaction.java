@@ -148,8 +148,8 @@ public class Transaction extends Record {
 		try {
 			this.getPkey();
 		} catch (UninitializedFieldException e) {
-			return null; // the transaction has never been saved, so no address
-							// has been set.
+			// the transaction has never been saved, so no address has been set.
+			return null;
 		}
 		try {
 			this.address = new Address((Integer) this.getFieldValue("address"),
@@ -188,7 +188,9 @@ public class Transaction extends Record {
 	 * Gets customer associated with this transaction.
 	 */
 	public Customer getCustomer() throws SQLException {
-		return new Customer((Integer) this.getFieldValue("customer"), false);
+		return this.customer == null ? new Customer(
+				(Integer) this.getFieldValue("customer"), false)
+				: this.customer;
 	}
 	
 	/**

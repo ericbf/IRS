@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import ISIS.gui.ErrorLogger;
 import ISIS.html.CSSStyle;
 import ISIS.html.objects.Cell;
-import ISIS.html.objects.Division;
 import ISIS.html.objects.Paragraph;
 import ISIS.html.objects.Table;
 import ISIS.transaction.Transaction;
@@ -38,51 +37,75 @@ public class Invoice extends Report {
 	@Override
 	public void populateBuilder() {
 		if (this.transaction.getStatus() == TransactionStatus.ACTIVE) {
-			this.b.add(new CSSStyle("@font-face")
-					.pasteAttributes("font-family:'Vollkorn'; "
-							+ "font-style: normal; "
-							+ "font-weight: 700; "
-							+ "src: url('ISIS/misc/Vollkorn.woff') format('woff');"));
 			
 			this.b.add(new CSSStyle(".stamp")
-					.pasteAttributes("font-family:'Vollkorn', serif; "
-							+ "font-size:45px; " + "line-height:45px; "
-							+ "text-transform:uppercase; "
+					.pasteAttributes("margin-left:auto; "
+							+ "text-align:center; " + "margin-right:auto; "
+							+ "width:8.5em; " + "font-size:25px; "
 							+ "font-weight:bold; " + "color:red; "
-							+ "border:7px solid red; " + "float:left; "
-							+ "padding:10px 7px; " + "border-radius:10px; "
-							+ "position:relative; " + "opacity:0.8; "
-							+ "-webkit-transform:rotate(-10deg); "
-							+ "-o-transform:rotate(-10deg); "
-							+ "-moz-transform:rotate(-10deg); "
-							+ "-ms-transform:rotate(-10deg);"));
-			this.b.add(new CSSStyle(".stamp:after")
-					.pasteAttributes("position: absolute; " + "content:\" \"; "
-							+ "width:100%; " + "height:auto; "
-							+ "min-height:100%; " + "top:-10px; "
-							+ "left:-10px; " + "padding:10px; "
-							+ "background:url(ISIS/misc/noise.png) repeat;"));
+							+ "border:3px solid red; " + "padding:0; "
+							+ "padding-top:.175em; " + "border-radius:10px; "
+							+ "margin-top:.5em; " + "margin-bottom:.5em"));
 			
-			Division d = new Division();
+			Paragraph par = new Paragraph();
 			
-			d.add(new Paragraph().add("Non-finalized"));
-			d.addClass("stamp");
+			par.add("NON-FINALIZED");
+			par.addClass("stamp");
 			
-			this.b.add(d);
+			this.b.add(par);
 		}
 		
 		try {
+			Table cust = new Table(2, 1);
+			Cell c[];
+			int x;
+			
+			cust.setHeaderRow(0);
+			
+			c = cust.getRow(0);
+			x = 0;
+			c[x++].add("Field");
+			c[x++].add("Value");
+			
+			c = cust.addRow();
+			x = 0;
+			c[x++].add("Customer Name");
+			c[x++].add(this.transaction.getCustomer().getFirstName() + " "
+					+ this.transaction.getCustomer().getLastName());
+			
+			c = cust.addRow();
+			x = 0;
+			c[x++].add("Shipping Address");
+			c[x++].add("TODO" // TODO
+			// this.transaction.getAddress().toString()
+			);
+			
+			c = cust.addRow();
+			x = 0;
+			c[x++].add("Billing Address");
+			c[x++].add("TODO" // TODO
+			// this.transaction.getBilling().toString()
+			);
+			
+			c = cust.addRow();
+			x = 0;
+			c[x++].add("Transaction Status");
+			c[x++].add(this.transaction.getStatus().toString());
+			
+			cust.addAttribute("style", "margin-bottom:.5em");
+			
+			this.b.add(cust);
+			
 			Table t = new Table(4, 1);
 			
-			Cell c[] = t.getRow(0);
-			int x = 0;
+			t.setHeaderRow(0);
+			c = t.getRow(0);
+			x = 0;
 			c[x++].add("Name");
 			c[x++].add("Price");
 			c[x++].add("QTY");
 			c[x++].add("Total");
 			
-			BigDecimal prices = new BigDecimal(0);
-			BigDecimal qtys = new BigDecimal(0);
 			BigDecimal totals = new BigDecimal(0);
 			
 			for (TransactionLineItem i : this.transaction.getItems()) {
@@ -94,16 +117,14 @@ public class Invoice extends Report {
 				c[x++].add(i.getPrice().toString());
 				c[x++].add(i.getQuantity().toString());
 				c[x++].add(String.format("$%.2f", total.floatValue() + .005f));
-				prices = prices.add(i.getPrice());
-				qtys = qtys.add(i.getQuantity());
 				totals = totals.add(total);
 			}
 			
 			c = t.addRow();
 			x = 0;
-			c[x++].add("All totals");
-			c[x++].add(prices.toString());
-			c[x++].add(qtys.toString());
+			c[x++].add("Total");
+			x++;
+			x++;
 			c[x++].add(String.format("$%.2f", totals.floatValue() + .005f));
 			
 			this.b.add(t);
