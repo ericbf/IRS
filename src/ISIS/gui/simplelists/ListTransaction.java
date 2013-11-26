@@ -3,30 +3,24 @@
  */
 package ISIS.gui.simplelists;
 
-import java.awt.GridBagConstraints;
+import ISIS.customer.Customer;
+import ISIS.database.DB;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.gui.*;
+import ISIS.gui.SplitPane.LayoutType;
+import ISIS.gui.customer.AddEditTransaction;
+import ISIS.gui.report.ReportViewer;
+import ISIS.reports.Invoice;
+import ISIS.transaction.Transaction;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
-import ISIS.customer.Customer;
-import ISIS.database.DB;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.gui.ErrorLogger;
-import ISIS.gui.IRSTableModel;
-import ISIS.gui.SimpleListView;
-import ISIS.gui.SplitPane;
-import ISIS.gui.SplitPane.LayoutType;
-import ISIS.gui.View;
-import ISIS.gui.customer.AddEditTransaction;
-import ISIS.gui.report.ReportViewer;
-import ISIS.reports.Invoice;
-import ISIS.transaction.Transaction;
 
 /**
  * This should NEVER be pushed, only embedded.
@@ -38,7 +32,7 @@ public class ListTransaction extends SimpleListView<Transaction> {
 	public ListTransaction(SplitPane splitPane, View pusher, Customer customer,
 			boolean selectMode) {
 		super(splitPane, pusher, false, "SELECT t.* FROM transaction_ AS t "
-				+ "LEFT JOIN customer AS c ON t.customer=c.pkey AND c.pkey=?",
+				+ "WHERE t.customer=?",
 				customer.getPkey());
 		
 		this.customer = customer;
