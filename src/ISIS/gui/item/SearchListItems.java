@@ -147,12 +147,7 @@ public class SearchListItems extends SearchListView<Item> {
 		c.weighty = 1;
 		this.add(new JScrollPane(this.table), c);
 	}
-    
-    @Override
-    protected String getConditions() {
-        return "latest=1";
-    }
-	
+
 	@Override
 	protected void tableItemAction() {
 		this.editButton.doClick();

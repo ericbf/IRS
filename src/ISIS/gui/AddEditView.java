@@ -3,14 +3,15 @@
  */
 package ISIS.gui;
 
-import java.awt.Color;
-import java.sql.SQLException;
+import ISIS.session.Session;
 
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
+import java.awt.*;
+import java.sql.SQLException;
 
 /**
  * @author eric
@@ -104,20 +105,36 @@ public abstract class AddEditView extends View {
 	@Override
 	public final boolean needsSave() {
 		return true;
-	};
-	
+	}
+
+    /**
+     * Override if you have actions that should be taken before saving.
+     */
+    protected void preSave() throws SQLException {}
+
+    protected void postSave() throws SQLException {}
+
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#save()
 	 */
 	@Override
-	public void save() throws SQLException {
-		if (this.isAnyFieldDifferentFromDefault()) {
-			this.getCurrentRecord().save();
-		}
-		if (!this.wasSavedOrAlreadySetUp) {
-			this.doSaveRecordAction();
-			this.wasSavedOrAlreadySetUp = true;
-		}
+	public final void save() throws SQLException {
+        try {
+            Session.getDB().startTransaction();
+            this.preSave();
+            if (this.isAnyFieldDifferentFromDefault()) {
+                this.getCurrentRecord().save();
+            }
+            if (!this.wasSavedOrAlreadySetUp) {
+                this.doSaveRecordAction();
+                this.wasSavedOrAlreadySetUp = true;
+            }
+            this.postSave();
+            Session.getDB().closeTransaction();
+        } catch (SQLException e) {
+            ErrorLogger.error(e, "Failed to save...", true, false);
+            Session.getDB().rollbackTransaction();
+        }
 	}
 }

@@ -101,7 +101,20 @@ public final class DB {
 	 * @pre transactionActive() == true
 	 * @post transactionActive() == false
 	 */
-	public void closeTransaction() {}
+	public void closeTransaction() throws SQLException {
+        connection.setAutoCommit(true);
+    }
+
+    /**
+     * Rolls back all changes that have been made inside of a transaction.
+     */
+    public void rollbackTransaction() {
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            ErrorLogger.error(e, "Failed to roll back your changes!!!!", true, true);
+        }
+    }
 	
 	/**
 	 * For creating tables and stuff. Returns number of affected rows.
@@ -308,7 +321,13 @@ public final class DB {
 	 * @pre transactionActive() == false
 	 * @post transactionActive() == true
 	 */
-	public void startTransaction() {}
+	public void startTransaction() throws SQLException {
+        if(connection.getAutoCommit() == false) {
+            ErrorLogger.error("We were already inside a transaction!?\nChanges rolled back.", true, true);
+            this.rollbackTransaction();
+        }
+        connection.setAutoCommit(false);
+    }
 	
 	/**
 	 * Checks if a transaction is active.

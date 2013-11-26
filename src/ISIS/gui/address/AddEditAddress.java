@@ -1,18 +1,15 @@
 package ISIS.gui.address;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.sql.SQLException;
-
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-
 import ISIS.customer.Customer;
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.misc.Address;
+
+import javax.swing.*;
+import java.awt.*;
+import java.sql.SQLException;
 
 public class AddEditAddress extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
@@ -227,12 +224,12 @@ public class AddEditAddress extends AddEditView {
 		this.add(this.st_address = new HintField("Street Address"), c);
 		
 	}
+
+    @Override
+    protected void postSave() throws SQLException {
+        if (this.customer != null) {
+            this.customer.save();
+        }
+    }
 	
-	@Override
-	public void save() throws SQLException {
-		super.save();
-		if (this.customer != null) {
-			this.customer.save();
-		}
-	}
 }
