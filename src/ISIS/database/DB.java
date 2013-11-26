@@ -237,7 +237,7 @@ public final class DB {
 		// item
 		this.executeUpdate("CREATE TABLE IF NOT EXISTS item (pkey INTEGER PRIMARY KEY, active BOOLEAN NOT NULL, "
 				+ "name VARCHAR(255) NOT NULL, SKU VARCHAR(255) NOT NULL, price VARCHAR(30) NOT NULL, onhand_qty VARCHAR(30) NOT NULL, "
-				+ "cost VARCHAR(30) NOT NULL, description TEXT NOT NULL, uom VARCHAR(10), reorder_qty VARCHAR(30) NOT NULL, latest BOOLEAN NOT NULL, "
+				+ "cost VARCHAR(30) NOT NULL, description TEXT NOT NULL, uom VARCHAR(10), reorder_qty VARCHAR(30) NOT NULL, "
 				+ datesSql + ")");
 		// item searching
 		String item_search_columns = "name, SKU, price, description, uom";

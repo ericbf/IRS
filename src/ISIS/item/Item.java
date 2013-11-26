@@ -1,13 +1,13 @@
 package ISIS.item;
 
+import ISIS.database.DB.TableName;
+import ISIS.database.Field;
+import ISIS.database.Record;
+
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import ISIS.database.DB.TableName;
-import ISIS.database.Field;
-import ISIS.database.Record;
 
 /**
  * A good available and currently managed by the client. An item record consists
@@ -72,7 +72,6 @@ public class Item extends Record {
 		this.setFieldValue("uom", UOM);
 		this.setCost(cost);
 		this.setActive(active);
-		this.setFieldValue("latest", true);
 	}
 	
 	/**
@@ -163,14 +162,7 @@ public class Item extends Record {
 	protected boolean hasDates() {
 		return Item.hasDates_;
 	}
-	
-	/**
-	 * Checks if this record is the latest version of the associated item.
-	 */
-	public boolean isLatestVersion() {
-		return ((Integer) this.getFieldValue("latest")) == 1;
-	}
-	
+
 	/**
 	 * Set whether this is the active record
 	 * 
