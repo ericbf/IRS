@@ -89,6 +89,16 @@ public class Invoice extends Report {
 			
 			c = cust.addRow();
 			x = 0;
+			c[x++].add("Start Date");
+			c[x++].add(this.transaction.getDates().getCreatedDate().toString());
+			
+			c = cust.addRow();
+			x = 0;
+			c[x++].add("Modified Date");
+			c[x++].add(this.transaction.getDates().getModDate().toString());
+			
+			c = cust.addRow();
+			x = 0;
 			c[x++].add("Transaction Status");
 			c[x++].add(this.transaction.getStatus().toString());
 			
