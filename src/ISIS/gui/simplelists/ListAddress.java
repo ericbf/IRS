@@ -1,26 +1,20 @@
 package ISIS.gui.simplelists;
 
-import java.awt.GridBagConstraints;
+import ISIS.customer.Customer;
+import ISIS.database.DB;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.gui.*;
+import ISIS.gui.address.AddEditAddress;
+import ISIS.misc.Address;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
-import ISIS.customer.Customer;
-import ISIS.database.DB;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.gui.ErrorLogger;
-import ISIS.gui.IRSTableModel;
-import ISIS.gui.SimpleListView;
-import ISIS.gui.SplitPane;
-import ISIS.gui.View;
-import ISIS.gui.address.AddEditAddress;
-import ISIS.misc.Address;
 
 /**
  * This should NEVER be pushed, only embedded.
@@ -81,7 +75,7 @@ public class ListAddress extends SimpleListView<Address> {
 			c.gridx = x = 0;
 			c.weightx = 1;
 			this.add(addButton, c);
-			JButton deleteButton = new JButton("Baleete");
+			JButton deleteButton = new JButton("Delete");
 			deleteButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
