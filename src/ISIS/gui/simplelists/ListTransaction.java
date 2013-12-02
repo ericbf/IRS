@@ -120,6 +120,35 @@ public class ListTransaction extends SimpleListView<Transaction> {
 			c.gridx = x = 0;
 			c.weightx = 1;
 			this.add(invoiceButton, c);
+
+            JButton editButton = new JButton("Edit");
+            editButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (ListTransaction.this.selected != -1
+                            || (ListTransaction.this.selected = ListTransaction.this.table
+                            .getSelectedRow()) != -1) {
+                        try {
+                            ListTransaction.this.splitPane.push(new AddEditTransaction(
+                                    ListTransaction.this.splitPane,
+                                    ListTransaction.this.keys
+                                            .get(ListTransaction.this.selected)),
+                                                                SplitPane.LayoutType.HORIZONTAL,
+                                                                ListTransaction.this.pusher);
+                        } catch (SQLException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            });
+            c = new GridBagConstraints();
+			c.fill = GridBagConstraints.BOTH;
+			c.gridy = ++y;
+			c.gridwidth = x;
+			c.gridx = x = 0;
+			c.weightx = 1;
+			this.add(editButton, c);
 		}
 		
 		c = new GridBagConstraints();

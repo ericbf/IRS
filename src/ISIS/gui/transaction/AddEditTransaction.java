@@ -58,7 +58,8 @@ public class AddEditTransaction extends AddEditView {
 	
 	/**
 	 * Public constructor: returns new instance of add/edit transaction view.
-	 * 
+	 *
+     * For viewing/modifying a transaction.
 	 * @wbp.parser.constructor
 	 */
 	public AddEditTransaction(SplitPane splitPane, int pkey)
@@ -72,14 +73,9 @@ public class AddEditTransaction extends AddEditView {
 			throw new SQLException("Failed to fetch customer.", e);
 		}
 		this.populateElements();
-		try {
-			this.returnTransaction.setSelected(this.transaction
-					.getParentTransaction() != null);
-		} catch (SQLException e) {
-			throw new SQLException("Failed to fetch parent transaction.", e);
-		}
-		
+
 		this.status.setSelectedItem(this.transaction.getStatus());
+        this.reloadAddress();
 	}
 	
 	/**
