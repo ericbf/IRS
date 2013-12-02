@@ -76,16 +76,14 @@ public class Invoice extends Report {
 			c = cust.addRow();
 			x = 0;
 			c[x++].add("Shipping Address");
-			c[x++].add("TODO" // TODO
-			// this.transaction.getAddress().toString()
-			);
+			c[x++].add(this.transaction.getAddress() == null ? "none"
+					: this.transaction.getAddress().toString());
 			
 			c = cust.addRow();
 			x = 0;
 			c[x++].add("Billing Address");
-			c[x++].add("TODO" // TODO
-			// this.transaction.getBilling().toString()
-			);
+			c[x++].add(this.transaction.getBilling() == null ? "none"
+					: this.transaction.getBilling().toString());
 			
 			c = cust.addRow();
 			x = 0;
