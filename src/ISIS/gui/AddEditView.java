@@ -3,73 +3,20 @@
  */
 package ISIS.gui;
 
-import ISIS.session.Session;
+import java.awt.Color;
+import java.sql.SQLException;
 
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.DocumentFilter;
-import java.awt.*;
-import java.sql.SQLException;
+
+import ISIS.session.Session;
 
 /**
  * @author eric
  */
 public abstract class AddEditView extends View {
 	
-	private static final long			serialVersionUID	= 1L;
-	public static final DocumentFilter	numberFilter;
-	static {
-		numberFilter = new DocumentFilter() {
-			private boolean check(String str) {
-				return str.matches("([1-9][0-9]*)?[0-9]?(\\.[0-9]?[0-9]?)?");
-			}
-			
-			@Override
-			public void insertString(FilterBypass fb, int offset,
-					String string, AttributeSet attr)
-					throws BadLocationException {
-				
-				Document doc = fb.getDocument();
-				StringBuilder sb = new StringBuilder();
-				sb.append(doc.getText(0, doc.getLength()));
-				sb.insert(offset, string);
-				
-				if (this.check(sb.toString())) {
-					super.insertString(fb, offset, string, attr);
-				}
-			}
-			
-			@Override
-			public void remove(FilterBypass fb, int offset, int length)
-					throws BadLocationException {
-				Document doc = fb.getDocument();
-				StringBuilder sb = new StringBuilder();
-				sb.append(doc.getText(0, doc.getLength()));
-				sb.delete(offset, offset + length);
-				
-				if (this.check(sb.toString()) || sb.toString().isEmpty()) {
-					super.remove(fb, offset, length);
-				}
-			}
-			
-			@Override
-			public void replace(FilterBypass fb, int offset, int length,
-					String text, AttributeSet attrs)
-					throws BadLocationException {
-				Document doc = fb.getDocument();
-				StringBuilder sb = new StringBuilder();
-				sb.append(doc.getText(0, doc.getLength()));
-				sb.replace(offset, offset + length, text);
-				
-				if (this.check(sb.toString())) {
-					super.replace(fb, offset, length, text, attrs);
-				}
-			}
-		};
-	}
-	protected boolean					wasSavedOrAlreadySetUp;
+	private static final long	serialVersionUID	= 1L;
+	protected boolean			wasSavedOrAlreadySetUp;
 	
 	/**
 	 * Link to super
@@ -106,40 +53,40 @@ public abstract class AddEditView extends View {
 	public final boolean needsSave() {
 		return true;
 	}
-
-    /**
-     * Override if you have actions that should be taken before saving.
-     */
-    protected void preSave() throws SQLException {}
-
-    protected void postSave() throws SQLException {}
-
+	
+	protected void postSave() throws SQLException {}
+	
+	/**
+	 * Override if you have actions that should be taken before saving.
+	 */
+	protected void preSave() throws SQLException {}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#save()
 	 */
 	@Override
 	public final void save() throws SQLException {
-        try {
-            Session.getDB().startTransaction();
-            this.preSave();
-            if (this.isAnyFieldDifferentFromDefault()) {
-                if(this.getCurrentRecord() == null) {
-                    ErrorLogger.error("Nothing to save!?", true, false);
-                    Session.getDB().rollbackTransaction();
-                    return;
-                }
-                this.getCurrentRecord().save();
-            }
-            if (!this.wasSavedOrAlreadySetUp) {
-                this.doSaveRecordAction();
-                this.wasSavedOrAlreadySetUp = true;
-            }
-            this.postSave();
-            Session.getDB().closeTransaction();
-        } catch (SQLException e) {
-            ErrorLogger.error(e, "Failed to save...", true, false);
-            Session.getDB().rollbackTransaction();
-        }
+		try {
+			Session.getDB().startTransaction();
+			this.preSave();
+			if (this.isAnyFieldDifferentFromDefault()) {
+				if (this.getCurrentRecord() == null) {
+					ErrorLogger.error("Nothing to save!?", true, false);
+					Session.getDB().rollbackTransaction();
+					return;
+				}
+				this.getCurrentRecord().save();
+			}
+			if (!this.wasSavedOrAlreadySetUp) {
+				this.doSaveRecordAction();
+				this.wasSavedOrAlreadySetUp = true;
+			}
+			this.postSave();
+			Session.getDB().closeTransaction();
+		} catch (SQLException e) {
+			ErrorLogger.error(e, "Failed to save...", true, false);
+			Session.getDB().rollbackTransaction();
+		}
 	}
 }

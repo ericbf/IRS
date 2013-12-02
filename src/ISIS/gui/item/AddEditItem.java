@@ -2,20 +2,17 @@ package ISIS.gui.item;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
-import javax.swing.text.PlainDocument;
 
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
+import ISIS.gui.DoubleHintField;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
@@ -26,7 +23,8 @@ import ISIS.item.Item;
 public class AddEditItem extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
 	private JCheckBox			active;
-	private HintField			SKU, name, UOM, price, stock, cost, reorder;
+	private HintField			SKU, name, UOM;
+	private DoubleHintField		price, stock, cost, reorder;
 	private Item				item;
 	private JTextArea			description;
 	
@@ -120,7 +118,6 @@ public class AddEditItem extends AddEditView {
 	private void populateElements() {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
-		ArrayList<HintField> constrainedFields = new ArrayList<>();
 		int x = 0, y = 0;
 		
 		c = new GridBagConstraints();
@@ -181,10 +178,7 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.price = new HintField(null, "0.00"), c);
-		constrainedFields.add(this.price);
-		this.price.setToolTipText("Price");
-		this.price.setHintEnabled(false);
+		this.add(this.price = new DoubleHintField("Retail price"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -199,10 +193,7 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.cost = new HintField(null, "0.00"), c);
-		constrainedFields.add(this.cost);
-		this.cost.setToolTipText("Cost");
-		this.cost.setHintEnabled(false);
+		this.add(this.cost = new DoubleHintField("Restock cost"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -217,10 +208,7 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.reorder = new HintField(null, "0.00"), c);
-		constrainedFields.add(this.reorder);
-		this.reorder.setToolTipText("Quantity before reordering");
-		this.reorder.setHintEnabled(false);
+		this.add(this.reorder = new DoubleHintField("Reorder amount"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -234,10 +222,7 @@ public class AddEditItem extends AddEditView {
 		c.gridx = x;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.stock = new HintField(null, "0.00"), c);
-		constrainedFields.add(this.stock);
-		this.stock.setToolTipText("On-hand quantity");
-		this.stock.setHintEnabled(false);
+		this.add(this.stock = new DoubleHintField("Current Stock"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = .3;
@@ -264,32 +249,5 @@ public class AddEditItem extends AddEditView {
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.description = new JTextArea(), c);
 		this.description.setBorder(new EtchedBorder());
-		
-		for (final HintField field : constrainedFields) {
-			((PlainDocument) field.getDocument())
-					.setDocumentFilter(AddEditView.numberFilter);
-			field.addFocusListener(new FocusListener() {
-				
-				@Override
-				public void focusGained(FocusEvent e) {}
-				
-				@Override
-				public void focusLost(FocusEvent e) {
-					if (field.getText().isEmpty()) {
-						field.setText("0.00");
-					}
-					if (field.getText().matches("[0-9]*\\.")) {
-						field.setText(field.getText() + "0");
-					}
-					if (field.getText().matches("\\.[0-9]*")) {
-						field.setText("0" + field.getText());
-					}
-					if (field.getText().matches("[0-9]*\\.[0-9]")) {
-						field.setText(field.getText() + "0");
-					}
-					field.setCaretPosition(0);
-				}
-			});
-		}
 	}
 }

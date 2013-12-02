@@ -1,32 +1,30 @@
 package ISIS.gui.transaction;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+
+import javax.swing.JLabel;
+
 import ISIS.customer.Customer;
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
+import ISIS.gui.DoubleHintField;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
 import ISIS.transaction.Transaction;
 import ISIS.transaction.TransactionLineItem;
 
-import javax.swing.*;
-import javax.swing.text.PlainDocument;
-import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 public class AddEditTransactionLineItem extends AddEditView {
-	private static final long		serialVersionUID	= 1L;
-	private final Item				item;
-	private TransactionLineItem		lineItem = null;
-	private final Transaction		transaction;
-	private HintField				itemName, price, adjustment, quantity,
-			description;
-	private final Customer			customer;
-	private ArrayList<HintField>	constrainedFields;
+	private static final long	serialVersionUID	= 1L;
+	private final Item			item;
+	private TransactionLineItem	lineItem			= null;
+	private final Transaction	transaction;
+	private HintField			itemName, description;
+	private DoubleHintField		price, adjustment, quantity;
+	private final Customer		customer;
 	
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
@@ -58,18 +56,19 @@ public class AddEditTransactionLineItem extends AddEditView {
 	 */
 	@Override
 	public Record getCurrentRecord() {
-        if(this.lineItem == null) {
-		    this.lineItem = new TransactionLineItem(
-				this.transaction, this.item, new BigDecimal(
-						this.price.getText()), new BigDecimal(
-						this.adjustment.getText()), new BigDecimal(
-						this.quantity.getText()), this.description.getText());
-        } else {
-            this.lineItem.setDescription(this.description.getText());
-            this.lineItem.setAdjustment(new BigDecimal(this.adjustment.getText()));
-            this.lineItem.setQuantity(new BigDecimal(this.quantity.getText()));
-        }
-        return this.lineItem;
+		if (this.lineItem == null) {
+			this.lineItem = new TransactionLineItem(this.transaction,
+					this.item, new BigDecimal(this.price.getText()),
+					new BigDecimal(this.adjustment.getText()), new BigDecimal(
+							this.quantity.getText()),
+					this.description.getText());
+		} else {
+			this.lineItem.setDescription(this.description.getText());
+			this.lineItem.setAdjustment(new BigDecimal(this.adjustment
+					.getText()));
+			this.lineItem.setQuantity(new BigDecimal(this.quantity.getText()));
+		}
+		return this.lineItem;
 	}
 	
 	/*
@@ -88,7 +87,6 @@ public class AddEditTransactionLineItem extends AddEditView {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
 		int x = 0, y = 0;
-		this.constrainedFields = new ArrayList<>();
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -119,7 +117,7 @@ public class AddEditTransactionLineItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.price = new HintField(), c);
+		this.add(this.price = new DoubleHintField(), c);
 		this.price.setEnabled(false);
 		
 		c = new GridBagConstraints();
@@ -135,8 +133,7 @@ public class AddEditTransactionLineItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.adjustment = new HintField("Adjustment", "0.00"), c);
-		this.constrainedFields.add(this.adjustment);
+		this.add(this.adjustment = new DoubleHintField("Adjustment"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -151,8 +148,7 @@ public class AddEditTransactionLineItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.quantity = new HintField("Quantity", "0.00"), c);
-		this.constrainedFields.add(this.quantity);
+		this.add(this.quantity = new DoubleHintField("Quantity"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -168,33 +164,6 @@ public class AddEditTransactionLineItem extends AddEditView {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.description = new HintField("Description"), c);
-		
-		for (final HintField field : this.constrainedFields) {
-			((PlainDocument) field.getDocument())
-					.setDocumentFilter(AddEditView.numberFilter);
-			field.addFocusListener(new FocusListener() {
-				
-				@Override
-				public void focusGained(FocusEvent e) {}
-				
-				@Override
-				public void focusLost(FocusEvent e) {
-					if (field.getText().isEmpty()) {
-						field.setText("0.00");
-					}
-					if (field.getText().matches("[0-9]*\\.")) {
-						field.setText(field.getText() + "0");
-					}
-					if (field.getText().matches("\\.[0-9]*")) {
-						field.setText("0" + field.getText());
-					}
-					if (field.getText().matches("[0-9]*\\.[0-9]")) {
-						field.setText(field.getText() + "0");
-					}
-					field.setCaretPosition(0);
-				}
-			});
-		}
 	}
 	
 	@Override
