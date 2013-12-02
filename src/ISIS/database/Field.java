@@ -23,6 +23,9 @@ public final class Field {
 	
 	/**
 	 * Checks if this field was changed in a record class.
+         * 
+         * @pre isOpen == true
+         * @post - return bool
 	 */
 	public Boolean getWasChanged() {
 		return this.changed;
@@ -30,6 +33,9 @@ public final class Field {
 	
 	/**
 	 * Checks if this record was initialized.
+         * 
+         * @pre isOpen == true
+         * returns bool
 	 */
 	public Boolean getWasInitialized() {
 		return this.initialized;
@@ -37,6 +43,9 @@ public final class Field {
 	
 	/**
 	 * For when value is retrieved from database.
+         * @pre isOpen == true
+         * @post - set initialized value
+         * 
 	 */
 	public void initField(Object value) {
 		initialized = true;
@@ -49,6 +58,9 @@ public final class Field {
 	
 	/**
 	 * For use in record classes.
+         * 
+         * @pre isOpen == true
+         * @post - sets field value
 	 */
 	public void setValue(Object value) {
 		if (value.equals(this.field)) {

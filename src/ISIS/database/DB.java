@@ -107,6 +107,9 @@ public final class DB {
 
     /**
      * Rolls back all changes that have been made inside of a transaction.
+     * 
+     * @pre isOpen == true
+     * @post - changes rolled back
      */
     public void rollbackTransaction() {
         try {
@@ -119,6 +122,9 @@ public final class DB {
 	
 	/**
 	 * For creating tables and stuff. Returns number of affected rows.
+         * 
+         * @pre isOpen == true
+         * @post returns number of affected rows
 	 */
 	private int executeUpdate(String sql) throws SQLException {
 		Statement statement = this.connection.createStatement();
@@ -127,6 +133,9 @@ public final class DB {
 	
 	/**
 	 * Initialize tables
+         * 
+         * @pre isOpen == true
+         * @post tables initialized
 	 */
 	public void initializeDB() throws SQLException {
 		String datesSql = "createDate BIGINT NOT NULL, createUser INT REFERENCES user(pkey), modDate BIGINT NOT NULL, "
@@ -297,6 +306,9 @@ public final class DB {
 	
 	/**
 	 * Checks if the database is open.
+         * 
+         * @pre - none
+         * @post returns true if table is open
 	 */
 	public boolean isOpen() {
 		try {
@@ -311,6 +323,7 @@ public final class DB {
 	 * Creates and returns a prepared statement given the given sql.
 	 * 
 	 * @pre isOpen == true
+         * @post - returns prepared statement
 	 */
 	public PreparedStatement prepareStatement(String sql) throws SQLException {
 		return this.connection.prepareStatement(sql,
@@ -336,6 +349,7 @@ public final class DB {
 	 * Checks if a transaction is active.
 	 * 
 	 * @pre isOpen == true
+         * @post returns transaction status
 	 */
 	public boolean transactionActive() {
 		return false;
