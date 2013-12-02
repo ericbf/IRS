@@ -171,4 +171,9 @@ public class Billing extends Record {
 	protected boolean hasDates() {
 		return Billing.hasDates_;
 	}
+        
+        @Override
+        public String toString()  {
+            return this.toString();
+        }
 }

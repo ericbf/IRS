@@ -36,3 +36,7 @@ flyingsaucer-R8/*
 #Include libraries and et cetera
 !sqlite-jdbc-3.7.15-M1.jar
 !flyingsaucer-R8/*.jar
+
+nbproject/project.properties
+
+nbproject/project.properties

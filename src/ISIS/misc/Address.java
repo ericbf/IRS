@@ -145,4 +145,9 @@ public class Address extends Record {
 		this.setFieldValue("primary", (primary ? 1 : 0));
 		
 	}
+        
+        @Override
+        public String toString() {
+            return this.toString();
+        }
 }
