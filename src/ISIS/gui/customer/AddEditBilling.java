@@ -29,21 +29,21 @@ public class AddEditBilling extends AddEditView {
 	private HintField		address, CCV, number, expiration;
     private Address billing_address;
     private ListAddress listAddress;
-                
+
                 //title, city, state, county, country, st_address, zip;
 	private final Customer		customer;
 	private JCheckBox			active;
-	
+
 	public AddEditBilling(SplitPane splitPane, Customer customer) {
         super(splitPane);
         this.customer = customer;
         this.populateElements();
         this.billing = null;
 	}
-	
+
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
-	 * 
+	 *
 	 * @wbp.parser.constructor
 	 */
 	public AddEditBilling(SplitPane splitPane, Customer customer, int pkey)
@@ -64,14 +64,14 @@ public class AddEditBilling extends AddEditView {
                            this.expiration);
         this.listAddress.setEnabled(false);
     }
-                
-	
+
+
 	/**
 	 * Discards any modifications.
 	 */
 	@Override
 	public void cancel() {}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#getCurrentRecord()
@@ -101,7 +101,7 @@ public class AddEditBilling extends AddEditView {
 		}
 		return this.billing;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
@@ -116,7 +116,7 @@ public class AddEditBilling extends AddEditView {
                                 && this.expiration.getText().isEmpty();
 		return !same;
 	}
-	
+
 	/**
 	 * Draws all necessary components on the window.
 	 */
@@ -124,14 +124,14 @@ public class AddEditBilling extends AddEditView {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
 		int x = 0, y = 0;
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(new JLabel("Active"), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
@@ -139,14 +139,14 @@ public class AddEditBilling extends AddEditView {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.active = new JCheckBox("", true), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(new JLabel("Billing Type"), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
@@ -154,14 +154,14 @@ public class AddEditBilling extends AddEditView {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.type, c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(new JLabel("Address"), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
@@ -169,14 +169,14 @@ public class AddEditBilling extends AddEditView {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.address = new HintField(""), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(new JLabel("Card Number"), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
@@ -184,14 +184,14 @@ public class AddEditBilling extends AddEditView {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.number = new HintField("Card Number"), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(new JLabel("Expiration Date"), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
@@ -199,14 +199,14 @@ public class AddEditBilling extends AddEditView {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.expiration = new HintField("Expiration Date"), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(new JLabel("CCV"), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
@@ -257,21 +257,21 @@ public class AddEditBilling extends AddEditView {
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(new JLabel("Zip"), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.zip = new HintField("Zip"), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = 0;
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(new JLabel("St. Address"), c);
-		
+
 		c = new GridBagConstraints();
 		c.weightx = .3;
 		c.gridx = x--;
