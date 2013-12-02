@@ -271,6 +271,7 @@ public final class SplitPane extends JPanel {
 		} else {
 			this.splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		}
+		view.setPadding();
 		if (this.stack.isEmpty()) {
 			this.setLeftComponent(view);
 			this.setRightComponent(null);

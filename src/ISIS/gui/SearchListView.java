@@ -35,7 +35,6 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 	
 	public SearchListView(SplitPane splitPane) {
 		super(splitPane, false);
-		this.setPadding();
 		
 		this.selected = -1;
 		this.searchField = new HintField("Enter query to search...");
