@@ -284,7 +284,8 @@ public final class DB {
 				+ "(pkey), address INT REFERENCES address(pkey), billing INT REFERENCES billing(pkey), "+datesSql+")");
 		// transaction-item
 		this.executeUpdate("CREATE TABLE IF NOT EXISTS transaction_item (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, "
-				+ "item INT REFERENCES item(pkey) NOT NULL, price VARCHAR(30) NOT NULL, adjustment VARCHAR(30) NOT NULL QUANTITY INT NOT " +
+				+ "item INT REFERENCES item(pkey) NOT NULL, price VARCHAR(30) NOT NULL, adjustment VARCHAR(30) NOT NULL, " +
+                                   "quantity INT NOT " +
                                    "NULL, description TEXT, "
 				+ datesSql + ")");
 		
