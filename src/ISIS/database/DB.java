@@ -285,7 +285,7 @@ public final class DB {
 		// transaction-item
 		this.executeUpdate("CREATE TABLE IF NOT EXISTS transaction_item (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, "
 				+ "item INT REFERENCES item(pkey) NOT NULL, price VARCHAR(30) NOT NULL, adjustment VARCHAR(30) NOT NULL, " +
-                                   "quantity INT NOT " +
+                                   "quantity VARCHAR(30) NOT " +
                                    "NULL, description TEXT, "
 				+ datesSql + ")");
 		

@@ -1,13 +1,14 @@
 package ISIS.transaction;
 
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.HashMap;
-
 import ISIS.database.DB.TableName;
 import ISIS.database.Field;
 import ISIS.database.Record;
+import ISIS.gui.ErrorLogger;
 import ISIS.item.Item;
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.HashMap;
 
 /**
  * Attributes of an item as it relates to a transaction -- e.g. amount being
@@ -52,9 +53,9 @@ public class TransactionLineItem extends Record {
 		super();
 		this.setFieldValue("transaction_", transaction);
 		this.setFieldValue("item", item);
-		this.setFieldValue("price", price);
-		this.setFieldValue("adjustment", adjustment);
-		this.setFieldValue("quantity", quantity);
+		this.setFieldValue("price", price.toString());
+		this.setFieldValue("adjustment", adjustment.toString());
+		this.setFieldValue("quantity", quantity.toString());
 		this.setFieldValue("description", description);
 	}
 	
@@ -77,7 +78,7 @@ public class TransactionLineItem extends Record {
 	 * discount.
 	 */
 	public BigDecimal getAdjustment() {
-		return (BigDecimal) this.getFieldValue("adjustment");
+		return new BigDecimal((String) this.getFieldValue("adjustment"));
 	}
 	
 	/**
@@ -91,21 +92,26 @@ public class TransactionLineItem extends Record {
 	 * Gets the item.
 	 */
 	public Item getItem() {
-		return (Item) this.getFieldValue("item");
+        try {
+		    return new Item((Integer) this.getFieldValue("item"), true);
+        } catch (SQLException e) {
+            ErrorLogger.error(e, "Failed to fetch item", true, true);
+            return null;
+        }
 	}
 	
 	/**
 	 * @return the price
 	 */
 	public BigDecimal getPrice() {
-		return (BigDecimal) this.getFieldValue("price");
+		return new BigDecimal((String) this.getFieldValue("price"));
 	}
 	
 	/**
 	 * Gets the quantity of the item involved in the transaction.
 	 */
 	public BigDecimal getQuantity() {
-		return (BigDecimal) this.getFieldValue("quantity");
+		return new BigDecimal((String) this.getFieldValue("quantity"));
 	}
 	
 	@Override
@@ -130,7 +136,7 @@ public class TransactionLineItem extends Record {
 	 *            the adjustment to set
 	 */
 	public void setAdjustment(BigDecimal adjustment) {
-		this.setFieldValue("adjustment", adjustment);
+		this.setFieldValue("adjustment", adjustment.toString());
 	}
 	
 	/**
@@ -146,6 +152,6 @@ public class TransactionLineItem extends Record {
 	 *            the quantity to set
 	 */
 	public void setQuantity(BigDecimal quantity) {
-		this.setFieldValue("quantity", quantity);
+		this.setFieldValue("quantity", quantity.toString());
 	}
 }

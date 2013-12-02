@@ -3,13 +3,6 @@
  */
 package ISIS.gui.simplelists;
 
-import java.awt.GridBagConstraints;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
@@ -19,6 +12,11 @@ import ISIS.gui.SplitPane;
 import ISIS.gui.View;
 import ISIS.transaction.Transaction;
 import ISIS.transaction.TransactionLineItem;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This should NEVER be pushed, only embedded.
@@ -52,12 +50,13 @@ public class ListTransactionLineItem extends
 				
 				array[i++] = ti.getItem().getName();
 				array[i++] = ti.getPrice();
-				
+				array[i++] = ti.getQuantity();
+
 				super.addRow(array);
 				ListTransactionLineItem.this.keys.add(ti.getPkey());
 			}
 		});
-		this.tableModel.setColumnTitles("Name", "Price");
+		this.tableModel.setColumnTitles("Item", "Price", "Qty");
 		
 		int x = 0;
 		int y = 0;
