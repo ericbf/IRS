@@ -159,7 +159,7 @@ public class ListBilling extends SimpleListView<Billing> {
 
     @Override
     protected DB.TableName getTableName() {
-        return DB.TableName.customer_billing;
+        return DB.TableName.billing;
     }
 
     @Override
