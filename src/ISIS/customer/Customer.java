@@ -100,6 +100,9 @@ public class Customer extends Record {
     
 	/**
 	 * Adds an address to the customer record.
+         * 
+         * @pre - none
+         * @post - new billing address saved and related to customer record
 	 */
 	public void addBilling(Billing billing) {
 		this.billing.add(billing);
@@ -137,6 +140,9 @@ public class Customer extends Record {
 
     /**
      * Gets all addresses associated with the customer record.
+     * 
+     * @pre - none
+     * @post - returns all billing addresses associated with customer record
      */
     public ArrayList<Billing> getBilling() throws SQLException {
         if (this.billingInitialized) {
@@ -186,7 +192,7 @@ public class Customer extends Record {
 	 * Gets all addresses associated with the customer record.
          * 
          * @pre - receives a customer record
-         * @post - returns all addresses associated with the customer recors
+         * @post - returns all addresses associated with the customer records
 	 */
 	public ArrayList<Address> getAddresses() throws SQLException {
 		if (this.addressesInitialized) {
