@@ -28,6 +28,7 @@ public class AddEditBilling extends AddEditView {
     private JComboBox   type = new JComboBox(Billing.BillingType.values());
 	private HintField		address, CCV, number, expiration;
     private Address billing_address;
+    private ListAddress listAddress;
                 
                 //title, city, state, county, country, st_address, zip;
 	private final Customer		customer;
@@ -60,6 +61,7 @@ public class AddEditBilling extends AddEditView {
         this.expiration.setText(this.billing.getExpiration().toString());
         this.disableFields(this.address, this.number, this.CCV,
                            this.expiration);
+        this.listAddress.setEnabled(false);
     }
                 
 	
@@ -91,7 +93,8 @@ public class AddEditBilling extends AddEditView {
             this.customer.addBilling(this.billing);
 			this.disableFields(this.address, this.number, this.CCV,
 					this.expiration);
-		} else {
+            this.listAddress.setEnabled(false);
+        } else {
 			this.billing.setActive(this.active.isSelected());
             this.billing.setBillingType((Billing.BillingType) this.type.getSelectedItem());
 		}
@@ -212,7 +215,7 @@ public class AddEditBilling extends AddEditView {
 		this.add(this.CCV = new HintField("CCV"), c);
 
 
-        final ListAddress listAddress = new ListAddress(this.splitPane, this,
+        this.listAddress = new ListAddress(this.splitPane, this,
                                                   this.customer, this.customer.getPkey(), true);
         c = new GridBagConstraints();
         c.weightx = 0;
@@ -226,12 +229,12 @@ public class AddEditBilling extends AddEditView {
         c.gridx = x--;
         c.gridy = y++;
         c.fill = GridBagConstraints.BOTH;
-        this.add(listAddress, c);
+        this.add(this.listAddress, c);
 
         listAddress.setSelectAction(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int pkey = listAddress.getSelectedPkey();
+                int pkey = AddEditBilling.this.listAddress.getSelectedPkey();
                 if (pkey == -1) {
                     return;
                 }
