@@ -175,7 +175,9 @@ public class Transaction extends Record {
 		} catch (SQLException e) {
 			ErrorLogger.error(e, "Failed to retrieve address.", true, false);
 			throw e;
-		}
+		} catch (NullPointerException e) {
+            return null;
+        }
 		return this.address;
 	}
 	
@@ -198,7 +200,9 @@ public class Transaction extends Record {
 		} catch (SQLException e) {
 			ErrorLogger.error(e, "Failed to retrieve address.", true, true);
 			throw e;
-		}
+		} catch (NullPointerException e) {
+            return null;
+        }
 		return this.billing;
 	}
 	

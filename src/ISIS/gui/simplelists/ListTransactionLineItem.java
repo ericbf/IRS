@@ -33,8 +33,7 @@ public class ListTransactionLineItem extends
 				splitPane,
 				pusher,
 				false,
-				"SELECT ti.* FROM transaction_item AS ti "
-						+ "LEFT JOIN transaction_ AS t ON ti.transaction_=t.pkey AND t.pkey=?",
+				"SELECT ti.* FROM transaction_item AS ti WHERE ti.transaction_=?",
 				transaction.getPkey());
 		
 		this.transaction = transaction;

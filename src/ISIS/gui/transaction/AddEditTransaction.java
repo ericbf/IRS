@@ -1,38 +1,22 @@
 package ISIS.gui.transaction;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JToggleButton;
-
 import ISIS.customer.Customer;
-import ISIS.gui.AddEditView;
-import ISIS.gui.ErrorLogger;
-import ISIS.gui.HintField;
-import ISIS.gui.ListButtonListener;
-import ISIS.gui.ListView;
-import ISIS.gui.SplitPane;
-import ISIS.gui.WrapLayout;
+import ISIS.gui.*;
 import ISIS.gui.item.SearchListItems;
 import ISIS.gui.simplelists.ListAddress;
 import ISIS.gui.simplelists.ListBilling;
 import ISIS.gui.simplelists.ListTransactionLineItem;
 import ISIS.misc.Address;
+import ISIS.misc.Billing;
 import ISIS.transaction.Transaction;
 import ISIS.transaction.Transaction.TransactionStatus;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * View for adding and editing customers.
@@ -43,7 +27,7 @@ public class AddEditTransaction extends AddEditView {
 	final JComboBox<TransactionStatus>	status				= new JComboBox<>(
 																	TransactionStatus
 																			.values());
-	HintField							address, billing, total;
+	HintField							address;
 	Transaction							transaction;
 	Customer							customer;
 	JPanel								otherListsContainer;
@@ -120,11 +104,12 @@ public class AddEditTransaction extends AddEditView {
 				this.splitPane, this, this.customer, this.customer.getPkey(),
 				true));
 		this.otherListsCardLayout.addLayoutComponent(listAddress, "Address");
-		
+
+        final ListBilling listBilling;
 		// next
-		this.otherListsContainer.add(l = new ListBilling(this.splitPane, this,
+		this.otherListsContainer.add(listBilling = new ListBilling(this.splitPane, this,
 				this.customer, this.customer.getPkey()));
-		this.otherListsCardLayout.addLayoutComponent(l, "Billing");
+		this.otherListsCardLayout.addLayoutComponent(listBilling, "Billing");
 		
 		// next
 		this.otherListsContainer.add(l = new SearchListItems(this.splitPane,
@@ -154,6 +139,23 @@ public class AddEditTransaction extends AddEditView {
 				}
 			}
 		});
+        listBilling.setSelectAction(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int pkey = listBilling.getSelectedPkey();
+                if (pkey == -1) {
+                    return;
+                }
+                try {
+                    AddEditTransaction.this.transaction.setBilling(new Billing(pkey, true));
+                    AddEditTransaction.this.transaction.save();
+                } catch (SQLException ex) {
+                    ErrorLogger.error(ex, "Failed to add billing to transaction.",
+                                      true, true);
+                }
+            }
+        });
+
 		// next
 		this.billing_select
 				.addActionListener(new ListButtonListener(

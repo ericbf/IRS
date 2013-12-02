@@ -112,7 +112,7 @@ public class MainWindow extends JFrame {
 		splash.setUndecorated(true);
 		splash.setAlwaysOnTop(true);
 		splash.setVisible(true);
-		Timer dispose = new Timer(500, new ActionListener() {
+		Timer dispose = new Timer(5000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				splash.setVisible(false);
