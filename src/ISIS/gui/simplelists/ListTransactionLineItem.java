@@ -6,15 +6,15 @@ package ISIS.gui.simplelists;
 import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
-import ISIS.gui.IRSTableModel;
-import ISIS.gui.SimpleListView;
-import ISIS.gui.SplitPane;
-import ISIS.gui.View;
+import ISIS.gui.*;
 import ISIS.transaction.Transaction;
 import ISIS.transaction.TransactionLineItem;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,7 +25,7 @@ public class ListTransactionLineItem extends
 		SimpleListView<TransactionLineItem> {
 	private static final long	serialVersionUID	= 1L;
 	Transaction					transaction;
-	JButton						edit;
+	JButton						remove;
 	
 	public ListTransactionLineItem(SplitPane splitPane, View pusher,
 			Transaction transaction) {
@@ -61,11 +61,29 @@ public class ListTransactionLineItem extends
 		int x = 0;
 		int y = 0;
 		GridBagConstraints c;
-		
-		JButton remove;
-		this.edit = new JButton();
-		// TODO: THIS
-		
+
+        this.remove = new JButton("Remove");
+        this.remove.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selected = ListTransactionLineItem.this.table.getSelectedRow();
+                if (selected == -1) {
+                    return;
+                }
+
+                int pkey = ListTransactionLineItem.this.keys.get(selected);
+                try {
+                    ListTransactionLineItem.this.transaction.removeItem(new TransactionLineItem(pkey, false));
+                } catch(SQLException ex) {
+                    ErrorLogger.error(ex, "Failed to add item to transaction.", true, true);
+                }
+            }
+        });
+        c = new GridBagConstraints();
+        c.gridx = x;
+        c.gridy = y;
+        this.add(this.remove, c);
+
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridy = ++y;
@@ -100,6 +118,5 @@ public class ListTransactionLineItem extends
 	 */
 	@Override
 	protected void tableItemAction() {
-		this.edit.doClick();
 	}
 }

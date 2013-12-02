@@ -1,11 +1,5 @@
 package ISIS.transaction;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import ISIS.customer.Customer;
 import ISIS.database.DB;
 import ISIS.database.DB.TableName;
@@ -17,6 +11,12 @@ import ISIS.item.Item;
 import ISIS.misc.Address;
 import ISIS.misc.Billing;
 import ISIS.session.Session;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A Transaction is the exchange of goods, legal tender, or rendering of
@@ -294,6 +294,16 @@ public class Transaction extends Record {
 	 * @post getItems().contains(item) == false
 	 */
 	public void removeItem(Item item) {
+		this.items.remove(item);
+	}
+
+    /**
+	 * Removes an item from this transaction.
+	 *
+	 * @pre getItems().contains(item) == true
+	 * @post getItems().contains(item) == false
+	 */
+	public void removeItem(TransactionLineItem item) {
 		this.items.remove(item);
 	}
 	
