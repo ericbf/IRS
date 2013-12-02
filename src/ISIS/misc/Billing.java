@@ -174,6 +174,6 @@ public class Billing extends Record {
         
         @Override
         public String toString()  {
-            return this.toString();
+            return this.getBillingType().toString();
         }
 }

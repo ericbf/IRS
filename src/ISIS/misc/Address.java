@@ -1,11 +1,11 @@
 package ISIS.misc;
 
-import java.sql.SQLException;
-import java.util.HashMap;
-
 import ISIS.database.DB.TableName;
 import ISIS.database.Field;
 import ISIS.database.Record;
+
+import java.sql.SQLException;
+import java.util.HashMap;
 
 /**
  * General purpose class for representing postal addresses.
@@ -148,6 +148,6 @@ public class Address extends Record {
         
         @Override
         public String toString() {
-            return this.toString();
+            return this.getStreetAddress();
         }
 }
