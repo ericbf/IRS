@@ -1,16 +1,16 @@
 package ISIS.misc;
 
-import ISIS.database.DB.TableName;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.gui.ErrorLogger;
-
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
+import ISIS.database.DB.TableName;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.gui.ErrorLogger;
 
 /**
  * General purpose class for representing billing information.
@@ -90,18 +90,15 @@ public class Billing extends Record {
 	 */
 	public Address getAddress() throws SQLException {
 		if (this.address == null) {
-            if(this.getFieldValue("address") != null) {
-			    return new Address((Integer) this.getFieldValue("address"), false);
-            }
-            return null;
+			if (this.getFieldValue("address") != null) {
+				return new Address((Integer) this.getFieldValue("address"),
+						false);
+			}
+			return null;
 		} else {
 			return this.address;
 		}
 	}
-
-    public void setAddress(Address address) {
-        this.setFieldValue("address", address.getPkey());
-    }
 	
 	/**
 	 * Gets the billing type associated with the record.
@@ -109,11 +106,6 @@ public class Billing extends Record {
 	public BillingType getBillingType() {
 		return BillingType.valueOf(((String) this.getFieldValue("type")));
 	}
-
-
-    public void setBillingType(BillingType type) {
-        this.setFieldValue("type", type.toString());
-    }
 	
 	/**
 	 * Gets the credit card number.
@@ -124,8 +116,7 @@ public class Billing extends Record {
 		if (this.getBillingType().equals(BillingType.CREDIT)) {
 			return (String) this.getFieldValue("number");
 		} else {
-			throw new RuntimeException(
-					"Cannot get card number unless the billing info is a card!");
+			return "N/A";
 		}
 	}
 	
@@ -138,29 +129,25 @@ public class Billing extends Record {
 		if (this.getBillingType().equals(BillingType.CREDIT)) {
 			return (String) this.getFieldValue("CCV");
 		} else {
-			throw new RuntimeException(
-					"Cannot get CCV unless the billing info is a card!");
+			return "N/A";
 		}
 	}
 	
 	public Date getExpiration() {
-		try {
-			Date date = new SimpleDateFormat("MM/yy", Locale.ENGLISH)
-					.parse((String) this.getFieldValue("expiration"));
-			return date;
-		} catch (ParseException e) {
-			ErrorLogger.error(e, "Failed to parse expiration date.", true,
-					false);
-			throw new RuntimeException("Failed to retrieve date");
+		if (this.getBillingType().equals(BillingType.CREDIT)) {
+			try {
+				Date date = new SimpleDateFormat("MM/yy", Locale.ENGLISH)
+						.parse((String) this.getFieldValue("expiration"));
+				return date;
+			} catch (ParseException e) {
+				ErrorLogger.error(e, "Failed to parse expiration date.", true,
+						false);
+				throw new RuntimeException("Failed to retrieve date");
+			}
+		} else {
+			return null;
 		}
 	}
-
-    /**
-     * Allows you to set the active status of the Customer.
-     */
-    public void setActive(boolean active) {
-        this.setFieldValue("active", ((active) ? 1 : 0));
-    }
 	
 	@Override
 	protected TableName getTableName() {
@@ -171,9 +158,24 @@ public class Billing extends Record {
 	protected boolean hasDates() {
 		return Billing.hasDates_;
 	}
-        
-    @Override
-    public String toString()  {
-        return this.getBillingType().toString();
-    }
+	
+	/**
+	 * Allows you to set the active status of the Customer.
+	 */
+	public void setActive(boolean active) {
+		this.setFieldValue("active", ((active) ? 1 : 0));
+	}
+	
+	public void setAddress(Address address) {
+		this.setFieldValue("address", address.getPkey());
+	}
+	
+	public void setBillingType(BillingType type) {
+		this.setFieldValue("type", type.toString());
+	}
+	
+	@Override
+	public String toString() {
+		return this.getBillingType().toString();
+	}
 }
