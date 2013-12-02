@@ -5,6 +5,7 @@ import ISIS.database.DB;
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.*;
+import ISIS.gui.transaction.AddEditTransactionLineItem;
 import ISIS.item.Item;
 
 import javax.swing.*;
@@ -19,20 +20,22 @@ import java.util.HashMap;
  * List of items. Allows you to query and act on items.
  */
 public class SearchListItems extends SearchListView<Item> {
-	private static final long	serialVersionUID	= 1L;
-	private JButton				editButton, selectButton;
+    private static final long serialVersionUID = 1L;
     private final View pusher;
+    private final Customer customer;
+    private JButton editButton, selectButton;
 
-	/**
-	 * Constructs new Customer list view.
-	 */
-	public SearchListItems(SplitPane splitPane) {
-		super(splitPane);
+    /**
+     * Constructs new Customer list view.
+     */
+    public SearchListItems(SplitPane splitPane) {
+        super(splitPane);
         this.pusher = null;
+        this.customer = null;
         this.setLayout(new GridBagLayout());
         GridBagConstraints c;
 
-        int x=0, y=0;
+        int x = 0, y = 0;
         int buttonNameSel = 0;
         JButton addButton = new JButton(this.buttonNames[buttonNameSel++]);
         this.editButton = new JButton(this.buttonNames[buttonNameSel++]);
@@ -46,9 +49,7 @@ public class SearchListItems extends SearchListView<Item> {
                 // SearchListCustomers.this.splitPane.push(new AddEditCustomer(
                 // SearchListCustomers.this.splitPane),
                 // SplitPane.LayoutType.HORIZONTAL);
-                SearchListItems.this.splitPane.push(new AddEditItem(
-                        SearchListItems.this.splitPane),
-                        SplitPane.LayoutType.HORIZONTAL, SearchListItems.this);
+                SearchListItems.this.splitPane.push(new AddEditItem(SearchListItems.this.splitPane), SplitPane.LayoutType.HORIZONTAL, SearchListItems.this);
             }
         });
 
@@ -62,8 +63,7 @@ public class SearchListItems extends SearchListView<Item> {
                     if (selected == -1) {
                         return;
                     }
-                    SearchListItems.this.table.setRowSelectionInterval(
-                            selected, selected);
+                    SearchListItems.this.table.setRowSelectionInterval(selected, selected);
                 }
 
                 int pkey = SearchListItems.this.keys.get(selected);
@@ -72,14 +72,10 @@ public class SearchListItems extends SearchListView<Item> {
                     // SearchListItems.this.splitPane.push(new AddEditItem(
                     // SearchListItems.this.splitPane, pkey),
                     // SplitPane.LayoutType.HORIZONTAL);
-                    SearchListItems.this.splitPane.push(new AddEditItem(
-                            SearchListItems.this.splitPane, pkey),
-                            SplitPane.LayoutType.HORIZONTAL,
-                            SearchListItems.this);
+                    SearchListItems.this.splitPane.push(new AddEditItem(SearchListItems.this.splitPane, pkey), SplitPane.LayoutType.HORIZONTAL, SearchListItems.this);
 
                 } catch (SQLException ex) {
-                    ErrorLogger.error(ex, "Failed to open the item record.",
-                            true, true);
+                    ErrorLogger.error(ex, "Failed to open the item record.", true, true);
                 }
             }
         });
@@ -96,63 +92,6 @@ public class SearchListItems extends SearchListView<Item> {
         c.gridx = x++;
         this.add(this.editButton, c);
 
-		c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
-		c.gridx = x++;
-		c.weightx = 1;
-		this.add(this.searchField, c);
-		
-		this.setTableModel(new IRSTableModel() {
-			private static final long	serialVersionUID	= 1L;
-			
-			@Override
-			public void addRow(Record record) {
-				Item item = (Item) record;
-				Object[] array = new Object[this.getColumnCount()];
-				int i = 0;
-				
-				array[i++] = item.getSKU();
-				array[i++] = item.getName();
-				array[i++] = item.getPrice();
-				array[i++] = item.getOnHandQty();
-				array[i++] = item.getUOM();
-				
-				super.addRow(array);
-				SearchListItems.this.keys.add(item.getPkey());
-			}
-		});
-		this.tableModel.setColumnTitles("SKU", "name", "price", "qty", "UOM");
-		this.fillTable();
-		
-		c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
-		c.gridy = ++y;
-		c.gridwidth = x;
-		c.gridx = x = 0;
-		c.weighty = 1;
-		this.add(new JScrollPane(this.table), c);
-	}
-    
-    public SearchListItems(SplitPane splitPane, View pusher, Customer customer,
-                           Integer key) {
-        super(splitPane);
-        this.setLayout(new GridBagLayout());
-        this.pusher = pusher;
-
-        this.selectButton = new JButton("Select");
-        this.selectAction(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO: this
-            }
-        });
-        GridBagConstraints c = new GridBagConstraints();
-        int x=0, y=0;
-        c.fill = GridBagConstraints.BOTH;
-        c.gridx = x++;
-        c.gridy = y;
-        this.add(this.selectButton, c);
-
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = x++;
@@ -160,7 +99,7 @@ public class SearchListItems extends SearchListView<Item> {
         this.add(this.searchField, c);
 
         this.setTableModel(new IRSTableModel() {
-            private static final long	serialVersionUID	= 1L;
+            private static final long serialVersionUID = 1L;
 
             @Override
             public void addRow(Record record) {
@@ -190,25 +129,94 @@ public class SearchListItems extends SearchListView<Item> {
         this.add(new JScrollPane(this.table), c);
     }
 
-	@Override
-	protected void tableItemAction() {
-		this.editButton.doClick();
-	}
-	
-	@Override
-	protected DB.TableName getTableName() {
-		return DB.TableName.item;
-	}
-	
-	@Override
-	protected ArrayList<Item> mapResults(
-			ArrayList<HashMap<String, Field>> results) {
-		ArrayList<Item> items = new ArrayList<Item>(results.size());
-		for (HashMap<String, Field> result : results) {
-			items.add(new Item(result));
-		}
-		return items;
-	}
+    public SearchListItems(SplitPane splitPane, View pusher, Customer customer, Integer key) {
+        super(splitPane);
+        this.setLayout(new GridBagLayout());
+        this.pusher = pusher;
+        this.customer = customer;
+
+        this.selectButton = new JButton("Select");
+        this.selectAction(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selected = SearchListItems.this.table.getSelectedRow();
+                if (selected == -1) {
+                    return;
+                }
+
+                int pkey = SearchListItems.this.keys.get(selected);
+                try {
+                    SearchListItems.this.splitPane.push(new AddEditTransactionLineItem(SearchListItems.this.splitPane,
+                                                                                       SearchListItems.this.customer, new Item(pkey, true)),
+                                          SplitPane.LayoutType.HORIZONTAL, SearchListItems.this.pusher);
+                } catch (SQLException ex) {
+                    ErrorLogger.error(ex,
+                                      "Failed to add item to transaction.", true, true);
+                }
+            }
+        });
+        GridBagConstraints c = new GridBagConstraints();
+        int x = 0, y = 0;
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = x++;
+        c.gridy = y;
+        this.add(this.selectButton, c);
+
+        c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = x++;
+        c.weightx = 1;
+        this.add(this.searchField, c);
+
+        this.setTableModel(new IRSTableModel() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void addRow(Record record) {
+                Item item = (Item) record;
+                Object[] array = new Object[this.getColumnCount()];
+                int i = 0;
+
+                array[i++] = item.getSKU();
+                array[i++] = item.getName();
+                array[i++] = item.getPrice();
+                array[i++] = item.getOnHandQty();
+                array[i++] = item.getUOM();
+
+                super.addRow(array);
+                SearchListItems.this.keys.add(item.getPkey());
+            }
+        });
+        this.tableModel.setColumnTitles("SKU", "name", "price", "qty", "UOM");
+        this.fillTable();
+
+        c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.gridy = ++y;
+        c.gridwidth = x;
+        c.gridx = x = 0;
+        c.weighty = 1;
+        this.add(new JScrollPane(this.table), c);
+    }
+
+    @Override
+    protected void tableItemAction() {
+        this.editButton.doClick();
+    }
+
+    @Override
+    protected DB.TableName getTableName() {
+        return DB.TableName.item;
+    }
+
+    @Override
+    protected ArrayList<Item> mapResults(ArrayList<HashMap<String, Field>> results) {
+        ArrayList<Item> items = new ArrayList<Item>(results.size());
+        for (HashMap<String, Field> result : results) {
+            items.add(new Item(result));
+        }
+        return items;
+    }
 
     public void selectAction(ActionListener listener) {
         this.selectButton.addActionListener(listener);
