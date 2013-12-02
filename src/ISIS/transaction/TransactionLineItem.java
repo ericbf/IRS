@@ -25,7 +25,7 @@ public class TransactionLineItem extends Record {
 	 * The static boolean that tells whether this type of record has the
 	 * mod_date, creation_date, and et cetera of some records.
 	 */
-	public static boolean	hasDates_	= false;
+	public static boolean	hasDates_	= true;
 	
 	public TransactionLineItem(HashMap<String, Field> map) {
 		super(map);
@@ -51,8 +51,8 @@ public class TransactionLineItem extends Record {
 			BigDecimal price, BigDecimal adjustment, BigDecimal quantity,
 			String description) {
 		super();
-		this.setFieldValue("transaction_", transaction);
-		this.setFieldValue("item", item);
+		this.setFieldValue("transaction_", transaction.getPkey());
+		this.setFieldValue("item", item.getPkey());
 		this.setFieldValue("price", price.toString());
 		this.setFieldValue("adjustment", adjustment.toString());
 		this.setFieldValue("quantity", quantity.toString());

@@ -6,16 +6,19 @@ import ISIS.gui.AddEditView;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
+import ISIS.transaction.Transaction;
 import ISIS.transaction.TransactionLineItem;
 
 import javax.swing.*;
 import java.awt.*;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 public class AddEditTransactionLineItem extends AddEditView {
     private static final long	serialVersionUID	= 1L;
     private final Item				item;
     private TransactionLineItem lineItem;
+    private final Transaction transaction;
     private HintField itemName, price, adjustment, quantity, description;
     private final Customer		customer;
 
@@ -24,10 +27,11 @@ public class AddEditTransactionLineItem extends AddEditView {
      *
      * @wbp.parser.constructor
      */
-    public AddEditTransactionLineItem(SplitPane splitPane, Customer customer, Item item)
+    public AddEditTransactionLineItem(SplitPane splitPane, Customer customer, Transaction transaction, Item item)
             throws SQLException {
         super(splitPane);
         this.lineItem = null;
+        this.transaction = transaction;
         this.item = item;
         this.customer = customer;
         this.populateElements();
@@ -48,21 +52,19 @@ public class AddEditTransactionLineItem extends AddEditView {
      */
     @Override
     public Record getCurrentRecord() {
-
-        //TODO: this
-        return null;
+        TransactionLineItem lineItem = new TransactionLineItem(this.transaction, this.item, new BigDecimal(this.price.getText()),
+                                                               new BigDecimal(this.adjustment.getText()),
+                                                               new BigDecimal(this.quantity.getText()), this.description.getText());
+        return lineItem;
     }
 
     /*
-     * (non-Javadoc)
+     * Even if nothing was changed from the defaults, we still want to save it.
      * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
      */
     @Override
     public boolean isAnyFieldDifferentFromDefault() {
-
-        //TODO: this
-        boolean same = true;
-        return !same;
+        return true;
     }
 
     /**
@@ -118,7 +120,22 @@ public class AddEditTransactionLineItem extends AddEditView {
         c.gridy = y++;
         c.gridwidth = 2;
         c.fill = GridBagConstraints.BOTH;
-        this.add(this.quantity = new HintField("0.0"), c);
+        this.add(this.adjustment = new HintField("0.0", "0.0"), c);
+
+        c = new GridBagConstraints();
+        c.weightx = 0;
+        c.gridx = x++;
+        c.gridy = y;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(new JLabel("Quantity"), c);
+
+        c = new GridBagConstraints();
+        c.weightx = 1;
+        c.gridx = x--;
+        c.gridy = y++;
+        c.gridwidth = 2;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(this.quantity = new HintField("0.0", "0.0"), c);
 
         c = new GridBagConstraints();
         c.weightx = 0;

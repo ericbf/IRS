@@ -314,7 +314,6 @@ public class Transaction extends Record {
 	 * @post getItems().contains(item) == false
 	 */
 	public void removeItem(TransactionLineItem item) {
-		this.items.remove(item);
         this.itemsToRemove.add(item);
 	}
 	

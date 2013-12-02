@@ -1,34 +1,17 @@
 package ISIS.gui.transaction;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JToggleButton;
-
 import ISIS.customer.Customer;
-import ISIS.gui.AddEditView;
-import ISIS.gui.ErrorLogger;
-import ISIS.gui.HintField;
-import ISIS.gui.ListButtonListener;
-import ISIS.gui.ListView;
-import ISIS.gui.SplitPane;
-import ISIS.gui.WrapLayout;
+import ISIS.gui.*;
 import ISIS.gui.item.SearchListItems;
 import ISIS.gui.simplelists.ListAddress;
 import ISIS.gui.simplelists.ListTransactionLineItem;
 import ISIS.transaction.Transaction;
 import ISIS.transaction.Transaction.TransactionStatus;
+
+import javax.swing.*;
+import java.awt.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * View for adding and editing customers.
@@ -122,7 +105,7 @@ public class AddEditTransaction extends AddEditView {
 		
 		// next
 		this.otherListsContainer.add(l = new SearchListItems(this.splitPane,
-				this, this.customer, this.customer.getPkey()));
+				this, this.customer, this.transaction));
 		this.otherListsCardLayout.addLayoutComponent(l, "Items");
 		
 		// Add action listeners to the buttons
