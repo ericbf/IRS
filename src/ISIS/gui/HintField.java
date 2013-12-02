@@ -21,6 +21,7 @@ import javax.swing.text.JTextComponent;
  * @author eric
  */
 public class HintField extends JTextField {
+	
 	private class UI extends BasicTextFieldUI {
 		public UI(JTextComponent editor) {
 			super();
@@ -30,9 +31,9 @@ public class HintField extends JTextField {
 		@Override
 		protected void paintSafely(Graphics g) {
 			super.paintSafely(g);
-			JTextComponent comp = this.getComponent();
+			HintField comp = (HintField) this.getComponent();
 			if (HintField.this.hintEnabled && HintField.this.hint != null
-					&& comp.getText().length() == 0) {
+					&& comp.isEmpty()) {
 				g.setColor(Color.gray);
 				g.setFont(new Font(comp.getFont().getName(), Font.ITALIC, comp
 						.getFont().getSize()));
@@ -50,10 +51,10 @@ public class HintField extends JTextField {
 	}
 	
 	private static final long	serialVersionUID	= 1L;
+	
 	private boolean				selectAll;
 	private boolean				hintEnabled;
 	private String				hint;
-	
 	private UI					ui;
 	
 	public HintField() {
@@ -130,6 +131,10 @@ public class HintField extends JTextField {
 			@Override
 			public void keyTyped(KeyEvent e) {}
 		});
+	}
+	
+	public boolean isEmpty() {
+		return super.getText().isEmpty();
 	}
 	
 	public HintField setHintEnabled(boolean b) {
