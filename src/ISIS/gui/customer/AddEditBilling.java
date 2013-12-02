@@ -58,6 +58,8 @@ public class AddEditBilling extends AddEditView {
         this.number.setText(this.billing.getCardNumber());
         this.CCV.setText(this.billing.getCCV());
         this.expiration.setText(this.billing.getExpiration().toString());
+        this.disableFields(this.address, this.number, this.CCV,
+                           this.expiration);
     }
                 
 	
@@ -81,20 +83,17 @@ public class AddEditBilling extends AddEditView {
                 Date exp = new SimpleDateFormat("MM/yy", Locale.ENGLISH).parse(this.expiration.getText());
                 this.billing = new Billing(this.billing_address,
                                     this.number.getText(), exp, this.CCV.getText());
+                this.billing.setBillingType((Billing.BillingType) this.type.getSelectedItem());
             } catch (ParseException e) {
                 ErrorLogger.error(e, "Failed to parse exp date.", true, true);
                 return null;
             }
-				/*	this.country.getText(), this.title.getText(),
-					this.zip.getText(), this.state.getText(),
-					this.city.getText(), this.county.getText(),
-					this.st_billing.getText());
-			*/
             this.customer.addBilling(this.billing);
 			this.disableFields(this.address, this.number, this.CCV,
 					this.expiration);
 		} else {
 			this.billing.setActive(this.active.isSelected());
+            this.billing.setBillingType((Billing.BillingType) this.type.getSelectedItem());
 		}
 		return this.billing;
 	}

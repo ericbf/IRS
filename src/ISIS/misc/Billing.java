@@ -172,8 +172,8 @@ public class Billing extends Record {
 		return Billing.hasDates_;
 	}
         
-        @Override
-        public String toString()  {
-            return this.getBillingType().toString();
-        }
+    @Override
+    public String toString()  {
+        return this.getBillingType().toString();
+    }
 }
