@@ -71,6 +71,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Public constructor. A Customer starts with a name and a status.
+         * 
+         * @pre - receives all required parameters
+         * @post - returns object set to those records
 	 */
 	public Customer(String fname, String lname, String email, String note,
 			String password, boolean active) {
@@ -85,7 +88,10 @@ public class Customer extends Record {
 	}
 	
 	/**
-	 * Adds an address to the customer record.
+	 * Public constructor. A Customer starts with a name and a status.
+         * 
+         * @pre - receives all required parameters
+         * @post - returns object set to those records
 	 */
 	public void addAddress(Address address) {
 		this.addresses.add(address);
@@ -178,6 +184,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets all addresses associated with the customer record.
+         * 
+         * @pre - receives a customer record
+         * @post - returns all addresses associated with the customer recors
 	 */
 	public ArrayList<Address> getAddresses() throws SQLException {
 		if (this.addressesInitialized) {
@@ -207,6 +216,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets the Customer's email address.
+         * 
+         * @pre - none
+         * @post - returns customer's email address
 	 */
 	public String getEmail() {
 		return (String) this.getFieldValue("email");
@@ -214,6 +226,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets the Customer's first name.
+         * 
+         * @pre- none
+         * @post - return first name
 	 */
 	public String getFirstName() {
 		return (String) this.getFieldValue("fname");
@@ -221,6 +236,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets the Customer's last name.
+         * 
+         * @pre - none
+         * @post - returns last name
 	 */
 	public String getLastName() {
 		return (String) this.getFieldValue("lname");
@@ -228,6 +246,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets the Customer's note field.
+         * 
+         * @pre - none
+         * @post - returns note field
 	 */
 	public String getNote() {
 		return (String) this.getFieldValue("note");
@@ -235,6 +256,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets the Customer's password.
+         * 
+         * @pre - none
+         * @post - returns customer password
 	 */
 	public String getPassword() {
 		return (String) this.getFieldValue("password");
@@ -243,6 +267,9 @@ public class Customer extends Record {
 	/**
 	 * Gets all phone numbers and information associated with the numbers from
 	 * the customer record. Returns empty list on failure.
+         * 
+         * @pre - none
+         * @post - returns list of related numbers, or empty list if none found
 	 */
 	public ArrayList<Phone> getPhoneNums() throws SQLException {
 		if (this.numbersInitialized) {
@@ -273,6 +300,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets the pictures associated with the customer record.
+         * 
+         * @pre - none
+         * @post - returns picture associated with customer
 	 */
 	public ArrayList<Picture> getPictures(Picture picture) {
 		return null;
@@ -282,7 +312,8 @@ public class Customer extends Record {
 	 * Returns the primary address, or null if there are no addresses. If no
 	 * address is marked primary, then one is picked arbitrarily.
 	 * 
-	 * @return
+	 * @pre - none
+         * @post - return primary address if one exists, null if none exists
 	 */
 	public Address getPrimaryAddress() throws SQLException {
 		ArrayList<Address> addresses = this.getAddresses();
@@ -300,6 +331,9 @@ public class Customer extends Record {
 	/**
 	 * Gets the primary phone number. Returns null if there are no numbers, or
 	 * an arbitrary number if there is no primary.
+         * 
+         * pre - none
+         * post - return primary phone number if one exists, null if none exists
 	 */
 	public Phone getPrimaryNum() throws SQLException {
 		for (Phone number : this.getPhoneNums()) {
@@ -535,6 +569,8 @@ public class Customer extends Record {
 	
 	/**
 	 * Allows you to set the active status of the Customer.
+         * pre - none
+         * post - set active status = true
 	 */
 	public void setActive(boolean active) {
 		this.setFieldValue("active", ((active) ? 1 : 0));
@@ -542,6 +578,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Sets the Customer's email address.
+         * 
+         * @pre - none
+         * @post - customer email set
 	 */
 	public void setEmail(String email) {
 		this.setFieldValue("email", email);
@@ -549,6 +588,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Sets the Customer's note field.
+         * 
+         * @pre - none
+         * @post - customer note field set
 	 */
 	public void setNote(String note) {
 		this.setFieldValue("note", note);
@@ -556,6 +598,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Sets the Customer's password.
+         * 
+         * @pre - none
+         * @post - customer password firel set
 	 */
 	public void setPassword(String password) {
 		this.setFieldValue("password", password);
