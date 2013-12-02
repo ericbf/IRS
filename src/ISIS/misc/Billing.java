@@ -1,16 +1,16 @@
 package ISIS.misc;
 
+import ISIS.database.DB.TableName;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.gui.ErrorLogger;
+
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
-import ISIS.database.DB.TableName;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.gui.ErrorLogger;
 
 /**
  * General purpose class for representing billing information.
@@ -90,11 +90,18 @@ public class Billing extends Record {
 	 */
 	public Address getAddress() throws SQLException {
 		if (this.address == null) {
-			return new Address((Integer) this.getFieldValue("address"), false);
+            if(this.getFieldValue("address") != null) {
+			    return new Address((Integer) this.getFieldValue("address"), false);
+            }
+            return null;
 		} else {
 			return this.address;
 		}
 	}
+
+    public void setAddress(Address address) {
+        this.setFieldValue("address", address.getPkey());
+    }
 	
 	/**
 	 * Gets the billing type associated with the record.
@@ -102,6 +109,11 @@ public class Billing extends Record {
 	public BillingType getBillingType() {
 		return BillingType.valueOf(((String) this.getFieldValue("type")));
 	}
+
+
+    public void setBillingType(BillingType type) {
+        this.setFieldValue("type", type.toString());
+    }
 	
 	/**
 	 * Gets the credit card number.
@@ -142,6 +154,13 @@ public class Billing extends Record {
 			throw new RuntimeException("Failed to retrieve date");
 		}
 	}
+
+    /**
+     * Allows you to set the active status of the Customer.
+     */
+    public void setActive(boolean active) {
+        this.setFieldValue("active", ((active) ? 1 : 0));
+    }
 	
 	@Override
 	protected TableName getTableName() {

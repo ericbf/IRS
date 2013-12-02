@@ -111,6 +111,7 @@ public final class DB {
     public void rollbackTransaction() {
         try {
             connection.rollback();
+            closeTransaction();
         } catch (SQLException e) {
             ErrorLogger.error(e, "Failed to roll back your changes!!!!", true, true);
         }

@@ -3,30 +3,41 @@ package ISIS.gui.customer;
 import ISIS.customer.Customer;
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
+import ISIS.gui.ErrorLogger;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
-//import ISIS.misc.Address;
+import ISIS.gui.simplelists.ListAddress;
+import ISIS.misc.Address;
 import ISIS.misc.Billing;
-
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+//import ISIS.misc.Address;
 
 public class AddEditBilling extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
 	private Billing				billing;
-	private HintField		address, CCV, number, type, expiration;	
+    private JComboBox   type = new JComboBox(Billing.BillingType.values());
+	private HintField		address, CCV, number, expiration;
+    private Address billing_address;
                 
                 //title, city, state, county, country, st_address, zip;
 	private final Customer		customer;
 	private JCheckBox			active;
 	
 	public AddEditBilling(SplitPane splitPane, Customer customer) {
-		super(splitPane);
-		this.populateElements();
-		this.billing = null;
-		this.customer = customer;
+        super(splitPane);
+        this.customer = customer;
+        this.populateElements();
+        this.billing = null;
 	}
 	
 	/**
@@ -37,25 +48,17 @@ public class AddEditBilling extends AddEditView {
 	public AddEditBilling(SplitPane splitPane, Customer customer, int pkey)
 			throws SQLException {
 		super(splitPane);
-		this.billing = new Billing(pkey, true);
-		this.customer = customer;
+        this.customer = customer;
+        this.billing = new Billing(pkey, true);
 		this.populateElements();
-		
-                this.address.setText(this.billing.getAddress().toString());
-                this.type.setText(this.billing.getBillingType().toString());
-                this.number.setText(this.billing.getCardNumber());
-                this.CCV.setText(this.billing.getCCV());
-                this.expiration.setText(this.billing.getExpiration().toString());
-	/*	this.active.setSelected(this.billing.getActive());
-		this.title.setText(this.billing.getTitle())getTitle;
-		this.city.setText(this.billing.getCity());
-		this.state.setText(this.billing.getState());
-		this.county.setText(this.billing.getCounty());
-		this.country.setText(this.billing.getCountry());
-		this.st_address.setText(this.billing.getStreetAddress());
-		this.zip.setText(this.billing.getZIP());
-	*/
+
+        if(this.billing.getAddress() != null) {
+            this.address.setText(this.billing.getAddress().getStreetAddress());
         }
+        this.number.setText(this.billing.getCardNumber());
+        this.CCV.setText(this.billing.getCCV());
+        this.expiration.setText(this.billing.getExpiration().toString());
+    }
                 
 	
 	/**
@@ -74,28 +77,20 @@ public class AddEditBilling extends AddEditView {
 			return null;
 		}
 		if (this.billing == null) {
-                    /*
-                    * This only has four of the elements from the constructor on
-                    * Billing.java. I believe I need to do another line with the
-                    * other two elements in the other constructor on Billing.java?
-                    *
-                    *
-                    *
-                    * Also, I don't know what addAddress and setActive were for
-                    * from when I copied this from AddEditAddress.java. I changed
-                    * addAddress to addBilling but I don't think that's right. 
-                    * I don't know if they're even needed for AddEditBilling.java. 
-                    */
-			this.billing = new Billing(this.address.getText(),
-                                this.number.getText(), this.CCV.getText(), 
-                                this.expiration.getText());
+            try {
+                Date exp = new SimpleDateFormat("MM/yy", Locale.ENGLISH).parse(this.expiration.getText());
+                this.billing = new Billing(this.billing_address,
+                                    this.number.getText(), exp, this.CCV.getText());
+            } catch (ParseException e) {
+                ErrorLogger.error(e, "Failed to parse exp date.", true, true);
+                return null;
+            }
 				/*	this.country.getText(), this.title.getText(),
 					this.zip.getText(), this.state.getText(),
 					this.city.getText(), this.county.getText(),
 					this.st_billing.getText());
 			*/
-                        this.customer.addBilling(this.billing);
-			// TODO: fixme
+            this.customer.addBilling(this.billing);
 			this.disableFields(this.address, this.number, this.CCV,
 					this.expiration);
 		} else {
@@ -112,19 +107,10 @@ public class AddEditBilling extends AddEditView {
 	public boolean isAnyFieldDifferentFromDefault() {
 		boolean same = this.active.isSelected()
                                 && this.address.getText().isEmpty()
-                                && this.type.getText().isEmpty()
+                                && (this.type.getSelectedItem() == Billing.BillingType.CASH)
                                 && this.number.getText().isEmpty()
                                 && this.CCV.getText().isEmpty()
                                 && this.expiration.getText().isEmpty();
-                        
-                        /*&& this.country.getText().isEmpty()
-				&& this.title.getText().isEmpty()
-				&& this.zip.getText().isEmpty()
-				&& this.state.getText().isEmpty()
-				&& this.city.getText().isEmpty()
-				&& this.county.getText().isEmpty()
-				&& this.st_billing.getText().isEmpty();
-                        */
 		return !same;
 	}
 	
@@ -164,7 +150,7 @@ public class AddEditBilling extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.type = new HintField("Billing Type"), c);
+		this.add(this.type, c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -179,7 +165,7 @@ public class AddEditBilling extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.address = new HintField("Address"), c);
+		this.add(this.address = new HintField(""), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -225,6 +211,42 @@ public class AddEditBilling extends AddEditView {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.CCV = new HintField("CCV"), c);
+
+
+        final ListAddress listAddress = new ListAddress(this.splitPane, this,
+                                                  this.customer, this.customer.getPkey(), true);
+        c = new GridBagConstraints();
+        c.weightx = 0;
+        c.gridx = x++;
+        c.gridy = y;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(new JLabel("Addresses"), c);
+        c = new GridBagConstraints();
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridx = x--;
+        c.gridy = y++;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(listAddress, c);
+
+        listAddress.setSelectAction(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int pkey = listAddress.getSelectedPkey();
+                if (pkey == -1) {
+                    return;
+                }
+                try {
+                    AddEditBilling.this.billing_address = new Address(pkey, true);
+                    AddEditBilling.this.address.setText(AddEditBilling.this.billing_address.getStreetAddress());
+                } catch (SQLException ex) {
+                    ErrorLogger.error(ex, "Failed to select address.", true, true);
+                }
+            }
+        });
+
+        this.address.setEnabled(false);
+
 		/* Copied and pasted from AddEditAddress.java
 		c = new GridBagConstraints();
 		c.weightx = 0;

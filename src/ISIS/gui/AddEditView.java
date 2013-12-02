@@ -124,6 +124,11 @@ public abstract class AddEditView extends View {
             Session.getDB().startTransaction();
             this.preSave();
             if (this.isAnyFieldDifferentFromDefault()) {
+                if(this.getCurrentRecord() == null) {
+                    ErrorLogger.error("Nothing to save!?", true, false);
+                    Session.getDB().rollbackTransaction();
+                    return;
+                }
                 this.getCurrentRecord().save();
             }
             if (!this.wasSavedOrAlreadySetUp) {

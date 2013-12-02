@@ -1,21 +1,18 @@
 package ISIS.customer;
 
+import ISIS.database.*;
+import ISIS.database.DB.TableName;
+import ISIS.gui.ErrorLogger;
+import ISIS.misc.Address;
+import ISIS.misc.Billing;
+import ISIS.misc.Phone;
+import ISIS.misc.Picture;
+import ISIS.session.Session;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import ISIS.database.DB;
-import ISIS.database.DB.TableName;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.database.RecordSaveException;
-import ISIS.database.UninitializedFieldException;
-import ISIS.gui.ErrorLogger;
-import ISIS.misc.Address;
-import ISIS.misc.Phone;
-import ISIS.misc.Picture;
-import ISIS.session.Session;
 
 /**
  * A Customer is the entity that intends to purchase products from the client. A
@@ -44,10 +41,13 @@ public class Customer extends Record {
 	public static boolean		hasDates_				= true;
 	
 	boolean						addressesInitialized	= false,
-			numbersInitialized = false;
+			numbersInitialized = false, billingInitialized;
 	private ArrayList<Address>	addresses				= new ArrayList<Address>();
 	private ArrayList<Address>	addressesToSave			= new ArrayList<Address>();
 	private ArrayList<Address>	addressesToRemove		= new ArrayList<Address>();
+    private ArrayList<Billing>	billing				= new ArrayList<Billing>();
+	private ArrayList<Billing>	billingToSave			= new ArrayList<Billing>();
+	private ArrayList<Billing>	billingToRemove		= new ArrayList<Billing>();
 	private ArrayList<Phone>	numbers					= new ArrayList<Phone>();
 	private ArrayList<Phone>	numbersToSave			= new ArrayList<Phone>();
 	private ArrayList<Phone>	numbersToRemove			= new ArrayList<Phone>();
@@ -90,9 +90,74 @@ public class Customer extends Record {
 	public void addAddress(Address address) {
 		this.addresses.add(address);
 		this.addressesToSave.add(address);
-	}
-	
+	}	
+    
 	/**
+	 * Adds an address to the customer record.
+	 */
+	public void addBilling(Billing billing) {
+		this.billing.add(billing);
+		this.billingToSave.add(billing);
+	}
+
+    /**
+     * Remove an address from the customer record.
+     *
+     * @pre getAddresses().contains(address) == true
+     * @post getAddresses().contains(address) == false
+     */
+    public void removeBilling(Billing billing) {
+        if (!this.billingInitialized) {
+            try {
+                this.getBilling();
+            } catch (SQLException e) {
+                ErrorLogger
+                        .error(e, "Failed to populate billing information.", true, true);
+                return;
+            }
+        }
+        if (this.billing.contains(billing)) {
+            this.billing.remove(billing);
+            try { // check if address is stored, if not don't add it to the list
+                // to be removed from db
+                billing.getPkey(); // throws uninit'd field
+                this.billingToRemove.add(billing);
+            } catch (UninitializedFieldException e) {}
+        } else {
+            throw new RecordSaveException(
+                    "Could not remove billing info: couldn't find billing info to remove.");
+        }
+    }
+
+    /**
+     * Gets all addresses associated with the customer record.
+     */
+    public ArrayList<Billing> getBilling() throws SQLException {
+        if (this.billingInitialized) {
+            return this.billing;
+        }
+        try {
+            this.getPkey(); // check if the record has ever been saved.
+        } catch (UninitializedFieldException e) {
+            return this.billing; // it hasn't been; nothing to find.
+        }
+        String sql = "SELECT b.* FROM customer_billing AS cb LEFT JOIN billing AS b ON cb.billing=b.pkey WHERE cb.customer=?";
+        try {
+            PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+            stmt.setInt(1, this.getPkey());
+            ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt.executeQuery());
+            for (HashMap<String, Field> result : results) {
+                this.billing.add(new Billing(result));
+            }
+            this.billingInitialized = true;
+            return this.billing;
+        } catch (SQLException e) {
+            ErrorLogger.error(e, "Failed to retrieve billing info.", true, true);
+            throw e;
+        }
+    }
+
+    /**
 	 * Adds a phone number to the customer record.
 	 * 
 	 * @pre getPhoneNums().contains(phone) == false
@@ -360,6 +425,55 @@ public class Customer extends Record {
 				throw e;
 			}
 		}
+
+        // delete removed billing
+        if (this.billingToRemove.size() > 0) {
+            String sql = "DELETE FROM customer_billing WHERE billing IN ("
+                    + DB.preparedArgsBuilder(this.billingToRemove.size(), "?")
+                    + ") AND customer=?";
+            try {
+                PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+                int i = 1;
+                for (; i < (this.billingToRemove.size() + 1); ++i) {
+                    stmt.setInt(i, this.billingToRemove.get(i - 1).getPkey());
+                }
+                stmt.setInt(i, this.getPkey());
+                stmt.executeUpdate();
+                billingToRemove.clear();
+            } catch (SQLException e) {
+                ErrorLogger.error(e, "Could not remove billing info.", true, true);
+                throw e;
+            }
+        }
+
+        // save any new addresses
+        if (this.billingToSave.size() > 0) {
+            try {
+                String sql = "INSERT INTO customer_billing (customer, billing) VALUES "
+                        + DB.preparedArgsBuilder(this.billingToSave.size(),
+                                                 "(?, ?)");
+                PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+                int i = 1;
+                while (i < ((this.billingToSave.size()) * 2 + 1)) {
+                    stmt.setInt(i++, this.getPkey());
+                    try {
+                        this.billingToSave.get(i / 2 - 1).save();
+                    } catch (SQLException e) {
+                        ErrorLogger.error(e, "Saving a billing record failed.", true,
+                                          true);
+                        throw e;
+                    }
+                    stmt.setInt(i++, this.billingToSave.get(i / 2 - 1)
+                            .getPkey());
+                }
+                stmt.executeUpdate();
+                Session.updateTable(TableName.customer_billing, null);
+                billingToSave.clear();
+            } catch (SQLException e) {
+                ErrorLogger.error(e, "Could not save billing info.", true, true);
+                throw e;
+            }
+        }
 	}
 	
 	/**

@@ -4,6 +4,7 @@ import ISIS.customer.Customer;
 import ISIS.gui.*;
 import ISIS.gui.item.SearchListItems;
 import ISIS.gui.simplelists.ListAddress;
+import ISIS.gui.simplelists.ListBilling;
 import ISIS.gui.simplelists.ListTransactionLineItem;
 import ISIS.misc.Address;
 import ISIS.transaction.Transaction;
@@ -103,9 +104,9 @@ public class AddEditTransaction extends AddEditView {
 		this.otherListsCardLayout.addLayoutComponent(listAddress, "Address");
 		
 		// next TODO
-		// this.otherListsContainer.add(l = new ListBilling(
-		// this.splitPane, this, this.customer.getPkey(), false));
-		// this.otherListsCardLayout.addLayoutComponent(l, "Billing");
+		this.otherListsContainer.add(l = new ListBilling(this.splitPane, this,
+                                                         this.customer, this.customer.getPkey()));
+		this.otherListsCardLayout.addLayoutComponent(l, "Billing");
 		
 		// next
 		this.otherListsContainer.add(l = new SearchListItems(this.splitPane,
@@ -134,10 +135,10 @@ public class AddEditTransaction extends AddEditView {
             }
         });
 		// next TODO
-		// this.billing_select
-		// .addActionListener(new ListButtonListener(
-		// this.otherListsCardLayout, this.otherListsContainer,
-		// "Billing"));
+		this.billing_select
+		.addActionListener(new ListButtonListener(
+		this.otherListsCardLayout, this.otherListsContainer,
+		"Billing"));
 		
 		// next
 		this.item_select.addActionListener(new ListButtonListener(

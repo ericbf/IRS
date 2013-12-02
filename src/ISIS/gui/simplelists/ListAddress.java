@@ -174,7 +174,7 @@ public class ListAddress extends SimpleListView<Address> {
 	 */
 	@Override
 	protected void tableItemAction() {
-        if(this.selectButton != null) {
+        if(this.selectButton == null) {
 		    this.viewButton.doClick();
         }
 	}
