@@ -19,7 +19,6 @@ import ISIS.gui.IRSTableModel;
 import ISIS.gui.SearchListView;
 import ISIS.gui.SplitPane;
 import ISIS.gui.SplitPane.LayoutType;
-import ISIS.gui.customer.AddEditTransaction;
 import ISIS.gui.report.ReportViewer;
 import ISIS.reports.Invoice;
 import ISIS.transaction.Transaction;

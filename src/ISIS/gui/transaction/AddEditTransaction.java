@@ -1,17 +1,34 @@
-package ISIS.gui.customer;
+package ISIS.gui.transaction;
+
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
 
 import ISIS.customer.Customer;
-import ISIS.gui.*;
+import ISIS.gui.AddEditView;
+import ISIS.gui.ErrorLogger;
+import ISIS.gui.HintField;
+import ISIS.gui.ListButtonListener;
+import ISIS.gui.ListView;
+import ISIS.gui.SplitPane;
+import ISIS.gui.WrapLayout;
 import ISIS.gui.item.SearchListItems;
 import ISIS.gui.simplelists.ListAddress;
 import ISIS.gui.simplelists.ListTransactionLineItem;
 import ISIS.transaction.Transaction;
 import ISIS.transaction.Transaction.TransactionStatus;
-
-import javax.swing.*;
-import java.awt.*;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * View for adding and editing customers.
@@ -27,7 +44,8 @@ public class AddEditTransaction extends AddEditView {
 	Customer							customer;
 	JPanel								otherListsContainer;
 	CardLayout							otherListsCardLayout;
-	JToggleButton						address_select, billing_select, item_select;
+	JToggleButton						address_select, billing_select,
+			item_select;
 	ArrayList<JToggleButton>			cardLayoutViewButtons;
 	static double						dividerRatio		= 0;
 	
@@ -101,8 +119,8 @@ public class AddEditTransaction extends AddEditView {
 		// this.splitPane, this, this.customer.getPkey(), false));
 		// this.otherListsCardLayout.addLayoutComponent(l, "Billing");
 		// next
-		this.otherListsContainer.add(l = new SearchListItems(this.splitPane, this,
-                                                             this.customer, this.customer.getPkey()));
+		this.otherListsContainer.add(l = new SearchListItems(this.splitPane,
+				this, this.customer, this.customer.getPkey()));
 		this.otherListsCardLayout.addLayoutComponent(l, "Items");
 		
 		// Add action listeners to the buttons
@@ -110,11 +128,12 @@ public class AddEditTransaction extends AddEditView {
 				.addActionListener(new ListButtonListener(
 						this.otherListsCardLayout, this.otherListsContainer,
 						"Address"));
-
+		
 		// next
-		this.billing_select.addActionListener(new ListButtonListener(
-		this.otherListsCardLayout, this.otherListsContainer,
-		"Billing"));
+		this.billing_select
+				.addActionListener(new ListButtonListener(
+						this.otherListsCardLayout, this.otherListsContainer,
+						"Billing"));
 		// next
 		this.item_select.addActionListener(new ListButtonListener(
 				this.otherListsCardLayout, this.otherListsContainer, "Items"));
@@ -172,7 +191,7 @@ public class AddEditTransaction extends AddEditView {
 			@Override
 			public void doLayout() {
 				this.setDividerLocation((int) (this.getWidth() * (AddEditTransaction.dividerRatio == 0 ? .55
-						: AddEditCustomer.dividerRatio)));
+						: AddEditTransaction.dividerRatio)));
 				super.doLayout();
 			}
 			

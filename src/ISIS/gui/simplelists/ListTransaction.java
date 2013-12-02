@@ -9,12 +9,13 @@ import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.*;
 import ISIS.gui.SplitPane.LayoutType;
-import ISIS.gui.customer.AddEditTransaction;
 import ISIS.gui.report.ReportViewer;
+import ISIS.gui.transaction.AddEditTransaction;
 import ISIS.reports.Invoice;
 import ISIS.transaction.Transaction;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
