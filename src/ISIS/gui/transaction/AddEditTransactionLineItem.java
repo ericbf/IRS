@@ -125,6 +125,21 @@ public class AddEditTransactionLineItem extends AddEditView {
         c.gridx = x++;
         c.gridy = y;
         c.fill = GridBagConstraints.BOTH;
+        this.add(new JLabel("Quantity"), c);
+
+        c = new GridBagConstraints();
+        c.weightx = 1;
+        c.gridx = x--;
+        c.gridy = y++;
+        c.gridwidth = 2;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(this.quantity = new HintField("0.0"), c);
+        
+        c = new GridBagConstraints();
+        c.weightx = 0;
+        c.gridx = x++;
+        c.gridy = y;
+        c.fill = GridBagConstraints.BOTH;
         this.add(new JLabel("Description"), c);
 
         c = new GridBagConstraints();
