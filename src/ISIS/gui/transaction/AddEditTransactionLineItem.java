@@ -1,16 +1,5 @@
 package ISIS.gui.transaction;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.swing.JLabel;
-import javax.swing.text.PlainDocument;
-
 import ISIS.customer.Customer;
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
@@ -20,10 +9,19 @@ import ISIS.item.Item;
 import ISIS.transaction.Transaction;
 import ISIS.transaction.TransactionLineItem;
 
+import javax.swing.*;
+import javax.swing.text.PlainDocument;
+import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 public class AddEditTransactionLineItem extends AddEditView {
 	private static final long		serialVersionUID	= 1L;
 	private final Item				item;
-	private TransactionLineItem		lineItem;
+	private TransactionLineItem		lineItem = null;
 	private final Transaction		transaction;
 	private HintField				itemName, price, adjustment, quantity,
 			description;
@@ -60,12 +58,18 @@ public class AddEditTransactionLineItem extends AddEditView {
 	 */
 	@Override
 	public Record getCurrentRecord() {
-		TransactionLineItem lineItem = new TransactionLineItem(
+        if(this.lineItem == null) {
+		    this.lineItem = new TransactionLineItem(
 				this.transaction, this.item, new BigDecimal(
 						this.price.getText()), new BigDecimal(
 						this.adjustment.getText()), new BigDecimal(
 						this.quantity.getText()), this.description.getText());
-		return lineItem;
+        } else {
+            this.lineItem.setDescription(this.description.getText());
+            this.lineItem.setAdjustment(new BigDecimal(this.adjustment.getText()));
+            this.lineItem.setQuantity(new BigDecimal(this.quantity.getText()));
+        }
+        return this.lineItem;
 	}
 	
 	/*
