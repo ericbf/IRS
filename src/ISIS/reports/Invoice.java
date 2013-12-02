@@ -81,7 +81,7 @@ public class Invoice extends Report {
 			
 			c = cust.addRow();
 			x = 0;
-			c[x++].add("Billing Address");
+			c[x++].add("Billing Type");
 			c[x++].add(this.transaction.getBilling() == null ? "none"
 					: this.transaction.getBilling().toString());
 			
