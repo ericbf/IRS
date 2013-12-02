@@ -3,6 +3,9 @@
  */
 package ISIS.gui;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -11,16 +14,47 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.plaf.basic.BasicTextFieldUI;
+import javax.swing.text.JTextComponent;
 
 /**
  * @author eric
  */
 public class HintField extends JTextField {
+	private class UI extends BasicTextFieldUI {
+		public UI(JTextComponent editor) {
+			super();
+			// TODO fix height
+		}
+		
+		@Override
+		protected void paintSafely(Graphics g) {
+			super.paintSafely(g);
+			JTextComponent comp = this.getComponent();
+			if (HintField.this.hintEnabled && HintField.this.hint != null
+					&& comp.getText().length() == 0) {
+				g.setColor(Color.gray);
+				g.setFont(new Font(comp.getFont().getName(), Font.ITALIC, comp
+						.getFont().getSize()));
+				int padding = (comp.getHeight() - comp.getFont().getSize()) / 2;
+				g.drawString(HintField.this.hint, 7, comp.getHeight() - padding
+						- 2);
+			}
+		}
+		
+		public void repaint() {
+			if (this.getComponent() != null) {
+				this.getComponent().repaint();
+			}
+		}
+	}
+	
 	private static final long	serialVersionUID	= 1L;
-	private boolean				showingHint;
-	private boolean				hintEnabled;
 	private boolean				selectAll;
+	private boolean				hintEnabled;
 	private String				hint;
+	
+	private UI					ui;
 	
 	public HintField() {
 		this("");
@@ -31,12 +65,11 @@ public class HintField extends JTextField {
 	}
 	
 	public HintField(String hint, String initialText) {
-		super();
-		super.setText(initialText.isEmpty() ? hint : initialText);
+		super(initialText);
 		this.hint = hint;
-		this.showingHint = initialText.isEmpty();
 		this.hintEnabled = true;
-		// this.selectAll = true;
+		this.setUI(this.ui = new UI(this));
+		// this.setUI(this.ui = new UI());
 		this.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "none");
 		this.getInputMap().put(KeyStroke.getKeyStroke("UP"), "none");
 		this.getInputMap().put(
@@ -57,22 +90,12 @@ public class HintField extends JTextField {
 				if (HintField.this.selectAll) {
 					HintField.this.selectAll();
 				}
-				if (HintField.this.showingHint && HintField.this.hintEnabled) {
-					HintField.super.setText("");
-				}
-				HintField.this.showingHint = false;
 			}
 			
 			@Override
 			public void focusLost(FocusEvent fe) {
 				if (HintField.this.selectAll) {
 					HintField.this.setCaretPosition(0);
-				}
-				if (HintField.this.getText().isEmpty()) {
-					HintField.this.showingHint = true;
-					if (HintField.this.hintEnabled) {
-						HintField.super.setText(HintField.this.hint);
-					}
 				}
 			}
 		});
@@ -98,6 +121,7 @@ public class HintField extends JTextField {
 						}
 						break;
 				}
+				HintField.this.ui.repaint();
 			}
 			
 			@Override
@@ -108,15 +132,6 @@ public class HintField extends JTextField {
 		});
 	}
 	
-	@Override
-	public String getText() {
-		if (this.showingHint) {
-			return "";
-		} else {
-			return super.getText();
-		}
-	}
-	
 	public HintField setHintEnabled(boolean b) {
 		this.hintEnabled = b;
 		return this;
@@ -125,14 +140,5 @@ public class HintField extends JTextField {
 	public HintField setSelectAll(boolean b) {
 		this.selectAll = b;
 		return this;
-	}
-	
-	@Override
-	public void setText(String text) {
-		super.setText(text);
-		if (this.showingHint = text.isEmpty() && HintField.this.hintEnabled
-				&& !this.isFocusOwner()) {
-			HintField.super.setText(HintField.this.hint);
-		}
 	}
 }
