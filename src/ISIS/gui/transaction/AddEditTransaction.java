@@ -114,10 +114,12 @@ public class AddEditTransaction extends AddEditView {
 		this.otherListsContainer.add(l = new ListAddress(this.splitPane, this,
 				this.customer, this.customer.getPkey(), true));
 		this.otherListsCardLayout.addLayoutComponent(l, "Address");
-		// next
-		// this.otherListsContainer.add(l = new ListBill(
+		
+		// next TODO
+		// this.otherListsContainer.add(l = new ListBilling(
 		// this.splitPane, this, this.customer.getPkey(), false));
 		// this.otherListsCardLayout.addLayoutComponent(l, "Billing");
+		
 		// next
 		this.otherListsContainer.add(l = new SearchListItems(this.splitPane,
 				this, this.customer, this.customer.getPkey()));
@@ -129,11 +131,12 @@ public class AddEditTransaction extends AddEditView {
 						this.otherListsCardLayout, this.otherListsContainer,
 						"Address"));
 		
-		// next
-		this.billing_select
-				.addActionListener(new ListButtonListener(
-						this.otherListsCardLayout, this.otherListsContainer,
-						"Billing"));
+		// next TODO
+		// this.billing_select
+		// .addActionListener(new ListButtonListener(
+		// this.otherListsCardLayout, this.otherListsContainer,
+		// "Billing"));
+		
 		// next
 		this.item_select.addActionListener(new ListButtonListener(
 				this.otherListsCardLayout, this.otherListsContainer, "Items"));
