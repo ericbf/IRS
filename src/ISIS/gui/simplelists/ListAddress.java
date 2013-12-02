@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class ListAddress extends SimpleListView<Address> {
 	private static final long	serialVersionUID	= 1L;
 	private final Customer		customer;
-	private JButton				viewButton;
+	private JButton				viewButton, selectButton = null;
 	
 	public ListAddress(SplitPane splitPane, View pusher, Customer customer,
 			Integer key, boolean selectMode) {
@@ -53,9 +53,14 @@ public class ListAddress extends SimpleListView<Address> {
 		GridBagConstraints c = new GridBagConstraints();
 		
 		if (selectMode) { // we're selecting an address.
-			@SuppressWarnings("unused")
-			JButton select;
-			// TODO: THIS
+            this.selectButton = new JButton("Select");
+            c = new GridBagConstraints();
+            c.fill = GridBagConstraints.BOTH;
+            c.gridy = ++y;
+            c.gridwidth = x;
+            c.gridx = x = 0;
+            c.weightx = 1;
+            this.add(this.selectButton, c);
 		} else { // we're adding/removing addresses.
 			JButton addButton = new JButton("Add");
 			addButton.addActionListener(new ActionListener() {
@@ -83,7 +88,7 @@ public class ListAddress extends SimpleListView<Address> {
 					if (selected == -1) {
 						return;
 					}
-					
+
 					int pkey = ListAddress.this.keys.get(selected);
 					try {
 						ListAddress.this.customer.removeAddress(new Address(
@@ -169,6 +174,20 @@ public class ListAddress extends SimpleListView<Address> {
 	 */
 	@Override
 	protected void tableItemAction() {
-		this.viewButton.doClick();
+        if(this.selectButton != null) {
+		    this.viewButton.doClick();
+        }
 	}
+
+    public int getSelectedPkey() {
+        int selected = this.table.getSelectedRow();
+        if(selected == -1) {
+            return -1;
+        }
+        return this.keys.get(selected);
+    }
+
+    public void setSelectAction(ActionListener listener) {
+        this.selectButton.addActionListener(listener);
+    }
 }

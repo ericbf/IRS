@@ -137,7 +137,7 @@ public class SearchListItems extends SearchListView<Item> {
         this.customer = customer;
 
         this.selectButton = new JButton("Select");
-        this.selectAction(new ActionListener() {
+        this.selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selected = SearchListItems.this.table.getSelectedRow();
@@ -215,9 +215,5 @@ public class SearchListItems extends SearchListView<Item> {
             items.add(new Item(result));
         }
         return items;
-    }
-
-    public void selectAction(ActionListener listener) {
-        this.selectButton.addActionListener(listener);
     }
 }

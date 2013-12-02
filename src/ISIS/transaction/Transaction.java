@@ -138,6 +138,23 @@ public class Transaction extends Record {
 	public void finalizeTransaction() {
 		this.setStatus(TransactionStatus.CLOSED);
 	}
+
+    public boolean hasAddress() {
+        if(this.address != null) {
+            return true;
+        }
+        try {
+            this.getPkey();
+        } catch (UninitializedFieldException e) {
+            // the transaction has never been saved, so no address has been set.
+            return false;
+        }
+        if((Integer) this.getFieldValue("address") == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 	
 	/**
 	 * Gets the address associated with this transaction.
@@ -156,7 +173,7 @@ public class Transaction extends Record {
 			this.address = new Address((Integer) this.getFieldValue("address"),
 					false);
 		} catch (SQLException e) {
-			ErrorLogger.error(e, "Failed to retrieve address.", true, true);
+			ErrorLogger.error(e, "Failed to retrieve address.", true, false);
 			throw e;
 		}
 		return this.address;
