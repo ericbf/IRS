@@ -1,33 +1,17 @@
 package ISIS.gui.customer;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JToggleButton;
-
 import ISIS.customer.Customer;
-import ISIS.gui.AddEditView;
-import ISIS.gui.ErrorLogger;
-import ISIS.gui.HintField;
-import ISIS.gui.ListButtonListener;
-import ISIS.gui.SimpleListView;
-import ISIS.gui.SplitPane;
-import ISIS.gui.WrapLayout;
+import ISIS.gui.*;
+import ISIS.gui.item.SearchListItems;
 import ISIS.gui.simplelists.ListAddress;
 import ISIS.gui.simplelists.ListTransactionLineItem;
 import ISIS.transaction.Transaction;
 import ISIS.transaction.Transaction.TransactionStatus;
+
+import javax.swing.*;
+import java.awt.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * View for adding and editing customers.
@@ -43,7 +27,7 @@ public class AddEditTransaction extends AddEditView {
 	Customer							customer;
 	JPanel								otherListsContainer;
 	CardLayout							otherListsCardLayout;
-	JToggleButton						address_select, billing_select, items;
+	JToggleButton						address_select, billing_select, item_select;
 	ArrayList<JToggleButton>			cardLayoutViewButtons;
 	static double						dividerRatio		= 0;
 	
@@ -106,7 +90,7 @@ public class AddEditTransaction extends AddEditView {
 	protected void doSaveRecordAction() {
 		
 		@SuppressWarnings("rawtypes")
-		SimpleListView l;
+		ListView l;
 		
 		// Add the other lists to the JPanel and register with the layout
 		this.otherListsContainer.add(l = new ListAddress(this.splitPane, this,
@@ -117,21 +101,22 @@ public class AddEditTransaction extends AddEditView {
 		// this.splitPane, this, this.customer.getPkey(), false));
 		// this.otherListsCardLayout.addLayoutComponent(l, "Billing");
 		// next
-		// this.otherListsContainer.add(l = new SearchListItems(this.splitPane,
-		// this, this.customer.getPkey(), false));
-		// this.otherListsCardLayout.addLayoutComponent(l, "Items");
+		this.otherListsContainer.add(l = new SearchListItems(this.splitPane, this,
+                                                             this.customer, this.customer.getPkey()));
+		this.otherListsCardLayout.addLayoutComponent(l, "Items");
 		
 		// Add action listeners to the buttons
 		this.address_select
 				.addActionListener(new ListButtonListener(
 						this.otherListsCardLayout, this.otherListsContainer,
 						"Address"));
+
 		// next
-		// this.billing_select.addActionListener(new ListButtonListener(
-		// this.otherListsCardLayout, this.otherListsContainer,
-		// "Billing"));
+		this.billing_select.addActionListener(new ListButtonListener(
+		this.otherListsCardLayout, this.otherListsContainer,
+		"Billing"));
 		// next
-		this.items.addActionListener(new ListButtonListener(
+		this.item_select.addActionListener(new ListButtonListener(
 				this.otherListsCardLayout, this.otherListsContainer, "Items"));
 		
 		// Enable buttons to select a list, reset tooltip
@@ -186,14 +171,14 @@ public class AddEditTransaction extends AddEditView {
 			
 			@Override
 			public void doLayout() {
-				this.setDividerLocation((int) (this.getWidth() * (AddEditCustomer.dividerRatio == 0 ? .55
+				this.setDividerLocation((int) (this.getWidth() * (AddEditTransaction.dividerRatio == 0 ? .55
 						: AddEditCustomer.dividerRatio)));
 				super.doLayout();
 			}
 			
 			@Override
 			public void setDividerLocation(int location) {
-				AddEditCustomer.dividerRatio = location
+				AddEditTransaction.dividerRatio = location
 						/ (double) this.getWidth();
 				super.setDividerLocation(location);
 			}
@@ -242,6 +227,7 @@ public class AddEditTransaction extends AddEditView {
 		main.add(new JLabel("Items"), c);
 		c = new GridBagConstraints();
 		c.weightx = 1;
+		c.weighty = 1;
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
@@ -258,12 +244,12 @@ public class AddEditTransaction extends AddEditView {
 		// Add buttons for the cards (Other lists)
 		buttonHolder.add(this.address_select = new JToggleButton("Address"), c);
 		buttonHolder.add(this.billing_select = new JToggleButton("Billing"), c);
-		buttonHolder.add(this.items = new JToggleButton("Items"), c);
+		buttonHolder.add(this.item_select = new JToggleButton("Items"), c);
 		
 		// Add buttons to the buttons ArrayList
 		this.cardLayoutViewButtons.add(this.address_select);
 		this.cardLayoutViewButtons.add(this.billing_select);
-		this.cardLayoutViewButtons.add(this.items);
+		this.cardLayoutViewButtons.add(this.item_select);
 		
 		// Add the button holder at the top of the right section
 		otherArea.add(buttonHolder, BorderLayout.NORTH);
