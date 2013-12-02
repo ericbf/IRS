@@ -143,12 +143,10 @@ public class AddEditTransaction extends AddEditView {
 				return null;
 			}
 			this.transaction = new Transaction(this.customer);
-			// this.transaction.setStatus();
-			// TODO: This
-			
+			this.transaction.setStatus((TransactionStatus) this.status.getSelectedItem());
+			this.transaction.setStatus((TransactionStatus) this.status.getSelectedItem());
 		} else {
-			// this.transaction.setStatus();
-			// TODO: this
+			this.transaction.setStatus((TransactionStatus) this.status.getSelectedItem());
 		}
 		return this.transaction;
 	}
