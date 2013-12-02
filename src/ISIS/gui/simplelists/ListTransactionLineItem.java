@@ -77,6 +77,11 @@ public class ListTransactionLineItem extends
                 } catch(SQLException ex) {
                     ErrorLogger.error(ex, "Failed to add item to transaction.", true, true);
                 }
+                try {
+                    ListTransactionLineItem.this.transaction.save();
+                } catch (SQLException e1) {
+                    ErrorLogger.error(e1, "Failed to save transaction", true, true);
+                }
             }
         });
         c = new GridBagConstraints();
@@ -98,7 +103,7 @@ public class ListTransactionLineItem extends
 	
 	@Override
 	protected DB.TableName getTableName() {
-		return DB.TableName.transaction_;
+		return DB.TableName.transaction_item;
 	}
 	
 	@Override

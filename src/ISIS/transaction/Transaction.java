@@ -60,7 +60,8 @@ public class Transaction extends Record {
 	boolean									itemsInitialized	= false;
 	
 	private ArrayList<TransactionLineItem>	items				= new ArrayList<TransactionLineItem>();
-	
+	private ArrayList<TransactionLineItem>	itemsToRemove				= new ArrayList<TransactionLineItem>();
+
 	/**
 	 * Public constructor. A Transaction starts with a user and a customer.
 	 * These attributes cannot be changed.
@@ -285,7 +286,16 @@ public class Transaction extends Record {
 		for (TransactionLineItem item : this.items) {
 			item.save();
 		}
-	}
+        //TODO: make less hacky
+        String sql = "DELETE FROM transaction_item WHERE transaction_=? AND item=?";
+        for (TransactionLineItem item : this.itemsToRemove) {
+            PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+            stmt.setInt(1, this.getPkey());
+            stmt.setInt(2, item.getPkey());
+            stmt.execute();
+        }
+        Session.updateTable(TableName.transaction_item, null);
+    }
 	
 	/**
 	 * Removes an item from this transaction.
@@ -305,6 +315,7 @@ public class Transaction extends Record {
 	 */
 	public void removeItem(TransactionLineItem item) {
 		this.items.remove(item);
+        this.itemsToRemove.add(item);
 	}
 	
 	/**
