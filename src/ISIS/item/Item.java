@@ -6,7 +6,6 @@ import ISIS.database.Record;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -87,14 +86,7 @@ public class Item extends Record {
 	public String getDescription() {
 		return (String) this.getFieldValue("description");
 	}
-	
-	// /**
-	// * Adds a picture to the item.
-	// */
-	// public void addPicture(Picture picture) {
-	//
-	// } TODO: implement this?
-	
+
 	/**
 	 * Gets the item's name.
 	 */
@@ -108,16 +100,7 @@ public class Item extends Record {
 	public BigDecimal getOnHandQty() {
 		return new BigDecimal((String) this.getFieldValue("onhand_qty"));
 	}
-	
-	/**
-	 * Returns a list of previous versions of the item, or an empty list if
-	 * there are none.
-	 */
-	public ArrayList<Item> getPreviousVersions() {
-		// TODO: get previous versions
-		return null;
-	}
-	
+
 	/**
 	 * Gets the item's price.
 	 */
@@ -138,14 +121,7 @@ public class Item extends Record {
 	public String getSKU() {
 		return (String) this.getFieldValue("SKU");
 	}
-	
-	// /**
-	// * Gets the pictures associated with the item.
-	// */
-	// public ArrayList<Picture> getPictures() {
-	// return (ArrayList<Picture>) this.getFieldValue("reorder_qty");
-	// } TODO: implement this?
-	
+
 	@Override
 	protected TableName getTableName() {
 		return Item.tableName;
