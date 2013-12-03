@@ -61,7 +61,6 @@ public class AddEditBilling extends AddEditView {
 		this.customer = customer;
 		this.billing = new Billing(pkey, true);
 		this.populateElements();
-<<<<<<< HEAD
 		
 		if (this.billing.getAddress() != null) {
 			this.address.setText(this.billing.getAddress().getStreetAddress());
@@ -76,22 +75,6 @@ public class AddEditBilling extends AddEditView {
 		this.listAddress.setEnabled(false);
 	}
 	
-=======
-
-        if(this.billing.getAddress() != null) {
-            this.address.setText(this.billing.getAddress().getStreetAddress());
-        }
-        this.number.setText(this.billing.getCardNumber());
-        this.CCV.setText(this.billing.getCCV());
-        this.expiration.setText(this.billing.getExpiration() == null ? "N/A" : this.billing.getExpiration().toString());
-        this.type.setSelectedItem(this.billing.getBillingType());
-        this.disableFields(this.address, this.number, this.CCV,
-                           this.expiration);
-        this.listAddress.setEnabled(false);
-    }
-
-
->>>>>>> 3a2906ea9b6aee0045c1e49ffaaa5c1c763c3c6e
 	/**
 	 * Discards any modifications.
 	 */
