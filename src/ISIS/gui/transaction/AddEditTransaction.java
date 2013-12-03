@@ -1,7 +1,31 @@
 package ISIS.gui.transaction;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
+
 import ISIS.customer.Customer;
-import ISIS.gui.*;
+import ISIS.gui.AddEditView;
+import ISIS.gui.ErrorLogger;
+import ISIS.gui.HintField;
+import ISIS.gui.ListButtonListener;
+import ISIS.gui.ListView;
+import ISIS.gui.SplitPane;
+import ISIS.gui.WrapLayout;
 import ISIS.gui.item.SearchListItems;
 import ISIS.gui.simplelists.ListAddress;
 import ISIS.gui.simplelists.ListBilling;
@@ -10,13 +34,6 @@ import ISIS.misc.Address;
 import ISIS.misc.Billing;
 import ISIS.transaction.Transaction;
 import ISIS.transaction.Transaction.TransactionStatus;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * View for adding and editing customers.
@@ -28,6 +45,7 @@ public class AddEditTransaction extends AddEditView {
 																	TransactionStatus
 																			.values());
 	HintField							address;
+	HintField							billing;
 	Transaction							transaction;
 	Customer							customer;
 	JPanel								otherListsContainer;
@@ -58,8 +76,8 @@ public class AddEditTransaction extends AddEditView {
 	
 	/**
 	 * Public constructor: returns new instance of add/edit transaction view.
-	 *
-     * For viewing/modifying a transaction.
+	 * For viewing/modifying a transaction.
+	 * 
 	 * @wbp.parser.constructor
 	 */
 	public AddEditTransaction(SplitPane splitPane, int pkey)
@@ -73,9 +91,10 @@ public class AddEditTransaction extends AddEditView {
 			throw new SQLException("Failed to fetch customer.", e);
 		}
 		this.populateElements();
-
+		
 		this.status.setSelectedItem(this.transaction.getStatus());
-        this.reloadAddress();
+		this.reloadAddress();
+		this.reloadBilling();
 	}
 	
 	/**
@@ -100,11 +119,11 @@ public class AddEditTransaction extends AddEditView {
 				this.splitPane, this, this.customer, this.customer.getPkey(),
 				true));
 		this.otherListsCardLayout.addLayoutComponent(listAddress, "Address");
-
-        final ListBilling listBilling;
+		
+		final ListBilling listBilling;
 		// next
-		this.otherListsContainer.add(listBilling = new ListBilling(this.splitPane, this,
-				this.customer, this.customer.getPkey()));
+		this.otherListsContainer.add(listBilling = new ListBilling(
+				this.splitPane, this, this.customer, this.customer.getPkey()));
 		this.otherListsCardLayout.addLayoutComponent(listBilling, "Billing");
 		
 		// next
@@ -129,29 +148,32 @@ public class AddEditTransaction extends AddEditView {
 							pkey, true));
 					AddEditTransaction.this.transaction.save();
 					AddEditTransaction.this.reloadAddress();
+					AddEditTransaction.this.reloadBilling();
 				} catch (SQLException ex) {
 					ErrorLogger.error(ex, "Failed to add item to transaction.",
 							true, true);
 				}
 			}
 		});
-        listBilling.setSelectAction(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int pkey = listBilling.getSelectedPkey();
-                if (pkey == -1) {
-                    return;
-                }
-                try {
-                    AddEditTransaction.this.transaction.setBilling(new Billing(pkey, true));
-                    AddEditTransaction.this.transaction.save();
-                } catch (SQLException ex) {
-                    ErrorLogger.error(ex, "Failed to add billing to transaction.",
-                                      true, true);
-                }
-            }
-        });
-
+		listBilling.setSelectAction(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int pkey = listBilling.getSelectedPkey();
+				if (pkey == -1) {
+					return;
+				}
+				try {
+					AddEditTransaction.this.transaction.setBilling(new Billing(
+							pkey, true));
+					AddEditTransaction.this.transaction.save();
+				} catch (SQLException ex) {
+					ErrorLogger
+							.error(ex, "Failed to add billing to transaction.",
+									true, true);
+				}
+			}
+		});
+		
 		// next
 		this.billing_select
 				.addActionListener(new ListButtonListener(
@@ -284,6 +306,21 @@ public class AddEditTransaction extends AddEditView {
 		c.gridx = x++;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
+		main.add(new JLabel("Billing"), c);
+		
+		c = new GridBagConstraints();
+		c.weightx = 1;
+		c.gridx = x--;
+		c.gridy = y++;
+		c.fill = GridBagConstraints.BOTH;
+		main.add(this.billing = new HintField(), c);
+		this.billing.setEnabled(false);
+		
+		c = new GridBagConstraints();
+		c.weightx = 0;
+		c.gridx = x++;
+		c.gridy = y;
+		c.fill = GridBagConstraints.BOTH;
 		main.add(new JLabel("Items"), c);
 		c = new GridBagConstraints();
 		c.weightx = 1;
@@ -343,6 +380,17 @@ public class AddEditTransaction extends AddEditView {
 			}
 		} catch (SQLException e) {
 			ErrorLogger.error(e, "Failed to update address", true, true);
+		}
+	}
+	
+	public void reloadBilling() {
+		try {
+			if (this.transaction.getBilling() != null) {
+				this.billing.setText(this.transaction.getBilling()
+						.getBillingType().toString());
+			}
+		} catch (SQLException e) {
+			ErrorLogger.error(e, "Failed to update billing", true, true);
 		}
 	}
 }

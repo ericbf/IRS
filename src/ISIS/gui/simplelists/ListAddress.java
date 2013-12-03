@@ -1,20 +1,26 @@
 package ISIS.gui.simplelists;
 
-import ISIS.customer.Customer;
-import ISIS.database.DB;
-import ISIS.database.Field;
-import ISIS.database.Record;
-import ISIS.gui.*;
-import ISIS.gui.address.AddEditAddress;
-import ISIS.misc.Address;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+
+import ISIS.customer.Customer;
+import ISIS.database.DB;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.gui.ErrorLogger;
+import ISIS.gui.IRSTableModel;
+import ISIS.gui.SimpleListView;
+import ISIS.gui.SplitPane;
+import ISIS.gui.View;
+import ISIS.gui.address.AddEditAddress;
+import ISIS.misc.Address;
 
 /**
  * This should NEVER be pushed, only embedded.
@@ -22,7 +28,7 @@ import java.util.HashMap;
 public class ListAddress extends SimpleListView<Address> {
 	private static final long	serialVersionUID	= 1L;
 	private final Customer		customer;
-	private JButton				viewButton, selectButton = null;
+	private JButton				viewButton, selectButton;
 	
 	public ListAddress(SplitPane splitPane, View pusher, Customer customer,
 			Integer key, boolean selectMode) {
@@ -53,14 +59,14 @@ public class ListAddress extends SimpleListView<Address> {
 		GridBagConstraints c = new GridBagConstraints();
 		
 		if (selectMode) { // we're selecting an address.
-            this.selectButton = new JButton("Select");
-            c = new GridBagConstraints();
-            c.fill = GridBagConstraints.BOTH;
-            c.gridy = ++y;
-            c.gridwidth = x;
-            c.gridx = x = 0;
-            c.weightx = 1;
-            this.add(this.selectButton, c);
+			this.selectButton = new JButton("Select");
+			c = new GridBagConstraints();
+			c.fill = GridBagConstraints.BOTH;
+			c.gridy = ++y;
+			c.gridwidth = x;
+			c.gridx = x = 0;
+			c.weightx = 1;
+			this.add(this.selectButton, c);
 		} else { // we're adding/removing addresses.
 			JButton addButton = new JButton("Add");
 			addButton.addActionListener(new ActionListener() {
@@ -88,7 +94,7 @@ public class ListAddress extends SimpleListView<Address> {
 					if (selected == -1) {
 						return;
 					}
-
+					
 					int pkey = ListAddress.this.keys.get(selected);
 					try {
 						ListAddress.this.customer.removeAddress(new Address(
@@ -153,6 +159,14 @@ public class ListAddress extends SimpleListView<Address> {
 		this.fillTable();
 	}
 	
+	public int getSelectedPkey() {
+		int selected = this.table.getSelectedRow();
+		if (selected == -1) {
+			return -1;
+		}
+		return this.keys.get(selected);
+	}
+	
 	@Override
 	protected DB.TableName getTableName() {
 		return DB.TableName.customer_address;
@@ -168,26 +182,18 @@ public class ListAddress extends SimpleListView<Address> {
 		return addresses;
 	}
 	
+	public void setSelectAction(ActionListener listener) {
+		this.selectButton.addActionListener(listener);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.ListView#tableItemAction()
 	 */
 	@Override
 	protected void tableItemAction() {
-        if(this.selectButton == null) {
-		    this.viewButton.doClick();
-        }
+		if (this.selectButton == null) {
+			this.viewButton.doClick();
+		}
 	}
-
-    public int getSelectedPkey() {
-        int selected = this.table.getSelectedRow();
-        if(selected == -1) {
-            return -1;
-        }
-        return this.keys.get(selected);
-    }
-
-    public void setSelectAction(ActionListener listener) {
-        this.selectButton.addActionListener(listener);
-    }
 }
