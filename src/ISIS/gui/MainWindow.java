@@ -57,41 +57,12 @@ public class MainWindow extends JFrame {
 						"Janet", "michhead", "This is a note.");
 				testUser.save();
 				Session.endCurrentSession();
-				System.out.println("OK!");
-				User janet = new User(2, true);
-				System.out.println("Got janet.");
-				System.out.println("Active: " + janet.getActive());
-				System.out.println("Password correct: "
-						+ janet.checkPassword("sammichmonger"));
-				System.out.println("Password incorrect: "
-						+ !janet.checkPassword("sammichmongerz"));
-				System.out.println("ID: " + janet.getEmployeeID());
-				System.out.println("Fname: " + janet.getFirstName()
-						+ "\nLname: " + janet.getLastName());
-				System.out.println("Note: " + janet.getNote());
-				System.out
-						.println("Date: " + janet.getDates().getCreatedDate());
-				janet.setNote("This is a new note.");
-				System.out.println("Set note to: " + janet.getNote());
-				janet.save();
-				System.out.println("Starting session with janet..");
-			} else {
-				System.out.println("Janet already exists");
 			}
 			try {
 				Session.startNewSession("jmichhead", "sammichmonger");
 			} catch (AuthenticationException e) {
 				System.err.println("failed");
 			}
-			try {
-				User testUser = new User(2, true); // if you change the pkey, it
-				// won't be able to find
-				// janet
-				System.out.println("Note: " + testUser.getNote());
-			} catch (RecordNotFoundException e) {
-				ErrorLogger.error("Could not find janet.", true, true);
-			}
-			
 		} catch (SQLException ex) {
 			ErrorLogger.error(ex, "something went wrong lel", true, true);
 		} catch (RecordNotFoundException ex) {
