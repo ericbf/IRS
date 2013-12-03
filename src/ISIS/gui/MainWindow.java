@@ -47,7 +47,8 @@ public class MainWindow extends JFrame {
 		try {
 			Session.baseSession();
 		} catch (SQLException ex) {
-			System.out.println("well darn");
+			ErrorLogger.error(ex, "well darn.", true, true);
+            System.exit(1);
 		}
 		
 		try {
@@ -74,7 +75,7 @@ public class MainWindow extends JFrame {
 				"ISIS/misc/Loading.gif");
 		Splash splashPanel = new Splash(loading_URL);
 		splash.setContentPane(splashPanel);
-		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		splash.setSize((splashPanel.image.getWidth(splashPanel) / 2),
 				(splashPanel.image.getHeight(splashPanel) / 2));
 		splash.setLocation(
@@ -94,11 +95,7 @@ public class MainWindow extends JFrame {
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								MainWindow frame = new MainWindow();
-								frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-								frame.pack();
-								frame.setMinimumSize(new Dimension(800, 400));
-								frame.setVisible(true);
+								Login frame = new Login();
 							}
 						});
 					}
@@ -183,5 +180,6 @@ public class MainWindow extends JFrame {
 		tabs.add("Transactions", this.transactionPane);
 		tabs.add("Reports", this.reportPane);
 		this.setContentPane(tabs);
-	}
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
 }

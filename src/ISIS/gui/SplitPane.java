@@ -1,17 +1,13 @@
 package ISIS.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import ISIS.session.Session;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 
 /**
  *
@@ -64,7 +60,8 @@ public final class SplitPane extends JPanel {
 		this.buttons.setOpaque(false);
 		this.add(this.buttons, BorderLayout.NORTH);
 		SplitPane.dividerRatio = 0.5;
-	}
+        this.addButtons();
+        }
 	
 	/**
 	 * Adds back, forwards, save, etc.
@@ -73,16 +70,44 @@ public final class SplitPane extends JPanel {
         * @pre -  none
         * @post - buttons added to gridbag 
         */
-        public final void addButtons() {
+    public final void addButtons() {
 		GridBagConstraints c;
 		this.buttons.removeAll();
 		boolean hasButtons = false;
-		
+
+        int x = 1;
+        hasButtons = true;
+        c = new GridBagConstraints();
+        c.gridy = 0;
+        c.gridx = x++;
+        c.fill = GridBagConstraints.BOTH;
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Session.endCurrentSession();
+                SplitPane.this.getRootPane().getParent().setVisible(false);
+                ((MainWindow) SplitPane.this.getRootPane().getParent()).dispose();
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                Login frame = new Login();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        this.buttons.add(logoutButton, c);
+
 		if (this.stackPointer > 0) {
 			hasButtons = true;
 			c = new GridBagConstraints();
 			c.gridy = 0;
-			c.gridx = 1;
+			c.gridx = x++;
 			c.fill = GridBagConstraints.BOTH;
 			JButton backButton = new JButton("Back");
 			backButton.addActionListener(new ActionListener() {
@@ -97,7 +122,7 @@ public final class SplitPane extends JPanel {
 			hasButtons = true;
 			c = new GridBagConstraints();
 			c.gridy = 0;
-			c.gridx = 2;
+			c.gridx = x++;
 			c.fill = GridBagConstraints.BOTH;
 			JButton forwardsButton = new JButton("Forward");
 			forwardsButton.addActionListener(new ActionListener() {
@@ -108,20 +133,20 @@ public final class SplitPane extends JPanel {
 			});
 			this.buttons.add(forwardsButton, c);
 		}
-		if (this.stack.get(this.stackPointer).needsSave()) {
+		if (this.stack.size() > 0 && this.stack.get(this.stackPointer).needsSave()) {
 			hasButtons = true;
 			JButton save = new JButton("Save");
 			JButton cancel = new JButton("Close");
 			
 			c = new GridBagConstraints();
 			c.gridy = 0;
-			c.gridx = 3;
+			c.gridx = x++;
 			c.fill = GridBagConstraints.BOTH;
 			this.buttons.add(cancel, c);
 			
 			c = new GridBagConstraints();
 			c.gridy = 0;
-			c.gridx = 4;
+			c.gridx = x++;
 			c.fill = GridBagConstraints.BOTH;
 			this.buttons.add(save, c);
 			save.addActionListener(new ActionListener() {

@@ -1,15 +1,15 @@
 package ISIS.session;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import ISIS.database.DB;
 import ISIS.gui.ErrorLogger;
 import ISIS.gui.TableUpdateListener;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Various information and methods that is associated with a session. This
@@ -53,6 +53,13 @@ public class Session {
 		}
 		Session.session = new Session(user);
 	}
+
+    public static void activateUser(String username) throws SQLException {
+        String sql = "UPDATE user SET active=1 WHERE username=?";
+        PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+        stmt.setString(1, username);
+        stmt.executeUpdate();
+    }
 	
 	/**
 	 * Notifies listeners that the record with the specified key was changed in
