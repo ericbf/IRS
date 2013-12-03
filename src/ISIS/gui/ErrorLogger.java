@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  */
 public class ErrorLogger {
 	
-	private static boolean	debug	= true;
+	private static boolean	debug	= false;
 	
 	public static void error(Exception e, String error, boolean severe,
 			boolean show) {
