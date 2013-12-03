@@ -82,7 +82,7 @@ public class AddEditCustomer extends AddEditView {
 			this.otherListsCardLayout.addLayoutComponent(l, "transactions");
 			// next
 			this.otherListsContainer.add(l = new ListPhone(this.splitPane,
-					this, this.customer, false));
+					this, this.customer));
 			this.otherListsCardLayout.addLayoutComponent(l, "phones");
 			
 			// Add action listeners to the buttons

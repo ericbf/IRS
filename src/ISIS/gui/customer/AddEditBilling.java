@@ -58,8 +58,7 @@ public class AddEditBilling extends AddEditView {
         }
         this.number.setText(this.billing.getCardNumber());
         this.CCV.setText(this.billing.getCCV());
-        this.expiration.setText(this.billing.getExpiration() == null ? "N/A"
-                +				: this.billing.getExpiration().toString());
+        this.expiration.setText(this.billing.getExpiration() == null ? "N/A" : this.billing.getExpiration().toString());
         this.type.setSelectedItem(this.billing.getBillingType());
         this.disableFields(this.address, this.number, this.CCV,
                            this.expiration);
