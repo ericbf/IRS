@@ -20,7 +20,11 @@ public class Splash extends JPanel {
 		this.image = new ImageIcon(url).getImage();
 	}
 	
-	@Override
+        /*
+        * @pre -  Gaben graphic object received
+        * @post - splash screen displayed, All Hail Gaben
+        */
+        @Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), this);

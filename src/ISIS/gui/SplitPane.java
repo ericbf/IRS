@@ -33,7 +33,11 @@ public final class SplitPane extends JPanel {
 	
 	JPanel						buttons;
 	
-	SplitPane() {
+        /*
+        * @pre -  none, constructor
+        * @post - SplitPanel object instantiated and returned
+        */
+        SplitPane() {
 		super(new BorderLayout());
 		this.stack = new ArrayList<View>();
 		this.stackPointer = 0;
@@ -65,7 +69,11 @@ public final class SplitPane extends JPanel {
 	/**
 	 * Adds back, forwards, save, etc.
 	 */
-	public final void addButtons() {
+	/*
+        * @pre -  none
+        * @post - buttons added to gridbag 
+        */
+        public final void addButtons() {
 		GridBagConstraints c;
 		this.buttons.removeAll();
 		boolean hasButtons = false;
@@ -194,7 +202,11 @@ public final class SplitPane extends JPanel {
 	 * Try to set the divider to the same location as before, but no less than
 	 * the left component's minimum width
 	 */
-	private final void moveDivider() {
+	/*
+        * @pre -  none
+        * @post - Panel split with new divider
+        */
+        private final void moveDivider() {
 		double minSizeRatio = this.moverRatioCalculator(this.splitPane
 				.getLeftComponent().getMinimumSize().width);
 		double newRatio = Math.max(minSizeRatio, SplitPane.dividerRatio);
@@ -202,7 +214,11 @@ public final class SplitPane extends JPanel {
 				.getWidth()));
 	}
 	
-	private final double moverRatioCalculator(double d) {
+	/*
+        * @pre -  received double
+        * @post - return new width
+        */
+        private final double moverRatioCalculator(double d) {
 		return d / this.splitPane.getWidth();
 	}
 	

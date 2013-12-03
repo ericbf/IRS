@@ -31,6 +31,10 @@ public abstract class ListView<E extends Record> extends View {
 	protected ArrayList<Integer>	keys				= new ArrayList<Integer>();
 	protected int					selected;
 	
+        /*
+        * @pre - receives SplitPane object and a bool
+        * @post - returns ListView object
+        */
 	public ListView(SplitPane splitPane, boolean multiSelect) {
 		super(splitPane);
 		
@@ -94,15 +98,27 @@ public abstract class ListView<E extends Record> extends View {
 						break;
 				}
 			}
-			
+
+                         /*
+                        * @pre - none
+                        * @post - none - override event
+                        */                       
 			@Override
 			public void keyReleased(KeyEvent e) {}
-			
+ 
+                        /*
+                        * @pre - none
+                        * @post - none - override event
+                        */			
 			@Override
 			public void keyTyped(KeyEvent e) {}
 		});
 		this.table.addMouseListener(new MouseListener() {
 			
+                        /*
+                        * @pre - none
+                        * @post - none - override event
+                        */
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int sel;
@@ -113,22 +129,42 @@ public abstract class ListView<E extends Record> extends View {
 					}
 				}
 			}
-			
+
+                        /*
+                        * @pre - none
+                        * @post - none - override event
+                        */
 			@Override
 			public void mouseEntered(MouseEvent e) {}
 			
+                        /*
+                        * @pre - none
+                        * @post - none - override event
+                        */                        
 			@Override
 			public void mouseExited(MouseEvent e) {}
 			
+                        /*
+                        * @pre - none
+                        * @post - none - override event
+                        */                        
 			@Override
 			public void mousePressed(MouseEvent e) {}
 			
+                        /*
+                        * @pre - none
+                        * @post - none - override event
+                        */                        
 			@Override
 			public void mouseReleased(MouseEvent e) {}
 		});
 		this.table.getActionMap().put("Enter", new AbstractAction() {
 			private static final long	serialVersionUID	= 1L;
 			
+                        /*
+                        * @pre - none
+                        * @post - displays selected row on event trigger
+                        */
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				ListView.this.selected = ListView.this.table.getSelectedRow();
@@ -143,6 +179,10 @@ public abstract class ListView<E extends Record> extends View {
 	
 	/**
 	 * Cancel is not supported.
+         * 
+         * @pre - cancel button was clicked
+         * @post - unsupported exception thrown
+         * 
 	 */
 	@Override
 	public void cancel() {

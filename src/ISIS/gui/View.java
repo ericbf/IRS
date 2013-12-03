@@ -24,6 +24,9 @@ public abstract class View extends JPanel {
 	
 	/**
 	 * Base constructor.
+         * 
+         * @pre - none
+         * @post - View instantiated
 	 */
 	public View(SplitPane splitPane) {
 		this.splitPane = splitPane;
@@ -33,12 +36,18 @@ public abstract class View extends JPanel {
 	/**
 	 * A method for canceling the implemented view. This method must be
 	 * implemented.
+         * 
+         * @pre - none
+         * @post - none
 	 */
 	public abstract void cancel();
 	
 	/**
 	 * Overridden for windows where cleanup is necessary, but save and cancel do
 	 * not apply.
+         * 
+         * @pre - none
+         * @post - exception thrown or record closed
 	 */
 	public void close() throws CloseCanceledException {
 		if (!this.needsSave()) {
@@ -67,6 +76,9 @@ public abstract class View extends JPanel {
 	 * fields in the view, or null if the view doesn't have one.
 	 * 
 	 * @return
+         * 
+         * @pre - none
+         * @post - none
 	 */
 	public abstract Record getCurrentRecord();
 	
@@ -74,6 +86,9 @@ public abstract class View extends JPanel {
 	 * Returns the split pane in which this view is contained.
 	 * 
 	 * @return
+         * 
+         * @pre - none
+         * @post - splitPane returned
 	 */
 	protected final SplitPane getSplitPane() {
 		if (!this.inSplitPane()) {
@@ -86,6 +101,9 @@ public abstract class View extends JPanel {
 	 * Returns whether or not this view is in a split pane.
 	 * 
 	 * @return
+         * 
+         * @pre - none
+         * @post - bool returned
 	 */
 	protected final boolean inSplitPane() {
 		if (this.splitPane != null) {
@@ -101,22 +119,35 @@ public abstract class View extends JPanel {
 	 * record.
 	 * 
 	 * @return
+         * 
+         * @pre - none
+         * @post -  bool returned if overridden
 	 */
 	public abstract boolean isAnyFieldDifferentFromDefault();
 	
 	/**
 	 * Returns whether this view needs to be saved. This method must be
 	 * implemented.
+         * 
+         * @pre - none
+         * @post - bool returned if overridden
 	 */
 	public abstract boolean needsSave();
 	
 	/**
 	 * A method for saving the contents of the implemented view. This method
 	 * must be implemented.
+         * 
+         * @pre - none
+         * @post - contents saved
 	 */
 	public abstract void save() throws SQLException;
 	
-	protected void setPadding() {
+	
+         /* @pre - none
+         * @post - padding set
+	 */
+         protected void setPadding() {
 		this.setBorder(new EmptyBorder(4, 0, 10, 5));
 	}
 }

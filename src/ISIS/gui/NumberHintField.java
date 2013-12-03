@@ -15,14 +15,26 @@ import javax.swing.text.PlainDocument;
 public class NumberHintField extends HintField {
 	private static final long	serialVersionUID	= 1L;
 	
+        	/*
+        * @pre - none, constructor
+        * @post - object instantiated and returned
+        */
 	public NumberHintField() {
 		this(null, null);
 	}
 	
+        /*
+        * @pre - string received, constructor
+        * @post - object instantiated and returned
+        */
 	public NumberHintField(String hint) {
 		this(hint, null);
 	}
 	
+        /*
+        * @pre - 2 strings received, constructor
+        * @post - object instantiated and returned
+        */
 	public NumberHintField(String hint, String initialText) {
 		super(hint, initialText);
 		((PlainDocument) this.getDocument())
@@ -31,6 +43,10 @@ public class NumberHintField extends HintField {
 						return str.matches("[0-9]*");
 					}
 					
+                                        /*
+                                        * @pre - Parameters received
+                                        * @post - event overridden
+                                        */                                        
 					@Override
 					public void insertString(FilterBypass fb, int offset,
 							String string, AttributeSet attr)
@@ -46,7 +62,11 @@ public class NumberHintField extends HintField {
 						}
 					}
 					
-					@Override
+                                        /*
+                                        * @pre - Parameters received
+                                        * @post - event overridden
+                                        */ 
+                                        @Override
 					public void remove(FilterBypass fb, int offset, int length)
 							throws BadLocationException {
 						Document doc = fb.getDocument();
@@ -60,7 +80,11 @@ public class NumberHintField extends HintField {
 						}
 					}
 					
-					@Override
+                                        /*
+                                        * @pre - Parameters received
+                                        * @post - event overridden
+                                        */ 					
+                                        @Override
 					public void replace(FilterBypass fb, int offset,
 							int length, String text, AttributeSet attrs)
 							throws BadLocationException {

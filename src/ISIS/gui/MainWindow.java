@@ -116,6 +116,10 @@ public class MainWindow extends JFrame {
 		}, "Shutdown-thread"));
 	}
 	
+        /*
+        * @pre - Need Sample Data populated
+        * @post - sample data was populated
+        */
 	private static void sampledata() throws SQLException {
 		Customer customer = new Customer("Joe", "Doe", "sammich@sammich.info",
 				"This is a note.", "this is a password?", true);

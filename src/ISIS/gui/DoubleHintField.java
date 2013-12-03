@@ -14,6 +14,9 @@ import javax.swing.text.PlainDocument;
 
 /**
  * @author eric
+ * 
+ * @pre - you are lost and confused and could use a hint
+ * @post - a hint was provided
  */
 public class DoubleHintField extends HintField {
 	private static final long	serialVersionUID	= 1L;
@@ -27,6 +30,12 @@ public class DoubleHintField extends HintField {
 		this(hint, null);
 	}
 	
+        /**
+        * @author eric
+        * 
+        * @pre - received 2 strings
+        * @post - hint string returned
+        */
 	public DoubleHintField(String hint, String initialText) {
 		super(hint, initialText);
 		this.toReturn = "0.00";
@@ -37,6 +46,11 @@ public class DoubleHintField extends HintField {
 								.matches("([1-9][0-9]*)?[0-9]?(\\.[0-9]?[0-9]?)?");
 					}
 					
+                                        /*
+                                        *
+                                        * @pre - none
+                                        * @post - none - abstract for override
+                                        */
 					@Override
 					public void insertString(FilterBypass fb, int offset,
 							String string, AttributeSet attr)
@@ -52,6 +66,11 @@ public class DoubleHintField extends HintField {
 						}
 					}
 					
+                                        /*
+                                        *
+                                        * @pre - none
+                                        * @post - none - abstract for override
+                                        */
 					@Override
 					public void remove(FilterBypass fb, int offset, int length)
 							throws BadLocationException {
@@ -66,6 +85,11 @@ public class DoubleHintField extends HintField {
 						}
 					}
 					
+                                        /*
+                                        *
+                                        * @pre - none
+                                        * @post - none - abstract for override
+                                        */
 					@Override
 					public void replace(FilterBypass fb, int offset,
 							int length, String text, AttributeSet attrs)
@@ -104,6 +128,11 @@ public class DoubleHintField extends HintField {
 		});
 	}
 	
+        /*
+        *
+        * @pre - none
+        * @post - none - abstract for override
+        */
 	@Override
 	public String getText() {
 		if (super.getText().isEmpty()) {
@@ -112,7 +141,12 @@ public class DoubleHintField extends HintField {
 			return super.getText();
 		}
 	}
-	
+
+        /*
+        *
+        * @pre - none
+        * @post - none - abstract for override
+        */
 	public void setToReturnIfEmpty(String str) {
 		this.toReturn = str;
 	}

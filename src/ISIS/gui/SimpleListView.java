@@ -19,7 +19,11 @@ public abstract class SimpleListView<E extends Record> extends ListView<E> {
 	
 	protected final View		pusher;
 	
-	public SimpleListView(SplitPane splitPane, View pusher,
+        /*
+        * @pre -  constructor, parameters received
+        * @post - SimpleList View object instantiated
+        */ 
+        public SimpleListView(SplitPane splitPane, View pusher,
 			boolean multiSelect, String sql, Integer key) {
 		super(splitPane, multiSelect);
 		
@@ -30,7 +34,11 @@ public abstract class SimpleListView<E extends Record> extends ListView<E> {
 		this.setLayout(new GridBagLayout());
 	}
 	
-	@Override
+        /*
+        * @pre -  none
+        * @post - table populated with query results
+        */
+        @Override
 	protected void doFillTable() {
 		try {
 			PreparedStatement stmt = Session.getDB().prepareStatement(this.sql);
@@ -44,7 +52,11 @@ public abstract class SimpleListView<E extends Record> extends ListView<E> {
 		}
 	}
 	
-	@Override
+        /*
+        * @pre -  none
+        * @post - table populated with query results
+        */
+        @Override
 	protected void fillTable() {
 		// no preprocessing to do.
 		this.doFillTable();

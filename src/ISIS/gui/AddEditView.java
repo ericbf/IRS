@@ -20,6 +20,9 @@ public abstract class AddEditView extends View {
 	
 	/**
 	 * Link to super
+         * 
+         * @pre - none
+         * @post - new splitPane created
 	 */
 	public AddEditView(SplitPane splitPane) {
 		super(splitPane);
@@ -30,6 +33,9 @@ public abstract class AddEditView extends View {
 	 * Used to disable any unchangeable fields
 	 * 
 	 * @param fields
+         * 
+         * @pre - 1 or more HintFields received
+         * @post - unchangeable fields are disabled
 	 */
 	protected final void disableFields(HintField... fields) {
 		this.wasSavedOrAlreadySetUp = true;
@@ -42,12 +48,18 @@ public abstract class AddEditView extends View {
 	/**
 	 * Use this to activate the necessary fields after the first save. Override
 	 * to give action.
+         * 
+         * @pre - none
+         * @post - none - abstract
 	 */
 	protected void doSaveRecordAction() {}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#needsSave()
+         *
+         * @pre - none
+         * @post - none - abstract for override
 	 */
 	@Override
 	public final boolean needsSave() {
@@ -64,6 +76,8 @@ public abstract class AddEditView extends View {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#save()
+        * @pre - none
+         * @post - none - abstract        
 	 */
 	@Override
 	public final void save() throws SQLException {

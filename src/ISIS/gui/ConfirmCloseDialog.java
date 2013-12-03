@@ -9,6 +9,9 @@ public class ConfirmCloseDialog {
 	
 	/**
 	 * Returns true if the thing should be saved.
+         * 
+         * @pre - button was clicked
+         * @post - returns true if save should be performed
 	 */
 	public boolean show(Component parent) throws CloseCanceledException {
 		int result = JOptionPane.showConfirmDialog(parent,
