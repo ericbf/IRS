@@ -27,6 +27,13 @@ public class ListTransactionLineItem extends
 	Transaction					transaction;
 	JButton						remove;
 	
+        /**
+        * Lists all Transaction Line Items associated with the customer record.
+        * 
+        * @pre - none
+        * @post - returns and lists all info concerned with listing a
+        *         transaction line item into the table view for use.
+        */ 
 	public ListTransactionLineItem(SplitPane splitPane, View pusher,
 			Transaction transaction) {
 		super(
@@ -99,12 +106,18 @@ public class ListTransactionLineItem extends
 		
 		this.fillTable();
 	}
-	
+	/*
+        * @pre - none
+        * @post - returns DB.TableName.transaction_item
+        */
 	@Override
 	protected DB.TableName getTableName() {
 		return DB.TableName.transaction_item;
 	}
-	
+	/*
+        * @pre - Results from a DB query are given.
+        * @post - Puts the results into a collection the table view can use.
+        */
 	@Override
 	protected ArrayList<TransactionLineItem> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
