@@ -30,8 +30,11 @@ public class ReportViewer extends View {
 	private String				html;
 	Report						report;
 	
-	/**
-	 * Public constructor.
+        /**
+	 * Public constructor. User is presented with a Report View.
+         * 
+         * @pre - receives all required parameters for a report and Split Pane.
+         * @post - returns new instance of the view.
 	 */
 	public ReportViewer(Report report, SplitPane splitPane) {
 		super(splitPane);
@@ -97,7 +100,8 @@ public class ReportViewer extends View {
 	}
 	
 	/**
-	 * Export to PDF file
+	 * @pre - Save is clicked.
+         * @post - Exports to PDF file
 	 */
 	@Override
 	public void save() {
