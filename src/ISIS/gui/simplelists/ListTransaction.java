@@ -29,7 +29,13 @@ import java.util.HashMap;
 public class ListTransaction extends SimpleListView<Transaction> {
 	private static final long	serialVersionUID	= 1L;
 	Customer					customer;
-	
+	/**
+        * Lists all Transactions associated with the customer record.
+        * 
+        * @pre - none 
+        * @post - returns and lists all info concerned with listing a
+        *         transaction into the table view for use.
+        */ 
 	public ListTransaction(SplitPane splitPane, View pusher, Customer customer,
 			boolean selectMode) {
 		super(splitPane, pusher, false, "SELECT t.* FROM transaction_ AS t "
@@ -162,12 +168,19 @@ public class ListTransaction extends SimpleListView<Transaction> {
 		
 		this.fillTable();
 	}
-	
+	/*
+        * @pre - none
+        * @post - returns DB.TableName.transaction_
+        */
 	@Override
 	protected DB.TableName getTableName() {
 		return DB.TableName.transaction_;
 	}
-	
+        
+        /*
+        * @pre - Results from a DB query are given.
+        * @post - Puts the results into a collection the table view can use.
+        */
 	@Override
 	protected ArrayList<Transaction> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
