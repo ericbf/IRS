@@ -24,12 +24,21 @@ import ISIS.misc.Address;
 
 /**
  * This should NEVER be pushed, only embedded.
+ * 
  */
 public class ListAddress extends SimpleListView<Address> {
 	private static final long	serialVersionUID	= 1L;
 	private final Customer		customer;
 	private JButton				viewButton, selectButton;
 	
+        
+        /**
+        * Lists all addresses associated with the customer record.
+        * 
+        * @pre - select mode == true. 
+        * @post - returns and lists all info concerned with listing an address
+        *         into the table view for use.
+        */       
 	public ListAddress(SplitPane splitPane, View pusher, Customer customer,
 			Integer key, boolean selectMode) {
 		super(splitPane, pusher, false, "SELECT a.* FROM address AS a left "
@@ -158,7 +167,12 @@ public class ListAddress extends SimpleListView<Address> {
 		
 		this.fillTable();
 	}
-	
+	/**
+	 * Public constructor. 
+         * 
+         * @pre - selected == -1
+         * @post - returns -1 or this.keys.get(selected)
+	 */
 	public int getSelectedPkey() {
 		int selected = this.table.getSelectedRow();
 		if (selected == -1) {
@@ -166,12 +180,18 @@ public class ListAddress extends SimpleListView<Address> {
 		}
 		return this.keys.get(selected);
 	}
-	
+	/*
+        * @pre - none
+        * @post - returns DB.TableName.customer_address
+        */
 	@Override
 	protected DB.TableName getTableName() {
 		return DB.TableName.customer_address;
 	}
-	
+	/*
+        * @pre - Results from a DB query are given.
+        * @post - Puts the results into a collection the table view can use.
+        */
 	@Override
 	protected ArrayList<Address> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
