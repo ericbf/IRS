@@ -1,21 +1,5 @@
 package ISIS.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.sql.SQLException;
-
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.WindowConstants;
-
 import ISIS.customer.Customer;
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.SearchListCustomers;
@@ -26,8 +10,14 @@ import ISIS.item.Item;
 import ISIS.misc.Address;
 import ISIS.misc.Phone;
 import ISIS.session.Session;
-import ISIS.user.AuthenticationException;
 import ISIS.user.User;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.sql.SQLException;
 
 /**
  * Class for main window. No public methods available.
@@ -60,17 +50,12 @@ public class MainWindow extends JFrame {
 		}
 		
 		try {
-			if (!User.userExists("jmichhead")) {
+			if (!User.userExists("user")) {
 				sampledata();
-				User testUser = new User("jmichhead", true, "sammichmonger",
+				User testUser = new User("user", true, "password",
 						"Janet", "michhead", "This is a note.");
 				testUser.save();
 				Session.endCurrentSession();
-			}
-			try {
-				Session.startNewSession("jmichhead", "sammichmonger");
-			} catch (AuthenticationException e) {
-				System.err.println("failed");
 			}
 		} catch (SQLException ex) {
 			ErrorLogger.error(ex, "something went wrong lel", true, true);
