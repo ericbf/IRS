@@ -15,17 +15,20 @@ import java.awt.event.KeyListener;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.plaf.basic.BasicTextFieldUI;
-import javax.swing.text.JTextComponent;
 
 /**
  * @author eric
  */
 public class HintField extends JTextField {
-	
 	private class UI extends BasicTextFieldUI {
-		public UI(JTextComponent editor) {
+		private String	hint;
+		private boolean	hintEnabled;
+		
+		public UI(String hint) {
 			super();
-			// TODO fix height
+			
+			this.hint = hint;
+			this.hintEnabled = true;
 		}
 		
 		/*
@@ -36,14 +39,12 @@ public class HintField extends JTextField {
 		protected void paintSafely(Graphics g) {
 			super.paintSafely(g);
 			HintField comp = (HintField) this.getComponent();
-			if (HintField.this.hintEnabled && HintField.this.hint != null
-					&& comp.isEmpty()) {
+			if (this.hintEnabled && this.hint != null && comp.isEmpty()) {
 				g.setColor(Color.gray);
 				g.setFont(new Font(comp.getFont().getName(), Font.ITALIC, comp
 						.getFont().getSize()));
 				int padding = (comp.getHeight() - comp.getFont().getSize()) / 2;
-				g.drawString(HintField.this.hint, 7, comp.getHeight() - padding
-						- 2);
+				g.drawString(this.hint, 7, comp.getHeight() - padding - 2);
 			}
 		}
 		
@@ -61,7 +62,6 @@ public class HintField extends JTextField {
 	private static final long	serialVersionUID	= 1L;
 	
 	private boolean				selectAll;
-	private boolean				hintEnabled;
 	private String				hint;
 	private UI					ui;
 	
@@ -88,9 +88,7 @@ public class HintField extends JTextField {
 	public HintField(String hint, String initialText) {
 		super(initialText);
 		this.hint = hint;
-		this.hintEnabled = true;
-		this.setUI(this.ui = new UI(this));
-		// this.setUI(this.ui = new UI());
+		this.setUI(this.ui = new UI(this.hint));
 		this.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "none");
 		this.getInputMap().put(KeyStroke.getKeyStroke("UP"), "none");
 		this.getInputMap().put(
@@ -159,15 +157,6 @@ public class HintField extends JTextField {
 	 */
 	public boolean isEmpty() {
 		return super.getText().isEmpty();
-	}
-	
-	/*
-	 * @pre - none
-	 * @post - returns true if hint is not enabled
-	 */
-	public HintField setHintEnabled(boolean b) {
-		this.hintEnabled = b;
-		return this;
 	}
 	
 	/*
