@@ -1,13 +1,20 @@
 package ISIS.gui;
 
-import ISIS.session.Session;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
+
+import ISIS.session.Session;
 
 /**
  *
@@ -29,11 +36,11 @@ public final class SplitPane extends JPanel {
 	
 	JPanel						buttons;
 	
-        /*
-        * @pre -  none, constructor
-        * @post - SplitPanel object instantiated and returned
-        */
-        SplitPane() {
+	/*
+	 * @pre - none, constructor
+	 * @post - SplitPanel object instantiated and returned
+	 */
+	SplitPane() {
 		super(new BorderLayout());
 		this.stack = new ArrayList<View>();
 		this.stackPointer = 0;
@@ -60,49 +67,51 @@ public final class SplitPane extends JPanel {
 		this.buttons.setOpaque(false);
 		this.add(this.buttons, BorderLayout.NORTH);
 		SplitPane.dividerRatio = 0.5;
-        this.addButtons();
-        }
+		this.addButtons();
+	}
 	
 	/**
 	 * Adds back, forwards, save, etc.
 	 */
 	/*
-        * @pre -  none
-        * @post - buttons added to gridbag 
-        */
-    public final void addButtons() {
+	 * @pre - none
+	 * @post - buttons added to gridbag
+	 */
+	public final void addButtons() {
 		GridBagConstraints c;
 		this.buttons.removeAll();
 		boolean hasButtons = false;
-
-        int x = 1;
-        hasButtons = true;
-        c = new GridBagConstraints();
-        c.gridy = 0;
-        c.gridx = x++;
-        c.fill = GridBagConstraints.BOTH;
-        JButton logoutButton = new JButton("Logout");
-        logoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Session.endCurrentSession();
-                SplitPane.this.getRootPane().getParent().setVisible(false);
-                ((MainWindow) SplitPane.this.getRootPane().getParent()).dispose();
-                java.awt.EventQueue.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                Login frame = new Login();
-                            }
-                        });
-                    }
-                });
-            }
-        });
-        this.buttons.add(logoutButton, c);
-
+		
+		int x = 1;
+		hasButtons = true;
+		c = new GridBagConstraints();
+		c.gridy = 0;
+		c.gridx = x++;
+		c.fill = GridBagConstraints.BOTH;
+		JButton logoutButton = new JButton("Logout");
+		logoutButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Session.endCurrentSession();
+				SplitPane.this.getRootPane().getParent().setVisible(false);
+				((MainWindow) SplitPane.this.getRootPane().getParent())
+						.dispose();
+				java.awt.EventQueue.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								// Login frame =
+								new Login();
+							}
+						});
+					}
+				});
+			}
+		});
+		this.buttons.add(logoutButton, c);
+		
 		if (this.stackPointer > 0) {
 			hasButtons = true;
 			c = new GridBagConstraints();
@@ -133,7 +142,8 @@ public final class SplitPane extends JPanel {
 			});
 			this.buttons.add(forwardsButton, c);
 		}
-		if (this.stack.size() > 0 && this.stack.get(this.stackPointer).needsSave()) {
+		if (this.stack.size() > 0
+				&& this.stack.get(this.stackPointer).needsSave()) {
 			hasButtons = true;
 			JButton save = new JButton("Save");
 			JButton cancel = new JButton("Close");
@@ -228,10 +238,10 @@ public final class SplitPane extends JPanel {
 	 * the left component's minimum width
 	 */
 	/*
-        * @pre -  none
-        * @post - Panel split with new divider
-        */
-        private final void moveDivider() {
+	 * @pre - none
+	 * @post - Panel split with new divider
+	 */
+	private final void moveDivider() {
 		double minSizeRatio = this.moverRatioCalculator(this.splitPane
 				.getLeftComponent().getMinimumSize().width);
 		double newRatio = Math.max(minSizeRatio, SplitPane.dividerRatio);
@@ -240,10 +250,10 @@ public final class SplitPane extends JPanel {
 	}
 	
 	/*
-        * @pre -  received double
-        * @post - return new width
-        */
-        private final double moverRatioCalculator(double d) {
+	 * @pre - received double
+	 * @post - return new width
+	 */
+	private final double moverRatioCalculator(double d) {
 		return d / this.splitPane.getWidth();
 	}
 	

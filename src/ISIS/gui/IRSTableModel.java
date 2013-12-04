@@ -20,34 +20,33 @@ public abstract class IRSTableModel extends DefaultTableModel {
 	ArrayList<Color>			rowColors;
 	
 	/*
-        *
-        * @pre - receives a Record
-        * @post - row added to record
-        */
-        public abstract void addRow(Record record);
+	 * @pre - receives a Record
+	 * @post - row added to record
+	 */
+	public abstract void addRow(Record record);
 	
-        /*
-        * @pre - receives row & column
-        * @post - returns true cell is editable
-        */        
+	/*
+	 * @pre - receives row & column
+	 * @post - returns true cell is editable
+	 */
 	@Override
 	public final boolean isCellEditable(int row, int column) {
 		return false;
 	}
 	
 	/*
-        * @pre - receives row & color
-        * @post -sets color value for row
-        */
-        public final void setColorAt(int row, Color color) {
+	 * @pre - receives row & color
+	 * @post -sets color value for row
+	 */
+	public final void setColorAt(int row, Color color) {
 		this.rowColors.set(row, color);
 	}
 	
 	/*
-        * @pre - receives Title strings
-        * @post - sets column titles to received strings
-        */
-        public final void setColumnTitles(String... titles) {
+	 * @pre - receives Title strings
+	 * @post - sets column titles to received strings
+	 */
+	public final void setColumnTitles(String... titles) {
 		this.columnTitles = titles;
 		this.setColumnIdentifiers(titles);
 		this.setColumnCount(titles.length);

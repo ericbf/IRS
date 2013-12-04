@@ -35,9 +35,9 @@ public class SearchListItems extends SearchListView<Item> {
 	
 	/**
 	 * Constructs new Customer list view.
-         * 
-         * @pre - received SplitPane to draw search list in
-         * @post - search list drawn in pane
+	 * 
+	 * @pre - received SplitPane to draw search list in
+	 * @post - search list drawn in pane
 	 */
 	public SearchListItems(SplitPane splitPane) {
 		super(splitPane);
@@ -148,11 +148,12 @@ public class SearchListItems extends SearchListView<Item> {
 	
 	/**
 	 * populates search list list view.
-         * 
-         * @pre - received SplitPane to draw search list in and some other parameters too
-         * @post - search list drawn in pane
+	 * 
+	 * @pre - received SplitPane to draw search list in and some other
+	 *      parameters too
+	 * @post - search list drawn in pane
 	 */
-        public SearchListItems(SplitPane splitPane, View pusher, Customer customer,
+	public SearchListItems(SplitPane splitPane, View pusher, Customer customer,
 			final Transaction transaction) {
 		super(splitPane);
 		this.setLayout(new GridBagLayout());
@@ -228,21 +229,19 @@ public class SearchListItems extends SearchListView<Item> {
 	}
 	
 	/**
-	 * 
-         * @pre - none
-         * @post - getTableName method invoked
+	 * @pre - none
+	 * @post - getTableName method invoked
 	 */
-        @Override
+	@Override
 	protected DB.TableName getTableName() {
 		return DB.TableName.item;
 	}
 	
 	/**
-	 * 
-         * @pre - received arraylist
-         * @post - doClick method invoked
+	 * @pre - received arraylist
+	 * @post - doClick method invoked
 	 */
-        @Override
+	@Override
 	protected ArrayList<Item> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
 		ArrayList<Item> items = new ArrayList<Item>(results.size());
@@ -253,11 +252,10 @@ public class SearchListItems extends SearchListView<Item> {
 	}
 	
 	/**
-	 * 
-         * @pre - none
-         * @post - doClick method called
+	 * @pre - none
+	 * @post - doClick method called
 	 */
-        @Override
+	@Override
 	protected void tableItemAction() {
 		this.editSelectButton.doClick();
 	}

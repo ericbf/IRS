@@ -34,10 +34,11 @@ public class Phone extends Record {
 	 */
 	public static boolean	hasDates_	= false;
 	
-        /**
-         * Public constructor. Creates new instance of Phone
-         * @param map 
-         */
+	/**
+	 * Public constructor. Creates new instance of Phone
+	 * 
+	 * @param map
+	 */
 	public Phone(HashMap<String, Field> map) {
 		super(map);
 	}

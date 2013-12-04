@@ -1,15 +1,15 @@
 package ISIS.session;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import ISIS.database.DB;
 import ISIS.gui.ErrorLogger;
 import ISIS.gui.TableUpdateListener;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Various information and methods that is associated with a session. This
@@ -19,8 +19,23 @@ public class Session {
 	
 	public enum Setting {}
 	
-	private static Session	session	= null;
-	private static DB		db		= null;
+	private static Session													session			= null;
+	private static DB														db				= null;
+	
+	private static HashMap<DB.TableName, ArrayList<TableUpdateListener>>	tableListeners	= new HashMap<DB.TableName, ArrayList<TableUpdateListener>>();
+	
+	/**
+	 * @pre none
+	 * @post User activated
+	 * @param username
+	 * @throws SQLException
+	 */
+	public static void activateUser(String username) throws SQLException {
+		String sql = "UPDATE user SET active=1 WHERE username=?";
+		PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+		stmt.setString(1, username);
+		stmt.executeUpdate();
+	}
 	
 	/**
 	 * Only for initialization of program.
@@ -31,10 +46,29 @@ public class Session {
 	}
 	
 	/**
+	 * Ends the current session.
+	 */
+	public static void endCurrentSession() {
+		Session.session = null;
+	}
+	
+	/**
 	 * Gets the current session.
 	 */
 	public static Session getCurrentSession() {
 		return Session.session;
+	}
+	
+	/**
+	 * Gets a reference to the database.
+	 */
+	public static DB getDB() {
+		if (Session.db == null) {
+			Session.db = new DB("test.db");
+			return Session.db;
+		} else {
+			return Session.db;
+		}
 	}
 	
 	/**
@@ -53,19 +87,6 @@ public class Session {
 		}
 		Session.session = new Session(user);
 	}
-        
-    /**
-     * @pre none
-     * @post User activated
-     * @param username
-     * @throws SQLException 
-     */
-    public static void activateUser(String username) throws SQLException {
-        String sql = "UPDATE user SET active=1 WHERE username=?";
-        PreparedStatement stmt = Session.getDB().prepareStatement(sql);
-        stmt.setString(1, username);
-        stmt.executeUpdate();
-    }
 	
 	/**
 	 * Notifies listeners that the record with the specified key was changed in
@@ -83,29 +104,6 @@ public class Session {
 		}
 	}
 	
-	private User															user;
-	
-	private static HashMap<DB.TableName, ArrayList<TableUpdateListener>>	tableListeners	= new HashMap<DB.TableName, ArrayList<TableUpdateListener>>();
-	
-	/**
-	 * Ends the current session.
-	 */
-	public static void endCurrentSession() {
-		Session.session = null;
-	}
-	
-	/**
-	 * Gets a reference to the database.
-	 */
-	public static DB getDB() {
-		if (Session.db == null) {
-			Session.db = new DB("test.db");
-			return Session.db;
-		} else {
-			return Session.db;
-		}
-	}
-	
 	/**
 	 * Watch a database table for updates.
 	 */
@@ -120,11 +118,13 @@ public class Session {
 		}
 	}
 	
-        /**
-         * sets user
-         * 
-         * @param user 
-         */
+	private User	user;
+	
+	/**
+	 * sets user
+	 * 
+	 * @param user
+	 */
 	private Session(User user) {
 		this.user = user;
 	}
@@ -157,11 +157,11 @@ public class Session {
 		return null;
 	}
 	
-        /**
-         * Gets User.
-         * 
-         * @return 
-         */
+	/**
+	 * Gets User.
+	 * 
+	 * @return
+	 */
 	public User getUser() {
 		return this.user;
 	}

@@ -133,11 +133,11 @@ public class Billing extends Record {
 		}
 	}
 	
-        /**
-         * @pre getBillingType == BillingType.CREDIT
-         * @post New date returned
-         * @return 
-         */
+	/**
+	 * @pre getBillingType == BillingType.CREDIT
+	 * @post New date returned
+	 * @return
+	 */
 	public Date getExpiration() {
 		if (this.getBillingType().equals(BillingType.CREDIT)) {
 			try {
@@ -171,20 +171,20 @@ public class Billing extends Record {
 		this.setFieldValue("active", ((active) ? 1 : 0));
 	}
 	
-        /**
-         * @pre none
-         * @post Address set
-         * @param address 
-         */
+	/**
+	 * @pre none
+	 * @post Address set
+	 * @param address
+	 */
 	public void setAddress(Address address) {
 		this.setFieldValue("address", address.getPkey());
 	}
 	
-        /**
-         * @pre none
-         * @post Billing type set
-         * @param type 
-         */
+	/**
+	 * @pre none
+	 * @post Billing type set
+	 * @param type
+	 */
 	public void setBillingType(BillingType type) {
 		this.setFieldValue("type", type.toString());
 	}

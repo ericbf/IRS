@@ -1,10 +1,11 @@
 package ISIS.gui;
 
-import javax.swing.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
 
 /**
  * 
@@ -13,11 +14,10 @@ public class ErrorLogger {
 	
 	private static boolean	debug	= false;
 	
-        /*
-        *
-        * @pre - exception object received
-        * @post - error message logged
-        */
+	/*
+	 * @pre - exception object received
+	 * @post - error message logged
+	 */
 	public static void error(Exception e, String error, boolean severe,
 			boolean show) {
 		if (debug) {
@@ -31,29 +31,27 @@ public class ErrorLogger {
 		}
 	}
 	
-        /*
-        *
-        * @pre - none, constructor
-        * @post - object instantiated and returned
-        */
+	/*
+	 * @pre - none, constructor
+	 * @post - object instantiated and returned
+	 */
 	public static void error(String error, boolean severe, boolean show) {
 		new ErrorLogger(error, severe, show);
 	}
 	
-        /*
-        *
-        * @pre - none, constructor
-        * @post - object instantiated and returned
-        */
+	/*
+	 * @pre - none, constructor
+	 * @post - object instantiated and returned
+	 */
 	private static void log(String message, Level level) {
 		Logger.getLogger("ISIS").log(level, message);
 	}
 	
 	/*
-        * @pre - none, constructor
-        * @post - object instantiated and returned
-        */
-        private ErrorLogger(String error, boolean severe, boolean show) {
+	 * @pre - none, constructor
+	 * @post - object instantiated and returned
+	 */
+	private ErrorLogger(String error, boolean severe, boolean show) {
 		if (show) {
 			JOptionPane.showMessageDialog(null, error, "Error",
 					JOptionPane.ERROR_MESSAGE);

@@ -1,5 +1,21 @@
 package ISIS.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.sql.SQLException;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
+
 import ISIS.customer.Customer;
 import ISIS.database.RecordNotFoundException;
 import ISIS.gui.customer.SearchListCustomers;
@@ -12,14 +28,6 @@ import ISIS.misc.Phone;
 import ISIS.session.Session;
 import ISIS.user.AuthenticationException;
 import ISIS.user.User;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.sql.SQLException;
 
 /**
  * Class for main window. No public methods available.
@@ -48,7 +56,7 @@ public class MainWindow extends JFrame {
 			Session.baseSession();
 		} catch (SQLException ex) {
 			ErrorLogger.error(ex, "well darn.", true, true);
-            System.exit(1);
+			System.exit(1);
 		}
 		
 		try {
@@ -75,14 +83,11 @@ public class MainWindow extends JFrame {
 				"ISIS/misc/Loading.gif");
 		Splash splashPanel = new Splash(loading_URL);
 		splash.setContentPane(splashPanel);
-		final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		splash.setSize((splashPanel.image.getWidth(splashPanel) / 2),
 				(splashPanel.image.getHeight(splashPanel) / 2));
-		splash.setLocation(
-				(int) (dimension.getWidth() - splash.getWidth()) / 2,
-				(int) (dimension.getHeight() - splash.getHeight()) / 2);
 		splash.setUndecorated(true);
 		splash.setAlwaysOnTop(true);
+		splash.setLocationRelativeTo(null);
 		splash.setVisible(true);
 		Timer dispose = new Timer(1500, new ActionListener() {
 			@Override
@@ -95,7 +100,8 @@ public class MainWindow extends JFrame {
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								Login frame = new Login();
+								// Login frame =
+								new Login();
 							}
 						});
 					}
@@ -113,10 +119,10 @@ public class MainWindow extends JFrame {
 		}, "Shutdown-thread"));
 	}
 	
-        /*
-        * @pre - Need Sample Data populated
-        * @post - sample data was populated
-        */
+	/*
+	 * @pre - Need Sample Data populated
+	 * @post - sample data was populated
+	 */
 	private static void sampledata() throws SQLException {
 		Customer customer = new Customer("Joe", "Doe", "sammich@sammich.info",
 				"This is a note.", "this is a password?", true);
@@ -180,6 +186,6 @@ public class MainWindow extends JFrame {
 		tabs.add("Transactions", this.transactionPane);
 		tabs.add("Reports", this.reportPane);
 		this.setContentPane(tabs);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    }
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	}
 }

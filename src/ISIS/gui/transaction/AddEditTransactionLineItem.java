@@ -165,10 +165,11 @@ public class AddEditTransactionLineItem extends AddEditView {
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.description = new HintField("Description"), c);
 	}
+	
 	/*
-        * @pre - this.customer != null == true
-        * @post - saves the customer.
-        */
+	 * @pre - this.customer != null == true
+	 * @post - saves the customer.
+	 */
 	@Override
 	protected void postSave() throws SQLException {
 		if (this.customer != null) {

@@ -370,10 +370,11 @@ public class AddEditTransaction extends AddEditView {
 		
 		this.doSaveRecordAction();
 	}
+	
 	/*
-        * @pre - this.transaction.hasAddress() == true
-        * @post - gets an address and sets it. 
-        */
+	 * @pre - this.transaction.hasAddress() == true
+	 * @post - gets an address and sets it.
+	 */
 	public void reloadAddress() {
 		try {
 			if (this.transaction.hasAddress()) {
@@ -385,10 +386,11 @@ public class AddEditTransaction extends AddEditView {
 			ErrorLogger.error(e, "Failed to update address", true, true);
 		}
 	}
+	
 	/*
-        * @pre - this.transaction.getBilling() == true
-        * @post - gets and sets the billing. 
-        */
+	 * @pre - this.transaction.getBilling() == true
+	 * @post - gets and sets the billing.
+	 */
 	public void reloadBilling() {
 		try {
 			if (this.transaction.getBilling() != null) {

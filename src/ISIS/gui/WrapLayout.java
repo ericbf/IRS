@@ -42,9 +42,8 @@ public class WrapLayout extends FlowLayout {
 	 * @param target
 	 * @param preferred
 	 * @return the dimension to layout the target container
-         * 
-         * @pre - received Container and bool
-         * @post - layout size set
+	 * @pre - received Container and bool
+	 * @post - layout size set
 	 */
 	private Dimension layoutSize(Container target, boolean preferred) {
 		synchronized (target.getTreeLock()) {
@@ -126,22 +125,22 @@ public class WrapLayout extends FlowLayout {
 		}
 	}
 	
-	 /* 
-         * @pre - Container received
-         * @post - layout size set
+	/*
+	 * @pre - Container received
+	 * @post - layout size set
 	 */
-         @Override
+	@Override
 	public Dimension minimumLayoutSize(Container target) {
 		Dimension minimum = this.layoutSize(target, false);
 		minimum.width -= (this.getHgap() + 1);
 		return minimum;
 	}
 	
-	/* 
-         * @pre - container received
-         * @post - prefered layout size set
-        */
-        @Override
+	/*
+	 * @pre - container received
+	 * @post - prefered layout size set
+	 */
+	@Override
 	public Dimension preferredLayoutSize(Container target) {
 		return this.layoutSize(target, true);
 	}

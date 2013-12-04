@@ -28,11 +28,10 @@ public class HintField extends JTextField {
 			// TODO fix height
 		}
 		
-                /*
-                *
-                * @pre - receives graphics object
-                * @post - object drawn
-                */
+		/*
+		 * @pre - receives graphics object
+		 * @post - object drawn
+		 */
 		@Override
 		protected void paintSafely(Graphics g) {
 			super.paintSafely(g);
@@ -48,11 +47,10 @@ public class HintField extends JTextField {
 			}
 		}
 		
-                                /*
-                *
-                * @pre - none
-                * @post - object redrawn
-                */
+		/*
+		 * @pre - none
+		 * @post - object redrawn
+		 */
 		public void repaint() {
 			if (this.getComponent() != null) {
 				this.getComponent().repaint();
@@ -67,29 +65,26 @@ public class HintField extends JTextField {
 	private String				hint;
 	private UI					ui;
 	
-        /*
-        *
-        * @pre - none, constructor
-        * @post - object instantiated and returned
-        */
+	/*
+	 * @pre - none, constructor
+	 * @post - object instantiated and returned
+	 */
 	public HintField() {
 		this("");
 	}
 	
-        /*
-        *
-        * @pre - none, constructor
-        * @post - object instantiated and returned
-        */
+	/*
+	 * @pre - none, constructor
+	 * @post - object instantiated and returned
+	 */
 	public HintField(String hint) {
 		this(hint, "");
 	}
 	
-        /*
-        *
-        * @pre - none, constructor
-        * @post - object instantiated and returned
-        */
+	/*
+	 * @pre - none, constructor
+	 * @post - object instantiated and returned
+	 */
 	public HintField(String hint, String initialText) {
 		super(initialText);
 		this.hint = hint;
@@ -158,30 +153,27 @@ public class HintField extends JTextField {
 		});
 	}
 	
-        /*
-        *
-        * @pre - none
-        * @post - returns true if no text
-        */        
+	/*
+	 * @pre - none
+	 * @post - returns true if no text
+	 */
 	public boolean isEmpty() {
 		return super.getText().isEmpty();
 	}
-
-        /*
-        *
-        * @pre - none
-        * @post - returns true if hint is not enabled
-        */
+	
+	/*
+	 * @pre - none
+	 * @post - returns true if hint is not enabled
+	 */
 	public HintField setHintEnabled(boolean b) {
 		this.hintEnabled = b;
 		return this;
 	}
 	
-        /*
-        *
-        * @pre - receives a bool
-        * @post - sets selectAll to bool passed
-        */
+	/*
+	 * @pre - receives a bool
+	 * @post - sets selectAll to bool passed
+	 */
 	public HintField setSelectAll(boolean b) {
 		this.selectAll = b;
 		return this;

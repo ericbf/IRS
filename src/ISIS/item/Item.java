@@ -1,12 +1,12 @@
 package ISIS.item;
 
-import ISIS.database.DB.TableName;
-import ISIS.database.Field;
-import ISIS.database.Record;
-
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.HashMap;
+
+import ISIS.database.DB.TableName;
+import ISIS.database.Field;
+import ISIS.database.Record;
 
 /**
  * A good available and currently managed by the client. An item record consists
@@ -86,7 +86,7 @@ public class Item extends Record {
 	public String getDescription() {
 		return (String) this.getFieldValue("description");
 	}
-
+	
 	/**
 	 * Gets the item's name.
 	 */
@@ -100,7 +100,7 @@ public class Item extends Record {
 	public BigDecimal getOnHandQty() {
 		return new BigDecimal((String) this.getFieldValue("onhand_qty"));
 	}
-
+	
 	/**
 	 * Gets the item's price.
 	 */
@@ -121,7 +121,7 @@ public class Item extends Record {
 	public String getSKU() {
 		return (String) this.getFieldValue("SKU");
 	}
-
+	
 	@Override
 	protected TableName getTableName() {
 		return Item.tableName;
@@ -138,7 +138,7 @@ public class Item extends Record {
 	protected boolean hasDates() {
 		return Item.hasDates_;
 	}
-
+	
 	/**
 	 * Set whether this is the active record
 	 * 

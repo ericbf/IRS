@@ -1,10 +1,16 @@
 package ISIS.database;
 
-import ISIS.gui.ErrorLogger;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import ISIS.gui.ErrorLogger;
 
 /**
  * Manages third party relational database software used to manage and organize
@@ -102,29 +108,14 @@ public final class DB {
 	 * @post transactionActive() == false
 	 */
 	public void closeTransaction() throws SQLException {
-        connection.setAutoCommit(true);
-    }
-
-    /**
-     * Rolls back all changes that have been made inside of a transaction.
-     * 
-     * @pre isOpen == true
-     * @post - changes rolled back
-     */
-    public void rollbackTransaction() {
-        try {
-            connection.rollback();
-            closeTransaction();
-        } catch (SQLException e) {
-            ErrorLogger.error(e, "Failed to roll back your changes!!!!", true, true);
-        }
-    }
+		connection.setAutoCommit(true);
+	}
 	
 	/**
 	 * For creating tables and stuff. Returns number of affected rows.
-         * 
-         * @pre isOpen == true
-         * @post returns number of affected rows
+	 * 
+	 * @pre isOpen == true
+	 * @post returns number of affected rows
 	 */
 	private int executeUpdate(String sql) throws SQLException {
 		Statement statement = this.connection.createStatement();
@@ -133,9 +124,9 @@ public final class DB {
 	
 	/**
 	 * Initialize tables
-         * 
-         * @pre isOpen == true
-         * @post tables initialized
+	 * 
+	 * @pre isOpen == true
+	 * @post tables initialized
 	 */
 	public void initializeDB() throws SQLException {
 		String datesSql = "createDate BIGINT NOT NULL, createUser INT REFERENCES user(pkey), modDate BIGINT NOT NULL, "
@@ -291,12 +282,13 @@ public final class DB {
 				+ "customer INT REFERENCES customer(pkey), "
 				+ "type VARCHAR(20) NOT NULL, modified BOOLEAN NOT NULL, "
 				+ "parent_transaction INT REFERENCES transaction_"
-				+ "(pkey), address INT REFERENCES address(pkey), billing INT REFERENCES billing(pkey), "+datesSql+")");
+				+ "(pkey), address INT REFERENCES address(pkey), billing INT REFERENCES billing(pkey), "
+				+ datesSql + ")");
 		// transaction-item
 		this.executeUpdate("CREATE TABLE IF NOT EXISTS transaction_item (pkey INTEGER PRIMARY KEY, transaction_ INT REFERENCES transaction_(pkey) NOT NULL, "
-				+ "item INT REFERENCES item(pkey) NOT NULL, price VARCHAR(30) NOT NULL, adjustment VARCHAR(30) NOT NULL, " +
-                                   "quantity VARCHAR(30) NOT " +
-                                   "NULL, description TEXT, "
+				+ "item INT REFERENCES item(pkey) NOT NULL, price VARCHAR(30) NOT NULL, adjustment VARCHAR(30) NOT NULL, "
+				+ "quantity VARCHAR(30) NOT "
+				+ "NULL, description TEXT, "
 				+ datesSql + ")");
 		
 		// TODO: keywords
@@ -306,9 +298,9 @@ public final class DB {
 	
 	/**
 	 * Checks if the database is open.
-         * 
-         * @pre - none
-         * @post returns true if table is open
+	 * 
+	 * @pre - none
+	 * @post returns true if table is open
 	 */
 	public boolean isOpen() {
 		try {
@@ -323,11 +315,27 @@ public final class DB {
 	 * Creates and returns a prepared statement given the given sql.
 	 * 
 	 * @pre isOpen == true
-         * @post - returns prepared statement
+	 * @post - returns prepared statement
 	 */
 	public PreparedStatement prepareStatement(String sql) throws SQLException {
 		return this.connection.prepareStatement(sql,
 				Statement.RETURN_GENERATED_KEYS);
+	}
+	
+	/**
+	 * Rolls back all changes that have been made inside of a transaction.
+	 * 
+	 * @pre isOpen == true
+	 * @post - changes rolled back
+	 */
+	public void rollbackTransaction() {
+		try {
+			connection.rollback();
+			closeTransaction();
+		} catch (SQLException e) {
+			ErrorLogger.error(e, "Failed to roll back your changes!!!!", true,
+					true);
+		}
 	}
 	
 	/**
@@ -338,18 +346,20 @@ public final class DB {
 	 * @post transactionActive() == true
 	 */
 	public void startTransaction() throws SQLException {
-        if(connection.getAutoCommit() == false) {
-            ErrorLogger.error("We were already inside a transaction!?\nChanges rolled back.", true, true);
-            this.rollbackTransaction();
-        }
-        connection.setAutoCommit(false);
-    }
+		if (connection.getAutoCommit() == false) {
+			ErrorLogger
+					.error("We were already inside a transaction!?\nChanges rolled back.",
+							true, true);
+			this.rollbackTransaction();
+		}
+		connection.setAutoCommit(false);
+	}
 	
 	/**
 	 * Checks if a transaction is active.
 	 * 
 	 * @pre isOpen == true
-         * @post returns transaction status
+	 * @post returns transaction status
 	 */
 	public boolean transactionActive() {
 		return false;

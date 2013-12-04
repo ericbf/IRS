@@ -1,18 +1,22 @@
 package ISIS.customer;
 
-import ISIS.database.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import ISIS.database.DB;
 import ISIS.database.DB.TableName;
+import ISIS.database.Field;
+import ISIS.database.Record;
+import ISIS.database.RecordSaveException;
+import ISIS.database.UninitializedFieldException;
 import ISIS.gui.ErrorLogger;
 import ISIS.misc.Address;
 import ISIS.misc.Billing;
 import ISIS.misc.Phone;
 import ISIS.misc.Picture;
 import ISIS.session.Session;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * A Customer is the entity that intends to purchase products from the client. A
@@ -45,9 +49,9 @@ public class Customer extends Record {
 	private ArrayList<Address>	addresses				= new ArrayList<Address>();
 	private ArrayList<Address>	addressesToSave			= new ArrayList<Address>();
 	private ArrayList<Address>	addressesToRemove		= new ArrayList<Address>();
-    private ArrayList<Billing>	billing				= new ArrayList<Billing>();
+	private ArrayList<Billing>	billing					= new ArrayList<Billing>();
 	private ArrayList<Billing>	billingToSave			= new ArrayList<Billing>();
-	private ArrayList<Billing>	billingToRemove		= new ArrayList<Billing>();
+	private ArrayList<Billing>	billingToRemove			= new ArrayList<Billing>();
 	private ArrayList<Phone>	numbers					= new ArrayList<Phone>();
 	private ArrayList<Phone>	numbersToSave			= new ArrayList<Phone>();
 	private ArrayList<Phone>	numbersToRemove			= new ArrayList<Phone>();
@@ -71,9 +75,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Public constructor. A Customer starts with a name and a status.
-         * 
-         * @pre - receives all required parameters
-         * @post - returns object set to those records
+	 * 
+	 * @pre - receives all required parameters
+	 * @post - returns object set to those records
 	 */
 	public Customer(String fname, String lname, String email, String note,
 			String password, boolean active) {
@@ -89,87 +93,27 @@ public class Customer extends Record {
 	
 	/**
 	 * Public constructor. A Customer starts with a name and a status.
-         * 
-         * @pre - receives all required parameters
-         * @post - returns object set to those records
+	 * 
+	 * @pre - receives all required parameters
+	 * @post - returns object set to those records
 	 */
 	public void addAddress(Address address) {
 		this.addresses.add(address);
 		this.addressesToSave.add(address);
-	}	
-    
+	}
+	
 	/**
 	 * Adds an address to the customer record.
-         * 
-         * @pre - none
-         * @post - new billing address saved and related to customer record
+	 * 
+	 * @pre - none
+	 * @post - new billing address saved and related to customer record
 	 */
 	public void addBilling(Billing billing) {
 		this.billing.add(billing);
 		this.billingToSave.add(billing);
 	}
-
-    /**
-     * Remove an address from the customer record.
-     *
-     * @pre getAddresses().contains(address) == true
-     * @post getAddresses().contains(address) == false
-     */
-    public void removeBilling(Billing billing) {
-        if (!this.billingInitialized) {
-            try {
-                this.getBilling();
-            } catch (SQLException e) {
-                ErrorLogger
-                        .error(e, "Failed to populate billing information.", true, true);
-                return;
-            }
-        }
-        if (this.billing.contains(billing)) {
-            this.billing.remove(billing);
-            try { // check if address is stored, if not don't add it to the list
-                // to be removed from db
-                billing.getPkey(); // throws uninit'd field
-                this.billingToRemove.add(billing);
-            } catch (UninitializedFieldException e) {}
-        } else {
-            throw new RecordSaveException(
-                    "Could not remove billing info: couldn't find billing info to remove.");
-        }
-    }
-
-    /**
-     * Gets all addresses associated with the customer record.
-     * 
-     * @pre - none
-     * @post - returns all billing addresses associated with customer record
-     */
-    public ArrayList<Billing> getBilling() throws SQLException {
-        if (this.billingInitialized) {
-            return this.billing;
-        }
-        try {
-            this.getPkey(); // check if the record has ever been saved.
-        } catch (UninitializedFieldException e) {
-            return this.billing; // it hasn't been; nothing to find.
-        }
-        String sql = "SELECT b.* FROM customer_billing AS cb LEFT JOIN billing AS b ON cb.billing=b.pkey WHERE cb.customer=?";
-        try {
-            PreparedStatement stmt = Session.getDB().prepareStatement(sql);
-            stmt.setInt(1, this.getPkey());
-            ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt.executeQuery());
-            for (HashMap<String, Field> result : results) {
-                this.billing.add(new Billing(result));
-            }
-            this.billingInitialized = true;
-            return this.billing;
-        } catch (SQLException e) {
-            ErrorLogger.error(e, "Failed to retrieve billing info.", true, true);
-            throw e;
-        }
-    }
-
-    /**
+	
+	/**
 	 * Adds a phone number to the customer record.
 	 * 
 	 * @pre getPhoneNums().contains(phone) == false
@@ -190,9 +134,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets all addresses associated with the customer record.
-         * 
-         * @pre - receives a customer record
-         * @post - returns all addresses associated with the customer records
+	 * 
+	 * @pre - receives a customer record
+	 * @post - returns all addresses associated with the customer records
 	 */
 	public ArrayList<Address> getAddresses() throws SQLException {
 		if (this.addressesInitialized) {
@@ -221,10 +165,43 @@ public class Customer extends Record {
 	}
 	
 	/**
+	 * Gets all addresses associated with the customer record.
+	 * 
+	 * @pre - none
+	 * @post - returns all billing addresses associated with customer record
+	 */
+	public ArrayList<Billing> getBilling() throws SQLException {
+		if (this.billingInitialized) {
+			return this.billing;
+		}
+		try {
+			this.getPkey(); // check if the record has ever been saved.
+		} catch (UninitializedFieldException e) {
+			return this.billing; // it hasn't been; nothing to find.
+		}
+		String sql = "SELECT b.* FROM customer_billing AS cb LEFT JOIN billing AS b ON cb.billing=b.pkey WHERE cb.customer=?";
+		try {
+			PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+			stmt.setInt(1, this.getPkey());
+			ArrayList<HashMap<String, Field>> results = DB.mapResultSet(stmt
+					.executeQuery());
+			for (HashMap<String, Field> result : results) {
+				this.billing.add(new Billing(result));
+			}
+			this.billingInitialized = true;
+			return this.billing;
+		} catch (SQLException e) {
+			ErrorLogger
+					.error(e, "Failed to retrieve billing info.", true, true);
+			throw e;
+		}
+	}
+	
+	/**
 	 * Gets the Customer's email address.
-         * 
-         * @pre - none
-         * @post - returns customer's email address
+	 * 
+	 * @pre - none
+	 * @post - returns customer's email address
 	 */
 	public String getEmail() {
 		return (String) this.getFieldValue("email");
@@ -232,9 +209,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets the Customer's first name.
-         * 
-         * @pre- none
-         * @post - return first name
+	 * 
+	 * @pre- none
+	 * @post - return first name
 	 */
 	public String getFirstName() {
 		return (String) this.getFieldValue("fname");
@@ -242,9 +219,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets the Customer's last name.
-         * 
-         * @pre - none
-         * @post - returns last name
+	 * 
+	 * @pre - none
+	 * @post - returns last name
 	 */
 	public String getLastName() {
 		return (String) this.getFieldValue("lname");
@@ -252,9 +229,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets the Customer's note field.
-         * 
-         * @pre - none
-         * @post - returns note field
+	 * 
+	 * @pre - none
+	 * @post - returns note field
 	 */
 	public String getNote() {
 		return (String) this.getFieldValue("note");
@@ -262,9 +239,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets the Customer's password.
-         * 
-         * @pre - none
-         * @post - returns customer password
+	 * 
+	 * @pre - none
+	 * @post - returns customer password
 	 */
 	public String getPassword() {
 		return (String) this.getFieldValue("password");
@@ -273,9 +250,9 @@ public class Customer extends Record {
 	/**
 	 * Gets all phone numbers and information associated with the numbers from
 	 * the customer record. Returns empty list on failure.
-         * 
-         * @pre - none
-         * @post - returns list of related numbers, or empty list if none found
+	 * 
+	 * @pre - none
+	 * @post - returns list of related numbers, or empty list if none found
 	 */
 	public ArrayList<Phone> getPhoneNums() throws SQLException {
 		if (this.numbersInitialized) {
@@ -306,9 +283,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets the pictures associated with the customer record.
-         * 
-         * @pre - none
-         * @post - returns picture associated with customer
+	 * 
+	 * @pre - none
+	 * @post - returns picture associated with customer
 	 */
 	public ArrayList<Picture> getPictures(Picture picture) {
 		return null;
@@ -319,7 +296,7 @@ public class Customer extends Record {
 	 * address is marked primary, then one is picked arbitrarily.
 	 * 
 	 * @pre - none
-         * @post - return primary address if one exists, null if none exists
+	 * @post - return primary address if one exists, null if none exists
 	 */
 	public Address getPrimaryAddress() throws SQLException {
 		ArrayList<Address> addresses = this.getAddresses();
@@ -336,10 +313,8 @@ public class Customer extends Record {
 	
 	/**
 	 * Gets the primary phone number. Returns null if there are no numbers, or
-	 * an arbitrary number if there is no primary.
-         * 
-         * pre - none
-         * post - return primary phone number if one exists, null if none exists
+	 * an arbitrary number if there is no primary. pre - none post - return
+	 * primary phone number if one exists, null if none exists
 	 */
 	public Phone getPrimaryNum() throws SQLException {
 		for (Phone number : this.getPhoneNums()) {
@@ -465,55 +440,57 @@ public class Customer extends Record {
 				throw e;
 			}
 		}
-
-        // delete removed billing
-        if (this.billingToRemove.size() > 0) {
-            String sql = "DELETE FROM customer_billing WHERE billing IN ("
-                    + DB.preparedArgsBuilder(this.billingToRemove.size(), "?")
-                    + ") AND customer=?";
-            try {
-                PreparedStatement stmt = Session.getDB().prepareStatement(sql);
-                int i = 1;
-                for (; i < (this.billingToRemove.size() + 1); ++i) {
-                    stmt.setInt(i, this.billingToRemove.get(i - 1).getPkey());
-                }
-                stmt.setInt(i, this.getPkey());
-                stmt.executeUpdate();
-                billingToRemove.clear();
-            } catch (SQLException e) {
-                ErrorLogger.error(e, "Could not remove billing info.", true, true);
-                throw e;
-            }
-        }
-
-        // save any new addresses
-        if (this.billingToSave.size() > 0) {
-            try {
-                String sql = "INSERT INTO customer_billing (customer, billing) VALUES "
-                        + DB.preparedArgsBuilder(this.billingToSave.size(),
-                                                 "(?, ?)");
-                PreparedStatement stmt = Session.getDB().prepareStatement(sql);
-                int i = 1;
-                while (i < ((this.billingToSave.size()) * 2 + 1)) {
-                    stmt.setInt(i++, this.getPkey());
-                    try {
-                        this.billingToSave.get(i / 2 - 1).save();
-                    } catch (SQLException e) {
-                        ErrorLogger.error(e, "Saving a billing record failed.", true,
-                                          true);
-                        throw e;
-                    }
-                    stmt.setInt(i++, this.billingToSave.get(i / 2 - 1)
-                            .getPkey());
-                }
-                stmt.executeUpdate();
-                Session.updateTable(TableName.customer_billing, null);
-                billingToSave.clear();
-            } catch (SQLException e) {
-                ErrorLogger.error(e, "Could not save billing info.", true, true);
-                throw e;
-            }
-        }
+		
+		// delete removed billing
+		if (this.billingToRemove.size() > 0) {
+			String sql = "DELETE FROM customer_billing WHERE billing IN ("
+					+ DB.preparedArgsBuilder(this.billingToRemove.size(), "?")
+					+ ") AND customer=?";
+			try {
+				PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+				int i = 1;
+				for (; i < (this.billingToRemove.size() + 1); ++i) {
+					stmt.setInt(i, this.billingToRemove.get(i - 1).getPkey());
+				}
+				stmt.setInt(i, this.getPkey());
+				stmt.executeUpdate();
+				billingToRemove.clear();
+			} catch (SQLException e) {
+				ErrorLogger.error(e, "Could not remove billing info.", true,
+						true);
+				throw e;
+			}
+		}
+		
+		// save any new addresses
+		if (this.billingToSave.size() > 0) {
+			try {
+				String sql = "INSERT INTO customer_billing (customer, billing) VALUES "
+						+ DB.preparedArgsBuilder(this.billingToSave.size(),
+								"(?, ?)");
+				PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+				int i = 1;
+				while (i < ((this.billingToSave.size()) * 2 + 1)) {
+					stmt.setInt(i++, this.getPkey());
+					try {
+						this.billingToSave.get(i / 2 - 1).save();
+					} catch (SQLException e) {
+						ErrorLogger.error(e, "Saving a billing record failed.",
+								true, true);
+						throw e;
+					}
+					stmt.setInt(i++, this.billingToSave.get(i / 2 - 1)
+							.getPkey());
+				}
+				stmt.executeUpdate();
+				Session.updateTable(TableName.customer_billing, null);
+				billingToSave.clear();
+			} catch (SQLException e) {
+				ErrorLogger
+						.error(e, "Could not save billing info.", true, true);
+				throw e;
+			}
+		}
 	}
 	
 	/**
@@ -546,6 +523,35 @@ public class Customer extends Record {
 	}
 	
 	/**
+	 * Remove an address from the customer record.
+	 * 
+	 * @pre getAddresses().contains(address) == true
+	 * @post getAddresses().contains(address) == false
+	 */
+	public void removeBilling(Billing billing) {
+		if (!this.billingInitialized) {
+			try {
+				this.getBilling();
+			} catch (SQLException e) {
+				ErrorLogger.error(e, "Failed to populate billing information.",
+						true, true);
+				return;
+			}
+		}
+		if (this.billing.contains(billing)) {
+			this.billing.remove(billing);
+			try { // check if address is stored, if not don't add it to the list
+					// to be removed from db
+				billing.getPkey(); // throws uninit'd field
+				this.billingToRemove.add(billing);
+			} catch (UninitializedFieldException e) {}
+		} else {
+			throw new RecordSaveException(
+					"Could not remove billing info: couldn't find billing info to remove.");
+		}
+	}
+	
+	/**
 	 * Removes a phone number from the customer record.
 	 * 
 	 * @pre getPhoneNums().contains(phone) == true
@@ -574,9 +580,8 @@ public class Customer extends Record {
 	public void removePicture(Picture picture) {}
 	
 	/**
-	 * Allows you to set the active status of the Customer.
-         * pre - none
-         * post - set active status = true
+	 * Allows you to set the active status of the Customer. pre - none post -
+	 * set active status = true
 	 */
 	public void setActive(boolean active) {
 		this.setFieldValue("active", ((active) ? 1 : 0));
@@ -584,9 +589,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Sets the Customer's email address.
-         * 
-         * @pre - none
-         * @post - customer email set
+	 * 
+	 * @pre - none
+	 * @post - customer email set
 	 */
 	public void setEmail(String email) {
 		this.setFieldValue("email", email);
@@ -594,9 +599,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Sets the Customer's note field.
-         * 
-         * @pre - none
-         * @post - customer note field set
+	 * 
+	 * @pre - none
+	 * @post - customer note field set
 	 */
 	public void setNote(String note) {
 		this.setFieldValue("note", note);
@@ -604,9 +609,9 @@ public class Customer extends Record {
 	
 	/**
 	 * Sets the Customer's password.
-         * 
-         * @pre - none
-         * @post - customer password firel set
+	 * 
+	 * @pre - none
+	 * @post - customer password firel set
 	 */
 	public void setPassword(String password) {
 		this.setFieldValue("password", password);

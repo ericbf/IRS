@@ -1,12 +1,5 @@
 package ISIS.database;
 
-import ISIS.database.DB.TableName;
-import ISIS.gui.ErrorLogger;
-import ISIS.misc.Dates;
-import ISIS.session.Session;
-import ISIS.user.User;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +7,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import ISIS.database.DB.TableName;
+import ISIS.gui.ErrorLogger;
+import ISIS.misc.Dates;
+import ISIS.session.Session;
+import ISIS.user.User;
 
 /**
  * Base class for all record classes.
@@ -24,9 +24,9 @@ public abstract class Record {
 	 * Maps our pkey-based select to a hashmap, leveraging the method in the DB
 	 * class. WARNING: All fields are set to modifiable, but we don't care
 	 * anymore
-         * 
-         * @pre - none
-         * @post - return hashmap
+	 * 
+	 * @pre - none
+	 * @post - return hashmap
 	 */
 	protected static HashMap<String, Field> mapResultSet(ResultSet rs)
 			throws SQLException, RecordNotFoundException {
@@ -75,9 +75,9 @@ public abstract class Record {
 	 * Fetches the record in the database associated with getPkey(), using the
 	 * fetchMode specified. TODO: optimize the fetch method so it doesn't fetch
 	 * columns we have initialized already.
-         * 
-         * @pre isOpen == true
-         * @post - creates result set
+	 * 
+	 * @pre isOpen == true
+	 * @post - creates result set
 	 */
 	protected final void fetch() throws SQLException, RecordNotFoundException {
 		PreparedStatement stmt = Session.getDB().prepareStatement(
@@ -90,15 +90,15 @@ public abstract class Record {
 	
 	/**
 	 * Gets the dates object associated with the record.
-         * 
-         * @pre isOpen == true
-         * @post - returns related Date object
+	 * 
+	 * @pre isOpen == true
+	 * @post - returns related Date object
 	 */
 	public final Dates getDates() throws SQLException {
 		if (this.hasDates()) {
-            if(this.dates == null) {
-                this.readDates();
-            }
+			if (this.dates == null) {
+				this.readDates();
+			}
 			return this.dates;
 		} else {
 			throw new UnsupportedOperationException();
@@ -107,9 +107,9 @@ public abstract class Record {
 	
 	/**
 	 * Gets a field from the field hashmap. For internal use.
-         * 
-         * @pre - hashmap exists
-         * @post - returns field key from hashmap
+	 * 
+	 * @pre - hashmap exists
+	 * @post - returns field key from hashmap
 	 */
 	Field getField(String key) {
 		return this.fields.get(key);
@@ -118,9 +118,9 @@ public abstract class Record {
 	/**
 	 * Gets a field value from the field hashmap. If the field exists but was
 	 * not yet fetched,
-         * 
-         * @pre - key is passed
-         * @post - returns value for key
+	 * 
+	 * @pre - key is passed
+	 * @post - returns value for key
 	 */
 	public final Object getFieldValue(String key) {
 		Object value;
@@ -154,9 +154,9 @@ public abstract class Record {
 	
 	/**
 	 * Gets the primary key associated with this record.
-         * 
-         * @pre record exists
-         * @post - returns key to record
+	 * 
+	 * @pre record exists
+	 * @post - returns key to record
 	 */
 	public final int getPkey() throws UninitializedFieldException {
 		return (Integer) this.getFieldValue("pkey");
@@ -168,19 +168,19 @@ public abstract class Record {
 	
 	/**
 	 * Fill the fields HashMap with empty fields.
-         * 
-         * @pre - hashmap exists
-         * @post - hashmap initialized
+	 * 
+	 * @pre - hashmap exists
+	 * @post - hashmap initialized
 	 */
 	public void initializeFields(HashMap<String, Field> fields) {
 		this.fields = fields;
 	}
 	
-        /**
+	/**
 	 * Checks to see if active field is set to True.
-         * 
-         * @pre - none
-         * @post - returns bool
+	 * 
+	 * @pre - none
+	 * @post - returns bool
 	 */
 	public final boolean isActive() {
 		try {
@@ -192,11 +192,11 @@ public abstract class Record {
 		}
 	}
 	
-        /**
+	/**
 	 * Checks to see if isChanged field is set to True.
-         * 
-         * @pre - none
-         * @post - returns bool
+	 * 
+	 * @pre - none
+	 * @post - returns bool
 	 */
 	public final boolean isChanged() {
 		for (Field field : this.fields.values()) {
@@ -210,26 +210,26 @@ public abstract class Record {
 	/**
 	 * Called after saving the record; override it if it is necessary in your
 	 * subclass.
-         * 
-         * @pre - none
-         * @post none
+	 * 
+	 * @pre - none
+	 * @post none
 	 */
 	protected void postSave() throws SQLException {}
 	
 	/**
 	 * Called before saving the record; override it if it is necessary in your
 	 * subclass.
-         * 
-         * @pre - none
-         * @post none
+	 * 
+	 * @pre - none
+	 * @post none
 	 */
 	protected void preSave() {}
 	
 	/**
 	 * Reads the dates columns into a date class.
-         * 
-         * @pre - dates column exists
-         * @post - contents of dates column stored in Dates object
+	 * 
+	 * @pre - dates column exists
+	 * @post - contents of dates column stored in Dates object
 	 */
 	private void readDates() throws SQLException {
 		if (this.hasDates()) {
@@ -246,9 +246,9 @@ public abstract class Record {
 	/**
 	 * Saves the record in the database. If the record is not in the database it
 	 * is inserted, otherwise it is updated.
-         * 
-         * @pre - isOpen == True
-         * @post record is updated or inserted into db
+	 * 
+	 * @pre - isOpen == True
+	 * @post record is updated or inserted into db
 	 */
 	public final void save() throws SQLException {
 		// update dates
@@ -260,9 +260,9 @@ public abstract class Record {
 		/**
 		 * Get a list of columns that have been changed. Should be all columns
 		 * if it's a new record.
-                 * 
-                 * @pre - isOpen == True
-                 * @post returns list of changed columns
+		 * 
+		 * @pre - isOpen == True
+		 * @post returns list of changed columns
 		 */
 		ArrayList<String> columns = new ArrayList<String>(this.fields.size());
 		for (Map.Entry<String, Field> entry : this.fields.entrySet()) {
@@ -344,9 +344,9 @@ public abstract class Record {
 	
 	/**
 	 * Sets the dates associated with the record.
-         * @pre - isOpen == True
-         * @post - date fields set
-         * 
+	 * 
+	 * @pre - isOpen == True
+	 * @post - date fields set
 	 */
 	public final void setDates(Dates dates) {
 		this.dates = dates;
@@ -354,9 +354,9 @@ public abstract class Record {
 	
 	/**
 	 * Sets a field's value.
-         * 
-         * @pre - isOpen == True
-         * @post - field value set with passed value
+	 * 
+	 * @pre - isOpen == True
+	 * @post - field value set with passed value
 	 */
 	protected final void setFieldValue(String key, Object value) {
 		if (!this.fields.containsKey(key)) {
@@ -368,9 +368,9 @@ public abstract class Record {
 	/**
 	 * Sets pkey for a record being fetched. (without setting the field as
 	 * modified)
-         * 
-         * @pre - isOpen == True
-         * @post - pkey is set
+	 * 
+	 * @pre - isOpen == True
+	 * @post - pkey is set
 	 */
 	protected final void setPkey(Integer pkey) {
 		if (!this.fields.containsKey("pkey")) {
@@ -381,9 +381,9 @@ public abstract class Record {
 	
 	/**
 	 * Updates the dates field for saving.
-         * 
-         * @pre - isOpen == True
-         * @post - date fields updated, ready to be saved
+	 * 
+	 * @pre - isOpen == True
+	 * @post - date fields updated, ready to be saved
 	 */
 	private void updateDates() {
 		// if no date information is set, set it now.

@@ -1,17 +1,33 @@
 package ISIS.gui.customer;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JToggleButton;
+import javax.swing.border.EtchedBorder;
+
 import ISIS.customer.Customer;
 import ISIS.database.Record;
-import ISIS.gui.*;
+import ISIS.gui.AddEditView;
+import ISIS.gui.HintField;
+import ISIS.gui.ListButtonListener;
+import ISIS.gui.SimpleListView;
+import ISIS.gui.SplitPane;
+import ISIS.gui.WrapLayout;
 import ISIS.gui.simplelists.ListAddress;
 import ISIS.gui.simplelists.ListPhone;
 import ISIS.gui.simplelists.ListTransaction;
-
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import java.awt.*;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * View for adding and editing customers.
@@ -40,9 +56,8 @@ public class AddEditCustomer extends AddEditView {
 	 * Public constructor: returns new instance of add/edit customer view.
 	 * 
 	 * @wbp.parser.constructor
-         * 
-         * @pre - received key for customer record
-         * @post - add customer record contents to view
+	 * @pre - received key for customer record
+	 * @post - add customer record contents to view
 	 */
 	public AddEditCustomer(SplitPane splitPane, int pkey) throws SQLException {
 		super(splitPane);
@@ -59,8 +74,9 @@ public class AddEditCustomer extends AddEditView {
 	
 	/**
 	 * Discards any modifications.
-         * @pre - none
-         * @post - none, override stub
+	 * 
+	 * @pre - none
+	 * @post - none, override stub
 	 */
 	@Override
 	public void cancel() {}
@@ -68,9 +84,8 @@ public class AddEditCustomer extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.AddEditView#newWasSaved()
-        
-        @pre - none
-        @post - saves current record
+	 * @pre - none
+	 * @post - saves current record
 	 */
 	@Override
 	protected void doSaveRecordAction() {
@@ -127,8 +142,8 @@ public class AddEditCustomer extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#getCurrentRecord()
-        @pre - none
-        @post - retuns current record object
+	 * @pre - none
+	 * @post - retuns current record object
 	 */
 	@Override
 	public Record getCurrentRecord() {
@@ -153,8 +168,8 @@ public class AddEditCustomer extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#isAnyFieldsDifferentFromDefault()
-        @pre - none
-        @post - returns bool indicating if any differences in object from default
+	 * @pre - none
+	 * @post - returns bool indicating if any differences in object from default
 	 */
 	@Override
 	public boolean isAnyFieldDifferentFromDefault() {
@@ -167,9 +182,9 @@ public class AddEditCustomer extends AddEditView {
 	
 	/**
 	 * Draws all necessary components on the window.
-         * 
-         * @pre - none
-         * @post - window populated with elements
+	 * 
+	 * @pre - none
+	 * @post - window populated with elements
 	 */
 	private void populateElements() {
 		this.setLayout(new BorderLayout());

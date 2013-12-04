@@ -1,14 +1,14 @@
 package ISIS.transaction;
 
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.HashMap;
+
 import ISIS.database.DB.TableName;
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.ErrorLogger;
 import ISIS.item.Item;
-
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.HashMap;
 
 /**
  * Attributes of an item as it relates to a transaction -- e.g. amount being
@@ -27,10 +27,11 @@ public class TransactionLineItem extends Record {
 	 */
 	public static boolean	hasDates_	= true;
 	
-        /**
-         * Public constructor. Creates new instance of TransactionLineItem
-         * @param map 
-         */
+	/**
+	 * Public constructor. Creates new instance of TransactionLineItem
+	 * 
+	 * @param map
+	 */
 	public TransactionLineItem(HashMap<String, Field> map) {
 		super(map);
 	}
@@ -96,12 +97,12 @@ public class TransactionLineItem extends Record {
 	 * Gets the item.
 	 */
 	public Item getItem() {
-        try {
-		    return new Item((Integer) this.getFieldValue("item"), true);
-        } catch (SQLException e) {
-            ErrorLogger.error(e, "Failed to fetch item", true, true);
-            return null;
-        }
+		try {
+			return new Item((Integer) this.getFieldValue("item"), true);
+		} catch (SQLException e) {
+			ErrorLogger.error(e, "Failed to fetch item", true, true);
+			return null;
+		}
 	}
 	
 	/**

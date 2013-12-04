@@ -18,19 +18,19 @@ public class ListButtonListener implements ActionListener {
 	private final JPanel		cardHost;
 	
 	/*
-        * @pre - receives listener parameters
-        * @post - sets parameters
-        */
-        public ListButtonListener(CardLayout cl, JPanel cardHost, String tab) {
+	 * @pre - receives listener parameters
+	 * @post - sets parameters
+	 */
+	public ListButtonListener(CardLayout cl, JPanel cardHost, String tab) {
 		this.cl = cl;
 		this.tab = tab;
 		this.cardHost = cardHost;
 	}
 	
-        /*
-        * @pre - rreceives event
-        * @post - displays cardHost and tab
-        */
+	/*
+	 * @pre - rreceives event
+	 * @post - displays cardHost and tab
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.cl.show(this.cardHost, this.tab);

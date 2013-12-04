@@ -33,10 +33,10 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 			"Close and Generate Invoice"				};
 	private String				lastSearchFieldValue	= " ";
 	
-        /*
-        * @pre - SplitPane object received, constructor
-        * @post - SearchListView object instantiated
-        */ 
+	/*
+	 * @pre - SplitPane object received, constructor
+	 * @post - SearchListView object instantiated
+	 */
 	public SearchListView(SplitPane splitPane) {
 		super(splitPane, false);
 		
@@ -50,10 +50,10 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 		});
 		this.searchField.addKeyListener(new KeyListener() {
 			
-                        /*
-                        * @pre - Event received
-                        * @post - event overridden
-                        */
+			/*
+			 * @pre - Event received
+			 * @post - event overridden
+			 */
 			@Override
 			public void keyPressed(KeyEvent e) {
 				boolean meta = (e.getModifiers() & ActionEvent.META_MASK) == ActionEvent.META_MASK
@@ -111,47 +111,47 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 				}
 			}
 			
-                        /*
-                        * @pre - Event received
-                        * @post - event overridden
-                        */                        
+			/*
+			 * @pre - Event received
+			 * @post - event overridden
+			 */
 			@Override
 			public void keyReleased(KeyEvent e) {}
-
-                        /*
-                        * @pre - Event received
-                        * @post - event overridden
-                        */                        
+			
+			/*
+			 * @pre - Event received
+			 * @post - event overridden
+			 */
 			@Override
 			public void keyTyped(KeyEvent e) {}
 		});
 		this.searchField.addActionListener(new ActionListener() {
 			
-                    /*
-                    * @pre - Event received
-                    * @post - event overridden
-                    */
-                    @Override
+			/*
+			 * @pre - Event received
+			 * @post - event overridden
+			 */
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				SearchListView.this.tableItemAction();
 			}
 		});
 		this.searchField.addFocusListener(new FocusListener() {
-
-                    /*
-                    * @pre - Event received
-                    * @post - event overridden
-                    */	
-                    @Override
+			
+			/*
+			 * @pre - Event received
+			 * @post - event overridden
+			 */
+			@Override
 			public void focusGained(FocusEvent e) {
 				SearchListView.this.table.setFocusable(false);
 			}
 			
-                        /*
-                        * @pre - Event received
-                        * @post - event overridden
-                        */
-                        @Override
+			/*
+			 * @pre - Event received
+			 * @post - event overridden
+			 */
+			@Override
 			public void focusLost(FocusEvent e) {
 				SearchListView.this.table.setFocusable(true);
 			}
@@ -159,23 +159,22 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 		this.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
 			private static final long	serialVersionUID	= 1L;
 			
-			                        /*
-                        * @pre - Event received
-                        * @post - event overridden
-                        */
-                        @Override
+			/*
+			 * @pre - Event received
+			 * @post - event overridden
+			 */
+			@Override
 			public Component getFirstComponent(Container aContainer) {
 				return SearchListView.this.searchField;
 			}
 		});
 	}
 	
-	
-                /*
-        * @pre - Event received
-        * @post - event overridden
-        */
-        @Override
+	/*
+	 * @pre - Event received
+	 * @post - event overridden
+	 */
+	@Override
 	protected final void doFillTable() {
 		String searchFieldText = this.searchField.getText();
 		try {
@@ -210,12 +209,11 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 		}
 	}
 	
-	
-                /*
-        * @pre - Event received
-        * @post - event overridden
-        */
-        @Override
+	/*
+	 * @pre - Event received
+	 * @post - event overridden
+	 */
+	@Override
 	protected final void fillTable() {
 		String searchFieldText = this.searchField.getText();
 		if (searchFieldText.equals(this.lastSearchFieldValue)) {

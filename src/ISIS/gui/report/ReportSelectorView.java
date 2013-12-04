@@ -21,12 +21,12 @@ import ISIS.reports.BlankReport;
  * @author eric
  */
 
-        /**
-	 * Public class for the Report Select View
-         * 
-         * @pre - User is presented with a view and buttons.
-         * @post - Buttons respond according to user's interactions.
-	 */
+/**
+ * Public class for the Report Select View
+ * 
+ * @pre - User is presented with a view and buttons.
+ * @post - Buttons respond according to user's interactions.
+ */
 public class ReportSelectorView extends View {
 	private static class JButton2 extends JButton {
 		private static final long	serialVersionUID	= 1L;
@@ -43,11 +43,11 @@ public class ReportSelectorView extends View {
 	
 	private static final long	serialVersionUID	= 1L;
 	
-        /**
+	/**
 	 * Public constructor. User is presented with a Report Select View.
-         * 
-         * @pre - receives all required parameters for a Split Pane.
-         * @post - returns new instance created.
+	 * 
+	 * @pre - receives all required parameters for a Split Pane.
+	 * @post - returns new instance created.
 	 */
 	public ReportSelectorView(SplitPane splitPane) {
 		super(splitPane);

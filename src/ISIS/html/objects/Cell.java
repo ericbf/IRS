@@ -28,19 +28,19 @@ public class Cell extends HTMLTextContainer<Cell> implements
 		return super.add(table);
 	}
 	
-        /*
-         * @pre - none
-         * @post - Cell set as header
-         */
+	/*
+	 * @pre - none
+	 * @post - Cell set as header
+	 */
 	public Cell setHeader() {
 		this.type = Type.TABLE_HEADER;
 		return this;
 	}
 	
-        /*
-         * @pre - none
-         * @post - Cell unset as header
-         */
+	/*
+	 * @pre - none
+	 * @post - Cell unset as header
+	 */
 	public Cell unsetHeader() {
 		this.type = Type.TABLE_CELL;
 		return this;

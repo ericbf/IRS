@@ -1,5 +1,11 @@
 package ISIS.transaction;
 
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import ISIS.customer.Customer;
 import ISIS.database.DB;
 import ISIS.database.DB.TableName;
@@ -11,12 +17,6 @@ import ISIS.item.Item;
 import ISIS.misc.Address;
 import ISIS.misc.Billing;
 import ISIS.session.Session;
-
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * A Transaction is the exchange of goods, legal tender, or rendering of
@@ -60,8 +60,8 @@ public class Transaction extends Record {
 	boolean									itemsInitialized	= false;
 	
 	private ArrayList<TransactionLineItem>	items				= new ArrayList<TransactionLineItem>();
-	private ArrayList<TransactionLineItem>	itemsToRemove				= new ArrayList<TransactionLineItem>();
-
+	private ArrayList<TransactionLineItem>	itemsToRemove		= new ArrayList<TransactionLineItem>();
+	
 	/**
 	 * Public constructor. A Transaction starts with a user and a customer.
 	 * These attributes cannot be changed.
@@ -76,10 +76,11 @@ public class Transaction extends Record {
 		this.setFieldValue("type", "normal");
 	}
 	
-        /**
-         * Public constructor. Creates new instance of Transaction
-         * @param map 
-         */
+	/**
+	 * Public constructor. Creates new instance of Transaction
+	 * 
+	 * @param map
+	 */
 	public Transaction(HashMap<String, Field> map) {
 		super(map);
 	}
@@ -142,28 +143,6 @@ public class Transaction extends Record {
 	public void finalizeTransaction() {
 		this.setStatus(TransactionStatus.CLOSED);
 	}
-    
-    /**
-     * Checks if address exist
-     * 
-     * @return boolean
-     */
-    public boolean hasAddress() {
-        if(this.address != null) {
-            return true;
-        }
-        try {
-            this.getPkey();
-        } catch (UninitializedFieldException e) {
-            // the transaction has never been saved, so no address has been set.
-            return false;
-        }
-        if((Integer) this.getFieldValue("address") == null) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 	
 	/**
 	 * Gets the address associated with this transaction.
@@ -185,8 +164,8 @@ public class Transaction extends Record {
 			ErrorLogger.error(e, "Failed to retrieve address.", true, false);
 			throw e;
 		} catch (NullPointerException e) {
-            return null;
-        }
+			return null;
+		}
 		return this.address;
 	}
 	
@@ -210,8 +189,8 @@ public class Transaction extends Record {
 			ErrorLogger.error(e, "Failed to retrieve address.", true, true);
 			throw e;
 		} catch (NullPointerException e) {
-            return null;
-        }
+			return null;
+		}
 		return this.billing;
 	}
 	
@@ -281,6 +260,28 @@ public class Transaction extends Record {
 		return Transaction.tableName;
 	}
 	
+	/**
+	 * Checks if address exist
+	 * 
+	 * @return boolean
+	 */
+	public boolean hasAddress() {
+		if (this.address != null) {
+			return true;
+		}
+		try {
+			this.getPkey();
+		} catch (UninitializedFieldException e) {
+			// the transaction has never been saved, so no address has been set.
+			return false;
+		}
+		if ((Integer) this.getFieldValue("address") == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	@Override
 	protected boolean hasDates() {
 		return Transaction.hasDates_;
@@ -316,16 +317,16 @@ public class Transaction extends Record {
 		for (TransactionLineItem item : this.items) {
 			item.save();
 		}
-        //TODO: make less hacky
-        String sql = "DELETE FROM transaction_item WHERE transaction_=? AND item=?";
-        for (TransactionLineItem item : this.itemsToRemove) {
-            PreparedStatement stmt = Session.getDB().prepareStatement(sql);
-            stmt.setInt(1, this.getPkey());
-            stmt.setInt(2, item.getPkey());
-            stmt.execute();
-        }
-        Session.updateTable(TableName.transaction_item, null);
-    }
+		// TODO: make less hacky
+		String sql = "DELETE FROM transaction_item WHERE transaction_=? AND item=?";
+		for (TransactionLineItem item : this.itemsToRemove) {
+			PreparedStatement stmt = Session.getDB().prepareStatement(sql);
+			stmt.setInt(1, this.getPkey());
+			stmt.setInt(2, item.getPkey());
+			stmt.execute();
+		}
+		Session.updateTable(TableName.transaction_item, null);
+	}
 	
 	/**
 	 * Removes an item from this transaction.
@@ -336,15 +337,15 @@ public class Transaction extends Record {
 	public void removeItem(Item item) {
 		this.items.remove(item);
 	}
-
-    /**
+	
+	/**
 	 * Removes an item from this transaction.
-	 *
+	 * 
 	 * @pre getItems().contains(item) == true
 	 * @post getItems().contains(item) == false
 	 */
 	public void removeItem(TransactionLineItem item) {
-        this.itemsToRemove.add(item);
+		this.itemsToRemove.add(item);
 	}
 	
 	/**

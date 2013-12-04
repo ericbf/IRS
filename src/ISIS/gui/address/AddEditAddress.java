@@ -1,15 +1,18 @@
 package ISIS.gui.address;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.sql.SQLException;
+
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+
 import ISIS.customer.Customer;
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.misc.Address;
-
-import javax.swing.*;
-import java.awt.*;
-import java.sql.SQLException;
 
 public class AddEditAddress extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
@@ -30,9 +33,8 @@ public class AddEditAddress extends AddEditView {
 	 * Public constructor: returns new instance of add/edit customer view.
 	 * 
 	 * @wbp.parser.constructor
-         * 
-         * @pre - parameters for new object received
-         * @post - new AddEdditAddress object instantiated
+	 * @pre - parameters for new object received
+	 * @post - new AddEdditAddress object instantiated
 	 */
 	public AddEditAddress(SplitPane splitPane, Customer customer, int pkey)
 			throws SQLException {
@@ -53,9 +55,9 @@ public class AddEditAddress extends AddEditView {
 	
 	/**
 	 * Discards any modifications.
-         * 
-         * @pre - none, override stub
-         * @post - none, override stub
+	 * 
+	 * @pre - none, override stub
+	 * @post - none, override stub
 	 */
 	@Override
 	public void cancel() {}
@@ -63,8 +65,8 @@ public class AddEditAddress extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#getCurrentRecord()
-        * @pre - none
-        * @post - current record returned        
+	 * @pre - none
+	 * @post - current record returned
 	 */
 	@Override
 	public Record getCurrentRecord() {
@@ -91,8 +93,8 @@ public class AddEditAddress extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
-        @pre - none
-        @post - bool returned indicating if any difference detected
+	 * @pre - none
+	 * @post - bool returned indicating if any difference detected
 	 */
 	@Override
 	public boolean isAnyFieldDifferentFromDefault() {
@@ -109,9 +111,9 @@ public class AddEditAddress extends AddEditView {
 	
 	/**
 	 * Draws all necessary components on the window.
-         * 
-         * @pre - none
-         * @post - window populated with elements
+	 * 
+	 * @pre - none
+	 * @post - window populated with elements
 	 */
 	private void populateElements() {
 		this.setLayout(new GridBagLayout());
@@ -237,17 +239,16 @@ public class AddEditAddress extends AddEditView {
 		this.add(this.st_address = new HintField("Street Address"), c);
 		
 	}
-
-    /**
-    *  
-    * @pre - none
-    * @post - Save customer record if not null
-    */
-    @Override
-    protected void postSave() throws SQLException {
-        if (this.customer != null) {
-            this.customer.save();
-        }
-    }
+	
+	/**
+	 * @pre - none
+	 * @post - Save customer record if not null
+	 */
+	@Override
+	protected void postSave() throws SQLException {
+		if (this.customer != null) {
+			this.customer.save();
+		}
+	}
 	
 }

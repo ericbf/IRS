@@ -89,9 +89,9 @@ public class HTMLObject<E> {
 	private String								HTMLclass	= "";
 	private String								attributes	= "";
 	
-        /*
-         * Protected constructor: new HTMLObject instance
-         */
+	/*
+	 * Protected constructor: new HTMLObject instance
+	 */
 	protected HTMLObject(String text) {
 		this.type = Type.PLAIN_TEXT;
 		if (text == null || text.isEmpty()) {
@@ -103,19 +103,19 @@ public class HTMLObject<E> {
 		this.objects = null;
 	}
 	
-        /*
-         * Protected constructor: new HTMLObject instance
-         */
+	/*
+	 * Protected constructor: new HTMLObject instance
+	 */
 	protected HTMLObject(Type type) {
 		this.objects = new ArrayList<HTMLObject<?>>();
 		this.container = this.isContainer(type);
 		this.type = type;
 	}
 	
-        /*
-         * @pre - none
-         * @post - param add to objects
-         */
+	/*
+	 * @pre - none
+	 * @post - param add to objects
+	 */
 	protected E add(HTMLObject<?> object) {
 		this.objects.add(object);
 		@SuppressWarnings("unchecked")
@@ -123,10 +123,10 @@ public class HTMLObject<E> {
 		return e;
 	}
 	
-        /*
-         * @pre - key & value are not empty
-         * @post - key & value are added to attributes
-         */
+	/*
+	 * @pre - key & value are not empty
+	 * @post - key & value are added to attributes
+	 */
 	public E addAttribute(String key, String value) {
 		if (key == null || value == null || key.trim().isEmpty()
 				|| value.trim().isEmpty()) {
@@ -143,10 +143,10 @@ public class HTMLObject<E> {
 		return e;
 	}
 	
-        /*
-         * @pre - none
-         * @post - param appended to HTMLclass
-         */
+	/*
+	 * @pre - none
+	 * @post - param appended to HTMLclass
+	 */
 	public E addClass(String HTMLclass) {
 		if (this.HTMLclass.isEmpty()) {
 			this.HTMLclass = HTMLclass;
@@ -158,10 +158,10 @@ public class HTMLObject<E> {
 		return e;
 	}
 	
-        /*
-         * @pre - none
-         * @post - builds b 
-         */
+	/*
+	 * @pre - none
+	 * @post - builds b
+	 */
 	public String build() {
 		StringBuilder b = new StringBuilder();
 		if (this.container) {
@@ -230,10 +230,10 @@ public class HTMLObject<E> {
 		}
 	}
 	
-        /*
-         * @pre - none
-         * @post -  String list of this HTMLbuilder
-         */
+	/*
+	 * @pre - none
+	 * @post - String list of this HTMLbuilder
+	 */
 	protected String openTag() {
 		return this
 				+ (this.id.isEmpty() ? "" : " id=\"" + this.id + "\"")
@@ -242,10 +242,10 @@ public class HTMLObject<E> {
 				+ (this.attributes.isEmpty() ? "" : " " + this.attributes);
 	}
 	
-        /*
-         * @pre - none
-         * @post - id == param
-         */
+	/*
+	 * @pre - none
+	 * @post - id == param
+	 */
 	public E setID(String id) {
 		this.id = id;
 		@SuppressWarnings("unchecked")

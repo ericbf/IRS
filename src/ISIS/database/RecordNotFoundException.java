@@ -2,7 +2,6 @@ package ISIS.database;
 
 /**
  * @author michaelm
- * 
  * @pre - isOpen == True
  * @post - exception thrown
  */
