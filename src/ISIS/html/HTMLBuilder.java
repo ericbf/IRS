@@ -54,6 +54,9 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	
 	private String							title;
 	
+        /*
+         * Public constructor: creates new HTMLBuilder instance
+         */
 	public HTMLBuilder(String title) {
 		this.setTitle(title);
 		this.scripts = new ArrayList<JSScript>();
@@ -61,6 +64,10 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 		this.objects = new ArrayList<HTMLObject<?>>();
 	}
 	
+        /*
+         * @pre - none
+         * @post - appends style param to this.styles
+         */
 	public void add(CSSStyle style) {
 		this.styles.add(style);
 	}
@@ -88,6 +95,10 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	 * ISIS.html.objects.HTMLContainObjects#add(ISIS.html.objects.Paragraph)
 	 */
 	
+        /*
+         * @pre - none
+         * @post - appends script param to this.scripts
+         */
 	public void add(JSScript script) {
 		this.scripts.add(script);
 	}/*
@@ -105,6 +116,10 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 		return this.add((HTMLObject<?>) table);
 	}
 	
+        /*
+         * @pre - title != null
+         * @post - returns HTMLformat block string
+         */
 	public String build() throws HTMLFormatException {
 		if (this.title.isEmpty()) {
 			throw new HTMLFormatException("HTML title cannot be empty.");
@@ -177,6 +192,9 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	/**
 	 * Returns null if the designator doesn't match an existing style.
 	 * 
+         * @pre - none
+         * @post - returns style
+         * 
 	 * @param designator
 	 * @return
 	 */
@@ -190,12 +208,16 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	}
 	
 	/**
-	 * @return the styles
+	 * @post returns the styles
 	 */
 	public ArrayList<CSSStyle> getStyles() {
 		return this.styles;
 	}
 	
+        /*
+         * @pre - none
+         * @post - sets the title
+         */
 	public final void setTitle(String title) {
 		this.title = title;
 	}
