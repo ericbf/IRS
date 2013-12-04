@@ -76,6 +76,10 @@ public class Transaction extends Record {
 		this.setFieldValue("type", "normal");
 	}
 	
+        /**
+         * Public constructor. Creates new instance of Transaction
+         * @param map 
+         */
 	public Transaction(HashMap<String, Field> map) {
 		super(map);
 	}
@@ -138,7 +142,12 @@ public class Transaction extends Record {
 	public void finalizeTransaction() {
 		this.setStatus(TransactionStatus.CLOSED);
 	}
-
+    
+    /**
+     * Checks if address exist
+     * 
+     * @return boolean
+     */
     public boolean hasAddress() {
         if(this.address != null) {
             return true;

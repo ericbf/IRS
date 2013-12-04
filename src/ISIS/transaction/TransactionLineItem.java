@@ -27,6 +27,10 @@ public class TransactionLineItem extends Record {
 	 */
 	public static boolean	hasDates_	= true;
 	
+        /**
+         * Public constructor. Creates new instance of TransactionLineItem
+         * @param map 
+         */
 	public TransactionLineItem(HashMap<String, Field> map) {
 		super(map);
 	}

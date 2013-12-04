@@ -12,15 +12,29 @@ public abstract class Report {
 	protected HTMLBuilder	b;
 	protected String		title;
 	
+        /**
+         * Protected constructor. Creates new instance of report
+         * @param title 
+         */
 	protected Report(String title) {
 		this.b = HTMLBuilder.getReportTemplate(title);
 		this.title = title;
 	}
 	
+        /**
+         * Gets HTML builder.
+         * 
+         * @return 
+         */
 	public final HTMLBuilder getBuilder() {
 		return this.b;
 	}
 	
+        /**
+         * Gets title.
+         * 
+         * @return 
+         */
 	public final String getTitle() {
 		return this.title;
 	}

@@ -53,7 +53,13 @@ public class Session {
 		}
 		Session.session = new Session(user);
 	}
-
+        
+    /**
+     * @pre none
+     * @post User activated
+     * @param username
+     * @throws SQLException 
+     */
     public static void activateUser(String username) throws SQLException {
         String sql = "UPDATE user SET active=1 WHERE username=?";
         PreparedStatement stmt = Session.getDB().prepareStatement(sql);
@@ -114,6 +120,11 @@ public class Session {
 		}
 	}
 	
+        /**
+         * sets user
+         * 
+         * @param user 
+         */
 	private Session(User user) {
 		this.user = user;
 	}
@@ -146,6 +157,11 @@ public class Session {
 		return null;
 	}
 	
+        /**
+         * Gets User.
+         * 
+         * @return 
+         */
 	public User getUser() {
 		return this.user;
 	}

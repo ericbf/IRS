@@ -53,6 +53,12 @@ public final class User extends Record {
 		return result.toString();
 	}
 	
+        /**
+         * @pre none
+         * @post hex data converted to byte data
+         * @param s
+         * @return 
+         */
 	private static byte[] hexToBytes(String s) {
 		int len = s.length();
 		byte[] data = new byte[len / 2];
