@@ -32,6 +32,8 @@ public class SearchListCustomers extends SearchListView<Customer> {
 	 * Constructs new Customer list view.
 	 * 
 	 * @throws SQLException
+         * @pre - receive SPlitPane objects
+         * @post - draw SearchList members in view
 	 */
 	public SearchListCustomers(SplitPane splitPane) {
 		super(splitPane);
@@ -161,7 +163,12 @@ public class SearchListCustomers extends SearchListView<Customer> {
 		this.fillTable();
 	}
 	
-	@Override
+        /**
+	 * 
+         * @pre - none
+         * @post - doClick method invoked
+	 */
+        @Override
 	protected void tableItemAction() {
 		this.editButton.doClick();
 	}
@@ -169,6 +176,8 @@ public class SearchListCustomers extends SearchListView<Customer> {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.SearchListView#tableName()
+         * @pre - none
+         * @post - TableName DB object for customer returned
 	 */
 	@Override
 	protected DB.TableName getTableName() {
@@ -178,6 +187,8 @@ public class SearchListCustomers extends SearchListView<Customer> {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.SearchListView#mapResults(java.util.ArrayList)
+        @pre - nonw
+        @post - returned ArrayList of cstomer obkects
 	 */
 	@Override
 	protected ArrayList<Customer> mapResults(

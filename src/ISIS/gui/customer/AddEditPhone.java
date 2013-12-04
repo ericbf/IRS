@@ -23,7 +23,12 @@ public class AddEditPhone extends AddEditView {
 																			.values());
 	private final Customer				customer;
 	
-	public AddEditPhone(SplitPane splitPane, Customer customer) {
+	/**
+	 * 
+         * @pre - receive SPlitPane and Customer objects
+         * @post - draw AddEditPhone members in view
+	 */
+        public AddEditPhone(SplitPane splitPane, Customer customer) {
 		super(splitPane);
 		this.populateElements();
 		this.phone = null;
@@ -34,6 +39,9 @@ public class AddEditPhone extends AddEditView {
 	 * Public constructor: returns new instance of add/edit customer view.
 	 * 
 	 * @wbp.parser.constructor
+         * 
+         * @pre - recieve required parameters
+         * @post - returns new view for add/edit phone numbers
 	 */
 	public AddEditPhone(SplitPane splitPane, Customer customer, int pkey)
 			throws SQLException {
@@ -48,6 +56,8 @@ public class AddEditPhone extends AddEditView {
 	
 	/**
 	 * Discards any modifications.
+         * @pre - none
+         * @post - none, override stub
 	 */
 	@Override
 	public void cancel() {}
@@ -55,6 +65,8 @@ public class AddEditPhone extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#getCurrentRecord()
+        @pre - none
+        @post - return Record object of current record
 	 */
 	@Override
 	public Record getCurrentRecord() {
@@ -75,6 +87,8 @@ public class AddEditPhone extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
+        @pre - none
+        @post - bool returned indicating if any difference detected
 	 */
 	@Override
 	public boolean isAnyFieldDifferentFromDefault() {
@@ -84,6 +98,8 @@ public class AddEditPhone extends AddEditView {
 	
 	/**
 	 * Draws all necessary components on the window.
+         * @pre - none
+         * @post - window populated with elements
 	 */
 	private void populateElements() {
 		this.setLayout(new GridBagLayout());
@@ -121,7 +137,13 @@ public class AddEditPhone extends AddEditView {
 		this.add(this.phoneNo = new NumberHintField("Phone #"), c);
 	}
 	
-	@Override
+	
+        /**
+        *  
+        * @pre - none
+        * @post - Save customer record if not null
+        */
+        @Override
 	protected void postSave() throws SQLException {
 		if (this.customer != null) {
 			this.customer.save();

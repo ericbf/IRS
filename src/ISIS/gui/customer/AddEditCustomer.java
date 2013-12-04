@@ -40,6 +40,9 @@ public class AddEditCustomer extends AddEditView {
 	 * Public constructor: returns new instance of add/edit customer view.
 	 * 
 	 * @wbp.parser.constructor
+         * 
+         * @pre - received key for customer record
+         * @post - add customer record contents to view
 	 */
 	public AddEditCustomer(SplitPane splitPane, int pkey) throws SQLException {
 		super(splitPane);
@@ -56,6 +59,8 @@ public class AddEditCustomer extends AddEditView {
 	
 	/**
 	 * Discards any modifications.
+         * @pre - none
+         * @post - none, override stub
 	 */
 	@Override
 	public void cancel() {}
@@ -63,6 +68,9 @@ public class AddEditCustomer extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.AddEditView#newWasSaved()
+        
+        @pre - none
+        @post - saves current record
 	 */
 	@Override
 	protected void doSaveRecordAction() {
@@ -119,6 +127,8 @@ public class AddEditCustomer extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#getCurrentRecord()
+        @pre - none
+        @post - retuns current record object
 	 */
 	@Override
 	public Record getCurrentRecord() {
@@ -143,6 +153,8 @@ public class AddEditCustomer extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#isAnyFieldsDifferentFromDefault()
+        @pre - none
+        @post - returns bool indicating if any differences in object from default
 	 */
 	@Override
 	public boolean isAnyFieldDifferentFromDefault() {
@@ -155,6 +167,9 @@ public class AddEditCustomer extends AddEditView {
 	
 	/**
 	 * Draws all necessary components on the window.
+         * 
+         * @pre - none
+         * @post - window populated with elements
 	 */
 	private void populateElements() {
 		this.setLayout(new BorderLayout());

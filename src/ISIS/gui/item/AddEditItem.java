@@ -30,6 +30,8 @@ public class AddEditItem extends AddEditView {
 	
 	/**
 	 * Public constructor: returns new instance of add/edit item view.
+         * @pre - SPlitPane to update received
+         * @post SplitPane populated with new AddEditItem vie
 	 */
 	public AddEditItem(SplitPane splitPane) {
 		super(splitPane);
@@ -41,6 +43,8 @@ public class AddEditItem extends AddEditView {
 	 * Public constructor: returns new instance of add/edit customer view.
 	 * 
 	 * @wbp.parser.constructor
+         * @pre - receive SPlitPane object and item pkey
+         * @post - draw Item members in view
 	 */
 	public AddEditItem(SplitPane splitPane, int pkey) throws SQLException {
 		super(splitPane);
@@ -61,6 +65,9 @@ public class AddEditItem extends AddEditView {
 	
 	/**
 	 * Discards any modifications.
+         * 
+         * @pre - none
+         * @post - none, override stub
 	 */
 	@Override
 	public void cancel() {}
@@ -68,6 +75,8 @@ public class AddEditItem extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#getCurrentRecord()
+        @pre - none
+        @post - returns item mebers for current record
 	 */
 	@Override
 	public Record getCurrentRecord() {
@@ -98,6 +107,8 @@ public class AddEditItem extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
+        @pre - none
+        @post - returns bool indicating if any fields differ from default values
 	 */
 	@Override
 	public boolean isAnyFieldDifferentFromDefault() {
@@ -114,6 +125,9 @@ public class AddEditItem extends AddEditView {
 	
 	/**
 	 * Draws all necessary components on the window.
+         * 
+         * @pre - none
+         * @post - draws members for current object in view
 	 */
 	private void populateElements() {
 		this.setLayout(new GridBagLayout());
