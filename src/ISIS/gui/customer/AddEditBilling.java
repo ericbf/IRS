@@ -77,6 +77,8 @@ public class AddEditBilling extends AddEditView {
 	
 	/**
 	 * Discards any modifications.
+         * @pre - none, override stub
+         * @post - none, override stub
 	 */
 	@Override
 	public void cancel() {}
@@ -84,6 +86,9 @@ public class AddEditBilling extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#getCurrentRecord()
+        
+        @pre - none
+        @post - retuns current record object
 	 */
 	@Override
 	public Record getCurrentRecord() {
@@ -118,6 +123,9 @@ public class AddEditBilling extends AddEditView {
 	/*
 	 * (non-Javadoc)
 	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
+        @pre - none
+        @post - returns bool indicating if any differences in object from default
+       
 	 */
 	@Override
 	public boolean isAnyFieldDifferentFromDefault() {
@@ -132,6 +140,8 @@ public class AddEditBilling extends AddEditView {
 	
 	/**
 	 * Draws all necessary components on the window.
+         * @pre - none
+         * @post - window populated with elements
 	 */
 	private void populateElements() {
 		this.setLayout(new GridBagLayout());
@@ -280,7 +290,11 @@ public class AddEditBilling extends AddEditView {
 		 * HintField("Street Address"), c);
 		 */
 	}
-	
+	/**
+        *  
+        * @pre - none
+        * @post - Save customer record if not null
+        */
 	@Override
 	protected void postSave() throws SQLException {
 		if (this.customer != null) {
