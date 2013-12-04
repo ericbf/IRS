@@ -31,7 +31,7 @@ public class HintField extends JTextField {
 			this.hintEnabled = true;
 		}
 		
-		/*
+		/**
 		 * @pre - receives graphics object
 		 * @post - object drawn
 		 */
@@ -48,7 +48,7 @@ public class HintField extends JTextField {
 			}
 		}
 		
-		/*
+		/**
 		 * @pre - none
 		 * @post - object redrawn
 		 */
@@ -65,7 +65,7 @@ public class HintField extends JTextField {
 	private String				hint;
 	private UI					ui;
 	
-	/*
+	/**
 	 * @pre - none, constructor
 	 * @post - object instantiated and returned
 	 */
@@ -81,7 +81,7 @@ public class HintField extends JTextField {
 		this(hint, "");
 	}
 	
-	/*
+	/**
 	 * @pre - none, constructor
 	 * @post - object instantiated and returned
 	 */
