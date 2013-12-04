@@ -201,7 +201,10 @@ public class ListAddress extends SimpleListView<Address> {
 		}
 		return addresses;
 	}
-	
+	/*
+        * @pre - none
+        * @post - Button is clicked.
+        */
 	public void setSelectAction(ActionListener listener) {
 		this.selectButton.addActionListener(listener);
 	}

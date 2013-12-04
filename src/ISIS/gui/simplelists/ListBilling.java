@@ -30,6 +30,13 @@ public class ListBilling extends SimpleListView<Billing> {
 	private final Customer		customer;
 	private JButton				viewButton, selectButton;
 	
+        /**
+        * Lists all billing associated with the customer record.
+        * 
+        * @pre - none 
+        * @post - returns and lists all info concerned with listing billing
+        *         into the table view for use.
+        */ 
 	public ListBilling(SplitPane splitPane, View pusher, Customer customer,
 			Integer key) {
 		super(splitPane, pusher, false, "SELECT b.* FROM billing AS b left "
@@ -166,6 +173,12 @@ public class ListBilling extends SimpleListView<Billing> {
 		this.fillTable();
 	}
 	
+        /**
+	 * Public constructor.
+         * 
+         * @pre - selected == -1
+         * @post - returns -1 or this.keys.get(selected)
+	 */
 	public int getSelectedPkey() {
 		int selected = this.table.getSelectedRow();
 		if (selected == -1) {
@@ -179,6 +192,10 @@ public class ListBilling extends SimpleListView<Billing> {
 		return DB.TableName.billing;
 	}
 	
+        /*
+        * @pre - Results from a DB query are given.
+        * @post - Puts the results into a collection the table view can use.
+        */
 	@Override
 	protected ArrayList<Billing> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
@@ -189,6 +206,10 @@ public class ListBilling extends SimpleListView<Billing> {
 		return billing;
 	}
 	
+        /*
+        * @pre - none
+        * @post - Button is clicked.
+        */
 	public void setSelectAction(ActionListener listener) {
 		this.selectButton.addActionListener(listener);
 	}
