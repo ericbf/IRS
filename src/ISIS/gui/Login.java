@@ -10,7 +10,8 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class Login extends JFrame {
-    private HintField username, password;
+    private HintField username;
+    private JPasswordField password;
     private JButton submit, editUser, newUser;
 
     public Login() {
@@ -59,14 +60,14 @@ public class Login extends JFrame {
         c.gridx = x--;
         c.gridy = y++;
         c.fill = GridBagConstraints.BOTH;
-        this.add(this.password = new HintField("Password"), c);
+        this.add(this.password = new JPasswordField(), c);
 
         this.submit = new JButton("Login");
         this.submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Session.startNewSession(Login.this.username.getText(), Login.this.password.getText());
+                    Session.startNewSession(Login.this.username.getText(), new String(Login.this.password.getPassword()));
                     java.awt.EventQueue.invokeLater(new Runnable() {
                         @Override
                         public void run() {
@@ -105,7 +106,7 @@ public class Login extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Session.startNewSession(Login.this.username.getText(), Login.this.password.getText());
+                    Session.startNewSession(Login.this.username.getText(), new String(Login.this.password.getPassword()));
                     java.awt.EventQueue.invokeLater(new Runnable() {
                         @Override
                         public void run() {
@@ -164,7 +165,7 @@ public class Login extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Session.startNewSession(Login.this.username.getText(), Login.this.password.getText());
+                    Session.startNewSession(Login.this.username.getText(), new String(Login.this.password.getPassword()));
                     java.awt.EventQueue.invokeLater(new Runnable() {
                         @Override
                         public void run() {

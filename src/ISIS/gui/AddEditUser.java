@@ -13,7 +13,8 @@ import java.sql.SQLException;
 public class AddEditUser extends AddEditView {
     private static final long	serialVersionUID	= 1L;
     private User user = null;
-    private HintField			username, password, fname, lname, note;
+    private HintField			username, fname, lname, note;
+    private JPasswordField      password;
     private JCheckBox			active;
     private final Login loginWindow;
     JButton save, cancel;
@@ -53,14 +54,14 @@ public class AddEditUser extends AddEditView {
                 ErrorLogger.error("No username.", false, true);
                 return null;
             }
-            this.user = new User(this.username.getText(), this.active.isSelected(), this.password.getText(), this.fname.getText(),
+            this.user = new User(this.username.getText(), this.active.isSelected(), new String(this.password.getPassword()), this.fname.getText(),
                                  this.lname.getText(), this.note.getText());
             this.disableFields(this.username, this.fname, this.lname);
         } else {
             this.user.setActive(this.active.isSelected());
             this.user.setNote(this.note.getText());
-            if(!this.password.isEmpty()) {
-                this.user.setPassword(this.password.getText());
+            if(this.password.getPassword().length > 0) {
+                this.user.setPassword(new String(this.password.getPassword()));
             }
         }
         return this.user;
@@ -74,7 +75,7 @@ public class AddEditUser extends AddEditView {
     public boolean isAnyFieldDifferentFromDefault() {
         boolean same = this.active.isSelected()
                 && this.username.isEmpty()
-                && this.password.isEmpty()
+                && this.password.getPassword().length == 0
                 && this.fname.isEmpty()
                 && this.lname.isEmpty()
                 && this.note.isEmpty();
@@ -169,7 +170,7 @@ public class AddEditUser extends AddEditView {
         c.gridy = y++;
         c.gridwidth = 2;
         c.fill = GridBagConstraints.BOTH;
-        this.add(this.password = new HintField("Password"), c); //shown in plaintext, but not stored in plaintext.
+        this.add(this.password = new JPasswordField(), c); //shown in plaintext, but not stored in plaintext.
 
         c = new GridBagConstraints();
         c.weightx = 0;
