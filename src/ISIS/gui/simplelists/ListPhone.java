@@ -25,7 +25,13 @@ import java.util.HashMap;
 public class ListPhone extends SimpleListView<Phone> {
 	private static final long	serialVersionUID	= 1L;
     private final Customer customer;
-	
+	/**
+        * Lists all phone info associated with the customer record.
+        * 
+        * @pre - necessary parameters are given for List Phone
+        * @post - returns and lists all info concerned with phone information
+        *         into the table view for use.
+        */ 
 	public ListPhone(SplitPane splitPane, View pusher, Customer customer) {
 		super(splitPane, pusher, false, "SELECT p.* FROM phone AS p LEFT "
 				+ "JOIN customer_phone AS cp ON p.pkey=cp.phone WHERE "
@@ -110,13 +116,20 @@ public class ListPhone extends SimpleListView<Phone> {
 
 		this.fillTable();
 	}
-
+        /**
+         * @pre - none
+         * @post - returns DB.TableName.customer_phone
+	 */
 	@Override
 	protected DB.TableName getTableName() {
 		return DB.TableName.customer_phone;
 		// only customers should have a phone list
 	}
 	
+        /*
+        * @pre - Results from a DB query are given.
+        * @post - Puts the results into a collection the table view can use.
+        */
 	@Override
 	protected ArrayList<Phone> mapResults(
 			ArrayList<HashMap<String, Field>> results) {
