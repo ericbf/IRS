@@ -15,7 +15,7 @@ import ISIS.database.Record;
 import ISIS.gui.SplitPane;
 import ISIS.gui.SplitPane.LayoutType;
 import ISIS.gui.View;
-import ISIS.reports.BlankReport;
+import ISIS.reports.TeamMemberReport;
 
 /**
  * @author eric
@@ -62,14 +62,16 @@ public class ReportSelectorView extends View {
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(new JButton2("Test").addActionListenero(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ReportSelectorView.this.splitPane.push(new ReportViewer(
-						new BlankReport(), ReportSelectorView.this.splitPane),
-						LayoutType.HORIZONTAL, ReportSelectorView.this);
-			}
-		}), c);
+		this.add(new JButton2("ISIS Member Report")
+				.addActionListenero(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						ReportSelectorView.this.splitPane.push(
+								new ReportViewer(new TeamMemberReport(),
+										ReportSelectorView.this.splitPane),
+								LayoutType.HORIZONTAL, ReportSelectorView.this);
+					}
+				}), c);
 	}
 	
 	/*

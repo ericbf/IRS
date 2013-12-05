@@ -286,6 +286,12 @@ public final class SplitPane extends JPanel {
 		}
 	}
 	
+	public void popAllButFirst() throws CloseCanceledException {
+		while (this.stackPointer > 1) {
+			this.pop();
+		}
+	}
+	
 	/**
 	 * Pushes a view onto the stack with a given layout and makes it visible.
 	 * 

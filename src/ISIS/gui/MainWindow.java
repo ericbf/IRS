@@ -2,6 +2,8 @@ package ISIS.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.SQLException;
@@ -186,6 +188,37 @@ public class MainWindow extends JFrame {
 		tabs.add("Transactions", this.transactionPane);
 		tabs.add("Reports", this.reportPane);
 		this.setContentPane(tabs);
-		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		this.addWindowListener(new WindowListener() {
+			@Override
+			public void windowActivated(WindowEvent e) {}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				try {
+					MainWindow.this.customerPane.popAllButFirst();
+					MainWindow.this.inventoryPane.popAllButFirst();
+					MainWindow.this.transactionPane.popAllButFirst();
+					System.exit(0);
+				} catch (CloseCanceledException e1) {}
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {}
+			
+			@Override
+			public void windowOpened(WindowEvent e) {}
+		});
+		
 	}
 }

@@ -11,7 +11,7 @@ import ISIS.html.objects.Table;
 /**
  * @author eric
  */
-public class BlankReport extends Report {
+public class TeamMemberReport extends Report {
 	private static final String	names[]			= { "Eric", "Michael", "Keith",
 			"J.P.", "Sirang"					};
 	private static final String	descriptions[]	= { "Beautiful", "Magnificent",
@@ -23,8 +23,8 @@ public class BlankReport extends Report {
 	/**
 	 * @param title
 	 */
-	public BlankReport() {
-		super("Blank Report");
+	public TeamMemberReport() {
+		super("ISIS Member Report");
 		this.populateBuilder();
 	}
 	
@@ -34,7 +34,7 @@ public class BlankReport extends Report {
 	 */
 	@Override
 	public void populateBuilder() {
-		Table t = new Table(2, BlankReport.names.length + 1);
+		Table t = new Table(2, TeamMemberReport.names.length + 1);
 		
 		t.setHeaderRow(0);
 		
@@ -46,17 +46,18 @@ public class BlankReport extends Report {
 		
 		Random rand = new Random();
 		for (int row = 1; row < t.getRowCount(); row++) {
-			t.get(0, row).add(BlankReport.names[row - 1]);
+			t.get(0, row).add(TeamMemberReport.names[row - 1]);
 			int description;
 			if (row - 1 == 0) {
 				while ((description = rand
-						.nextInt(BlankReport.descriptions.length)) > 5) {
+						.nextInt(TeamMemberReport.descriptions.length)) > 5) {
 					;
 				}
 			} else {
-				description = rand.nextInt(BlankReport.descriptions.length);
+				description = rand
+						.nextInt(TeamMemberReport.descriptions.length);
 			}
-			t.get(1, row).add(BlankReport.descriptions[description]);
+			t.get(1, row).add(TeamMemberReport.descriptions[description]);
 		}
 		
 		this.b.add(t);
