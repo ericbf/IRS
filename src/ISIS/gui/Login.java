@@ -136,7 +136,7 @@ public class Login extends JFrame {
 									frame.pack();
 									frame.setMinimumSize(new Dimension(500, 0));
 									frame.setVisible(true);
-									Login.this.setVisible(false);
+									Login.this.dispose();
 								}
 							});
 						}
@@ -224,11 +224,7 @@ public class Login extends JFrame {
 								@Override
 								public void run() {
 									MainWindow frame = new MainWindow();
-									frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-									frame.pack();
-									frame.setMinimumSize(new Dimension(800, 400));
 									frame.setVisible(true);
-									Login.this.setVisible(false);
 									Login.this.dispose();
 								}
 							});

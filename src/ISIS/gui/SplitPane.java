@@ -287,7 +287,7 @@ public final class SplitPane extends JPanel {
 	}
 	
 	public void popAllButFirst() throws CloseCanceledException {
-		while (this.stackPointer > 1) {
+		while (this.stackPointer > 0) {
 			this.pop();
 		}
 	}

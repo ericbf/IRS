@@ -1,5 +1,6 @@
 package ISIS.gui;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -159,6 +160,8 @@ public class MainWindow extends JFrame {
 	
 	public MainWindow() {
 		super("IRS");
+		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		
 		this.inventoryPane = new SplitPane();
 		this.inventoryPane.push(new SearchListItems(this.inventoryPane),
 				SplitPane.LayoutType.HORIZONTAL, null);
@@ -182,7 +185,6 @@ public class MainWindow extends JFrame {
 		tabs.add("Transactions", this.transactionPane);
 		tabs.add("Reports", this.reportPane);
 		this.setContentPane(tabs);
-		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		
 		this.addWindowListener(new WindowListener() {
 			@Override
@@ -214,5 +216,7 @@ public class MainWindow extends JFrame {
 			public void windowOpened(WindowEvent e) {}
 		});
 		
+		this.pack();
+		this.setMinimumSize(new Dimension(800, 400));
 	}
 }
