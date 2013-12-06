@@ -264,5 +264,7 @@ public class AddEditItem extends AddEditView {
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.description = new JTextArea(), c);
 		this.description.setBorder(new EtchedBorder());
+		this.description.setLineWrap(true);
+		this.description.setWrapStyleWord(true);
 	}
 }

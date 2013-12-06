@@ -140,13 +140,15 @@ public class MainWindow extends JFrame {
 		customer.addAddress(new Address(true, true, "mars", "aliens", "9001",
 				"state", "city", "county", "this is pretty unique huh"));
 		customer.save();
-		Item item = new Item("new item", "12345", "sammiches", new BigDecimal(
-				1234.5), new BigDecimal(1234.5), new BigDecimal(1234.5), "LBS",
-				new BigDecimal(1234.5), true);
+		Item item = new Item("Socks", "653021",
+				"These are nice, soft, luxurious socks.", new BigDecimal(
+						"25.50"), new BigDecimal("1000000"), new BigDecimal(
+						"100"), "pairs", new BigDecimal("0.05"), true);
 		item.save();
-		item = new Item("new itemsessesesse", "54321", "nope", new BigDecimal(
-				1234.5), new BigDecimal(1234.5), new BigDecimal(1234.5), "LBS",
-				new BigDecimal(1234.5), true);
+		item = new Item("Flash Drive", "734453",
+				"Pretty pink flash drives; the kind that J.P. likes.",
+				new BigDecimal("6.99"), new BigDecimal("600"), new BigDecimal(
+						"10"), "units", new BigDecimal("0.10"), true);
 		item.save();
 	}
 	

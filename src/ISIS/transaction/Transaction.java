@@ -318,14 +318,21 @@ public class Transaction extends Record {
 			item.save();
 		}
 		// TODO: make less hacky
-		String sql = "DELETE FROM transaction_item WHERE transaction_=? AND item=?";
+		String sql = "DELETE FROM transaction_item WHERE pkey=?";
 		for (TransactionLineItem item : this.itemsToRemove) {
+			// Update item on-hand
+			Item actualItem = item.getItem();
+			actualItem.setOnHandQty(actualItem.getOnHandQty().add(
+					item.getQuantity()));
+			actualItem.save();
+			// Remove the line item
 			PreparedStatement stmt = Session.getDB().prepareStatement(sql);
-			stmt.setInt(1, this.getPkey());
-			stmt.setInt(2, item.getPkey());
+			stmt.setInt(1, item.getPkey());
 			stmt.execute();
 		}
+		this.itemsToRemove.clear();
 		Session.updateTable(TableName.transaction_item, null);
+		Session.updateTable(TableName.item, null);
 	}
 	
 	/**

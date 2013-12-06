@@ -87,10 +87,11 @@ public class ListTransactionLineItem extends
 				int pkey = ListTransactionLineItem.this.keys.get(selected);
 				try {
 					ListTransactionLineItem.this.transaction
-							.removeItem(new TransactionLineItem(pkey, false));
+							.removeItem(new TransactionLineItem(pkey, true));
 				} catch (SQLException ex) {
-					ErrorLogger.error(ex, "Failed to add item to transaction.",
-							true, true);
+					ErrorLogger.error(ex,
+							"Failed to remove item from transaction.", true,
+							true);
 				}
 				try {
 					ListTransactionLineItem.this.transaction.save();
