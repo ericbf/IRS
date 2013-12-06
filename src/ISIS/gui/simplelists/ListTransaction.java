@@ -22,7 +22,6 @@ import ISIS.gui.ErrorLogger;
 import ISIS.gui.IRSTableModel;
 import ISIS.gui.SimpleListView;
 import ISIS.gui.SplitPane;
-import ISIS.gui.SplitPane.LayoutType;
 import ISIS.gui.TableUpdateListener;
 import ISIS.gui.View;
 import ISIS.gui.report.ReportViewer;
@@ -37,7 +36,7 @@ import ISIS.transaction.Transaction;
 public class ListTransaction extends SimpleListView<Transaction> {
 	private static final long	serialVersionUID	= 1L;
 	Customer					customer;
-	private JButton				addButton;
+	private JButton				addButton, editButton, invoiceButton;
 	
 	/**
 	 * Lists all Transactions associated with the customer record.
@@ -106,24 +105,9 @@ public class ListTransaction extends SimpleListView<Transaction> {
 			c.gridx = x = 0;
 			c.weightx = 1;
 			this.add(this.addButton, c);
-			if (this.customer != null) {
-				this.addButton.setEnabled(this.customer.isActive());
-			}
-			Session.watchTable(TableName.customer, new TableUpdateListener() {
-				private static final long	serialVersionUID	= 1L;
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (ListTransaction.this.customer != null) {
-						ListTransaction.this.addButton
-								.setEnabled(ListTransaction.this.customer
-										.isActive());
-					}
-				}
-			});
 			
-			JButton invoiceButton = new JButton("Invoice");
-			invoiceButton.addActionListener(new ActionListener() {
+			this.invoiceButton = new JButton("Invoice");
+			this.invoiceButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (ListTransaction.this.selected != -1
@@ -153,10 +137,10 @@ public class ListTransaction extends SimpleListView<Transaction> {
 			c.gridwidth = x;
 			c.gridx = x = 0;
 			c.weightx = 1;
-			this.add(invoiceButton, c);
+			this.add(this.invoiceButton, c);
 			
-			JButton editButton = new JButton("Edit");
-			editButton.addActionListener(new ActionListener() {
+			this.editButton = new JButton("Edit");
+			this.editButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (ListTransaction.this.selected != -1
@@ -183,7 +167,7 @@ public class ListTransaction extends SimpleListView<Transaction> {
 			c.gridwidth = x;
 			c.gridx = x = 0;
 			c.weightx = 1;
-			this.add(editButton, c);
+			this.add(this.editButton, c);
 		}
 		
 		c = new GridBagConstraints();
@@ -194,6 +178,26 @@ public class ListTransaction extends SimpleListView<Transaction> {
 		c.weighty = 1;
 		c.weightx = 1;
 		this.add(new JScrollPane(this.table), c);
+		
+		if (this.customer != null) {
+			this.addButton.setEnabled(this.customer.isActive());
+			this.editButton.setEnabled(this.customer.isActive());
+		}
+		Session.watchTable(TableName.customer, new TableUpdateListener() {
+			private static final long	serialVersionUID	= 1L;
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (ListTransaction.this.customer != null) {
+					ListTransaction.this.addButton
+							.setEnabled(ListTransaction.this.customer
+									.isActive());
+					ListTransaction.this.editButton
+							.setEnabled(ListTransaction.this.customer
+									.isActive());
+				}
+			}
+		});
 		
 		this.fillTable();
 	}
@@ -228,13 +232,10 @@ public class ListTransaction extends SimpleListView<Transaction> {
 	 */
 	@Override
 	protected void tableItemAction() {
-		try {
-			this.splitPane.push(new AddEditTransaction(this.splitPane,
-					this.keys.get(this.selected)), LayoutType.HORIZONTAL,
-					this.pusher);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (this.customer != null && this.customer.isActive()) {
+			this.editButton.doClick();
+		} else {
+			this.invoiceButton.doClick();
 		}
 	}
 }
