@@ -17,7 +17,7 @@ public class ListButtonListener implements ActionListener {
 	private final CardLayout	cl;
 	private final JPanel		cardHost;
 	
-	/*
+	/**
 	 * @pre - receives listener parameters
 	 * @post - sets parameters
 	 */
@@ -27,7 +27,7 @@ public class ListButtonListener implements ActionListener {
 		this.cardHost = cardHost;
 	}
 	
-	/*
+	/**
 	 * @pre - rreceives event
 	 * @post - displays cardHost and tab
 	 */

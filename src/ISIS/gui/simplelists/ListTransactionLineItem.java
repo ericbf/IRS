@@ -117,7 +117,7 @@ public class ListTransactionLineItem extends
 		this.fillTable();
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - returns DB.TableName.transaction_item
 	 */
@@ -126,7 +126,7 @@ public class ListTransactionLineItem extends
 		return DB.TableName.transaction_item;
 	}
 	
-	/*
+	/**
 	 * @pre - Results from a DB query are given.
 	 * @post - Puts the results into a collection the table view can use.
 	 */

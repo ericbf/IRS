@@ -5,7 +5,7 @@ import javax.swing.AbstractAction;
 public abstract class TableUpdateListener extends AbstractAction {
 	private static final long	serialVersionUID	= 1L;
 	
-	/*
+	/**
 	 * @pre - none, constructor
 	 * @post - TableUpdateListener instantiated
 	 */
@@ -13,7 +13,7 @@ public abstract class TableUpdateListener extends AbstractAction {
 		super();
 	}
 	
-	/*
+	/**
 	 * @pre - object received
 	 * @post - key for object received is returned
 	 */
@@ -21,7 +21,7 @@ public abstract class TableUpdateListener extends AbstractAction {
 		return ((Integer) this.getValue("pkey"));
 	}
 	
-	/*
+	/**
 	 * @pre - int received
 	 * @post - pkey for object set to int
 	 */

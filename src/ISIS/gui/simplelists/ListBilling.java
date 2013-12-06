@@ -192,7 +192,7 @@ public class ListBilling extends SimpleListView<Billing> {
 		return DB.TableName.billing;
 	}
 	
-	/*
+	/**
 	 * @pre - Results from a DB query are given.
 	 * @post - Puts the results into a collection the table view can use.
 	 */
@@ -206,7 +206,7 @@ public class ListBilling extends SimpleListView<Billing> {
 		return billing;
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - Button is clicked.
 	 */

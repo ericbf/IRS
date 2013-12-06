@@ -184,11 +184,6 @@ public class AddEditTransaction extends AddEditView {
 		this.item_select.addActionListener(new ListButtonListener(
 				this.otherListsCardLayout, this.otherListsContainer, "Items"));
 		
-		// Enable buttons to select a list, reset tooltip
-		for (JToggleButton b : this.cardLayoutViewButtons) {
-			b.setEnabled(true);
-			b.setToolTipText(null);
-		}
 		this.cardLayoutViewButtons.get(0).setSelected(true);
 	}
 	
@@ -371,7 +366,7 @@ public class AddEditTransaction extends AddEditView {
 		this.doSaveRecordAction();
 	}
 	
-	/*
+	/**
 	 * @pre - this.transaction.hasAddress() == true
 	 * @post - gets an address and sets it.
 	 */
@@ -387,7 +382,7 @@ public class AddEditTransaction extends AddEditView {
 		}
 	}
 	
-	/*
+	/**
 	 * @pre - this.transaction.getBilling() == true
 	 * @post - gets and sets the billing.
 	 */

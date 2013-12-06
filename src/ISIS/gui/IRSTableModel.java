@@ -19,13 +19,13 @@ public abstract class IRSTableModel extends DefaultTableModel {
 	String[]					columnTitles;
 	ArrayList<Color>			rowColors;
 	
-	/*
+	/**
 	 * @pre - receives a Record
 	 * @post - row added to record
 	 */
 	public abstract void addRow(Record record);
 	
-	/*
+	/**
 	 * @pre - receives row & column
 	 * @post - returns true cell is editable
 	 */
@@ -34,7 +34,7 @@ public abstract class IRSTableModel extends DefaultTableModel {
 		return false;
 	}
 	
-	/*
+	/**
 	 * @pre - receives row & color
 	 * @post -sets color value for row
 	 */
@@ -42,7 +42,7 @@ public abstract class IRSTableModel extends DefaultTableModel {
 		this.rowColors.set(row, color);
 	}
 	
-	/*
+	/**
 	 * @pre - receives Title strings
 	 * @post - sets column titles to received strings
 	 */

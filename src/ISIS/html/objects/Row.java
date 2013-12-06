@@ -6,7 +6,7 @@ public class Row extends HTMLObjectContainer<Row> {
 		// TODO Auto-generated constructor stub
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - cell added to row
 	 */

@@ -31,7 +31,7 @@ public abstract class ListView<E extends Record> extends View {
 	protected ArrayList<Integer>	keys				= new ArrayList<Integer>();
 	protected int					selected;
 	
-	/*
+	/**
 	 * @pre - receives SplitPane object and a bool
 	 * @post - returns ListView object
 	 */
@@ -99,14 +99,14 @@ public abstract class ListView<E extends Record> extends View {
 				}
 			}
 			
-			/*
+			/**
 			 * @pre - none
 			 * @post - none - override event
 			 */
 			@Override
 			public void keyReleased(KeyEvent e) {}
 			
-			/*
+			/**
 			 * @pre - none
 			 * @post - none - override event
 			 */
@@ -115,7 +115,7 @@ public abstract class ListView<E extends Record> extends View {
 		});
 		this.table.addMouseListener(new MouseListener() {
 			
-			/*
+			/**
 			 * @pre - none
 			 * @post - none - override event
 			 */
@@ -130,28 +130,28 @@ public abstract class ListView<E extends Record> extends View {
 				}
 			}
 			
-			/*
+			/**
 			 * @pre - none
 			 * @post - none - override event
 			 */
 			@Override
 			public void mouseEntered(MouseEvent e) {}
 			
-			/*
+			/**
 			 * @pre - none
 			 * @post - none - override event
 			 */
 			@Override
 			public void mouseExited(MouseEvent e) {}
 			
-			/*
+			/**
 			 * @pre - none
 			 * @post - none - override event
 			 */
 			@Override
 			public void mousePressed(MouseEvent e) {}
 			
-			/*
+			/**
 			 * @pre - none
 			 * @post - none - override event
 			 */
@@ -161,7 +161,7 @@ public abstract class ListView<E extends Record> extends View {
 		this.table.getActionMap().put("Enter", new AbstractAction() {
 			private static final long	serialVersionUID	= 1L;
 			
-			/*
+			/**
 			 * @pre - none
 			 * @post - displays selected row on event trigger
 			 */

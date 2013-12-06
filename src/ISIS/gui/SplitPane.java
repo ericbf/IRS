@@ -36,7 +36,7 @@ public final class SplitPane extends JPanel {
 	
 	JPanel						buttons;
 	
-	/*
+	/**
 	 * @pre - none, constructor
 	 * @post - SplitPanel object instantiated and returned
 	 */
@@ -73,7 +73,7 @@ public final class SplitPane extends JPanel {
 	/**
 	 * Adds back, forwards, save, etc.
 	 */
-	/*
+	/**
 	 * @pre - none
 	 * @post - buttons added to gridbag
 	 */
@@ -237,7 +237,7 @@ public final class SplitPane extends JPanel {
 	 * Try to set the divider to the same location as before, but no less than
 	 * the left component's minimum width
 	 */
-	/*
+	/**
 	 * @pre - none
 	 * @post - Panel split with new divider
 	 */
@@ -249,7 +249,7 @@ public final class SplitPane extends JPanel {
 				.getWidth()));
 	}
 	
-	/*
+	/**
 	 * @pre - received double
 	 * @post - return new width
 	 */

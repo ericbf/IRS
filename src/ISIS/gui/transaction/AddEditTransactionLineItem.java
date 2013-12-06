@@ -71,7 +71,7 @@ public class AddEditTransactionLineItem extends AddEditView {
 		return this.lineItem;
 	}
 	
-	/*
+	/**
 	 * Even if nothing was changed from the defaults, we still want to save it.
 	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
 	 */
@@ -166,7 +166,7 @@ public class AddEditTransactionLineItem extends AddEditView {
 		this.add(this.description = new HintField("Description"), c);
 	}
 	
-	/*
+	/**
 	 * @pre - this.customer != null == true
 	 * @post - saves the customer.
 	 */

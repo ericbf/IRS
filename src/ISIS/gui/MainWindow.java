@@ -116,7 +116,7 @@ public class MainWindow extends JFrame {
 		}, "Shutdown-thread"));
 	}
 	
-	/*
+	/**
 	 * @pre - Need Sample Data populated
 	 * @post - sample data was populated
 	 */

@@ -14,7 +14,7 @@ public class ErrorLogger {
 	
 	private static boolean	debug	= false;
 	
-	/*
+	/**
 	 * @pre - exception object received
 	 * @post - error message logged
 	 */
@@ -31,7 +31,7 @@ public class ErrorLogger {
 		}
 	}
 	
-	/*
+	/**
 	 * @pre - none, constructor
 	 * @post - object instantiated and returned
 	 */
@@ -39,7 +39,7 @@ public class ErrorLogger {
 		new ErrorLogger(error, severe, show);
 	}
 	
-	/*
+	/**
 	 * @pre - none, constructor
 	 * @post - object instantiated and returned
 	 */
@@ -47,7 +47,7 @@ public class ErrorLogger {
 		Logger.getLogger("ISIS").log(level, message);
 	}
 	
-	/*
+	/**
 	 * @pre - none, constructor
 	 * @post - object instantiated and returned
 	 */

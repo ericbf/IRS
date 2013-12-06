@@ -140,7 +140,7 @@ public abstract class View extends JPanel {
 	 */
 	public abstract void save() throws SQLException;
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - padding set
 	 */

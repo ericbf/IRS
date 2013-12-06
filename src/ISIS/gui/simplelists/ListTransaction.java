@@ -175,7 +175,7 @@ public class ListTransaction extends SimpleListView<Transaction> {
 		this.fillTable();
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - returns DB.TableName.transaction_
 	 */
@@ -184,7 +184,7 @@ public class ListTransaction extends SimpleListView<Transaction> {
 		return DB.TableName.transaction_;
 	}
 	
-	/*
+	/**
 	 * @pre - Results from a DB query are given.
 	 * @post - Puts the results into a collection the table view can use.
 	 */

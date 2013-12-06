@@ -89,7 +89,7 @@ public class HTMLObject<E> {
 	private String								HTMLclass	= "";
 	private String								attributes	= "";
 	
-	/*
+	/**
 	 * Protected constructor: new HTMLObject instance
 	 */
 	protected HTMLObject(String text) {
@@ -103,7 +103,7 @@ public class HTMLObject<E> {
 		this.objects = null;
 	}
 	
-	/*
+	/**
 	 * Protected constructor: new HTMLObject instance
 	 */
 	protected HTMLObject(Type type) {
@@ -112,7 +112,7 @@ public class HTMLObject<E> {
 		this.type = type;
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - param add to objects
 	 */
@@ -123,7 +123,7 @@ public class HTMLObject<E> {
 		return e;
 	}
 	
-	/*
+	/**
 	 * @pre - key & value are not empty
 	 * @post - key & value are added to attributes
 	 */
@@ -143,7 +143,7 @@ public class HTMLObject<E> {
 		return e;
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - param appended to HTMLclass
 	 */
@@ -158,7 +158,7 @@ public class HTMLObject<E> {
 		return e;
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - builds b
 	 */
@@ -230,7 +230,7 @@ public class HTMLObject<E> {
 		}
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - String list of this HTMLbuilder
 	 */
@@ -242,7 +242,7 @@ public class HTMLObject<E> {
 				+ (this.attributes.isEmpty() ? "" : " " + this.attributes);
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - id == param
 	 */

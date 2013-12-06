@@ -180,7 +180,7 @@ public class ListAddress extends SimpleListView<Address> {
 		return this.keys.get(selected);
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - returns DB.TableName.customer_address
 	 */
@@ -189,7 +189,7 @@ public class ListAddress extends SimpleListView<Address> {
 		return DB.TableName.customer_address;
 	}
 	
-	/*
+	/**
 	 * @pre - Results from a DB query are given.
 	 * @post - Puts the results into a collection the table view can use.
 	 */
@@ -203,7 +203,7 @@ public class ListAddress extends SimpleListView<Address> {
 		return addresses;
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - Button is clicked.
 	 */

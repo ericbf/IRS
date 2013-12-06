@@ -33,7 +33,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 			"Close and Generate Invoice"				};
 	private String				lastSearchFieldValue	= " ";
 	
-	/*
+	/**
 	 * @pre - SplitPane object received, constructor
 	 * @post - SearchListView object instantiated
 	 */
@@ -50,7 +50,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 		});
 		this.searchField.addKeyListener(new KeyListener() {
 			
-			/*
+			/**
 			 * @pre - Event received
 			 * @post - event overridden
 			 */
@@ -111,14 +111,14 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 				}
 			}
 			
-			/*
+			/**
 			 * @pre - Event received
 			 * @post - event overridden
 			 */
 			@Override
 			public void keyReleased(KeyEvent e) {}
 			
-			/*
+			/**
 			 * @pre - Event received
 			 * @post - event overridden
 			 */
@@ -127,7 +127,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 		});
 		this.searchField.addActionListener(new ActionListener() {
 			
-			/*
+			/**
 			 * @pre - Event received
 			 * @post - event overridden
 			 */
@@ -138,7 +138,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 		});
 		this.searchField.addFocusListener(new FocusListener() {
 			
-			/*
+			/**
 			 * @pre - Event received
 			 * @post - event overridden
 			 */
@@ -147,7 +147,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 				SearchListView.this.table.setFocusable(false);
 			}
 			
-			/*
+			/**
 			 * @pre - Event received
 			 * @post - event overridden
 			 */
@@ -159,7 +159,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 		this.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
 			private static final long	serialVersionUID	= 1L;
 			
-			/*
+			/**
 			 * @pre - Event received
 			 * @post - event overridden
 			 */
@@ -170,7 +170,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 		});
 	}
 	
-	/*
+	/**
 	 * @pre - Event received
 	 * @post - event overridden
 	 */
@@ -209,7 +209,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 		}
 	}
 	
-	/*
+	/**
 	 * @pre - Event received
 	 * @post - event overridden
 	 */

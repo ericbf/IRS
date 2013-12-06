@@ -54,7 +54,7 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	
 	private String							title;
 	
-	/*
+	/**
 	 * Public constructor: creates new HTMLBuilder instance
 	 */
 	public HTMLBuilder(String title) {
@@ -64,7 +64,7 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 		this.objects = new ArrayList<HTMLObject<?>>();
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - appends style param to this.styles
 	 */
@@ -95,7 +95,7 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	 * ISIS.html.objects.HTMLContainObjects#add(ISIS.html.objects.Paragraph)
 	 */
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - appends script param to this.scripts
 	 */
@@ -116,7 +116,7 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 		return this.add((HTMLObject<?>) table);
 	}
 	
-	/*
+	/**
 	 * @pre - title != null
 	 * @post - returns HTMLformat block string
 	 */
@@ -213,7 +213,7 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 		return this.styles;
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - sets the title
 	 */

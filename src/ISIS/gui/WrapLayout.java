@@ -125,7 +125,7 @@ public class WrapLayout extends FlowLayout {
 		}
 	}
 	
-	/*
+	/**
 	 * @pre - Container received
 	 * @post - layout size set
 	 */
@@ -136,7 +136,7 @@ public class WrapLayout extends FlowLayout {
 		return minimum;
 	}
 	
-	/*
+	/**
 	 * @pre - container received
 	 * @post - prefered layout size set
 	 */

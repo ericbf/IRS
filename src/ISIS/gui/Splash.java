@@ -20,7 +20,7 @@ public class Splash extends JPanel {
 		this.image = new ImageIcon(url).getImage();
 	}
 	
-	/*
+	/**
 	 * @pre - Gaben graphic object received
 	 * @post - splash screen displayed, All Hail Gaben
 	 */

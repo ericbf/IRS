@@ -276,7 +276,7 @@ public class AddEditBilling extends AddEditView {
 		
 		this.address.setEnabled(false);
 		
-		/*
+		/**
 		 * Copied and pasted from AddEditAddress.java c = new
 		 * GridBagConstraints(); c.weightx = 0; c.gridx = x++; c.gridy = y;
 		 * c.fill = GridBagConstraints.BOTH; this.add(new JLabel("Zip"), c); c =

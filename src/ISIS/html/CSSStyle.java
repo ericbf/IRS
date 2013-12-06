@@ -30,7 +30,7 @@ public class CSSStyle {
 		return this;
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - returns newly built CSSStyle string
 	 */
@@ -49,7 +49,7 @@ public class CSSStyle {
 		return b.toString();
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - returns designator
 	 */
@@ -57,7 +57,7 @@ public class CSSStyle {
 		return this.designator;
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - returns attributes with string param appended
 	 */

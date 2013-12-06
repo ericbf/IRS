@@ -136,7 +136,7 @@ public class ListPhone extends SimpleListView<Phone> {
 		// only customers should have a phone list
 	}
 	
-	/*
+	/**
 	 * @pre - Results from a DB query are given.
 	 * @post - Puts the results into a collection the table view can use.
 	 */

@@ -19,7 +19,7 @@ public abstract class SimpleListView<E extends Record> extends ListView<E> {
 	
 	protected final View		pusher;
 	
-	/*
+	/**
 	 * @pre - constructor, parameters received
 	 * @post - SimpleList View object instantiated
 	 */
@@ -34,7 +34,7 @@ public abstract class SimpleListView<E extends Record> extends ListView<E> {
 		this.setLayout(new GridBagLayout());
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - table populated with query results
 	 */
@@ -52,7 +52,7 @@ public abstract class SimpleListView<E extends Record> extends ListView<E> {
 		}
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - table populated with query results
 	 */

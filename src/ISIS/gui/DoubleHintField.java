@@ -44,7 +44,7 @@ public class DoubleHintField extends HintField {
 								.matches("([1-9][0-9]*)?[0-9]?(\\.[0-9]?[0-9]?)?");
 					}
 					
-					/*
+					/**
 					 * @pre - none
 					 * @post - none - abstract for override
 					 */
@@ -63,7 +63,7 @@ public class DoubleHintField extends HintField {
 						}
 					}
 					
-					/*
+					/**
 					 * @pre - none
 					 * @post - none - abstract for override
 					 */
@@ -81,7 +81,7 @@ public class DoubleHintField extends HintField {
 						}
 					}
 					
-					/*
+					/**
 					 * @pre - none
 					 * @post - none - abstract for override
 					 */
@@ -123,7 +123,7 @@ public class DoubleHintField extends HintField {
 		});
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - none - abstract for override
 	 */
@@ -136,7 +136,7 @@ public class DoubleHintField extends HintField {
 		}
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - none - abstract for override
 	 */

@@ -15,7 +15,7 @@ import javax.swing.text.PlainDocument;
 public class NumberHintField extends HintField {
 	private static final long	serialVersionUID	= 1L;
 	
-	/*
+	/**
 	 * @pre - none, constructor
 	 * @post - object instantiated and returned
 	 */
@@ -23,7 +23,7 @@ public class NumberHintField extends HintField {
 		this(null, null);
 	}
 	
-	/*
+	/**
 	 * @pre - string received, constructor
 	 * @post - object instantiated and returned
 	 */
@@ -31,7 +31,7 @@ public class NumberHintField extends HintField {
 		this(hint, null);
 	}
 	
-	/*
+	/**
 	 * @pre - 2 strings received, constructor
 	 * @post - object instantiated and returned
 	 */
@@ -43,7 +43,7 @@ public class NumberHintField extends HintField {
 						return str.matches("[0-9]*");
 					}
 					
-					/*
+					/**
 					 * @pre - Parameters received
 					 * @post - event overridden
 					 */
@@ -62,7 +62,7 @@ public class NumberHintField extends HintField {
 						}
 					}
 					
-					/*
+					/**
 					 * @pre - Parameters received
 					 * @post - event overridden
 					 */
@@ -80,7 +80,7 @@ public class NumberHintField extends HintField {
 						}
 					}
 					
-					/*
+					/**
 					 * @pre - Parameters received
 					 * @post - event overridden
 					 */

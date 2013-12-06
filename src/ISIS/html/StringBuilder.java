@@ -6,7 +6,7 @@ public class StringBuilder {
 	private java.lang.StringBuilder	b;
 	private int						tabs;
 	
-	/*
+	/**
 	 * Public constructor: new StringBuilder instance
 	 */
 	public StringBuilder() {
@@ -14,7 +14,7 @@ public class StringBuilder {
 		tabs = 0;
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - append string param to b
 	 */
@@ -22,7 +22,7 @@ public class StringBuilder {
 		b.append(string);
 	}
 	
-	/*
+	/**
 	 * @pre - tabs > 0
 	 * @post - tabs decremented
 	 */
@@ -33,7 +33,7 @@ public class StringBuilder {
 		tabs--;
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - returns b
 	 */
@@ -44,7 +44,7 @@ public class StringBuilder {
 		return this;
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - \n is appended to b
 	 */
@@ -57,7 +57,7 @@ public class StringBuilder {
 		}
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - tabs incremented
 	 */

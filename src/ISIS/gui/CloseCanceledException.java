@@ -1,6 +1,6 @@
 package ISIS.gui;
 
-/*
+/**
  * @pre - none
  * @post - none - abstract for override
  */

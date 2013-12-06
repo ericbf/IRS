@@ -73,7 +73,7 @@ public class HintField extends JTextField {
 		this("");
 	}
 	
-	/*
+	/**
 	 * @pre - none, constructor
 	 * @post - object instantiated and returned
 	 */
@@ -151,7 +151,7 @@ public class HintField extends JTextField {
 		});
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - returns true if no text
 	 */
@@ -159,7 +159,7 @@ public class HintField extends JTextField {
 		return super.getText().isEmpty();
 	}
 	
-	/*
+	/**
 	 * @pre - receives a bool
 	 * @post - sets selectAll to bool passed
 	 */

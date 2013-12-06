@@ -28,7 +28,7 @@ public class Cell extends HTMLTextContainer<Cell> implements
 		return super.add(table);
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - Cell set as header
 	 */
@@ -37,7 +37,7 @@ public class Cell extends HTMLTextContainer<Cell> implements
 		return this;
 	}
 	
-	/*
+	/**
 	 * @pre - none
 	 * @post - Cell unset as header
 	 */
