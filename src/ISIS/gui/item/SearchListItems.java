@@ -36,6 +36,7 @@ public class SearchListItems extends SearchListView<Item> {
 	/**
 	 * Constructs new Customer list view.
 	 * 
+	 * @param splitPane
 	 * @pre - received SplitPane to draw search list in
 	 * @post - search list drawn in pane
 	 */
@@ -143,6 +144,10 @@ public class SearchListItems extends SearchListView<Item> {
 	/**
 	 * populates search list list view.
 	 * 
+	 * @param splitPane
+	 * @param pusher
+	 * @param customer
+	 * @param transaction
 	 * @pre - received SplitPane to draw search list in and some other
 	 *      parameters too
 	 * @post - search list drawn in pane

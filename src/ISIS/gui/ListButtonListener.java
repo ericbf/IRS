@@ -18,6 +18,9 @@ public class ListButtonListener implements ActionListener {
 	private final JPanel		cardHost;
 	
 	/**
+	 * @param cl
+	 * @param cardHost
+	 * @param tab
 	 * @pre - receives listener parameters
 	 * @post - sets parameters
 	 */

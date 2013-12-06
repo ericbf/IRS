@@ -5,6 +5,8 @@ public class HTMLFormatException extends Exception {
 	
 	/**
 	 * Public constructor: creates HTMLFormatException instance
+	 * 
+	 * @param message
 	 */
 	public HTMLFormatException(String message) {
 		super(message);

@@ -22,6 +22,7 @@ public class Invoice extends Report {
 	Transaction	transaction;
 	
 	/**
+	 * @param transaction
 	 * @param title
 	 */
 	public Invoice(Transaction transaction) {

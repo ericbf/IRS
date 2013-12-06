@@ -5,6 +5,7 @@ package ISIS.html.objects;
 
 /**
  * @author eric
+ * @param <E>
  */
 public abstract class HTMLObjectContainer<E> extends HTMLObject<E> implements
 		HTMLContainObjects<E> {

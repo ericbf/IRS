@@ -295,6 +295,9 @@ public final class SplitPane extends JPanel {
 	/**
 	 * Pushes a view onto the stack with a given layout and makes it visible.
 	 * 
+	 * @param view
+	 * @param layout
+	 * @param pusher
 	 * @post views.size() > 0 == true
 	 */
 	public final void push(View view, LayoutType layout, View pusher) {
@@ -341,6 +344,8 @@ public final class SplitPane extends JPanel {
 	
 	/**
 	 * Alias to JSplitPane.setLeftComponent
+	 * 
+	 * @param comp
 	 */
 	public void setLeftComponent(Component comp) {
 		if (comp != null) {
@@ -354,6 +359,8 @@ public final class SplitPane extends JPanel {
 	/**
 	 * When setting this SplitPane to single view mode, hide the divider line,
 	 * else set it to the default size
+	 * 
+	 * @param comp
 	 */
 	public void setRightComponent(Component comp) {
 		if (comp == null) {

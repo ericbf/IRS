@@ -10,16 +10,17 @@ public class StringBuilder {
 	 * Public constructor: new StringBuilder instance
 	 */
 	public StringBuilder() {
-		b = new java.lang.StringBuilder();
-		tabs = 0;
+		this.b = new java.lang.StringBuilder();
+		this.tabs = 0;
 	}
 	
 	/**
+	 * @param string
 	 * @pre - none
 	 * @post - append string param to b
 	 */
 	public void append(String string) {
-		b.append(string);
+		this.b.append(string);
 	}
 	
 	/**
@@ -27,33 +28,35 @@ public class StringBuilder {
 	 * @post - tabs decremented
 	 */
 	public void closeBlock() {
-		if (tabs == 0) {
+		if (this.tabs == 0) {
 			throw new RangeException((short) 1, "Tabs can't be negative");
 		}
-		tabs--;
+		this.tabs--;
 	}
 	
 	/**
+	 * @return
 	 * @pre - none
 	 * @post - returns b
 	 */
 	public StringBuilder indents() {
-		for (int i = 0; i < tabs; i++) {
-			b.append("\t");
+		for (int i = 0; i < this.tabs; i++) {
+			this.b.append("\t");
 		}
 		return this;
 	}
 	
 	/**
+	 * @param string
 	 * @pre - none
 	 * @post - \n is appended to b
 	 */
 	public void ln(String string) {
 		String[] strings = string.split("\n");
 		for (String str : strings) {
-			indents();
-			append(str);
-			b.append("\n");
+			this.indents();
+			this.append(str);
+			this.b.append("\n");
 		}
 	}
 	
@@ -62,11 +65,11 @@ public class StringBuilder {
 	 * @post - tabs incremented
 	 */
 	public void startBlock() {
-		tabs++;
+		this.tabs++;
 	}
 	
 	@Override
 	public String toString() {
-		return b.toString();
+		return this.b.toString();
 	}
 }

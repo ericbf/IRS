@@ -25,6 +25,7 @@ public abstract class View extends JPanel {
 	/**
 	 * Base constructor.
 	 * 
+	 * @param splitPane
 	 * @pre - none
 	 * @post - View instantiated
 	 */
@@ -46,6 +47,7 @@ public abstract class View extends JPanel {
 	 * Overridden for windows where cleanup is necessary, but save and cancel do
 	 * not apply.
 	 * 
+	 * @throws CloseCanceledException
 	 * @pre - none
 	 * @post - exception thrown or record closed
 	 */
@@ -126,6 +128,7 @@ public abstract class View extends JPanel {
 	 * Returns whether this view needs to be saved. This method must be
 	 * implemented.
 	 * 
+	 * @return
 	 * @pre - none
 	 * @post - bool returned if overridden
 	 */
@@ -135,6 +138,7 @@ public abstract class View extends JPanel {
 	 * A method for saving the contents of the implemented view. This method
 	 * must be implemented.
 	 * 
+	 * @throws SQLException
 	 * @pre - none
 	 * @post - contents saved
 	 */

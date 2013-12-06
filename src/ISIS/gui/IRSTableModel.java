@@ -20,6 +20,7 @@ public abstract class IRSTableModel extends DefaultTableModel {
 	ArrayList<Color>			rowColors;
 	
 	/**
+	 * @param record
 	 * @pre - receives a Record
 	 * @post - row added to record
 	 */
@@ -35,6 +36,8 @@ public abstract class IRSTableModel extends DefaultTableModel {
 	}
 	
 	/**
+	 * @param row
+	 * @param color
 	 * @pre - receives row & color
 	 * @post -sets color value for row
 	 */
@@ -43,6 +46,7 @@ public abstract class IRSTableModel extends DefaultTableModel {
 	}
 	
 	/**
+	 * @param titles
 	 * @pre - receives Title strings
 	 * @post - sets column titles to received strings
 	 */

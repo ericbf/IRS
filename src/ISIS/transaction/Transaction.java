@@ -84,6 +84,8 @@ public class Transaction extends Record {
 	/**
 	 * Public constructor. A Transaction starts with a user and a customer.
 	 * These attributes cannot be changed.
+	 * 
+	 * @param customer
 	 */
 	public Transaction(Customer customer) {
 		super();
@@ -107,6 +109,10 @@ public class Transaction extends Record {
 	/**
 	 * Public constructor. Takes a transaction database key, and has the option
 	 * to populate the fields from the database.
+	 * 
+	 * @param pkey
+	 * @param populate
+	 * @throws SQLException
 	 */
 	public Transaction(int pkey, boolean populate) throws SQLException {
 		super();
@@ -123,6 +129,7 @@ public class Transaction extends Record {
 	 * Public constructor. A return Transaction starts with a modifying user and
 	 * a transaction. This attributes cannot be changed.
 	 * 
+	 * @param originalSale
 	 * @pre originalSale.getStatus() == status.Finalized
 	 * @post originalSale.getModified() == true
 	 */
@@ -137,6 +144,11 @@ public class Transaction extends Record {
 	/**
 	 * Adds an item to this transaction.
 	 * 
+	 * @param item
+	 * @param price
+	 * @param adjustment
+	 * @param quantity
+	 * @param note
 	 * @pre getItems().contains(item) == false
 	 * @post getItems().contains(item) == true
 	 */
@@ -165,6 +177,9 @@ public class Transaction extends Record {
 	
 	/**
 	 * Gets the address associated with this transaction.
+	 * 
+	 * @return
+	 * @throws SQLException
 	 */
 	public Address getAddress() throws SQLException {
 		if (this.address != null) {
@@ -190,6 +205,9 @@ public class Transaction extends Record {
 	
 	/**
 	 * Gets the billing information associated with this transaction.
+	 * 
+	 * @return
+	 * @throws SQLException
 	 */
 	public Billing getBilling() throws SQLException {
 		if (this.billing != null) {
@@ -215,6 +233,9 @@ public class Transaction extends Record {
 	
 	/**
 	 * Gets customer associated with this transaction.
+	 * 
+	 * @return
+	 * @throws SQLException
 	 */
 	public Customer getCustomer() throws SQLException {
 		return this.customer == null ? new Customer(
@@ -224,6 +245,9 @@ public class Transaction extends Record {
 	
 	/**
 	 * Gets information associated with all involved items in this transaction.
+	 * 
+	 * @return
+	 * @throws SQLException
 	 */
 	public ArrayList<TransactionLineItem> getItems() throws SQLException {
 		if (!this.itemsInitialized) {
@@ -255,6 +279,9 @@ public class Transaction extends Record {
 	 * transaction that this return is being made on as well as returns
 	 * associated with it. If the transaction is not associated with a return,
 	 * an empty list is returned.
+	 * 
+	 * @return
+	 * @throws SQLException
 	 */
 	public Transaction getParentTransaction() throws SQLException {
 		if (this.getFieldValue("parent_transaction") == null) {
@@ -266,6 +293,8 @@ public class Transaction extends Record {
 	
 	/**
 	 * Gets status associated with this transaction.
+	 * 
+	 * @return
 	 */
 	public TransactionStatus getStatus() {
 		if (this.getFieldValue("status") == null) {
@@ -311,6 +340,7 @@ public class Transaction extends Record {
 	 * Checks whether any returns have been made that reference this
 	 * transaction.
 	 * 
+	 * @return
 	 * @pre getStatus() == status.Finalized
 	 */
 	public boolean isModified() {
@@ -320,6 +350,10 @@ public class Transaction extends Record {
 	/**
 	 * Modifies attributes of an item associated with this transaction.
 	 * 
+	 * @param item
+	 * @param adjustment
+	 * @param quantity
+	 * @param note
 	 * @pre getItems().contains(item) == true
 	 */
 	public void modItem(Item item, BigDecimal adjustment, BigDecimal quantity,
@@ -358,6 +392,7 @@ public class Transaction extends Record {
 	/**
 	 * Removes an item from this transaction.
 	 * 
+	 * @param item
 	 * @pre getItems().contains(item) == true
 	 * @post getItems().contains(item) == false
 	 */
@@ -368,6 +403,7 @@ public class Transaction extends Record {
 	/**
 	 * Removes an item from this transaction.
 	 * 
+	 * @param item
 	 * @pre getItems().contains(item) == true
 	 * @post getItems().contains(item) == false
 	 */
@@ -377,6 +413,8 @@ public class Transaction extends Record {
 	
 	/**
 	 * Sets the address for this transaction.
+	 * 
+	 * @param address
 	 */
 	public void setAddress(Address address) {
 		this.setFieldValue("address", address.getPkey());
@@ -385,6 +423,9 @@ public class Transaction extends Record {
 	
 	/**
 	 * Sets the billing information for this transaction.
+	 * 
+	 * @param billing
+	 * @throws SQLException
 	 */
 	public void setBilling(Billing billing) throws SQLException {
 		this.setFieldValue("billing", billing.getPkey());
@@ -393,6 +434,8 @@ public class Transaction extends Record {
 	
 	/**
 	 * Sets the transaction's status.
+	 * 
+	 * @param status
 	 */
 	public void setStatus(TransactionStatus status) {
 		this.setFieldValue("status", status.toString());

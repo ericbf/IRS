@@ -24,6 +24,9 @@ public class Picture extends Record {
 	/**
 	 * Public constructor. Takes a picture database key, and has the option to
 	 * populate fields from the database.
+	 * 
+	 * @param pkey
+	 * @param populate
 	 */
 	public Picture(int pkey, boolean populate) {
 		super();
@@ -32,6 +35,11 @@ public class Picture extends Record {
 	/**
 	 * Public constructor. A picture starts with a name, binary representation,
 	 * a note, and dates associated with its creation.
+	 * 
+	 * @param name
+	 * @param picture
+	 * @param note
+	 * @param dates
 	 */
 	public Picture(String name, byte[] picture, String note, Dates dates) {
 		super();
@@ -39,6 +47,8 @@ public class Picture extends Record {
 	
 	/**
 	 * Gets the name associated with the picture.
+	 * 
+	 * @return
 	 */
 	public String getName() {
 		return null;
@@ -46,6 +56,8 @@ public class Picture extends Record {
 	
 	/**
 	 * Gets the note associated with the picture.
+	 * 
+	 * @return
 	 */
 	public String getNote() {
 		return null;
@@ -53,6 +65,8 @@ public class Picture extends Record {
 	
 	/**
 	 * Gets the picture associated with the picture record.
+	 * 
+	 * @return
 	 */
 	public byte[] getPicture() {
 		return null;

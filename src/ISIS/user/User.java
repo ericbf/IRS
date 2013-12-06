@@ -71,6 +71,10 @@ public final class User extends Record {
 	
 	/**
 	 * Checks if a user exists.
+	 * 
+	 * @param username
+	 * @return
+	 * @throws SQLException
 	 */
 	public static boolean userExists(String username) throws SQLException {
 		try {
@@ -86,6 +90,11 @@ public final class User extends Record {
 	/**
 	 * Public constructor. Takes a User database key, and has the option to
 	 * populate the fields from the database.
+	 * 
+	 * @param pkey
+	 * @param populate
+	 * @throws SQLException
+	 * @throws RecordNotFoundException
 	 */
 	public User(Integer pkey, boolean populate) throws SQLException,
 			RecordNotFoundException {
@@ -100,6 +109,12 @@ public final class User extends Record {
 	/**
 	 * Public constructor. A User starts with all fields populated.
 	 * 
+	 * @param username
+	 * @param active
+	 * @param password
+	 * @param fname
+	 * @param lname
+	 * @param note
 	 * @post this.password == hash_function(password)
 	 */
 	public User(String username, boolean active, String password, String fname,
@@ -116,6 +131,11 @@ public final class User extends Record {
 	
 	/**
 	 * Tries to log a user in.
+	 * 
+	 * @param username
+	 * @param password
+	 * @throws SQLException
+	 * @throws AuthenticationException
 	 */
 	public User(String username, String password) throws SQLException,
 			AuthenticationException {
@@ -144,6 +164,7 @@ public final class User extends Record {
 	/**
 	 * Adds a picture to the User record.
 	 * 
+	 * @param picture
 	 * @pre getPictures().contains(picture) == false
 	 * @pre getPictures().contains(picture) == true
 	 */
@@ -151,6 +172,9 @@ public final class User extends Record {
 	
 	/**
 	 * Checks the provided password against the stored hash.
+	 * 
+	 * @param password
+	 * @return
 	 */
 	public boolean checkPassword(String password) {
 		// get salt from DB, hash it with the password given
@@ -165,6 +189,8 @@ public final class User extends Record {
 	
 	/**
 	 * Gets the User's active status.
+	 * 
+	 * @return
 	 */
 	public boolean getActive() {
 		return ((Integer) this.getFieldValue("active") == 1);
@@ -172,6 +198,8 @@ public final class User extends Record {
 	
 	/**
 	 * Get the employee's ID.
+	 * 
+	 * @return
 	 */
 	public int getEmployeeID() {
 		return (Integer) this.getFieldValue("pkey");
@@ -179,6 +207,8 @@ public final class User extends Record {
 	
 	/**
 	 * Gets the User's first name.
+	 * 
+	 * @return
 	 */
 	public String getFirstName() {
 		return (String) this.getFieldValue("fname");
@@ -186,6 +216,8 @@ public final class User extends Record {
 	
 	/**
 	 * Gets the User's last name.
+	 * 
+	 * @return
 	 */
 	public String getLastName() {
 		return (String) this.getFieldValue("lname");
@@ -193,6 +225,8 @@ public final class User extends Record {
 	
 	/**
 	 * Get the User's note.
+	 * 
+	 * @return
 	 */
 	public String getNote() {
 		return (String) this.getFieldValue("note");
@@ -200,6 +234,8 @@ public final class User extends Record {
 	
 	/**
 	 * Gets the password for the purposes of updating the record.
+	 * 
+	 * @return
 	 */
 	public String getPassword() {
 		return (String) this.getFieldValue("password");
@@ -207,6 +243,9 @@ public final class User extends Record {
 	
 	/**
 	 * Gets the pictures associated with the User record.
+	 * 
+	 * @param picture
+	 * @return
 	 */
 	public ArrayList<Picture> getPictures(Picture picture) {
 		return null;
@@ -219,6 +258,8 @@ public final class User extends Record {
 	
 	/**
 	 * Gets the User's username.
+	 * 
+	 * @return
 	 */
 	public String getUsername() {
 		return (String) this.getFieldValue("username");
@@ -252,6 +293,7 @@ public final class User extends Record {
 	/**
 	 * Removes a picture associated with the User record. picture.
 	 * 
+	 * @param picture
 	 * @pre getPictures().contains(picture) == true
 	 * @pre getPictures().contains(picture) == false
 	 */
@@ -259,6 +301,8 @@ public final class User extends Record {
 	
 	/**
 	 * Sets the User's active status.
+	 * 
+	 * @param active
 	 */
 	public void setActive(boolean active) {
 		this.setFieldValue("active", active);
@@ -266,6 +310,8 @@ public final class User extends Record {
 	
 	/**
 	 * Set the User's note.
+	 * 
+	 * @param note
 	 */
 	public void setNote(String note) {
 		this.setFieldValue("note", note);
@@ -274,6 +320,7 @@ public final class User extends Record {
 	/**
 	 * Sets the password for this user.
 	 * 
+	 * @param password
 	 * @post this.password == hash_function(password)
 	 */
 	public void setPassword(String password) {

@@ -58,6 +58,9 @@ public class AddEditTransaction extends AddEditView {
 	
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
+	 * 
+	 * @param splitPane
+	 * @param customer
 	 */
 	public AddEditTransaction(SplitPane splitPane, Customer customer) {
 		super(splitPane);
@@ -80,6 +83,9 @@ public class AddEditTransaction extends AddEditView {
 	 * Public constructor: returns new instance of add/edit transaction view.
 	 * For viewing/modifying a transaction.
 	 * 
+	 * @param splitPane
+	 * @param pkey
+	 * @throws SQLException
 	 * @wbp.parser.constructor
 	 */
 	public AddEditTransaction(SplitPane splitPane, int pkey)

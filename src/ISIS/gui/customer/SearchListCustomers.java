@@ -31,6 +31,7 @@ public class SearchListCustomers extends SearchListView<Customer> {
 	/**
 	 * Constructs new Customer list view.
 	 * 
+	 * @param splitPane
 	 * @throws SQLException
 	 * @pre - receive SPlitPane objects
 	 * @post - draw SearchList members in view

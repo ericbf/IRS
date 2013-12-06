@@ -17,6 +17,9 @@ public class CSSStyle {
 	}
 	
 	/**
+	 * @param key
+	 * @param value
+	 * @return
 	 * @pre - key & value == true
 	 * @post - returns key + value
 	 */
@@ -31,6 +34,7 @@ public class CSSStyle {
 	}
 	
 	/**
+	 * @return
 	 * @pre - none
 	 * @post - returns newly built CSSStyle string
 	 */
@@ -50,6 +54,7 @@ public class CSSStyle {
 	}
 	
 	/**
+	 * @return
 	 * @pre - none
 	 * @post - returns designator
 	 */
@@ -58,6 +63,8 @@ public class CSSStyle {
 	}
 	
 	/**
+	 * @param str
+	 * @return
 	 * @pre - none
 	 * @post - returns attributes with string param appended
 	 */

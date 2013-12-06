@@ -32,6 +32,10 @@ public class AddEditAddress extends AddEditView {
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
 	 * 
+	 * @param splitPane
+	 * @param customer
+	 * @param pkey
+	 * @throws SQLException
 	 * @wbp.parser.constructor
 	 * @pre - parameters for new object received
 	 * @post - new AddEdditAddress object instantiated

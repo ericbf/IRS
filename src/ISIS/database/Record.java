@@ -91,6 +91,8 @@ public abstract class Record {
 	/**
 	 * Gets the dates object associated with the record.
 	 * 
+	 * @return
+	 * @throws SQLException
 	 * @pre isOpen == true
 	 * @post - returns related Date object
 	 */
@@ -119,6 +121,8 @@ public abstract class Record {
 	 * Gets a field value from the field hashmap. If the field exists but was
 	 * not yet fetched,
 	 * 
+	 * @param key
+	 * @return
 	 * @pre - key is passed
 	 * @post - returns value for key
 	 */
@@ -155,6 +159,8 @@ public abstract class Record {
 	/**
 	 * Gets the primary key associated with this record.
 	 * 
+	 * @return
+	 * @throws UninitializedFieldException
 	 * @pre record exists
 	 * @post - returns key to record
 	 */
@@ -169,6 +175,7 @@ public abstract class Record {
 	/**
 	 * Fill the fields HashMap with empty fields.
 	 * 
+	 * @param fields
 	 * @pre - hashmap exists
 	 * @post - hashmap initialized
 	 */
@@ -179,6 +186,7 @@ public abstract class Record {
 	/**
 	 * Checks to see if active field is set to True.
 	 * 
+	 * @return
 	 * @pre - none
 	 * @post - returns bool
 	 */
@@ -195,6 +203,7 @@ public abstract class Record {
 	/**
 	 * Checks to see if isChanged field is set to True.
 	 * 
+	 * @return
 	 * @pre - none
 	 * @post - returns bool
 	 */
@@ -247,6 +256,7 @@ public abstract class Record {
 	 * Saves the record in the database. If the record is not in the database it
 	 * is inserted, otherwise it is updated.
 	 * 
+	 * @throws SQLException
 	 * @pre - isOpen == True
 	 * @post record is updated or inserted into db
 	 */
@@ -345,6 +355,7 @@ public abstract class Record {
 	/**
 	 * Sets the dates associated with the record.
 	 * 
+	 * @param dates
 	 * @pre - isOpen == True
 	 * @post - date fields set
 	 */

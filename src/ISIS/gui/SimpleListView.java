@@ -20,6 +20,11 @@ public abstract class SimpleListView<E extends Record> extends ListView<E> {
 	protected final View		pusher;
 	
 	/**
+	 * @param splitPane
+	 * @param pusher
+	 * @param multiSelect
+	 * @param sql
+	 * @param key
 	 * @pre - constructor, parameters received
 	 * @post - SimpleList View object instantiated
 	 */

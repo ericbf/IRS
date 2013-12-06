@@ -91,6 +91,7 @@ public class HintField extends JTextField {
 	}
 	
 	/**
+	 * @return
 	 * @pre - none
 	 * @post - returns true if no text
 	 */
@@ -104,6 +105,8 @@ public class HintField extends JTextField {
 	}
 	
 	/**
+	 * @param b
+	 * @return
 	 * @pre - receives a bool
 	 * @post - sets selectAll to bool passed
 	 */

@@ -24,6 +24,7 @@ public class NumberHintField extends HintField {
 	}
 	
 	/**
+	 * @param hint
 	 * @pre - string received, constructor
 	 * @post - object instantiated and returned
 	 */

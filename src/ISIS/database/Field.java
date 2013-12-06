@@ -13,17 +13,20 @@ public final class Field {
 	
 	/**
 	 * Gets the field.
+	 * 
+	 * @return
 	 */
 	public Object getValue() {
 		if (!this.initialized) {
 			throw new UninitializedFieldException();
 		}
-		return field;
+		return this.field;
 	}
 	
 	/**
 	 * Checks if this field was changed in a record class.
 	 * 
+	 * @return
 	 * @pre isOpen == true
 	 * @post - return bool
 	 */
@@ -34,6 +37,7 @@ public final class Field {
 	/**
 	 * Checks if this record was initialized.
 	 * 
+	 * @return
 	 * @pre isOpen == true returns bool
 	 */
 	public Boolean getWasInitialized() {
@@ -43,11 +47,12 @@ public final class Field {
 	/**
 	 * For when value is retrieved from database.
 	 * 
+	 * @param value
 	 * @pre isOpen == true
 	 * @post - set initialized value
 	 */
 	public void initField(Object value) {
-		initialized = true;
+		this.initialized = true;
 		this.field = value;
 	}
 	
@@ -58,6 +63,7 @@ public final class Field {
 	/**
 	 * For use in record classes.
 	 * 
+	 * @param value
 	 * @pre isOpen == true
 	 * @post - sets field value
 	 */

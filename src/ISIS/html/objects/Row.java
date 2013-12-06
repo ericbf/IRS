@@ -7,6 +7,8 @@ public class Row extends HTMLObjectContainer<Row> {
 	}
 	
 	/**
+	 * @param cell
+	 * @return
 	 * @pre - none
 	 * @post - cell added to row
 	 */

@@ -10,6 +10,9 @@ public class ConfirmCloseDialog {
 	/**
 	 * Returns true if the thing should be saved.
 	 * 
+	 * @param parent
+	 * @return
+	 * @throws CloseCanceledException
 	 * @pre - button was clicked
 	 * @post - returns true if save should be performed
 	 */

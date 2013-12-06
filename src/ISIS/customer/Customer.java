@@ -63,6 +63,10 @@ public class Customer extends Record {
 	/**
 	 * Public constructor. Take a Customer database key, and has the option to
 	 * populate the fields from the database.
+	 * 
+	 * @param pkey
+	 * @param populate
+	 * @throws SQLException
 	 */
 	public Customer(int pkey, boolean populate) throws SQLException {
 		super();
@@ -76,6 +80,12 @@ public class Customer extends Record {
 	/**
 	 * Public constructor. A Customer starts with a name and a status.
 	 * 
+	 * @param fname
+	 * @param lname
+	 * @param email
+	 * @param note
+	 * @param password
+	 * @param active
 	 * @pre - receives all required parameters
 	 * @post - returns object set to those records
 	 */
@@ -94,6 +104,7 @@ public class Customer extends Record {
 	/**
 	 * Public constructor. A Customer starts with a name and a status.
 	 * 
+	 * @param address
 	 * @pre - receives all required parameters
 	 * @post - returns object set to those records
 	 */
@@ -105,6 +116,7 @@ public class Customer extends Record {
 	/**
 	 * Adds an address to the customer record.
 	 * 
+	 * @param billing
 	 * @pre - none
 	 * @post - new billing address saved and related to customer record
 	 */
@@ -116,6 +128,7 @@ public class Customer extends Record {
 	/**
 	 * Adds a phone number to the customer record.
 	 * 
+	 * @param phone
 	 * @pre getPhoneNums().contains(phone) == false
 	 * @post getPhoneNums().contains(phone) == true
 	 */
@@ -127,6 +140,7 @@ public class Customer extends Record {
 	/**
 	 * Adds a picture to the customer record.
 	 * 
+	 * @param picture
 	 * @pre getPictures().contains(picture) == false
 	 * @pre getPictures().contains(picture) == true
 	 */
@@ -135,6 +149,8 @@ public class Customer extends Record {
 	/**
 	 * Gets all addresses associated with the customer record.
 	 * 
+	 * @return
+	 * @throws SQLException
 	 * @pre - receives a customer record
 	 * @post - returns all addresses associated with the customer records
 	 */
@@ -167,6 +183,8 @@ public class Customer extends Record {
 	/**
 	 * Gets all addresses associated with the customer record.
 	 * 
+	 * @return
+	 * @throws SQLException
 	 * @pre - none
 	 * @post - returns all billing addresses associated with customer record
 	 */
@@ -200,6 +218,7 @@ public class Customer extends Record {
 	/**
 	 * Gets the Customer's email address.
 	 * 
+	 * @return
 	 * @pre - none
 	 * @post - returns customer's email address
 	 */
@@ -210,6 +229,7 @@ public class Customer extends Record {
 	/**
 	 * Gets the Customer's first name.
 	 * 
+	 * @return
 	 * @pre- none
 	 * @post - return first name
 	 */
@@ -220,6 +240,7 @@ public class Customer extends Record {
 	/**
 	 * Gets the Customer's last name.
 	 * 
+	 * @return
 	 * @pre - none
 	 * @post - returns last name
 	 */
@@ -230,6 +251,7 @@ public class Customer extends Record {
 	/**
 	 * Gets the Customer's note field.
 	 * 
+	 * @return
 	 * @pre - none
 	 * @post - returns note field
 	 */
@@ -240,6 +262,7 @@ public class Customer extends Record {
 	/**
 	 * Gets the Customer's password.
 	 * 
+	 * @return
 	 * @pre - none
 	 * @post - returns customer password
 	 */
@@ -251,6 +274,8 @@ public class Customer extends Record {
 	 * Gets all phone numbers and information associated with the numbers from
 	 * the customer record. Returns empty list on failure.
 	 * 
+	 * @return
+	 * @throws SQLException
 	 * @pre - none
 	 * @post - returns list of related numbers, or empty list if none found
 	 */
@@ -284,6 +309,8 @@ public class Customer extends Record {
 	/**
 	 * Gets the pictures associated with the customer record.
 	 * 
+	 * @param picture
+	 * @return
 	 * @pre - none
 	 * @post - returns picture associated with customer
 	 */
@@ -295,6 +322,8 @@ public class Customer extends Record {
 	 * Returns the primary address, or null if there are no addresses. If no
 	 * address is marked primary, then one is picked arbitrarily.
 	 * 
+	 * @return
+	 * @throws SQLException
 	 * @pre - none
 	 * @post - return primary address if one exists, null if none exists
 	 */
@@ -315,6 +344,9 @@ public class Customer extends Record {
 	 * Gets the primary phone number. Returns null if there are no numbers, or
 	 * an arbitrary number if there is no primary. pre - none post - return
 	 * primary phone number if one exists, null if none exists
+	 * 
+	 * @return
+	 * @throws SQLException
 	 */
 	public Phone getPrimaryNum() throws SQLException {
 		for (Phone number : this.getPhoneNums()) {
@@ -354,7 +386,7 @@ public class Customer extends Record {
 				}
 				stmt.setInt(i, this.getPkey());
 				stmt.executeUpdate();
-				numbersToRemove.clear();
+				this.numbersToRemove.clear();
 			} catch (SQLException e) {
 				ErrorLogger.error(e, "Could not remove phone numbers.", true,
 						true);
@@ -384,7 +416,7 @@ public class Customer extends Record {
 				}
 				stmt.executeUpdate();
 				Session.updateTable(TableName.customer_phone, null);
-				numbersToSave.clear();
+				this.numbersToSave.clear();
 			} catch (SQLException e) {
 				ErrorLogger.error(e, "Could not save phone numbers.", true,
 						true);
@@ -405,7 +437,7 @@ public class Customer extends Record {
 				}
 				stmt.setInt(i, this.getPkey());
 				stmt.executeUpdate();
-				addressesToRemove.clear();
+				this.addressesToRemove.clear();
 			} catch (SQLException e) {
 				ErrorLogger.error(e, "Could not remove addresses.", true, true);
 				throw e;
@@ -434,7 +466,7 @@ public class Customer extends Record {
 				}
 				stmt.executeUpdate();
 				Session.updateTable(TableName.customer_address, null);
-				addressesToSave.clear();
+				this.addressesToSave.clear();
 			} catch (SQLException e) {
 				ErrorLogger.error(e, "Could not save addresses.", true, true);
 				throw e;
@@ -454,7 +486,7 @@ public class Customer extends Record {
 				}
 				stmt.setInt(i, this.getPkey());
 				stmt.executeUpdate();
-				billingToRemove.clear();
+				this.billingToRemove.clear();
 			} catch (SQLException e) {
 				ErrorLogger.error(e, "Could not remove billing info.", true,
 						true);
@@ -484,7 +516,7 @@ public class Customer extends Record {
 				}
 				stmt.executeUpdate();
 				Session.updateTable(TableName.customer_billing, null);
-				billingToSave.clear();
+				this.billingToSave.clear();
 			} catch (SQLException e) {
 				ErrorLogger
 						.error(e, "Could not save billing info.", true, true);
@@ -496,6 +528,7 @@ public class Customer extends Record {
 	/**
 	 * Remove an address from the customer record.
 	 * 
+	 * @param address
 	 * @pre getAddresses().contains(address) == true
 	 * @post getAddresses().contains(address) == false
 	 */
@@ -525,6 +558,7 @@ public class Customer extends Record {
 	/**
 	 * Remove an address from the customer record.
 	 * 
+	 * @param billing
 	 * @pre getAddresses().contains(address) == true
 	 * @post getAddresses().contains(address) == false
 	 */
@@ -554,6 +588,7 @@ public class Customer extends Record {
 	/**
 	 * Removes a phone number from the customer record.
 	 * 
+	 * @param phone
 	 * @pre getPhoneNums().contains(phone) == true
 	 * @post getPhoneNums().contains(phone) == false
 	 */
@@ -574,6 +609,7 @@ public class Customer extends Record {
 	/**
 	 * Removes a picture from the Customer record.
 	 * 
+	 * @param picture
 	 * @pre getPictures().contains(picture) == true
 	 * @pre getPictures().contains(picture) == false
 	 */
@@ -582,6 +618,8 @@ public class Customer extends Record {
 	/**
 	 * Allows you to set the active status of the Customer. pre - none post -
 	 * set active status = true
+	 * 
+	 * @param active
 	 */
 	public void setActive(boolean active) {
 		this.setFieldValue("active", ((active) ? 1 : 0));
@@ -590,6 +628,7 @@ public class Customer extends Record {
 	/**
 	 * Sets the Customer's email address.
 	 * 
+	 * @param email
 	 * @pre - none
 	 * @post - customer email set
 	 */
@@ -600,6 +639,7 @@ public class Customer extends Record {
 	/**
 	 * Sets the Customer's note field.
 	 * 
+	 * @param note
 	 * @pre - none
 	 * @post - customer note field set
 	 */
@@ -610,6 +650,7 @@ public class Customer extends Record {
 	/**
 	 * Sets the Customer's password.
 	 * 
+	 * @param password
 	 * @pre - none
 	 * @post - customer password firel set
 	 */

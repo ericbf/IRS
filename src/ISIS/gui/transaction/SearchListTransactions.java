@@ -34,6 +34,8 @@ public class SearchListTransactions extends SearchListView<Transaction> {
 	
 	/**
 	 * Constructs new Transaction list view.
+	 * 
+	 * @param splitPane
 	 */
 	public SearchListTransactions(SplitPane splitPane) {
 		super(splitPane);

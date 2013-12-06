@@ -39,6 +39,10 @@ public class TransactionLineItem extends Record {
 	/**
 	 * Public constructor. Take a transaction_item database key, and has the
 	 * option to populate the fields from the database.
+	 * 
+	 * @param pkey
+	 * @param populate
+	 * @throws SQLException
 	 */
 	public TransactionLineItem(int pkey, boolean populate) throws SQLException {
 		super();
@@ -51,6 +55,13 @@ public class TransactionLineItem extends Record {
 	
 	/**
 	 * Public constructor. Initializes all fields of the object.
+	 * 
+	 * @param transaction
+	 * @param item
+	 * @param price
+	 * @param adjustment
+	 * @param quantity
+	 * @param description
 	 */
 	public TransactionLineItem(Transaction transaction, Item item,
 			BigDecimal price, BigDecimal adjustment, BigDecimal quantity,
@@ -81,6 +92,8 @@ public class TransactionLineItem extends Record {
 	/**
 	 * Gets an adjustment associated with the transaction and item, e.g. a
 	 * discount.
+	 * 
+	 * @return
 	 */
 	public BigDecimal getAdjustment() {
 		return new BigDecimal((String) this.getFieldValue("adjustment"));
@@ -88,6 +101,8 @@ public class TransactionLineItem extends Record {
 	
 	/**
 	 * Gets the note associated with the transaction and this item.
+	 * 
+	 * @return
 	 */
 	public String getDescription() {
 		return (String) this.getFieldValue("description");
@@ -95,6 +110,8 @@ public class TransactionLineItem extends Record {
 	
 	/**
 	 * Gets the item.
+	 * 
+	 * @return
 	 */
 	public Item getItem() {
 		try {
@@ -114,6 +131,8 @@ public class TransactionLineItem extends Record {
 	
 	/**
 	 * Gets the quantity of the item involved in the transaction.
+	 * 
+	 * @return
 	 */
 	public BigDecimal getQuantity() {
 		return new BigDecimal((String) this.getFieldValue("quantity"));

@@ -17,6 +17,7 @@ public class JSScript {
 	/**
 	 * Not implemented
 	 * 
+	 * @return
 	 * @throws UnsupportedOperationException
 	 *             Always
 	 */

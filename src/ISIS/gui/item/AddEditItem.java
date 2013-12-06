@@ -31,6 +31,7 @@ public class AddEditItem extends AddEditView {
 	/**
 	 * Public constructor: returns new instance of add/edit item view.
 	 * 
+	 * @param splitPane
 	 * @pre - SPlitPane to update received
 	 * @post SplitPane populated with new AddEditItem vie
 	 */
@@ -43,6 +44,9 @@ public class AddEditItem extends AddEditView {
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
 	 * 
+	 * @param splitPane
+	 * @param pkey
+	 * @throws SQLException
 	 * @wbp.parser.constructor
 	 * @pre - receive SPlitPane object and item pkey
 	 * @post - draw Item members in view
@@ -223,7 +227,8 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add((this.reorder = new DoubleHintField("Reorder amount")).make(), c);
+		this.add((this.reorder = new DoubleHintField("Reorder amount")).make(),
+				c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;

@@ -92,6 +92,7 @@ public class PasswordHintField extends JPasswordField {
 	}
 	
 	/**
+	 * @return
 	 * @pre - none
 	 * @post - returns true if no text
 	 */
@@ -105,6 +106,8 @@ public class PasswordHintField extends JPasswordField {
 	}
 	
 	/**
+	 * @param b
+	 * @return
 	 * @pre - receives a bool
 	 * @post - sets selectAll to bool passed
 	 */

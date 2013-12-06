@@ -24,6 +24,8 @@ import ISIS.session.Session;
 
 /**
  * Abstract class for views that consist of a list that can be searched.
+ * 
+ * @param <E>
  */
 public abstract class SearchListView<E extends Record> extends ListView<E> {
 	private static final long	serialVersionUID		= 1L;
@@ -34,6 +36,7 @@ public abstract class SearchListView<E extends Record> extends ListView<E> {
 	private String				lastSearchFieldValue	= " ";
 	
 	/**
+	 * @param splitPane
 	 * @pre - SplitPane object received, constructor
 	 * @post - SearchListView object instantiated
 	 */

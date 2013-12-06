@@ -39,6 +39,8 @@ public class Session {
 	
 	/**
 	 * Only for initialization of program.
+	 * 
+	 * @throws SQLException
 	 */
 	public static void baseSession() throws SQLException {
 		// login as base user
@@ -54,6 +56,8 @@ public class Session {
 	
 	/**
 	 * Gets the current session.
+	 * 
+	 * @return
 	 */
 	public static Session getCurrentSession() {
 		return Session.session;
@@ -61,6 +65,8 @@ public class Session {
 	
 	/**
 	 * Gets a reference to the database.
+	 * 
+	 * @return
 	 */
 	public static DB getDB() {
 		if (Session.db == null) {
@@ -73,6 +79,11 @@ public class Session {
 	
 	/**
 	 * Starts a new session, using the given user.
+	 * 
+	 * @param username
+	 * @param password
+	 * @throws SQLException
+	 * @throws AuthenticationException
 	 */
 	public static void startNewSession(String username, String password)
 			throws SQLException, AuthenticationException {
@@ -91,6 +102,9 @@ public class Session {
 	/**
 	 * Notifies listeners that the record with the specified key was changed in
 	 * some way.
+	 * 
+	 * @param tableName
+	 * @param pkey
 	 */
 	public static void updateTable(DB.TableName tableName, Integer pkey) {
 		if (Session.tableListeners.containsKey(tableName)) {
@@ -106,6 +120,9 @@ public class Session {
 	
 	/**
 	 * Watch a database table for updates.
+	 * 
+	 * @param tableName
+	 * @param listener
 	 */
 	public static void watchTable(DB.TableName tableName,
 			TableUpdateListener listener) {
@@ -169,6 +186,9 @@ public class Session {
 	/**
 	 * Sets a default setting that is used for Users that have not set the
 	 * setting.
+	 * 
+	 * @param key
+	 * @param value
 	 */
 	public void setDefaultSetting(Setting key, Object value) {
 		try {

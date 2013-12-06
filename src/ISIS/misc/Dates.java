@@ -35,6 +35,11 @@ public class Dates {
 	
 	/**
 	 * Public constructor. Meant to populate a date from the database.
+	 * 
+	 * @param createdDate
+	 * @param createdBy
+	 * @param modDate
+	 * @param modUser
 	 */
 	public Dates(Date createdDate, User createdBy, Date modDate, User modUser) {
 		this.createDate = createdDate;
@@ -45,6 +50,8 @@ public class Dates {
 	
 	/**
 	 * Gets the user that created the object referencing this instance.
+	 * 
+	 * @return
 	 */
 	public User getCreatedBy() {
 		return this.createUser;
@@ -52,6 +59,8 @@ public class Dates {
 	
 	/**
 	 * Gets the creation date of the object referencing this instance.
+	 * 
+	 * @return
 	 */
 	public Date getCreatedDate() {
 		return this.createDate;
@@ -59,6 +68,8 @@ public class Dates {
 	
 	/**
 	 * Gets the user that modified the object referencing this instance.
+	 * 
+	 * @return
 	 */
 	public User getModBy() {
 		return this.modUser;
@@ -66,6 +77,8 @@ public class Dates {
 	
 	/**
 	 * Gets the modification date of the object referencing this instance.
+	 * 
+	 * @return
 	 */
 	public Date getModDate() {
 		return this.modDate;
@@ -73,6 +86,8 @@ public class Dates {
 	
 	/**
 	 * Checks whether the date needs to be saved.
+	 * 
+	 * @return
 	 */
 	public boolean modified() {
 		return this.dateChanged;

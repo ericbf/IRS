@@ -33,6 +33,10 @@ public class ListBilling extends SimpleListView<Billing> {
 	/**
 	 * Lists all billing associated with the customer record.
 	 * 
+	 * @param splitPane
+	 * @param pusher
+	 * @param customer
+	 * @param key
 	 * @pre - none
 	 * @post - returns and lists all info concerned with listing billing into
 	 *       the table view for use.
@@ -176,6 +180,7 @@ public class ListBilling extends SimpleListView<Billing> {
 	/**
 	 * Public constructor.
 	 * 
+	 * @return
 	 * @pre - selected == -1
 	 * @post - returns -1 or this.keys.get(selected)
 	 */
@@ -207,6 +212,7 @@ public class ListBilling extends SimpleListView<Billing> {
 	}
 	
 	/**
+	 * @param listener
 	 * @pre - none
 	 * @post - Button is clicked.
 	 */

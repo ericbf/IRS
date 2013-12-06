@@ -56,6 +56,8 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	
 	/**
 	 * Public constructor: creates new HTMLBuilder instance
+	 * 
+	 * @param title
 	 */
 	public HTMLBuilder(String title) {
 		this.setTitle(title);
@@ -65,6 +67,7 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	}
 	
 	/**
+	 * @param style
 	 * @pre - none
 	 * @post - appends style param to this.styles
 	 */
@@ -96,6 +99,7 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	 */
 	
 	/**
+	 * @param script
 	 * @pre - none
 	 * @post - appends script param to this.scripts
 	 */
@@ -117,6 +121,8 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	}
 	
 	/**
+	 * @return
+	 * @throws HTMLFormatException
 	 * @pre - title != null
 	 * @post - returns HTMLformat block string
 	 */
@@ -207,6 +213,7 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	}
 	
 	/**
+	 * @return
 	 * @post returns the styles
 	 */
 	public ArrayList<CSSStyle> getStyles() {
@@ -214,6 +221,7 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 	}
 	
 	/**
+	 * @param title
 	 * @pre - none
 	 * @post - sets the title
 	 */

@@ -32,6 +32,8 @@ public abstract class ListView<E extends Record> extends View {
 	protected int					selected;
 	
 	/**
+	 * @param splitPane
+	 * @param multiSelect
 	 * @pre - receives SplitPane object and a bool
 	 * @post - returns ListView object
 	 */

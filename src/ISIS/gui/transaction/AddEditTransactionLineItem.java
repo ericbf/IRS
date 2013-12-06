@@ -35,6 +35,11 @@ public class AddEditTransactionLineItem extends AddEditView {
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
 	 * 
+	 * @param splitPane
+	 * @param customer
+	 * @param transaction
+	 * @param item
+	 * @throws SQLException
 	 * @wbp.parser.constructor
 	 */
 	public AddEditTransactionLineItem(SplitPane splitPane, Customer customer,

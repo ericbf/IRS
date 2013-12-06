@@ -10,6 +10,7 @@ public class Header extends HTMLTextContainer<Header> {
 	private final int	level;
 	
 	/**
+	 * @param level
 	 * @param type
 	 */
 	public Header(int level) {

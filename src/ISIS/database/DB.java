@@ -46,6 +46,10 @@ public final class DB {
 	
 	/**
 	 * For building a preparedstatement's sql.
+	 * 
+	 * @param argCount
+	 * @param argFormat
+	 * @return
 	 */
 	public static String preparedArgsBuilder(int argCount, String argFormat) {
 		if (argCount == 0) {
@@ -65,6 +69,7 @@ public final class DB {
 	 * Public constructor. Opens the database from the specified location. The
 	 * specified file must be a valid database.
 	 * 
+	 * @param DBLocation
 	 * @pre new File(DBLocation).exists() == true
 	 * @post isOpen == true
 	 */
@@ -103,12 +108,13 @@ public final class DB {
 	/**
 	 * Closes a transaction in the database.
 	 * 
+	 * @throws SQLException
 	 * @pre isOpen == true
 	 * @pre transactionActive() == true
 	 * @post transactionActive() == false
 	 */
 	public void closeTransaction() throws SQLException {
-		connection.setAutoCommit(true);
+		this.connection.setAutoCommit(true);
 	}
 	
 	/**
@@ -125,6 +131,7 @@ public final class DB {
 	/**
 	 * Initialize tables
 	 * 
+	 * @throws SQLException
 	 * @pre isOpen == true
 	 * @post tables initialized
 	 */
@@ -299,6 +306,7 @@ public final class DB {
 	/**
 	 * Checks if the database is open.
 	 * 
+	 * @return
 	 * @pre - none
 	 * @post returns true if table is open
 	 */
@@ -314,6 +322,9 @@ public final class DB {
 	/**
 	 * Creates and returns a prepared statement given the given sql.
 	 * 
+	 * @param sql
+	 * @return
+	 * @throws SQLException
 	 * @pre isOpen == true
 	 * @post - returns prepared statement
 	 */
@@ -330,8 +341,8 @@ public final class DB {
 	 */
 	public void rollbackTransaction() {
 		try {
-			connection.rollback();
-			closeTransaction();
+			this.connection.rollback();
+			this.closeTransaction();
 		} catch (SQLException e) {
 			ErrorLogger.error(e, "Failed to roll back your changes!!!!", true,
 					true);
@@ -341,23 +352,25 @@ public final class DB {
 	/**
 	 * Starts a transaction in the database.
 	 * 
+	 * @throws SQLException
 	 * @pre isOpen == true
 	 * @pre transactionActive() == false
 	 * @post transactionActive() == true
 	 */
 	public void startTransaction() throws SQLException {
-		if (connection.getAutoCommit() == false) {
+		if (this.connection.getAutoCommit() == false) {
 			ErrorLogger
 					.error("We were already inside a transaction!?\nChanges rolled back.",
 							true, true);
 			this.rollbackTransaction();
 		}
-		connection.setAutoCommit(false);
+		this.connection.setAutoCommit(false);
 	}
 	
 	/**
 	 * Checks if a transaction is active.
 	 * 
+	 * @return
 	 * @pre isOpen == true
 	 * @post returns transaction status
 	 */

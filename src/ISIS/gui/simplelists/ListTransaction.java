@@ -38,6 +38,10 @@ public class ListTransaction extends SimpleListView<Transaction> {
 	/**
 	 * Lists all Transactions associated with the customer record.
 	 * 
+	 * @param splitPane
+	 * @param pusher
+	 * @param customer
+	 * @param selectMode
 	 * @pre - none
 	 * @post - returns and lists all info concerned with listing a transaction
 	 *       into the table view for use.

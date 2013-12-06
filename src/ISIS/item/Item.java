@@ -45,6 +45,10 @@ public class Item extends Record {
 	/**
 	 * Public constructor. Takes an Item database key, and has the option to
 	 * populate the fields from the database.
+	 * 
+	 * @param pkey
+	 * @param populate
+	 * @throws SQLException
 	 */
 	public Item(int pkey, boolean populate) throws SQLException {
 		super();
@@ -57,6 +61,16 @@ public class Item extends Record {
 	
 	/**
 	 * Public constructor. An item starts with all fields populated.
+	 * 
+	 * @param name
+	 * @param SKU
+	 * @param description
+	 * @param price
+	 * @param onHandQty
+	 * @param ReorderQty
+	 * @param UOM
+	 * @param cost
+	 * @param active
 	 */
 	public Item(String name, String SKU, String description, BigDecimal price,
 			BigDecimal onHandQty, BigDecimal ReorderQty, String UOM,
@@ -75,6 +89,8 @@ public class Item extends Record {
 	
 	/**
 	 * Gets the cost of the item.
+	 * 
+	 * @return
 	 */
 	public BigDecimal getCost() {
 		return new BigDecimal((String) this.getFieldValue("cost"));
@@ -82,6 +98,8 @@ public class Item extends Record {
 	
 	/**
 	 * Gets the item's description.
+	 * 
+	 * @return
 	 */
 	public String getDescription() {
 		return (String) this.getFieldValue("description");
@@ -89,6 +107,8 @@ public class Item extends Record {
 	
 	/**
 	 * Gets the item's name.
+	 * 
+	 * @return
 	 */
 	public String getName() {
 		return (String) this.getFieldValue("name");
@@ -96,6 +116,8 @@ public class Item extends Record {
 	
 	/**
 	 * Gets the on hand quantity of the item.
+	 * 
+	 * @return
 	 */
 	public BigDecimal getOnHandQty() {
 		return new BigDecimal((String) this.getFieldValue("onhand_qty"));
@@ -103,6 +125,8 @@ public class Item extends Record {
 	
 	/**
 	 * Gets the item's price.
+	 * 
+	 * @return
 	 */
 	public BigDecimal getPrice() {
 		return new BigDecimal((String) this.getFieldValue("price"));
@@ -110,6 +134,8 @@ public class Item extends Record {
 	
 	/**
 	 * Gets the reorder quantity of the item.
+	 * 
+	 * @return
 	 */
 	public BigDecimal getReorderQuantity() {
 		return new BigDecimal((String) this.getFieldValue("reorder_qty"));
@@ -117,6 +143,8 @@ public class Item extends Record {
 	
 	/**
 	 * Gets the item's SKU.
+	 * 
+	 * @return
 	 */
 	public String getSKU() {
 		return (String) this.getFieldValue("SKU");
@@ -129,6 +157,8 @@ public class Item extends Record {
 	
 	/**
 	 * Sets the unit of measure of the item (e.g. pounds).
+	 * 
+	 * @return
 	 */
 	public String getUOM() {
 		return (String) this.getFieldValue("uom");
@@ -150,6 +180,8 @@ public class Item extends Record {
 	
 	/**
 	 * Sets the cost of the item.
+	 * 
+	 * @param cost
 	 */
 	public void setCost(BigDecimal cost) {
 		this.setFieldValue("cost", cost.toString());
@@ -157,6 +189,8 @@ public class Item extends Record {
 	
 	/**
 	 * Changes the item's description.
+	 * 
+	 * @param description
 	 */
 	public void setDescription(String description) {
 		this.setFieldValue("description", description);
@@ -164,6 +198,8 @@ public class Item extends Record {
 	
 	/**
 	 * Changes the item's name.
+	 * 
+	 * @param name
 	 */
 	public void setName(String name) {
 		this.setFieldValue("name", name);
@@ -171,6 +207,8 @@ public class Item extends Record {
 	
 	/**
 	 * Sets the on hand quantity of the item.
+	 * 
+	 * @param onHandQty
 	 */
 	public void setOnHandQty(BigDecimal onHandQty) {
 		this.setFieldValue("onhand_qty", onHandQty.toString());
@@ -178,6 +216,8 @@ public class Item extends Record {
 	
 	/**
 	 * Sets the item's price.
+	 * 
+	 * @param price
 	 */
 	public void setPrice(BigDecimal price) {
 		this.setFieldValue("price", price.toString());
@@ -185,6 +225,8 @@ public class Item extends Record {
 	
 	/**
 	 * Sets the on hand quantity at which the item should be reordered.
+	 * 
+	 * @param reOrderQty
 	 */
 	public void setReorderQty(BigDecimal reOrderQty) {
 		this.setFieldValue("reorder_qty", reOrderQty.toString());

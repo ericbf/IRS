@@ -46,6 +46,7 @@ public class ReportSelectorView extends View {
 	/**
 	 * Public constructor. User is presented with a Report Select View.
 	 * 
+	 * @param splitPane
 	 * @pre - receives all required parameters for a Split Pane.
 	 * @post - returns new instance created.
 	 */

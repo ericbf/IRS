@@ -21,6 +21,7 @@ public abstract class AddEditView extends View {
 	/**
 	 * Link to super
 	 * 
+	 * @param splitPane
 	 * @pre - none
 	 * @post - new splitPane created
 	 */

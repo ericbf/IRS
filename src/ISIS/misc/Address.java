@@ -25,6 +25,16 @@ public class Address extends Record {
 	
 	/**
 	 * Public constructor.
+	 * 
+	 * @param active
+	 * @param primary
+	 * @param country
+	 * @param title
+	 * @param zip
+	 * @param state
+	 * @param city
+	 * @param county
+	 * @param streetAddress
 	 */
 	public Address(boolean active, boolean primary, String country,
 			String title, String zip, String state, String city, String county,
@@ -48,6 +58,10 @@ public class Address extends Record {
 	/**
 	 * Public constructor. Take an address database key, and has the option to
 	 * populate the fields from the database.
+	 * 
+	 * @param pkey
+	 * @param populate
+	 * @throws SQLException
 	 */
 	public Address(int pkey, boolean populate) throws SQLException {
 		super();
@@ -60,6 +74,8 @@ public class Address extends Record {
 	
 	/**
 	 * Gets the record's active status.
+	 * 
+	 * @return
 	 */
 	public Boolean getActive() {
 		return ((Integer) this.getFieldValue("active")) == 1;
@@ -67,6 +83,8 @@ public class Address extends Record {
 	
 	/**
 	 * Gets the city.
+	 * 
+	 * @return
 	 */
 	public String getCity() {
 		return (String) this.getFieldValue("city");
@@ -74,6 +92,8 @@ public class Address extends Record {
 	
 	/**
 	 * Gets the country.
+	 * 
+	 * @return
 	 */
 	public String getCountry() {
 		return (String) this.getFieldValue("country");
@@ -81,6 +101,8 @@ public class Address extends Record {
 	
 	/**
 	 * Gets the county.
+	 * 
+	 * @return
 	 */
 	public String getCounty() {
 		return (String) this.getFieldValue("county");
@@ -88,6 +110,8 @@ public class Address extends Record {
 	
 	/**
 	 * gets the record's primary status
+	 * 
+	 * @return
 	 */
 	public boolean getPrimary() {
 		return ((Integer) this.getFieldValue("primary_status")) == 1;
@@ -95,6 +119,8 @@ public class Address extends Record {
 	
 	/**
 	 * Gets the state.
+	 * 
+	 * @return
 	 */
 	public String getState() {
 		return (String) this.getFieldValue("state");
@@ -102,6 +128,8 @@ public class Address extends Record {
 	
 	/**
 	 * Gets the street address.
+	 * 
+	 * @return
 	 */
 	public String getStreetAddress() {
 		return (String) this.getFieldValue("st_address");
@@ -114,6 +142,8 @@ public class Address extends Record {
 	
 	/**
 	 * Gets the record's title.
+	 * 
+	 * @return
 	 */
 	public String getTitle() {
 		return (String) this.getFieldValue("title");
@@ -121,6 +151,8 @@ public class Address extends Record {
 	
 	/**
 	 * Gets the ZIP.
+	 * 
+	 * @return
 	 */
 	public String getZIP() {
 		return (String) this.getFieldValue("zip");
@@ -133,6 +165,8 @@ public class Address extends Record {
 	
 	/**
 	 * Sets the record's active status.
+	 * 
+	 * @param active
 	 */
 	public void setActive(Boolean active) {
 		this.setFieldValue("active", (active ? 1 : 0));
@@ -140,6 +174,8 @@ public class Address extends Record {
 	
 	/**
 	 * Sets the record's primary status
+	 * 
+	 * @param primary
 	 */
 	public void setPrimary(boolean primary) {
 		this.setFieldValue("primary", (primary ? 1 : 0));

@@ -27,6 +27,7 @@ public class DoubleHintField extends HintField {
 	
 	/**
 	 * @author eric
+	 * @param hint
 	 * @pre - received 1 string
 	 * @post - new instance created
 	 */
@@ -133,6 +134,7 @@ public class DoubleHintField extends HintField {
 	}
 	
 	/**
+	 * @param str
 	 * @pre - none
 	 * @post - none - abstract for override
 	 */

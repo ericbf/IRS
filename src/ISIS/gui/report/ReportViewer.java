@@ -33,6 +33,8 @@ public class ReportViewer extends View {
 	/**
 	 * Public constructor. User is presented with a Report View.
 	 * 
+	 * @param report
+	 * @param splitPane
 	 * @pre - receives all required parameters for a report and Split Pane.
 	 * @post - returns new instance of the view.
 	 */

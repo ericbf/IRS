@@ -35,6 +35,9 @@ public class ListPhone extends SimpleListView<Phone> {
 	/**
 	 * Lists all phone info associated with the customer record.
 	 * 
+	 * @param splitPane
+	 * @param pusher
+	 * @param customer
 	 * @pre - necessary parameters are given for List Phone
 	 * @post - returns and lists all info concerned with phone information into
 	 *       the table view for use.

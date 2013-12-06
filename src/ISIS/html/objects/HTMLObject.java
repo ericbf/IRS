@@ -124,6 +124,9 @@ public class HTMLObject<E> {
 	}
 	
 	/**
+	 * @param key
+	 * @param value
+	 * @return
 	 * @pre - key & value are not empty
 	 * @post - key & value are added to attributes
 	 */
@@ -144,6 +147,8 @@ public class HTMLObject<E> {
 	}
 	
 	/**
+	 * @param HTMLclass
+	 * @return
 	 * @pre - none
 	 * @post - param appended to HTMLclass
 	 */
@@ -159,6 +164,7 @@ public class HTMLObject<E> {
 	}
 	
 	/**
+	 * @return
 	 * @pre - none
 	 * @post - builds b
 	 */
@@ -243,6 +249,8 @@ public class HTMLObject<E> {
 	}
 	
 	/**
+	 * @param id
+	 * @return
 	 * @pre - none
 	 * @post - id == param
 	 */

@@ -45,6 +45,8 @@ public class AddEditCustomer extends AddEditView {
 	
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
+	 * 
+	 * @param splitPane
 	 */
 	public AddEditCustomer(SplitPane splitPane) {
 		super(splitPane);
@@ -54,6 +56,9 @@ public class AddEditCustomer extends AddEditView {
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
 	 * 
+	 * @param splitPane
+	 * @param pkey
+	 * @throws SQLException
 	 * @wbp.parser.constructor
 	 * @pre - received key for customer record
 	 * @post - add customer record contents to view

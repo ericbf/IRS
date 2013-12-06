@@ -40,6 +40,9 @@ public class ListTransactionLineItem extends
 	/**
 	 * Lists all Transaction Line Items associated with the customer record.
 	 * 
+	 * @param splitPane
+	 * @param pusher
+	 * @param transaction
 	 * @pre - none
 	 * @post - returns and lists all info concerned with listing a transaction
 	 *       line item into the table view for use.

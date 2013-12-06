@@ -24,6 +24,8 @@ public class AddEditPhone extends AddEditView {
 	private final Customer				customer;
 	
 	/**
+	 * @param splitPane
+	 * @param customer
 	 * @pre - receive SPlitPane and Customer objects
 	 * @post - draw AddEditPhone members in view
 	 */
@@ -37,6 +39,10 @@ public class AddEditPhone extends AddEditView {
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
 	 * 
+	 * @param splitPane
+	 * @param customer
+	 * @param pkey
+	 * @throws SQLException
 	 * @wbp.parser.constructor
 	 * @pre - recieve required parameters
 	 * @post - returns new view for add/edit phone numbers

@@ -15,12 +15,16 @@ public class ErrorLogger {
 	private static boolean	debug	= false;
 	
 	/**
+	 * @param e
+	 * @param error
+	 * @param severe
+	 * @param show
 	 * @pre - exception object received
 	 * @post - error message logged
 	 */
 	public static void error(Exception e, String error, boolean severe,
 			boolean show) {
-		if (debug) {
+		if (ErrorLogger.debug) {
 			StringWriter excBuffer = new StringWriter();
 			e.printStackTrace(new PrintWriter(excBuffer));
 			e.printStackTrace();
@@ -32,6 +36,9 @@ public class ErrorLogger {
 	}
 	
 	/**
+	 * @param error
+	 * @param severe
+	 * @param show
 	 * @pre - none, constructor
 	 * @post - object instantiated and returned
 	 */

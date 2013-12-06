@@ -5,6 +5,7 @@ package ISIS.html.objects;
 
 /**
  * @author eric
+ * @param <E>
  */
 public interface HTMLContainText<E> {
 	public E add(Bold bold);

@@ -37,6 +37,9 @@ public class Billing extends Record {
 	
 	/**
 	 * Public constructor for CASH or OTHER billing.
+	 * 
+	 * @param address
+	 * @param billingType
 	 */
 	public Billing(Address address, BillingType billingType) {
 		super();
@@ -53,6 +56,11 @@ public class Billing extends Record {
 	
 	/**
 	 * Public constructor for CREDIT billing.
+	 * 
+	 * @param address
+	 * @param cardNumber
+	 * @param expDate
+	 * @param CCV
 	 */
 	public Billing(Address address, String cardNumber, Date expDate, String CCV) {
 		super();
@@ -75,6 +83,10 @@ public class Billing extends Record {
 	
 	/**
 	 * Gets a set of billing info from the DB using the given key.
+	 * 
+	 * @param pkey
+	 * @param populate
+	 * @throws SQLException
 	 */
 	public Billing(int pkey, boolean populate) throws SQLException {
 		super();
@@ -87,6 +99,9 @@ public class Billing extends Record {
 	
 	/**
 	 * Gets the billing address.
+	 * 
+	 * @return
+	 * @throws SQLException
 	 */
 	public Address getAddress() throws SQLException {
 		if (this.address == null) {
@@ -102,6 +117,8 @@ public class Billing extends Record {
 	
 	/**
 	 * Gets the billing type associated with the record.
+	 * 
+	 * @return
 	 */
 	public BillingType getBillingType() {
 		return BillingType.valueOf(((String) this.getFieldValue("type")));
@@ -110,6 +127,7 @@ public class Billing extends Record {
 	/**
 	 * Gets the credit card number.
 	 * 
+	 * @return
 	 * @pre getBillingType == BillingType.CREDIT
 	 */
 	public String getCardNumber() {
@@ -123,6 +141,7 @@ public class Billing extends Record {
 	/**
 	 * Gets the credit card number.
 	 * 
+	 * @return
 	 * @pre getBillingType == BillingType.CREDIT
 	 */
 	public String getCCV() {
@@ -166,6 +185,8 @@ public class Billing extends Record {
 	
 	/**
 	 * Allows you to set the active status of the Customer.
+	 * 
+	 * @param active
 	 */
 	public void setActive(boolean active) {
 		this.setFieldValue("active", ((active) ? 1 : 0));

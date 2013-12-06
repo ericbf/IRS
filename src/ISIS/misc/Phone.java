@@ -46,6 +46,10 @@ public class Phone extends Record {
 	/**
 	 * Public constructor. Take a Phone database key, and has the option to
 	 * populate the fields from the database.
+	 * 
+	 * @param pkey
+	 * @param populate
+	 * @throws SQLException
 	 */
 	public Phone(int pkey, boolean populate) throws SQLException {
 		super();
@@ -59,6 +63,10 @@ public class Phone extends Record {
 	/**
 	 * Public constructor. A Phone record starts with a number, primary status,
 	 * and type (mobile/home/etc).
+	 * 
+	 * @param number
+	 * @param primary
+	 * @param type
 	 */
 	public Phone(String number, boolean primary, PhoneType type) {
 		super();
@@ -69,6 +77,8 @@ public class Phone extends Record {
 	
 	/**
 	 * Gets the phone number.
+	 * 
+	 * @return
 	 */
 	public String getNumber() {
 		return (String) this.getFieldValue("number");
@@ -76,6 +86,8 @@ public class Phone extends Record {
 	
 	/**
 	 * Returns the phone number's primary status.
+	 * 
+	 * @return
 	 */
 	public boolean getPrimary() {
 		return ((Integer) this.getFieldValue("primary_num")) == 1;
@@ -88,6 +100,8 @@ public class Phone extends Record {
 	
 	/**
 	 * Returns the type of the phone number.
+	 * 
+	 * @return
 	 */
 	public PhoneType getType() {
 		return PhoneType.valueOf((String) this.getFieldValue("type"));
@@ -100,6 +114,8 @@ public class Phone extends Record {
 	
 	/**
 	 * Sets the phone number's primary status.
+	 * 
+	 * @param primary
 	 */
 	public void setPrimary(Boolean primary) {
 		this.setFieldValue("primary_num", (primary ? 1 : 0));
