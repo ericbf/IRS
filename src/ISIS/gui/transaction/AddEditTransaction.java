@@ -9,8 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -41,9 +43,7 @@ import ISIS.transaction.Transaction.TransactionStatus;
 public class AddEditTransaction extends AddEditView {
 	private static final long			serialVersionUID	= 1L;
 	JCheckBox							returnTransaction;
-	final JComboBox<TransactionStatus>	status				= new JComboBox<>(
-																	TransactionStatus
-																			.values());
+	final JComboBox<TransactionStatus>	status;
 	HintField							address;
 	HintField							billing;
 	Transaction							transaction;
@@ -54,6 +54,7 @@ public class AddEditTransaction extends AddEditView {
 			item_select;
 	ArrayList<JToggleButton>			cardLayoutViewButtons;
 	static double						dividerRatio		= 0;
+	JPanel								buttonHolder;
 	
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
@@ -69,9 +70,10 @@ public class AddEditTransaction extends AddEditView {
 					true);
 			throw new RuntimeException(e);
 		}
-		this.populateElements();
-		
+		this.status = new JComboBox<>(TransactionStatus.values());
 		this.status.setSelectedItem(this.transaction.getStatus());
+		
+		this.populateElements();
 	}
 	
 	/**
@@ -90,9 +92,17 @@ public class AddEditTransaction extends AddEditView {
 		} catch (SQLException e) {
 			throw new SQLException("Failed to fetch customer.", e);
 		}
-		this.populateElements();
-		
+		if (this.transaction.getStatus() != TransactionStatus.ACTIVE) {
+			TransactionStatus[] statuses = Arrays.copyOfRange(
+					TransactionStatus.values(), 1,
+					TransactionStatus.values().length);
+			this.status = new JComboBox<>(statuses);
+		} else {
+			this.status = new JComboBox<>(TransactionStatus.values());
+		}
 		this.status.setSelectedItem(this.transaction.getStatus());
+		
+		this.populateElements();
 		this.reloadAddress();
 		this.reloadBilling();
 	}
@@ -174,6 +184,24 @@ public class AddEditTransaction extends AddEditView {
 			}
 		});
 		
+		if (this.transaction.getStatus() != TransactionStatus.ACTIVE) {
+			TransactionStatus[] statuses = Arrays.copyOfRange(
+					TransactionStatus.values(), 1,
+					TransactionStatus.values().length);
+			DefaultComboBoxModel<TransactionStatus> model = new DefaultComboBoxModel<>(
+					statuses);
+			this.status.setModel(model);
+			this.status.setSelectedItem(this.transaction.getStatus());
+			
+			if (this.cardLayoutViewButtons.contains(this.item_select)) {
+				if (this.item_select.isSelected()) {
+					this.address_select.doClick();
+				}
+				this.cardLayoutViewButtons.remove(this.item_select);
+				this.buttonHolder.remove(this.item_select);
+			}
+		}
+		
 		// next
 		this.billing_select
 				.addActionListener(new ListButtonListener(
@@ -181,10 +209,12 @@ public class AddEditTransaction extends AddEditView {
 						"Billing"));
 		
 		// next
-		this.item_select.addActionListener(new ListButtonListener(
-				this.otherListsCardLayout, this.otherListsContainer, "Items"));
-		
-		this.cardLayoutViewButtons.get(0).setSelected(true);
+		if (this.transaction != null
+				&& this.transaction.getStatus() == TransactionStatus.ACTIVE) {
+			this.item_select.addActionListener(new ListButtonListener(
+					this.otherListsCardLayout, this.otherListsContainer,
+					"Items"));
+		}
 	}
 	
 	/*
@@ -331,21 +361,30 @@ public class AddEditTransaction extends AddEditView {
 		
 		JPanel otherArea = new JPanel(new BorderLayout());
 		otherArea.setOpaque(false);
-		JPanel buttonHolder = new JPanel(new WrapLayout());
-		buttonHolder.setOpaque(false);
+		this.buttonHolder = new JPanel(new WrapLayout());
+		this.buttonHolder.setOpaque(false);
 		
 		// Add buttons for the cards (Other lists)
-		buttonHolder.add(this.address_select = new JToggleButton("Address"), c);
-		buttonHolder.add(this.billing_select = new JToggleButton("Billing"), c);
-		buttonHolder.add(this.item_select = new JToggleButton("Items"), c);
+		this.buttonHolder.add(
+				this.address_select = new JToggleButton("Address"), c);
+		this.buttonHolder.add(
+				this.billing_select = new JToggleButton("Billing"), c);
+		if (this.transaction != null
+				&& this.transaction.getStatus() == TransactionStatus.ACTIVE) {
+			this.buttonHolder.add(
+					this.item_select = new JToggleButton("Items"), c);
+		}
 		
 		// Add buttons to the buttons ArrayList
 		this.cardLayoutViewButtons.add(this.address_select);
 		this.cardLayoutViewButtons.add(this.billing_select);
-		this.cardLayoutViewButtons.add(this.item_select);
+		if (this.transaction != null
+				&& this.transaction.getStatus() == TransactionStatus.ACTIVE) {
+			this.cardLayoutViewButtons.add(this.item_select);
+		}
 		
 		// Add the button holder at the top of the right section
-		otherArea.add(buttonHolder, BorderLayout.NORTH);
+		otherArea.add(this.buttonHolder, BorderLayout.NORTH);
 		
 		// Add the JPanel(card layout) to the right section center
 		otherArea.add(this.otherListsContainer = new JPanel(

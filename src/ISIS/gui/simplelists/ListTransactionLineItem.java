@@ -22,6 +22,7 @@ import ISIS.gui.SimpleListView;
 import ISIS.gui.SplitPane;
 import ISIS.gui.View;
 import ISIS.transaction.Transaction;
+import ISIS.transaction.Transaction.TransactionStatus;
 import ISIS.transaction.TransactionLineItem;
 
 /**
@@ -75,6 +76,24 @@ public class ListTransactionLineItem extends
 		GridBagConstraints c;
 		
 		this.remove = new JButton("Remove");
+		c = new GridBagConstraints();
+		c.gridx = x;
+		c.gridy = y;
+		this.add(this.remove, c);
+		if (transaction != null
+				&& transaction.getStatus() != TransactionStatus.ACTIVE) {
+			this.remove.setEnabled(false);
+		}
+		
+		c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.gridy = ++y;
+		c.gridwidth = x;
+		c.gridx = x = 0;
+		c.weighty = 1;
+		c.weightx = 1;
+		this.add(new JScrollPane(this.table), c);
+		
 		this.remove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -101,19 +120,6 @@ public class ListTransactionLineItem extends
 				}
 			}
 		});
-		c = new GridBagConstraints();
-		c.gridx = x;
-		c.gridy = y;
-		this.add(this.remove, c);
-		
-		c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
-		c.gridy = ++y;
-		c.gridwidth = x;
-		c.gridx = x = 0;
-		c.weighty = 1;
-		c.weightx = 1;
-		this.add(new JScrollPane(this.table), c);
 		
 		this.fillTable();
 	}
