@@ -190,7 +190,7 @@ public class AddEditTransactionLineItem extends AddEditView {
 							.requestFocusInWindow();
 					AddEditTransactionLineItem.this.quantity.selectAll();
 				} else {
-					AddEditTransactionLineItem.this.failed = false;
+					AddEditTransactionLineItem.this.failed = AddEditTransactionLineItem.this.item == null;
 				}
 			}
 		});
@@ -204,6 +204,11 @@ public class AddEditTransactionLineItem extends AddEditView {
 	protected void postSave() throws SQLException {
 		if (this.customer != null) {
 			this.customer.save();
+		}
+		if (this.item != null) {
+			this.item.setOnHandQty(this.item.getOnHandQty().subtract(
+					new BigDecimal(this.quantity.getText())));
+			this.item.save();
 		}
 	}
 	
