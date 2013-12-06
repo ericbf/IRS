@@ -168,7 +168,7 @@ public class AddEditUser extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.username = new HintField("Username"), c);
+		this.add((this.username = new HintField("Username")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -201,7 +201,7 @@ public class AddEditUser extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.fname = new HintField("First Name"), c);
+		this.add((this.fname = new HintField("First Name")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -216,7 +216,7 @@ public class AddEditUser extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.lname = new HintField("Last Name"), c);
+		this.add((this.lname = new HintField("Last Name")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -231,7 +231,7 @@ public class AddEditUser extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.note = new HintField("Note"), c);
+		this.add((this.note = new HintField("Note")).make(), c);
 	}
 	
 	@Override

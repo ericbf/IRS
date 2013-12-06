@@ -134,7 +134,7 @@ public class AddEditPhone extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.phoneNo = new NumberHintField("Phone #"), c);
+		this.add((this.phoneNo = new NumberHintField("Phone #")).make(), c);
 	}
 	
 	/**

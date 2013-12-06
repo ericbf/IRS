@@ -13,13 +13,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
-import javax.swing.border.EtchedBorder;
 
 import ISIS.customer.Customer;
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
+import ISIS.gui.HintArea;
 import ISIS.gui.HintField;
 import ISIS.gui.ListButtonListener;
 import ISIS.gui.SimpleListView;
@@ -36,7 +35,7 @@ public class AddEditCustomer extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
 	JCheckBox					active;
 	HintField					password, fname, lname, email;
-	JTextArea					note;
+	HintArea					note;
 	Customer					customer;
 	JPanel						otherListsContainer;
 	CardLayout					otherListsCardLayout;
@@ -239,7 +238,7 @@ public class AddEditCustomer extends AddEditView {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		main.add(this.password = new HintField("Password"), c);
+		main.add((this.password = new HintField("Password")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -253,7 +252,7 @@ public class AddEditCustomer extends AddEditView {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		main.add(this.fname = new HintField("First Name"), c);
+		main.add((this.fname = new HintField("First Name")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -267,7 +266,7 @@ public class AddEditCustomer extends AddEditView {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		main.add(this.lname = new HintField("Last Name"), c);
+		main.add((this.lname = new HintField("Last Name")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -281,7 +280,7 @@ public class AddEditCustomer extends AddEditView {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		main.add(this.email = new HintField("Email"), c);
+		main.add((this.email = new HintField("Email")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -298,10 +297,7 @@ public class AddEditCustomer extends AddEditView {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		main.add(this.note = new JTextArea(), c);
-		this.note.setBorder(new EtchedBorder());
-		this.note.setLineWrap(true);
-		this.note.setWrapStyleWord(true);
+		main.add((this.note = new HintArea("Note")).make(), c);
 		
 		split.setLeftComponent(main);
 		

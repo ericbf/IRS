@@ -191,7 +191,7 @@ public class AddEditBilling extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.address = new HintField(""), c);
+		this.add((this.address = new HintField("")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -206,7 +206,7 @@ public class AddEditBilling extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.number = new NumberHintField("Card Number"), c);
+		this.add((this.number = new NumberHintField("Card Number")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -221,7 +221,7 @@ public class AddEditBilling extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.expiration = new HintField("Expiration Date"), c);
+		this.add((this.expiration = new HintField("Expiration Date")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -236,7 +236,7 @@ public class AddEditBilling extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.CCV = new NumberHintField("CCV"), c);
+		this.add((this.CCV = new NumberHintField("CCV")).make(), c);
 		
 		this.listAddress = new ListAddress(this.splitPane, this, this.customer,
 				this.customer.getPkey(), true);

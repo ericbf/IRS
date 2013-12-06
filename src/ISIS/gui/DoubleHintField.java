@@ -22,20 +22,16 @@ public class DoubleHintField extends HintField {
 	private String				toReturn;
 	
 	public DoubleHintField() {
-		this(null, null);
-	}
-	
-	public DoubleHintField(String hint) {
-		this(hint, null);
+		this(null);
 	}
 	
 	/**
 	 * @author eric
-	 * @pre - received 2 strings
-	 * @post - hint string returned
+	 * @pre - received 1 string
+	 * @post - new instance created
 	 */
-	public DoubleHintField(String hint, String initialText) {
-		super(hint, initialText);
+	public DoubleHintField(String hint) {
+		super(hint);
 		this.toReturn = "0.00";
 		((PlainDocument) this.getDocument())
 				.setDocumentFilter(new DocumentFilter() {

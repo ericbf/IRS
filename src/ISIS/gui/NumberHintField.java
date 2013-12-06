@@ -20,7 +20,7 @@ public class NumberHintField extends HintField {
 	 * @post - object instantiated and returned
 	 */
 	public NumberHintField() {
-		this(null, null);
+		this(null);
 	}
 	
 	/**
@@ -28,15 +28,8 @@ public class NumberHintField extends HintField {
 	 * @post - object instantiated and returned
 	 */
 	public NumberHintField(String hint) {
-		this(hint, null);
-	}
-	
-	/**
-	 * @pre - 2 strings received, constructor
-	 * @post - object instantiated and returned
-	 */
-	public NumberHintField(String hint, String initialText) {
-		super(hint, initialText);
+		super(hint);
+		
 		((PlainDocument) this.getDocument())
 				.setDocumentFilter(new DocumentFilter() {
 					private boolean check(String str) {

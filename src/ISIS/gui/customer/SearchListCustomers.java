@@ -112,7 +112,7 @@ public class SearchListCustomers extends SearchListView<Customer> {
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = x++;
 		c.weightx = 1;
-		this.add(this.searchField, c);
+		this.add(this.searchField.make(), c);
 		
 		this.setTableModel(new IRSTableModel() {
 			private static final long	serialVersionUID	= 1L;

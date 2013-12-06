@@ -148,7 +148,7 @@ public class AddEditAddress extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.title = new HintField("Title"), c);
+		this.add((this.title = new HintField("Title")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -163,7 +163,7 @@ public class AddEditAddress extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.country = new HintField("Country"), c);
+		this.add((this.country = new HintField("Country")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -178,7 +178,7 @@ public class AddEditAddress extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.state = new HintField("State"), c);
+		this.add((this.state = new HintField("State")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -193,7 +193,7 @@ public class AddEditAddress extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.county = new HintField("County"), c);
+		this.add((this.county = new HintField("County")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -208,7 +208,7 @@ public class AddEditAddress extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.city = new HintField("City"), c);
+		this.add((this.city = new HintField("City")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -222,7 +222,7 @@ public class AddEditAddress extends AddEditView {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.zip = new HintField("Zip"), c);
+		this.add((this.zip = new HintField("Zip")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -236,7 +236,7 @@ public class AddEditAddress extends AddEditView {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.st_address = new HintField("Street Address"), c);
+		this.add((this.st_address = new HintField("Street Address")).make(), c);
 		
 	}
 	

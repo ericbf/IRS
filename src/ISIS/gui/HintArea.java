@@ -4,10 +4,12 @@
 package ISIS.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -16,15 +18,15 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JComponent;
 import javax.swing.JLayer;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
+import javax.swing.JTextArea;
+import javax.swing.border.Border;
 import javax.swing.plaf.LayerUI;
 
 /**
  * @author eric
  */
-public class HintField extends JTextField {
-	private class HintFieldLayer extends LayerUI<HintField> {
+public class HintArea extends JTextArea {
+	private class HintAreaLayer extends LayerUI<HintArea> {
 		private static final long	serialVersionUID	= 1L;
 		
 		/*
@@ -38,15 +40,13 @@ public class HintField extends JTextField {
 			
 			Graphics2D g2 = (Graphics2D) g.create();
 			
-			if (HintField.this.hintEnabled && HintField.this.hint != null
-					&& HintField.this.isEmpty()) {
+			if (HintArea.this.hintEnabled && HintArea.this.hint != null
+					&& HintArea.this.isEmpty()) {
 				g.setColor(Color.gray);
-				g.setFont(new Font(HintField.this.getFont().getName(),
-						Font.ITALIC, HintField.this.getFont().getSize()));
-				int padding = (HintField.this.getHeight() - HintField.this
-						.getFont().getSize()) / 2;
-				g.drawString(HintField.this.hint, 7, HintField.this.getHeight()
-						- padding - 2);
+				g.setFont(new Font(HintArea.this.getFont().getName(),
+						Font.ITALIC, HintArea.this.getFont().getSize()));
+				g.drawString(HintArea.this.hint, 7, HintArea.this.getFont()
+						.getSize() + 4);
 			}
 			
 			g2.dispose();
@@ -60,18 +60,18 @@ public class HintField extends JTextField {
 	private String					hint;
 	private boolean					selectAll;
 	private boolean					hintEnabled;
-	private final JLayer<HintField>	layer;
+	private final JLayer<HintArea>	layer;
 	
-	public HintField() {
+	public HintArea() {
 		this(null);
 	}
 	
-	public HintField(String hint) {
+	public HintArea(String hint) {
 		super();
 		this.hint = hint;
 		this.hintEnabled = true;
 		
-		LayerUI<HintField> layerUI = new HintFieldLayer();
+		LayerUI<HintArea> layerUI = new HintAreaLayer();
 		this.layer = new JLayer<>(this, layerUI);
 		
 		this.setSettings();
@@ -83,9 +83,9 @@ public class HintField extends JTextField {
 	 */
 	@Override
 	public Dimension getPreferredSize() {
-		if (!HintField.this.made) {
+		if (!HintArea.this.made) {
 			throw new IllegalAccessError(
-					"This hint field was not made before being shown!");
+					"This hint area was not made before being shown!");
 		}
 		return super.getPreferredSize();
 	}
@@ -98,7 +98,7 @@ public class HintField extends JTextField {
 		return super.getText().isEmpty();
 	}
 	
-	public JLayer<HintField> make() {
+	public JLayer<HintArea> make() {
 		this.made = true;
 		return this.layer;
 	}
@@ -107,45 +107,56 @@ public class HintField extends JTextField {
 	 * @pre - receives a bool
 	 * @post - sets selectAll to bool passed
 	 */
-	public HintField setSelectAll(boolean b) {
+	public HintArea setSelectAll(boolean b) {
 		this.selectAll = b;
 		return this;
 	}
 	
 	private void setSettings() {
-		
-		this.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "none");
-		this.getInputMap().put(KeyStroke.getKeyStroke("UP"), "none");
-		this.getInputMap().put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,
-						java.awt.event.InputEvent.META_DOWN_MASK), "none");
-		this.getInputMap().put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,
-						java.awt.event.InputEvent.ALT_DOWN_MASK), "none");
-		this.getInputMap().put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_UP,
-						java.awt.event.InputEvent.META_DOWN_MASK), "none");
-		this.getInputMap().put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_UP,
-						java.awt.event.InputEvent.ALT_DOWN_MASK), "none");
+		this.setBorder(new Border() {
+			@Override
+			public Insets getBorderInsets(Component c) {
+				return new Insets(5, 7, 5, 7);
+			}
+			
+			@Override
+			public boolean isBorderOpaque() {
+				return false;
+			}
+			
+			@Override
+			public void paintBorder(Component c, Graphics g, int x, int y,
+					int width, int height) {
+				if (HintArea.this.isFocusOwner()) {
+					g.setColor(new Color(0x6d96be));
+					g.drawRect(x, y, width--, height--);
+				} else {
+					g.setColor(new Color(0xa2a2a2));
+					g.drawRect(x, y, width--, height--);
+				}
+				g.setColor(new Color(0xd0d0d0));
+				g.drawRect(++x, ++y, --width, --height);
+				
+			}
+		});
 		this.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent fe) {
-				if (HintField.this.selectAll) {
-					HintField.this.selectAll();
+				if (HintArea.this.selectAll) {
+					HintArea.this.selectAll();
 				}
 			}
 			
 			@Override
 			public void focusLost(FocusEvent fe) {
-				if (HintField.this.selectAll) {
-					HintField.this.setCaretPosition(0);
+				if (HintArea.this.selectAll) {
+					HintArea.this.setCaretPosition(0);
 				}
 			}
 		});
 		this.addKeyListener(new KeyListener() {
 			private final int	BACKSPACE	= 8;
-			private HintField	me			= HintField.this;
+			private HintArea	me			= HintArea.this;
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -155,17 +166,23 @@ public class HintField extends JTextField {
 					case BACKSPACE:
 						if (meta) {
 							int caretPosition = this.me.getCaretPosition();
-							if (caretPosition < this.me.getText().length()) {
-								this.me.setText(this.me.getText().substring(
-										caretPosition));
-								this.me.setCaretPosition(0);
-							} else {
-								this.me.setText("");
+							int startPos;
+							String text = this.me.getText();
+							char c;
+							for (startPos = caretPosition - 1; startPos > 0; startPos--) {
+								if ((c = text.charAt(startPos)) == '\r'
+										|| c == '\n') {
+									break;
+								}
 							}
+							this.me.setText(text.substring(0, startPos)
+									+ text.substring(caretPosition,
+											text.length()));
+							this.me.setCaretPosition(startPos);
 						}
 						break;
 				}
-				HintField.this.layer.repaint();
+				HintArea.this.layer.repaint();
 			}
 			
 			@Override

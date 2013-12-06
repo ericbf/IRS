@@ -14,6 +14,7 @@ import ISIS.customer.Customer;
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
 import ISIS.gui.DoubleHintField;
+import ISIS.gui.HintArea;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
@@ -25,7 +26,8 @@ public class AddEditTransactionLineItem extends AddEditView {
 	private final Item			item;
 	private TransactionLineItem	lineItem			= null;
 	private final Transaction	transaction;
-	private HintField			itemName, description;
+	private HintField			itemName;
+	private HintArea			description;
 	private DoubleHintField		price, adjustment, quantity;
 	private final Customer		customer;
 	private boolean				failed;
@@ -106,7 +108,7 @@ public class AddEditTransactionLineItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.itemName = new HintField(), c);
+		this.add((this.itemName = new HintField()).make(), c);
 		this.itemName.setEnabled(false);
 		
 		c = new GridBagConstraints();
@@ -122,23 +124,8 @@ public class AddEditTransactionLineItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.price = new DoubleHintField(), c);
+		this.add((this.price = new DoubleHintField()).make(), c);
 		this.price.setEnabled(false);
-		
-		c = new GridBagConstraints();
-		c.weightx = 0;
-		c.gridx = x++;
-		c.gridy = y;
-		c.fill = GridBagConstraints.BOTH;
-		this.add(new JLabel("Adjustment"), c);
-		
-		c = new GridBagConstraints();
-		c.weightx = 1;
-		c.gridx = x--;
-		c.gridy = y++;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.BOTH;
-		this.add(this.adjustment = new DoubleHintField("Adjustment"), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -153,7 +140,23 @@ public class AddEditTransactionLineItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.quantity = new DoubleHintField("Quantity"), c);
+		this.add((this.quantity = new DoubleHintField("Quantity")).make(), c);
+		
+		c = new GridBagConstraints();
+		c.weightx = 0;
+		c.gridx = x++;
+		c.gridy = y;
+		c.fill = GridBagConstraints.BOTH;
+		this.add(new JLabel("Adjustment"), c);
+		
+		c = new GridBagConstraints();
+		c.weightx = 1;
+		c.gridx = x--;
+		c.gridy = y++;
+		c.gridwidth = 2;
+		c.fill = GridBagConstraints.BOTH;
+		this.add((this.adjustment = new DoubleHintField("Adjustment")).make(),
+				c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -164,11 +167,12 @@ public class AddEditTransactionLineItem extends AddEditView {
 		
 		c = new GridBagConstraints();
 		c.weightx = 1;
+		c.weighty = 1;
 		c.gridx = x--;
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.description = new HintField("Description"), c);
+		this.add((this.description = new HintArea("Description")).make(), c);
 		
 		this.quantity.addFocusListener(new FocusListener() {
 			@Override

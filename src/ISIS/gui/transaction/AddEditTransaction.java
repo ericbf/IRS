@@ -293,7 +293,7 @@ public class AddEditTransaction extends AddEditView {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		main.add(this.address = new HintField(), c);
+		main.add((this.address = new HintField()).make(), c);
 		this.address.setEnabled(false);
 		
 		c = new GridBagConstraints();
@@ -308,7 +308,7 @@ public class AddEditTransaction extends AddEditView {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		main.add(this.billing = new HintField(), c);
+		main.add((this.billing = new HintField()).make(), c);
 		this.billing.setEnabled(false);
 		
 		c = new GridBagConstraints();

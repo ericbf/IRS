@@ -63,7 +63,7 @@ public class Login extends JFrame {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		content.add(this.username = new HintField("Username"), c);
+		content.add((this.username = new HintField("Username")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.insets = new Insets(0, 7, 0, 0);
@@ -79,7 +79,8 @@ public class Login extends JFrame {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		content.add(this.password = new PasswordHintField(), c);
+		content.add((this.password = new PasswordHintField("Password")).make(),
+				c);
 		
 		JPanel buttons = new JPanel(new GridBagLayout());
 		

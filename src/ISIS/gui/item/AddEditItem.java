@@ -7,12 +7,12 @@ import java.sql.SQLException;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 
 import ISIS.database.Record;
 import ISIS.gui.AddEditView;
 import ISIS.gui.DoubleHintField;
+import ISIS.gui.HintArea;
 import ISIS.gui.HintField;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
@@ -26,7 +26,7 @@ public class AddEditItem extends AddEditView {
 	private HintField			SKU, name, UOM;
 	private DoubleHintField		price, stock, cost, reorder;
 	private Item				item;
-	private JTextArea			description;
+	private HintArea			description;
 	
 	/**
 	 * Public constructor: returns new instance of add/edit item view.
@@ -148,7 +148,7 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.SKU = new HintField("SKU"), c);
+		this.add((this.SKU = new HintField("SKU")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -178,7 +178,7 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.name = new HintField("Name"), c);
+		this.add((this.name = new HintField("Name")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -193,7 +193,7 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.price = new DoubleHintField("Retail price"), c);
+		this.add((this.price = new DoubleHintField("Retail price")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -208,7 +208,7 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.cost = new DoubleHintField("Restock cost"), c);
+		this.add((this.cost = new DoubleHintField("Restock cost")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -223,7 +223,7 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.reorder = new DoubleHintField("Reorder amount"), c);
+		this.add((this.reorder = new DoubleHintField("Reorder amount")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -237,14 +237,14 @@ public class AddEditItem extends AddEditView {
 		c.gridx = x;
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.stock = new DoubleHintField("Current Stock"), c);
+		this.add((this.stock = new DoubleHintField("Current Stock")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = .3;
 		c.gridx = x-- + 1;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.UOM = new HintField("UOM"), c);
+		this.add((this.UOM = new HintField("UOM")).make(), c);
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -262,7 +262,7 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.description = new JTextArea(), c);
+		this.add((this.description = new HintArea("Description")).make(), c);
 		this.description.setBorder(new EtchedBorder());
 		this.description.setLineWrap(true);
 		this.description.setWrapStyleWord(true);
