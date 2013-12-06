@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import ISIS.customer.Customer;
 import ISIS.database.DB;
@@ -38,7 +39,25 @@ public class Transaction extends Record {
 	 */
 	public static enum TransactionStatus {
 		
-		ACTIVE, CLOSED, BILLED, UNDER_REVIEW, ABORTED
+		ACTIVE, BILLED, SHIPPING, COMPLETE, UNDER_REVIEW, CANCELED;
+		
+		public static Transaction.TransactionStatus myValueOf(String str) {
+			return valueOf(str.replace(' ', '_').toUpperCase());
+		}
+		
+		@Override
+		public String toString() {
+			String regular = super.toString();
+			String[] parts = regular.split("_");
+			String str = "";
+			for (String part : parts) {
+				str += part.charAt(0)
+						+ part.substring(1).toLowerCase(Locale.getDefault())
+						+ " ";
+			}
+			return str.trim();
+		}
+		
 	}
 	
 	/**
@@ -141,7 +160,7 @@ public class Transaction extends Record {
 	 * @post getStatus() == TransactionStatus.CLOSED
 	 */
 	public void finalizeTransaction() {
-		this.setStatus(TransactionStatus.CLOSED);
+		this.setStatus(TransactionStatus.COMPLETE);
 	}
 	
 	/**
@@ -252,7 +271,8 @@ public class Transaction extends Record {
 		if (this.getFieldValue("status") == null) {
 			return null;
 		}
-		return TransactionStatus.valueOf((String) this.getFieldValue("status"));
+		return TransactionStatus.myValueOf((String) this
+				.getFieldValue("status"));
 	}
 	
 	@Override
