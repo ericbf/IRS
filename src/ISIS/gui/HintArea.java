@@ -142,6 +142,8 @@ public class HintArea extends JTextArea {
 				
 			}
 		});
+		this.setWrapStyleWord(true);
+		this.setLineWrap(true);
 		this.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent fe) {
