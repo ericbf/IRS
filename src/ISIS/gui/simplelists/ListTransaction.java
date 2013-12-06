@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 
 import ISIS.customer.Customer;
 import ISIS.database.DB;
+import ISIS.database.DB.TableName;
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.ErrorLogger;
@@ -22,10 +23,12 @@ import ISIS.gui.IRSTableModel;
 import ISIS.gui.SimpleListView;
 import ISIS.gui.SplitPane;
 import ISIS.gui.SplitPane.LayoutType;
+import ISIS.gui.TableUpdateListener;
 import ISIS.gui.View;
 import ISIS.gui.report.ReportViewer;
 import ISIS.gui.transaction.AddEditTransaction;
 import ISIS.reports.Invoice;
+import ISIS.session.Session;
 import ISIS.transaction.Transaction;
 
 /**
@@ -34,6 +37,7 @@ import ISIS.transaction.Transaction;
 public class ListTransaction extends SimpleListView<Transaction> {
 	private static final long	serialVersionUID	= 1L;
 	Customer					customer;
+	private JButton				addButton;
 	
 	/**
 	 * Lists all Transactions associated with the customer record.
@@ -84,8 +88,8 @@ public class ListTransaction extends SimpleListView<Transaction> {
 			JButton select;
 			// TODO: THIS
 		} else { // we're adding/removing transactions.
-			JButton addButton = new JButton("Add");
-			addButton.addActionListener(new ActionListener() {
+			this.addButton = new JButton("Add");
+			this.addButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					ListTransaction.this.splitPane.push(new AddEditTransaction(
@@ -101,7 +105,22 @@ public class ListTransaction extends SimpleListView<Transaction> {
 			c.gridwidth = x;
 			c.gridx = x = 0;
 			c.weightx = 1;
-			this.add(addButton, c);
+			this.add(this.addButton, c);
+			if (this.customer != null) {
+				this.addButton.setEnabled(this.customer.isActive());
+			}
+			Session.watchTable(TableName.customer, new TableUpdateListener() {
+				private static final long	serialVersionUID	= 1L;
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (ListTransaction.this.customer != null) {
+						ListTransaction.this.addButton
+								.setEnabled(ListTransaction.this.customer
+										.isActive());
+					}
+				}
+			});
 			
 			JButton invoiceButton = new JButton("Invoice");
 			invoiceButton.addActionListener(new ActionListener() {
