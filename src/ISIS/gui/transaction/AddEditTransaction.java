@@ -403,6 +403,8 @@ public class AddEditTransaction extends AddEditView {
 			group.add(b);
 		}
 		
+		this.address_select.doClick();
+		
 		this.doSaveRecordAction();
 	}
 	

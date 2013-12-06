@@ -124,7 +124,7 @@ public class Invoice extends Report {
 				c[x++].add(i.getItem().getName());
 				c[x++].add(i.getPrice().toString());
 				c[x++].add(i.getQuantity().toString());
-				c[x++].add(String.format("$%.2f", total.floatValue() + .005f));
+				c[x++].add(String.format("$%.2f", total.floatValue() + .002f));
 				totals = totals.add(total);
 			}
 			
@@ -133,7 +133,7 @@ public class Invoice extends Report {
 			c[x++].add("Total");
 			x++;
 			x++;
-			c[x++].add(String.format("$%.2f", totals.floatValue() + .005f));
+			c[x++].add(String.format("$%.2f", totals.floatValue() + .002f));
 			
 			this.b.add(t);
 		} catch (SQLException e) {

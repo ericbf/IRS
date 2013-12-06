@@ -14,13 +14,16 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import ISIS.database.DB;
+import ISIS.database.DB.TableName;
 import ISIS.database.Field;
 import ISIS.database.Record;
 import ISIS.gui.ErrorLogger;
 import ISIS.gui.IRSTableModel;
 import ISIS.gui.SimpleListView;
 import ISIS.gui.SplitPane;
+import ISIS.gui.TableUpdateListener;
 import ISIS.gui.View;
+import ISIS.session.Session;
 import ISIS.transaction.Transaction;
 import ISIS.transaction.Transaction.TransactionStatus;
 import ISIS.transaction.TransactionLineItem;
@@ -84,6 +87,16 @@ public class ListTransactionLineItem extends
 				&& transaction.getStatus() != TransactionStatus.ACTIVE) {
 			this.remove.setEnabled(false);
 		}
+		Session.watchTable(TableName.transaction_, new TableUpdateListener() {
+			private static final long	serialVersionUID	= 1L;
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (ListTransactionLineItem.this.transaction.getStatus() != TransactionStatus.ACTIVE) {
+					ListTransactionLineItem.this.remove.setEnabled(false);
+				}
+			}
+		});
 		
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
