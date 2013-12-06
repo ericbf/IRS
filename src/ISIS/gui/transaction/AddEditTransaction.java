@@ -317,6 +317,7 @@ public class AddEditTransaction extends AddEditView {
 		c.gridy = y;
 		c.fill = GridBagConstraints.BOTH;
 		main.add(new JLabel("Items"), c);
+		
 		c = new GridBagConstraints();
 		c.weightx = 1;
 		c.weighty = 1;

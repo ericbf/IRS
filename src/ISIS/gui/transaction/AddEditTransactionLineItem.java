@@ -2,10 +2,13 @@ package ISIS.gui.transaction;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import ISIS.customer.Customer;
 import ISIS.database.Record;
@@ -25,6 +28,7 @@ public class AddEditTransactionLineItem extends AddEditView {
 	private HintField			itemName, description;
 	private DoubleHintField		price, adjustment, quantity;
 	private final Customer		customer;
+	private boolean				failed;
 	
 	/**
 	 * Public constructor: returns new instance of add/edit customer view.
@@ -73,6 +77,7 @@ public class AddEditTransactionLineItem extends AddEditView {
 	
 	/**
 	 * Even if nothing was changed from the defaults, we still want to save it.
+	 * 
 	 * @see ISIS.gui.View#isAnyFieldDifferentFromDefault()
 	 */
 	@Override
@@ -164,6 +169,31 @@ public class AddEditTransactionLineItem extends AddEditView {
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		this.add(this.description = new HintField("Description"), c);
+		
+		this.quantity.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {}
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (AddEditTransactionLineItem.this.item
+						.getOnHandQty()
+						.compareTo(
+								new BigDecimal(
+										AddEditTransactionLineItem.this.quantity
+												.getText())) < 0) {
+					AddEditTransactionLineItem.this.failed = true;
+					JOptionPane
+							.showMessageDialog(AddEditTransactionLineItem.this,
+									"Don't have enough stock on-hand to sell this many");
+					AddEditTransactionLineItem.this.quantity
+							.requestFocusInWindow();
+					AddEditTransactionLineItem.this.quantity.selectAll();
+				} else {
+					AddEditTransactionLineItem.this.failed = false;
+				}
+			}
+		});
 	}
 	
 	/**
@@ -174,6 +204,17 @@ public class AddEditTransactionLineItem extends AddEditView {
 	protected void postSave() throws SQLException {
 		if (this.customer != null) {
 			this.customer.save();
+		}
+	}
+	
+	/**
+	 * Backup to the focus listener: prevents save if not enough on-hand
+	 */
+	@Override
+	protected void preSave() throws SQLException {
+		if (this.failed) {
+			this.failed = false;
+			throw new SQLException("Can't put more items than on-hand");
 		}
 	}
 	

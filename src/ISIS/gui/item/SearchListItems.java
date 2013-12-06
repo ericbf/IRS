@@ -57,9 +57,6 @@ public class SearchListItems extends SearchListView<Item> {
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// SearchListCustomers.this.splitPane.push(new AddEditCustomer(
-				// SearchListCustomers.this.splitPane),
-				// SplitPane.LayoutType.HORIZONTAL);
 				SearchListItems.this.splitPane.push(new AddEditItem(
 						SearchListItems.this.splitPane),
 						SplitPane.LayoutType.HORIZONTAL, SearchListItems.this);
@@ -83,9 +80,6 @@ public class SearchListItems extends SearchListView<Item> {
 				int pkey = SearchListItems.this.keys.get(selected);
 				
 				try {
-					// SearchListItems.this.splitPane.push(new AddEditItem(
-					// SearchListItems.this.splitPane, pkey),
-					// SplitPane.LayoutType.HORIZONTAL);
 					SearchListItems.this.splitPane.push(new AddEditItem(
 							SearchListItems.this.splitPane, pkey),
 							SplitPane.LayoutType.HORIZONTAL,
