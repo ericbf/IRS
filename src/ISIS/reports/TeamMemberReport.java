@@ -48,9 +48,9 @@ public class TeamMemberReport extends Report {
 		for (int row = 1; row < t.getRowCount(); row++) {
 			t.get(0, row).add(TeamMemberReport.names[row - 1]);
 			int description;
-			if (row - 1 == 0) {
+			if (row == 1) {
 				while ((description = rand
-						.nextInt(TeamMemberReport.descriptions.length)) < 5) {
+						.nextInt(TeamMemberReport.descriptions.length)) > 5) {
 					;
 				}
 			} else {
