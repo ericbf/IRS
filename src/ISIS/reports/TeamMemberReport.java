@@ -50,7 +50,7 @@ public class TeamMemberReport extends Report {
 			int description;
 			if (row - 1 == 0) {
 				while ((description = rand
-						.nextInt(TeamMemberReport.descriptions.length)) > 5) {
+						.nextInt(TeamMemberReport.descriptions.length)) < 5) {
 					;
 				}
 			} else {
