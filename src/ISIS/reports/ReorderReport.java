@@ -26,7 +26,7 @@ public class ReorderReport extends Report {
 	 * @param title
 	 */
 	public ReorderReport() {
-		super("Reorder Report");
+		super("Reorder");
 		
 		this.items = new ArrayList<>();
 		

@@ -26,7 +26,7 @@ public class HighestGrossReport extends Report {
 	 * @param title
 	 */
 	public HighestGrossReport() {
-		super("Highest Gross Report");
+		super("Highest Gross");
 		
 		this.items = new ArrayList<>();
 		this.grosses = new HashMap<>();

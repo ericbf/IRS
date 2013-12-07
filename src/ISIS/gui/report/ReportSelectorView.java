@@ -66,7 +66,7 @@ public class ReportSelectorView extends View {
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(new JButton2("ISIS Member Report")
+		this.add(new JButton2("ISIS Member")
 				.addActionListenero(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -83,7 +83,7 @@ public class ReportSelectorView extends View {
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(new JButton2("Reorder Report")
+		this.add(new JButton2("Reorder")
 				.addActionListenero(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -100,7 +100,7 @@ public class ReportSelectorView extends View {
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(new JButton2("Highest Gross Report")
+		this.add(new JButton2("Highest Gross")
 				.addActionListenero(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -117,7 +117,7 @@ public class ReportSelectorView extends View {
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(new JButton2("Top Sellng Report")
+		this.add(new JButton2("Top Sellng")
 				.addActionListenero(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {

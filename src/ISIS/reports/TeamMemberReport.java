@@ -24,7 +24,7 @@ public class TeamMemberReport extends Report {
 	 * @param title
 	 */
 	public TeamMemberReport() {
-		super("ISIS Member Report");
+		super("ISIS Member");
 		this.populateBuilder();
 	}
 	

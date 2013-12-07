@@ -27,7 +27,7 @@ public class TopSellingReport extends Report {
 	 * @param title
 	 */
 	public TopSellingReport() {
-		super("Top Selling Report");
+		super("Top Selling");
 		
 		this.items = new ArrayList<>();
 		this.counts = new HashMap<>();
