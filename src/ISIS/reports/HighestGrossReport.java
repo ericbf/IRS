@@ -18,15 +18,15 @@ import ISIS.session.Session;
 /**
  * @author eric
  */
-public class TopSellingItemsReport extends Report {
+public class HighestGrossReport extends Report {
 	ArrayList<Item>			items;
 	HashMap<Item, Float>	grosses;
 	
 	/**
 	 * @param title
 	 */
-	public TopSellingItemsReport() {
-		super("Top Selling Items Report");
+	public HighestGrossReport() {
+		super("Highest Gross Report");
 		
 		this.items = new ArrayList<>();
 		this.grosses = new HashMap<>();

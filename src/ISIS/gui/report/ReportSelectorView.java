@@ -15,9 +15,10 @@ import ISIS.database.Record;
 import ISIS.gui.SplitPane;
 import ISIS.gui.SplitPane.LayoutType;
 import ISIS.gui.View;
+import ISIS.reports.HighestGrossReport;
 import ISIS.reports.ReorderReport;
 import ISIS.reports.TeamMemberReport;
-import ISIS.reports.TopSellingItemsReport;
+import ISIS.reports.TopSellingReport;
 
 /**
  * @author eric
@@ -95,16 +96,33 @@ public class ReportSelectorView extends View {
 		
 		c = new GridBagConstraints();
 		c.gridx = x++;
-		c.gridy = y--;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(new JButton2("Top Selling Items Report")
+		this.add(new JButton2("Highest Gross Report")
 				.addActionListenero(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						ReportSelectorView.this.splitPane.push(
-								new ReportViewer(new TopSellingItemsReport(),
+								new ReportViewer(new HighestGrossReport(),
+										ReportSelectorView.this.splitPane),
+								LayoutType.HORIZONTAL, ReportSelectorView.this);
+					}
+				}), c);
+		
+		c = new GridBagConstraints();
+		c.gridx = x--;
+		c.gridy = y++;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		this.add(new JButton2("Top Sellng Report")
+				.addActionListenero(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						ReportSelectorView.this.splitPane.push(
+								new ReportViewer(new TopSellingReport(),
 										ReportSelectorView.this.splitPane),
 								LayoutType.HORIZONTAL, ReportSelectorView.this);
 					}

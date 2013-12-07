@@ -17,7 +17,7 @@ public abstract class Report {
 	 * 
 	 * @param title
 	 */
-	protected Report(String title) {
+	public Report(String title) {
 		this.b = HTMLBuilder.getReportTemplate(title);
 		this.title = title;
 	}
