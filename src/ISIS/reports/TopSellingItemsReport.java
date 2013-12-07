@@ -37,8 +37,8 @@ public class TopSellingItemsReport extends Report {
 					.prepareStatement(
 							"SELECT item, sum(cast(price AS real)*quantity) AS gross FROM transaction_item GROUP BY item ORDER BY gross;");
 			ResultSet x = st.executeQuery();
-			
-			while (x.next()) {
+			int num = 0;
+			while (x.next() && num++ < 10) {
 				Item item = new Item(x.getInt("item"), true);
 				this.grosses.put(item, x.getFloat("gross"));
 				this.items.add(item);
