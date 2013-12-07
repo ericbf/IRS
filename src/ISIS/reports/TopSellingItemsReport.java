@@ -69,9 +69,10 @@ public class TopSellingItemsReport extends Report {
 		for (Item item : this.items) {
 			cells = t.addRow();
 			cells[x = 0].add(item.getName());
-			cells[++x].add(item.getPrice().toString());
-			cells[++x]
-					.add(String.format("%.2f", (float) this.grosses.get(item)));
+			cells[++x].add(String
+					.format("$%,.2f", item.getPrice().floatValue()));
+			cells[++x].add(String.format("$%,.2f",
+					(float) this.grosses.get(item)));
 		}
 		
 		this.b.add(t);
