@@ -29,6 +29,7 @@ import ISIS.item.Item;
 import ISIS.misc.Address;
 import ISIS.misc.Phone;
 import ISIS.session.Session;
+import ISIS.session.Session.Setting;
 import ISIS.user.User;
 
 /**
@@ -201,6 +202,14 @@ public class MainWindow extends JFrame {
 					MainWindow.this.customerPane.popAllButFirst();
 					MainWindow.this.inventoryPane.popAllButFirst();
 					MainWindow.this.transactionPane.popAllButFirst();
+					
+					Session curr = Session.getCurrentSession();
+					
+					curr.setSetting(Setting.WIDTH, MainWindow.this.getWidth());
+					curr.setSetting(Setting.HEIGHT, MainWindow.this.getHeight());
+					curr.setSetting(Setting.X_POS, MainWindow.this.getX());
+					curr.setSetting(Setting.Y_POS, MainWindow.this.getY());
+					
 					System.exit(0);
 				} catch (CloseCanceledException e1) {}
 			}
@@ -217,8 +226,19 @@ public class MainWindow extends JFrame {
 			@Override
 			public void windowOpened(WindowEvent e) {}
 		});
+		Session curr = Session.getCurrentSession();
 		
 		this.pack();
 		this.setMinimumSize(new Dimension(800, 400));
+		curr.setDefaultSetting(Setting.WIDTH, MainWindow.this.getWidth());
+		curr.setDefaultSetting(Setting.HEIGHT, MainWindow.this.getHeight());
+		curr.setDefaultSetting(Setting.X_POS, MainWindow.this.getX());
+		curr.setDefaultSetting(Setting.Y_POS, MainWindow.this.getY());
+		
+		this.setSize(Integer.parseInt((String) curr.getSetting(Setting.WIDTH)),
+				Integer.parseInt((String) curr.getSetting(Setting.HEIGHT)));
+		this.setLocation(
+				Integer.parseInt((String) curr.getSetting(Setting.X_POS)),
+				Integer.parseInt((String) curr.getSetting(Setting.Y_POS)));
 	}
 }

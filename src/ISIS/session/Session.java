@@ -17,7 +17,9 @@ import ISIS.user.User;
  */
 public class Session {
 	
-	public enum Setting {}
+	public enum Setting {
+		WIDTH, HEIGHT, X_POS, Y_POS
+	}
 	
 	private static Session													session			= null;
 	private static DB														db				= null;

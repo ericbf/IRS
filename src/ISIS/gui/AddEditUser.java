@@ -11,6 +11,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
+import javax.swing.border.EmptyBorder;
 
 import ISIS.database.Record;
 import ISIS.session.Session;
@@ -29,6 +30,7 @@ public class AddEditUser extends AddEditView {
 		super(null);
 		this.populateElements();
 		this.loginWindow = loginWindow;
+		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		if (editMode) {
 			this.disableFields(this.username, this.fname, this.lname);

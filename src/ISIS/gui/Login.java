@@ -136,6 +136,7 @@ public class Login extends JFrame {
 									frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 									frame.pack();
 									frame.setMinimumSize(new Dimension(500, 0));
+									frame.setLocationRelativeTo(Login.this);
 									frame.setVisible(true);
 									Login.this.dispose();
 								}
@@ -198,6 +199,7 @@ public class Login extends JFrame {
 									frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 									frame.pack();
 									frame.setMinimumSize(new Dimension(500, 0));
+									frame.setLocationRelativeTo(Login.this);
 									frame.setVisible(true);
 									Login.this.setVisible(false);
 								}
