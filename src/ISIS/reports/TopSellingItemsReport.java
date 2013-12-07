@@ -26,7 +26,7 @@ public class TopSellingItemsReport extends Report {
 	 * @param title
 	 */
 	public TopSellingItemsReport() {
-		super("Reorder Report");
+		super("Top Selling Items Report");
 		
 		this.items = new ArrayList<>();
 		this.grosses = new HashMap<>();
@@ -35,7 +35,7 @@ public class TopSellingItemsReport extends Report {
 			PreparedStatement st = Session
 					.getDB()
 					.prepareStatement(
-							"SELECT item, sum(cast(price AS real)*quantity) AS gross FROM transaction_item GROUP BY item ORDER BY gross;");
+							"SELECT item, sum(cast(price AS real)*quantity) AS gross FROM transaction_item GROUP BY item ORDER BY gross DESC;");
 			ResultSet x = st.executeQuery();
 			int num = 0;
 			while (x.next() && num++ < 10) {
