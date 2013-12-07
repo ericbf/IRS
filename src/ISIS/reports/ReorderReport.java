@@ -34,7 +34,7 @@ public class ReorderReport extends Report {
 			PreparedStatement st = Session
 					.getDB()
 					.prepareStatement(
-							"SELECT * FROM item WHERE onhand_qty<reorder_qty AND active=1;");
+							"SELECT * FROM item WHERE cast(onhand_qty AS real)<cast(reorder_qty AS real) AND active=1;");
 			for (HashMap<String, Field> record : DB.mapResultSet(st
 					.executeQuery())) {
 				this.items.add(new Item(record));
