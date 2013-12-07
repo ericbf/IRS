@@ -15,6 +15,7 @@ import ISIS.database.Record;
 import ISIS.gui.SplitPane;
 import ISIS.gui.SplitPane.LayoutType;
 import ISIS.gui.View;
+import ISIS.reports.ReorderReport;
 import ISIS.reports.TeamMemberReport;
 
 /**
@@ -69,6 +70,23 @@ public class ReportSelectorView extends View {
 					public void actionPerformed(ActionEvent e) {
 						ReportSelectorView.this.splitPane.push(
 								new ReportViewer(new TeamMemberReport(),
+										ReportSelectorView.this.splitPane),
+								LayoutType.HORIZONTAL, ReportSelectorView.this);
+					}
+				}), c);
+		
+		c = new GridBagConstraints();
+		c.gridx = x++;
+		c.gridy = y;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		this.add(new JButton2("Reorder Report")
+				.addActionListenero(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						ReportSelectorView.this.splitPane.push(
+								new ReportViewer(new ReorderReport(),
 										ReportSelectorView.this.splitPane),
 								LayoutType.HORIZONTAL, ReportSelectorView.this);
 					}
