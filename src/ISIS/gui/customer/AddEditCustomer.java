@@ -21,6 +21,7 @@ import ISIS.gui.AddEditView;
 import ISIS.gui.HintArea;
 import ISIS.gui.HintField;
 import ISIS.gui.ListButtonListener;
+import ISIS.gui.Scroller;
 import ISIS.gui.SimpleListView;
 import ISIS.gui.SplitPane;
 import ISIS.gui.WrapLayout;
@@ -302,7 +303,7 @@ public class AddEditCustomer extends AddEditView {
 		c.gridx = x--;
 		c.gridy = y++;
 		c.fill = GridBagConstraints.BOTH;
-		main.add((this.note = new HintArea("Note")).make(), c);
+		main.add(new Scroller((this.note = new HintArea("Note")).make()), c);
 		
 		split.setLeftComponent(main);
 		

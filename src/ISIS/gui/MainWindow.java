@@ -148,8 +148,8 @@ public class MainWindow extends JFrame {
 		item.save();
 		item = new Item("Flash Drive", "734453",
 				"Pretty pink flash drives; the kind that J.P. likes.",
-				new BigDecimal("6.99"), new BigDecimal("600"), new BigDecimal(
-						"10"), "units", new BigDecimal("0.10"), true);
+				new BigDecimal("6.99"), new BigDecimal("64"), new BigDecimal(
+						"100"), "units", new BigDecimal("0.10"), true);
 		item.save();
 	}
 	
@@ -199,17 +199,7 @@ public class MainWindow extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				try {
-					MainWindow.this.customerPane.popAllButFirst();
-					MainWindow.this.inventoryPane.popAllButFirst();
-					MainWindow.this.transactionPane.popAllButFirst();
-					
-					Session curr = Session.getCurrentSession();
-					
-					curr.setSetting(Setting.WIDTH, MainWindow.this.getWidth());
-					curr.setSetting(Setting.HEIGHT, MainWindow.this.getHeight());
-					curr.setSetting(Setting.X_POS, MainWindow.this.getX());
-					curr.setSetting(Setting.Y_POS, MainWindow.this.getY());
-					
+					MainWindow.this.close();
 					System.exit(0);
 				} catch (CloseCanceledException e1) {}
 			}
@@ -240,5 +230,18 @@ public class MainWindow extends JFrame {
 		this.setLocation(
 				Integer.parseInt((String) curr.getSetting(Setting.X_POS)),
 				Integer.parseInt((String) curr.getSetting(Setting.Y_POS)));
+	}
+	
+	public void close() throws CloseCanceledException {
+		MainWindow.this.customerPane.popAllButFirst();
+		MainWindow.this.inventoryPane.popAllButFirst();
+		MainWindow.this.transactionPane.popAllButFirst();
+		
+		Session curr = Session.getCurrentSession();
+		
+		curr.setSetting(Setting.WIDTH, MainWindow.this.getWidth());
+		curr.setSetting(Setting.HEIGHT, MainWindow.this.getHeight());
+		curr.setSetting(Setting.X_POS, MainWindow.this.getX());
+		curr.setSetting(Setting.Y_POS, MainWindow.this.getY());
 	}
 }

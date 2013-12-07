@@ -16,6 +16,7 @@ import ISIS.gui.AddEditView;
 import ISIS.gui.DoubleHintField;
 import ISIS.gui.HintArea;
 import ISIS.gui.HintField;
+import ISIS.gui.Scroller;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
 import ISIS.transaction.Transaction;
@@ -177,7 +178,9 @@ public class AddEditTransactionLineItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add((this.description = new HintArea("Description")).make(), c);
+		this.add(
+				new Scroller((this.description = new HintArea("Description"))
+						.make()), c);
 		
 		this.quantity.addFocusListener(new FocusListener() {
 			@Override

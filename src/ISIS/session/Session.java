@@ -166,7 +166,7 @@ public class Session {
 			try {
 				return DB.mapResultSet(s.executeQuery()).get(0).get("value")
 						.getValue();
-			} catch (NullPointerException e) {
+			} catch (IndexOutOfBoundsException e) {
 				return null;
 			}
 		} catch (SQLException e) {
@@ -193,6 +193,9 @@ public class Session {
 	 * @param value
 	 */
 	public void setDefaultSetting(Setting key, Object value) {
+		if (this.getSetting(key) != null) {
+			return;
+		}
 		try {
 			PreparedStatement s = Session.db
 					.prepareStatement("INSERT OR IGNORE INTO setting (key, value, user) VALUES (\""

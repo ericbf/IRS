@@ -10,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import ISIS.database.Record;
@@ -20,8 +19,8 @@ import ISIS.user.User;
 public class AddEditUser extends AddEditView {
 	private static final long	serialVersionUID	= 1L;
 	private User				user				= null;
-	private HintField			username, fname, lname, note;
-	private JPasswordField		password;
+	private HintField			username, fname, lname, password;
+	private HintArea			note;
 	private JCheckBox			active;
 	private final Login			loginWindow;
 	JButton						save, cancel;
@@ -71,14 +70,14 @@ public class AddEditUser extends AddEditView {
 			}
 			this.user = new User(this.username.getText(),
 					this.active.isSelected(), new String(
-							this.password.getPassword()), this.fname.getText(),
+							this.password.getText()), this.fname.getText(),
 					this.lname.getText(), this.note.getText());
 			this.disableFields(this.username, this.fname, this.lname);
 		} else {
 			this.user.setActive(this.active.isSelected());
 			this.user.setNote(this.note.getText());
-			if (this.password.getPassword().length > 0) {
-				this.user.setPassword(new String(this.password.getPassword()));
+			if (this.password.getText().length() > 0) {
+				this.user.setPassword(new String(this.password.getText()));
 			}
 		}
 		return this.user;
@@ -91,9 +90,8 @@ public class AddEditUser extends AddEditView {
 	@Override
 	public boolean isAnyFieldDifferentFromDefault() {
 		boolean same = this.active.isSelected() && this.username.isEmpty()
-				&& this.password.getPassword().length == 0
-				&& this.fname.isEmpty() && this.lname.isEmpty()
-				&& this.note.isEmpty();
+				&& this.password.getText().isEmpty() && this.fname.isEmpty()
+				&& this.lname.isEmpty() && this.note.isEmpty();
 		return !same;
 	}
 	
@@ -185,10 +183,8 @@ public class AddEditUser extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add(this.password = new JPasswordField(), c); // shown in
-															// plaintext, but
-															// not stored in
-															// plaintext.
+		this.add((this.password = new HintField("Password")).make(), c);
+		// not shown in plaintext, but not stored in plaintext.
 		
 		c = new GridBagConstraints();
 		c.weightx = 0;
@@ -233,7 +229,7 @@ public class AddEditUser extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add((this.note = new HintField("Note")).make(), c);
+		this.add(new Scroller((this.note = new HintArea("Note")).make()), c);
 	}
 	
 	@Override

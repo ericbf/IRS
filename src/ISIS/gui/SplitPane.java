@@ -167,22 +167,23 @@ public final class SplitPane extends JPanel {
 		logoutButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Session.endCurrentSession();
-				SplitPane.this.getRootPane().getParent().setVisible(false);
-				((MainWindow) SplitPane.this.getRootPane().getParent())
-						.dispose();
-				java.awt.EventQueue.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								// Login frame =
-								new Login();
-							}
-						});
-					}
-				});
+				try {
+					((MainWindow) SplitPane.this.getRootPane().getParent())
+							.close();
+					SplitPane.this.getRootPane().getParent().setVisible(false);
+					Session.endCurrentSession();
+					java.awt.EventQueue.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {
+									new Login();
+								}
+							});
+						}
+					});
+				} catch (CloseCanceledException e1) {}
 			}
 		});
 		

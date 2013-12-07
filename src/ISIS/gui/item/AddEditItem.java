@@ -14,6 +14,7 @@ import ISIS.gui.AddEditView;
 import ISIS.gui.DoubleHintField;
 import ISIS.gui.HintArea;
 import ISIS.gui.HintField;
+import ISIS.gui.Scroller;
 import ISIS.gui.SplitPane;
 import ISIS.item.Item;
 
@@ -267,7 +268,9 @@ public class AddEditItem extends AddEditView {
 		c.gridy = y++;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		this.add((this.description = new HintArea("Description")).make(), c);
+		this.add(
+				new Scroller((this.description = new HintArea("Description"))
+						.make()), c);
 		this.description.setBorder(new EtchedBorder());
 		this.description.setLineWrap(true);
 		this.description.setWrapStyleWord(true);
