@@ -22,7 +22,11 @@ public class HTMLBuilder implements HTMLContainObjects<HTMLBuilder> {
 		temp.add(new CSSStyle("table").addAttribute("margin", "0 auto")
 				.addAttribute("width", "80%")
 				.addAttribute("border-collapse", "collapse"));
-		temp.add(new CSSStyle("tr *").addAttribute("border", "1px solid black"));
+		temp.add(new CSSStyle("tr *").addAttribute("border", "1px solid black")
+				.addAttribute("padding", "0 3px"));
+		temp.add(new CSSStyle("tr td").addAttribute("text-align", "right"));
+		temp.add(new CSSStyle("tr td:first-child").addAttribute("text-align",
+				"left"));
 		temp.add(new CSSStyle("th").addAttribute("text-align", "center"));
 		
 		Division header = new Division().addClass("header");
