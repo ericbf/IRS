@@ -82,7 +82,7 @@ public final class DB {
 		}
 		try {
 			this.connection = DriverManager
-					.getConnection("jdbc:sqlite:test.db");
+					.getConnection("jdbc:sqlite:IRS_by_ISIS.db");
 			this.initializeDB();
 		} catch (SQLException ex) {
 			ErrorLogger.error(ex, "Failed to open or initialize database.",
